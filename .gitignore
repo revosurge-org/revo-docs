@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+package-lock-backup.json
+.env
+.env.*
