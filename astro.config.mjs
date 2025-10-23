@@ -5,8 +5,8 @@ import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://revo-docs.github.io",
-  base: "/",
+  site: "https://revosurge-org.github.io",
+  base: "/revo-docs/",
   // Enable Vue to support Vue components.
   integrations: [vue()],
 });
