@@ -13,41 +13,43 @@ const tracker = new WebTracker({
 `;
 
 const TRACK_REGISTER = `
-tracker.track('register', {
+tracker.trackRegister({
     user_id: 'user_123',
-    identifier: 'hash-of-email-or-phone',
-    plan: 'pro',
-    metadata: {
-        referrer: 'pricing-page'
-    }
+    identifier: '422be6ee64996639ccb75b562c08a32479c16f8fd91ecc6eb8c954d1f737fd32'
 });
 `;
 
 const TRACK_DOWNLOAD_CLICK = `
-tracker.track('download_click', {
-    store_type: 'play_store'
+tracker.trackDownloadClick({
+    store_type: 'App Store'
 });
 `;
 
 const TRACK_LOGIN = `
-tracker.track('login', {
+tracker.trackLogin({
     user_id: 'user_123'
 });
 `;
 
 const TRACK_DEPOSIT = `
-tracker.track('deposit', {
+tracker.trackDeposit({
     currency: 'USDT',
     network: 'TRON',
-    amount: 250.5
+    amount: 100.00
 });
 `;
 
 const TRACK_ENTER_GAME = `
-tracker.track('enter_game', {
+tracker.trackEnterGame({
     currency: 'USDT',
-    game_id: 'game_42',
-    game_provider: 'Galactic Studios'
+    game_id: 'gamer_123',
+    game_provider: 'provider_xyz'
+});
+`;
+
+const TRACK_CUSTOM = `
+tracker.trackCustomEvent('custom_event_type', {
+    event_detail: 'details'
 });
 `;
 
@@ -77,14 +79,14 @@ const constructorParams = [
 ];
 
 const autoTrackedEvents = [
-    { name: 'unique_visitor', description: 'Logged once per device within a 24 hour window to help you track reach.' },
-    { name: 'page_view', description: 'Sent whenever a route changes so funnels reflect precise navigation.' },
-    { name: 'click', description: 'Captures click interactions for any element decorated with <code>data-rs-track</code>.' },
-    { name: 'scroll', description: 'Triggers after readers cross 50% viewport depth, useful for engagement KPIs.' },
-    { name: 'form_submit', description: 'Tracks every form completion and includes form identifiers for attribution.' },
-    { name: 'page_hidden', description: 'Dispatched when a tab goes to the background, revealing drop-off points.' },
-    { name: 'page_visible', description: 'Fires as soon as the page regains focus to measure user returns.' },
-    { name: 'session_end', description: 'Emitted after a period of inactivity to close out session analytics cleanly.' },
+    { name: 'unique_visitor', description: 'Emitted once per browser when no <code>uv_{trackerId}</code> marker exists in storage (with cookie fallback).' },
+    { name: 'page_view', description: 'Dispatched on SDK init with full page metadata whenever auto tracking is enabled.' },
+    { name: 'click', description: 'Captures every document click with element identifiers and pointer coordinates.' },
+    { name: 'scroll', description: 'Sent on debounced scroll events with <code>scroll_top</code> and calculated <code>scroll_percent</code>.' },
+    { name: 'form_submit', description: 'Tracks form submissions and reports the form ID, action URL, and field count.' },
+    { name: 'page_hidden', description: 'Raised when the document visibility switches to hidden (tab backgrounded/navigation away).' },
+    { name: 'page_visible', description: 'Raised when the page becomes visible again after a visibility change.' },
+    { name: 'session_end', description: 'Triggered on <code>beforeunload</code>/<code>pagehide</code> once per session with the session duration.' },
 ];
 
 const manualTrackedEvents = [
@@ -335,6 +337,16 @@ const manualTrackedEvents = [
           color: var(--secondary-text-color);
       }
 
+      .important-note {
+          margin-top: 2rem;
+          padding: 1rem 1.5rem;
+          border-radius: 6px;
+          border: 1px solid rgba(77, 255, 86, 0.73);
+          background: rgba(89, 255, 77, 0.19);
+          color: #e1e4ff;
+          font-weight: 600;
+      }
+
       .code-container {
           position: relative;
           margin-top: 1rem;
@@ -546,6 +558,63 @@ const manualTrackedEvents = [
             margin-top: 2rem;
         }
 
+        .verification-checklist {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .verification-step {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+            padding: 1.35rem 1.6rem;
+            border-radius: 14px;
+            border: 1px solid rgba(112, 134, 255, 0.28);
+            background: linear-gradient(145deg, rgba(26, 31, 55, 0.95), rgba(19, 23, 40, 0.95));
+            box-shadow: 0 18px 36px rgba(7, 11, 32, 0.28);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .verification-step:hover {
+            border-color: rgba(138, 158, 255, 0.55);
+            transform: translateY(-2px);
+        }
+
+        .verification-step .step-index {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 999px;
+            background: rgba(112, 134, 255, 0.22);
+            border: 1px solid rgba(112, 134, 255, 0.45);
+            color: #f2f4ff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+        }
+
+        .verification-step h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #f2f4ff;
+        }
+
+        .verification-step p {
+            margin: 0.45rem 0 0;
+            color: #b7c1ec;
+            line-height: 1.65;
+        }
+
+        .verification-step p:first-of-type {
+            margin-top: 0.35rem;
+        }
+
       .code-container .token.comment {
           color: #6f7d95;
       }
@@ -629,7 +698,7 @@ const manualTrackedEvents = [
         ))}
       </div>
 
-      <p style="margin-top: 2rem;">Before embedding the SDK into your website, make sure you have your tracker ID.</p>
+      <p class="important-note">Before embedding the SDK into your website, make sure you have your tracker ID assigned.</p>
 
       <div class="navigation-container">
         <div class="prev-section-button" data-prev="getting-started">
@@ -680,7 +749,7 @@ const manualTrackedEvents = [
         </div>
         {constructorParams.map((param) => (
           <div class="params-table-row" set:key={param.name}>
-            <code>{param.name}</code>
+            {param.name}
             <span class="param-type">{param.type}</span>
             <p set:html={param.description}></p>
           </div>
@@ -725,31 +794,38 @@ const manualTrackedEvents = [
                     {manualTrackedEvents.map((event) => (
                         <section class="manual-event" set:key={event.id}>
                             <p>Event <span class="event-pill">{event.id}</span></p>
+                            <div class="params-table">
+                              <h4>{event.label}</h4>
+                              <div class="params-table-row params-table-head cols-4">
+                                <span class="params-heading">Parameter</span>
+                                <span class="params-heading">Type</span>
+                                <span class="params-heading">Required</span>
+                                <span class="params-heading">Description</span>
+                              </div>
+                              {event.params.map((param) => (
+                                  <div class="params-table-row cols-4" set:key={param.name}>
+                                    <span>{param.name}</span>
+                                    <span class="param-type">{param.type}</span>
+                                    <span class:list={{ 'param-required': true, optional: !param.required }}>
+                                              {param.required ? 'Required' : 'Optional'}
+                                          </span>
+                                    <p set:html={param.description}></p>
+                                  </div>
+                              ))}
+                            </div>
                             <div class="code-container">
                                 <pre class="language-js"><code class="language-js">{event.snippet}</code></pre>
                                 <button class="copy-button">Copy</button>
                             </div>
-                            <div class="params-table">
-                                <h4>{event.label}</h4>
-                                <div class="params-table-row params-table-head cols-4">
-                                    <span class="params-heading">Parameter</span>
-                                    <span class="params-heading">Type</span>
-                                    <span class="params-heading">Required</span>
-                                    <span class="params-heading">Description</span>
-                                </div>
-                                {event.params.map((param) => (
-                                    <div class="params-table-row cols-4" set:key={param.name}>
-                                        <span>{param.name}</span>
-                                        <span class="param-type">{param.type}</span>
-                                        <span class:list={{ 'param-required': true, optional: !param.required }}>
-                                            {param.required ? 'Required' : 'Optional'}
-                                        </span>
-                                        <p set:html={param.description}></p>
-                                    </div>
-                                ))}
-                            </div>
+
                         </section>
                     ))}
+                    <p>In addition, SDK provides a custom event tracker method for self-defined events.</p>
+                    <p>Event <span class="event-pill">CUSTOM_EVENT</span></p>
+                    <div class="code-container">
+                      <pre class="language-js"><code class="language-js">{TRACK_CUSTOM}</code></pre>
+                      <button class="copy-button">Copy</button>
+                    </div>
                 </div>
 
                 <div class="navigation-container">
@@ -770,8 +846,38 @@ const manualTrackedEvents = [
       </div>
     </div>
     <div id="functional-verification-content" class="content-section" style="display: none;">
-      <h2>Functional Verification</h2>
-      <p>Content for functional verification.</p>
+  <h2>Functional Verification</h2>
+  <p>Run these checks in your browser to confirm the SDK is embedded and emitting events:</p>
+  <div class="verification-checklist">
+    <div class="verification-step">
+      <span class="step-index">1</span>
+      <div>
+        <h3>Confirm the SDK bundle loads</h3>
+        <p>Open your page, launch DevTools (<code>Cmd+Option+I</code> / <code>Ctrl+Shift+I</code>), and verify <code>web-tracker-1.2.0.js</code> renders under the Sources panel without 404s.</p>
+      </div>
+    </div>
+    <div class="verification-step">
+      <span class="step-index">2</span>
+      <div>
+        <h3>Check initial auto tracking</h3>
+        <p>With DevTools open, switch to the Network tab, reload, and filter for <code>/collect</code>. A successful <span class="event-pill">page_view</span> POST returning 2xx confirms automatic bootstrapping.</p>
+      </div>
+    </div>
+    <div class="verification-step">
+      <span class="step-index">3</span>
+      <div>
+        <h3>Exercise built-in events</h3>
+        <p>Click around, scroll past mid-page, or submit a form and watch follow-up requests report the matching <code>event_type</code> values (e.g. <code>click</code>, <code>scroll</code>, <code>form_submit</code>).</p>
+      </div>
+    </div>
+    <div class="verification-step">
+      <span class="step-index">4</span>
+      <div>
+        <h3>Validate manual triggers</h3>
+        <p>Run any manual snippets you integrated and confirm they emit additional <code>/collect</code> POSTs without console errors or blocked network calls.</p>
+      </div>
+    </div>
+  </div>
       <div class="navigation-container">
         <div class="prev-section-button" data-prev="trigger-events">
           <span class="material-symbols-outlined">arrow_back_ios</span>
