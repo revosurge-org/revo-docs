@@ -8,7 +8,6 @@ export default defineConfig({
   //site: "https://revosurge-org.github.io",
   //base: "/revo-docs/",
   site: "https://docs.revosurge.com",
-  base: "/revo-docs/",
   // Enable Vue to support Vue components.
   integrations: [vue()],
 });
