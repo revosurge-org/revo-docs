@@ -679,40 +679,6 @@ const manualTrackedEvents = [
       </div>
     </div>
 
-    <div id="get-sdk-content" class="content-section" style="display: none;">
-      <h2>Get the Web Tracker SDK</h2>
-      <p>To get started, you can download the web tracker SDK from here.</p>
-      <a href={SDK_DOWNLOAD_URL} download class="download-button">Download SDK (v1.2.0)</a>
-
-      <p style="margin-top: 2rem;">The zip file contains the following:</p>
-      <div class="file-list-container">
-        {sdkFiles.map((file) => (
-          <div class="file-card" set:key={file.name}>
-            <h4><code>{file.name}</code></h4>
-            <p set:html={file.description}></p>
-          </div>
-        ))}
-      </div>
-
-      <p class="important-note">Before embedding the SDK into your website, make sure you have your tracker ID assigned.</p>
-
-      <div class="navigation-container">
-        <div class="prev-section-button" data-prev="getting-started">
-          <span class="material-symbols-outlined">arrow_back_ios</span>
-          <div>
-            <div class="nav-label">PREVIOUS</div>
-            <div class="nav-title">Getting started</div>
-          </div>
-        </div>
-        <div class="next-section-button" data-next="embed-sdk">
-          <div>
-            <div class="nav-label">NEXT</div>
-            <div class="nav-title">Embed & Configure the SDK</div>
-          </div>
-          <span class="material-symbols-outlined">arrow_forward_ios</span>
-        </div>
-      </div>
-    </div>
     <div id="embed-sdk-content" class="content-section" style="display: none;">
       <h2>Embed &amp; Configure the SDK</h2>
       <p>Follow these steps to integrate the Web Tracker SDK into your website.</p>
