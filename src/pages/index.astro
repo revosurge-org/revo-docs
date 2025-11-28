@@ -1,955 +1,536 @@
-
 ---
-const INCLUDE_SDK = `<script src="https://assets.revosurge.com/js/web-tracker-prod.js"><\/script>`;
+const INCLUDE_SDK = `<script src="https://assets.revosurge.com/js/web-tracker.js"><\/script>`;
 
 const CONSTRUCTOR = `
 const tracker = new WebTracker({
-    trackerId: 'example'
-});
-`;
-
-const TRACK_REGISTER = `
-tracker.trackRegister({
-    user_id: 'user_123',
-    identifier: '422be6ee64996639ccb75b562c08a32479c16f8fd91ecc6eb8c954d1f737fd32'
+  trackerId: 'your-tracker-id',
+  // env: 'prod' | 'test' | 'dev',
 });
 `;
 
 const TRACK_DOWNLOAD_CLICK = `
-tracker.trackDownloadClick({
-    store_type: 'App Store'
+tracker.trackDownloadClick('user_123', {
+  store_type: 'App Store'
+});
+`;
+
+const TRACK_REGISTER = `
+tracker.trackRegister('user_123', {
+  identifier: 'hashed_email_or_phone'
 });
 `;
 
 const TRACK_LOGIN = `
-tracker.trackLogin({
-    user_id: 'user_123'
-});
+tracker.trackLogin('user_123');
 `;
 
 const TRACK_DEPOSIT = `
-tracker.trackDeposit({
-    currency: 'USDT',
-    network: 'TRON',
-    amount: 100.00
+tracker.trackDeposit('user_123', {
+  currency: 'USDT',
+  network: 'TRON',
+  amount: 100
 });
 `;
 
 const TRACK_ENTER_GAME = `
-tracker.trackEnterGame({
-    currency: 'USDT',
-    game_id: 'gamer_123',
-    game_provider: 'provider_xyz'
+tracker.trackEnterGame('user_123', {
+  currency: 'USDT',
+  game_name: 'My Awesome Game',
+  game_id: 'gamer_123',
+  game_provider: 'provider_xyz'
 });
 `;
 
 const TRACK_CUSTOM = `
 tracker.trackCustomEvent('custom_event_type', {
-    event_detail: 'details'
+  event_detail: 'value'
 });
 `;
 
 const BASE_URL = import.meta.env.BASE_URL;
 const FAVICON_URL = `${BASE_URL}favicon.svg`;
-const SDK_DOWNLOAD_URL = `${BASE_URL}tracker-sdk-1.2.0.zip`;
-
-const gettingStartedCards = [
-    { id: 'embed-sdk', title: 'Embed & Configure the SDK', description: 'Embed the SDK into your website.' },
-    { id: 'trigger-events', title: 'Trigger tracking events', description: 'Use predefined and custom methods for user events tracking.' },
-    { id: 'functional-verification', title: 'Functional Verification', description: 'Simple steps to check if the SDK works properly.' },
-];
-
-const sdkFiles = [
-    { name: 'web-tracker-1.2.0.js', description: 'The core SDK file to be embedded in your website.' },
-    { name: 'README.md', description: 'Instructions on how to use the SDK.' },
-    { name: 'example.html', description: 'A complete example demonstrating the SDK functionality.' },
-];
 
 const constructorParams = [
-    { name: 'trackerId', type: 'string', description: 'Identifier assigned to your RevoSurge tracker.' },
+  { name: 'trackerId', type: 'string', required: true, description: '分配给你的 tracker 标识，必填。' },
+  { name: 'env', type: 'dev | test | prod', required: false, description: '可选，环境标识，默认 prod，可设 dev/test。' },
 ];
 
-const autoTrackedEvents = [
-    { name: 'unique_visitor', description: 'Emitted once per browser when no <code>uv_{trackerId}</code> marker exists in storage (with cookie fallback).' },
-    { name: 'page_view', description: 'Dispatched on SDK init with full page metadata whenever auto tracking is enabled.' },
-    { name: 'click', description: 'Captures every document click with element identifiers and pointer coordinates.' },
-    { name: 'scroll', description: 'Sent on debounced scroll events with <code>scroll_top</code> and calculated <code>scroll_percent</code>.' },
-    { name: 'form_submit', description: 'Tracks form submissions and reports the form ID, action URL, and field count.' },
-    { name: 'page_hidden', description: 'Raised when the document visibility switches to hidden (tab backgrounded/navigation away).' },
-    { name: 'page_visible', description: 'Raised when the page becomes visible again after a visibility change.' },
-    { name: 'session_end', description: 'Triggered on <code>beforeunload</code>/<code>pagehide</code> once per session with the session duration.' },
-];
-
-const manualTrackedEvents = [
-    {
-        id: 'register',
-        label: 'REGISTER',
-        snippet: TRACK_REGISTER,
-        params: [
-            { name: 'user_id', type: 'string', required: true, description: 'Primary identifier issued once the user has an account in your system.' },
-            { name: 'identifier', type: 'string', required: false, description: 'Hashed email or phone captured pre-signup to aid identity stitching.' },
-        ],
-    },
-    {
-        id: 'download_click',
-        label: 'DOWNLOAD_CLICK',
-        snippet: TRACK_DOWNLOAD_CLICK,
-        params: [
-            { name: 'store_type', type: 'string', required: false, description: 'Channel where the download happened, e.g. <code>app_store</code>, <code>play_store</code>.' },
-        ],
-    },
-    {
-        id: 'login',
-        label: 'LOGIN',
-        snippet: TRACK_LOGIN,
-        params: [
-            { name: 'user_id', type: 'string', required: true, description: 'User ID used to authenticate and resume a session.' },
-        ],
-    },
-    {
-        id: 'deposit',
-        label: 'DEPOSIT',
-        snippet: TRACK_DEPOSIT,
-        params: [
-            { name: 'currency', type: 'string', required: true, description: 'Currency used for the funding action, e.g. <code>USDT</code>.' },
-            { name: 'network', type: 'string', required: true, description: 'Blockchain or payment network, e.g. <code>TRON</code>, <code>ETH</code>.' },
-            { name: 'amount', type: 'number', required: true, description: 'Numeric value of the deposit denominated in the selected currency.' },
-        ],
-    },
-    {
-        id: 'enter_game',
-        label: 'ENTER_GAME',
-        snippet: TRACK_ENTER_GAME,
-        params: [
-            { name: 'currency', type: 'string', required: true, description: 'Currency selected for gameplay transactions.' },
-            { name: 'game_id', type: 'string', required: true, description: 'Internal identifier for the game title.' },
-            { name: 'game_provider', type: 'string', required: true, description: 'Name of the partner studio or provider.' },
-        ],
-    },
+const eventFlow = [
+  {
+    order: 1,
+    id: 'download_click',
+    label: 'DOWNLOAD_CLICK',
+    title: '点击下载',
+    description: '标记用户在页面上触发的客户端下载或跳转行为。',
+    snippet: TRACK_DOWNLOAD_CLICK,
+    params: [
+      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID。' },
+      { name: 'store_type', type: 'string', required: false, description: '可选，下载渠道。例如 App Store、Play Store。' },
+    ],
+  },
+  {
+    order: 2,
+    id: 'register',
+    label: 'REGISTER',
+    title: '注册',
+    description: '绑定首个唯一用户标识，后续行为都会关联到该账号。',
+    snippet: TRACK_REGISTER,
+    params: [
+      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID，作为第一个参数传入。' },
+      { name: 'identifier', type: 'string', required: false, description: '可选，用于脱敏的邮箱或手机号哈希。' },
+    ],
+  },
+  {
+    order: 3,
+    id: 'login',
+    label: 'LOGIN',
+    title: '登录',
+    description: '确认用户回访并继续同一账号的会话。',
+    snippet: TRACK_LOGIN,
+    params: [
+      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID，作为第一个参数传入。' },
+    ],
+  },
+  {
+    order: 4,
+    id: 'deposit',
+    label: 'DEPOSIT',
+    title: '充值/入金',
+    description: '记录资金流入，用于转化与风控分析。',
+    snippet: TRACK_DEPOSIT,
+    params: [
+      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID，作为第一个参数传入。' },
+      { name: 'currency', type: 'string', required: true, description: '币种，如 USDT。' },
+      { name: 'network', type: 'string', required: true, description: '支付或链路名称，如 TRON。' },
+      { name: 'amount', type: 'number', required: true, description: '金额数值。' },
+    ],
+  },
+  {
+    order: 5,
+    id: 'enter_game',
+    label: 'ENTER_GAME',
+    title: '进入游戏/产品核心环节',
+    description: '在用户开始核心体验时打点，用于留存与活跃分析。',
+    snippet: TRACK_ENTER_GAME,
+    params: [
+      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID，作为第一个参数传入。' },
+      { name: 'currency', type: 'string', required: true, description: '选择的计价单位。' },
+      { name: 'game_name', type: 'string', required: true, description: '游戏名称或展示标题。' },
+      { name: 'game_id', type: 'string', required: true, description: '游戏或核心功能的内部 ID。' },
+      { name: 'game_provider', type: 'string', required: true, description: '提供方或合作方名称。' },
+    ],
+  },
+  {
+    order: 6,
+    id: 'custom',
+    label: 'CUSTOM_EVENT',
+    title: '自定义事件',
+    description: '补充业务特定行为，例如任务完成、购买道具等。',
+    snippet: TRACK_CUSTOM,
+    params: [
+      { name: 'event_type', type: 'string', required: true, description: '自定义事件名称，放在第一个参数。' },
+      { name: 'payload', type: 'object', required: false, description: '键值对形式的事件字段，作为第二个参数。' },
+    ],
+  },
 ];
 ---
 
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <meta name="generator" content={Astro.generator} />
   <link rel="icon" type="image/svg+xml" href={FAVICON_URL} />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <style>
-      :root {
-          --background-color: #121212;
-          --text-color: #ffffff;
-          --secondary-text-color: #a0a0a0;
-          --accent-color: #4d4dff;
-          --border-color: #333333;
-          --sidebar-width: 250px;
+    :root {
+      --bg: #0f111a;
+      --panel: #15192a;
+      --border: #242c44;
+      --text: #f4f6ff;
+      --muted: #9ea7c7;
+      --accent: #6f86ff;
+      --accent-2: #52d0ff;
+      --radius: 12px;
+      --max-width: 1080px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'SF Pro Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent-2);
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .tag {
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .layout {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 0.6rem;
+    }
+
+    .hero {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(111, 134, 255, 0.18), rgba(82, 208, 255, 0.16));
+      border: 1px solid rgba(111, 134, 255, 0.35);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 38px rgba(10, 16, 40, 0.4);
+    }
+
+    .hero p {
+      color: var(--text);
+      margin: 0.35rem 0 0.75rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.1rem;
+      background: #0f1326;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .block {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 10px 28px rgba(7, 12, 30, 0.35);
+    }
+
+    .block p {
+      margin: 0.4rem 0 0.9rem;
+      color: var(--muted);
+    }
+
+    ul.simple {
+      margin: 0.25rem 0 0;
+      padding-left: 1.1rem;
+      color: var(--text);
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .code-container {
+      position: relative;
+      margin-top: 0.75rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0f1326;
+      overflow: hidden;
+    }
+
+    .code-container pre {
+      margin: 0;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+    }
+
+    .copy-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.6rem;
+      border: 1px solid var(--border);
+      background: rgba(111, 134, 255, 0.1);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.35rem 0.7rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .params-table {
+      margin-top: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .params-head, .params-row {
+      display: grid;
+      grid-template-columns: 1.1fr 0.7fr 0.9fr 2fr;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      align-items: center;
+    }
+
+    .params-head {
+      background: #0f1326;
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .params-row {
+      border-top: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .param-required {
+      color: #85e0a3;
+      font-weight: 600;
+    }
+
+    .param-optional {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .event-list {
+      list-style: none;
+      margin: 1rem 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .event-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      background: #11162b;
+      box-shadow: 0 12px 24px rgba(7, 12, 30, 0.3);
+    }
+
+    .event-header {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .event-order {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      background: rgba(111, 134, 255, 0.15);
+    }
+
+    .event-pill {
+      display: inline-flex;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(82, 208, 255, 0.12);
+      border: 1px solid rgba(82, 208, 255, 0.3);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .event-card p {
+      color: var(--muted);
+      margin: 0.35rem 0 0.6rem;
+    }
+
+    .tips {
+      display: grid;
+      gap: 0.45rem;
+      padding-left: 1rem;
+      color: var(--text);
+    }
+
+    @media (max-width: 720px) {
+      .params-head, .params-row {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "name type"
+          "required desc";
       }
 
-      body {
-          background-color: var(--background-color);
-          color: var(--text-color);
-          font-family: sans-serif;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          min-height: 100vh;
+      .params-row span:nth-child(1) { grid-area: name; }
+      .params-row span:nth-child(2) { grid-area: type; }
+      .params-row span:nth-child(3) { grid-area: required; }
+      .params-row span:nth-child(4) { grid-area: desc; }
+
+      .event-header {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      .header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem 2rem;
-          border-bottom: 1px solid var(--border-color);
+      .hero, .block {
+        padding: 1.1rem;
       }
-
-      .logo {
-          font-size: 1.5rem;
-          font-weight: bold;
-      }
-
-      .main-container {
-          display: flex;
-          flex: 1;
-      }
-
-      .sidebar {
-          width: var(--sidebar-width);
-          padding: 2rem;
-          border-right: 1px solid var(--border-color);
-          flex-shrink: 0;
-      }
-
-      .sidebar ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-      }
-
-      .sidebar li {
-          margin-bottom: 1rem;
-      }
-
-      .sidebar ul ul {
-          margin-top: 1rem;
-          padding-left: 1rem;
-      }
-
-      .sidebar a {
-          color: var(--secondary-text-color);
-          text-decoration: none;
-          white-space: nowrap;
-      }
-
-      .sidebar a.active {
-          color: var(--text-color);
-          font-weight: bold;
-      }
-
-      .content {
-          flex: 1;
-          padding: 2rem;
-          overflow-x: auto;
-      }
-
-      .card-container {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1rem;
-          margin-top: 2rem;
-      }
-
-      .card {
-          background-color: #2a2a2e;
-          border: 1px solid var(--border-color);
-          padding: 1.5rem;
-          border-radius: 5px;
-          cursor: pointer;
-      }
-
-      .card h3 {
-          margin-top: 0;
-          font-size: 1.2rem;
-      }
-
-      .card p {
-          color: var(--secondary-text-color);
-          font-size: 1rem;
-      }
-
-      .navigation-container {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 2rem;
-          gap: 1rem;
-      }
-
-      .prev-section-button, .next-section-button {
-          border: 1px solid var(--border-color);
-          border-radius: 8px;
-          padding: 1rem;
-          cursor: pointer;
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          transition: background-color 0.3s ease;
-          text-decoration: none;
-      }
-
-      .prev-section-button:hover, .next-section-button:hover {
-          background-color: #2a2a2e;
-      }
-
-      .prev-section-button {
-          justify-content: flex-start;
-      }
-
-      .next-section-button {
-          justify-content: flex-end;
-          text-align: right;
-      }
-
-      .nav-label {
-          color: var(--secondary-text-color);
-          font-size: 0.9rem;
-          margin-bottom: 0.25rem;
-      }
-
-      .nav-title {
-          color: var(--text-color);
-          font-size: 1.1rem;
-          font-weight: 500;
-      }
-
-      .material-symbols-outlined {
-          font-variation-settings:
-                  'FILL' 0,
-                  'wght' 400,
-                  'GRAD' 0,
-                  'opsz' 24
-      }
-
-      .download-button {
-          display: inline-block;
-          background-color: var(--accent-color);
-          color: var(--text-color);
-          padding: 0.75rem 1.5rem;
-          border-radius: 5px;
-          text-decoration: none;
-          font-weight: bold;
-          margin-top: 1rem;
-          text-align: center;
-      }
-
-      .file-list-container {
-          margin-top: 2rem;
-          display: grid;
-          gap: 1rem;
-      }
-
-      .file-card {
-          background-color: #2a2a2e;
-          border: 1px solid var(--border-color);
-          padding: 1.5rem;
-          border-radius: 5px;
-      }
-
-      .file-card h4 {
-          margin-top: 0;
-          font-size: 1.1rem;
-          color: var(--text-color);
-      }
-
-      .file-card p {
-          margin-bottom: 0;
-          color: var(--secondary-text-color);
-      }
-
-      .important-note {
-          margin-top: 2rem;
-          padding: 1rem 1.5rem;
-          border-radius: 6px;
-          border: 1px solid rgba(77, 255, 86, 0.73);
-          background: rgba(89, 255, 77, 0.19);
-          color: #e1e4ff;
-          font-weight: 600;
-      }
-
-      .code-container {
-          position: relative;
-          margin-top: 1rem;
-          border-radius: 12px;
-          border: 1px solid #2d344b;
-          background: linear-gradient(160deg, #1f2336 0%, #191c2d 100%);
-          box-shadow: 0 18px 40px rgba(7, 11, 32, 0.55);
-          overflow: hidden;
-      }
-
-      .code-container::after {
-          content: '';
-          position: absolute;
-          bottom: 0.85rem;
-          left: 1.5rem;
-          right: 40%;
-          height: 4px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.08);
-      }
-
-      .code-container pre[class*="language-"] {
-          margin: 0;
-          padding: 1.75rem;
-          color: #e9edff;
-          font-family: 'Fira Code', 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-          font-size: 0.95rem;
-          line-height: 1.65;
-          white-space: pre;
-          overflow-x: auto;
-          background: transparent;
-      }
-
-      .code-container pre code {
-          background: none;
-          padding: 0;
-      }
-
-      :not(pre) > code {
-          background: rgba(77, 77, 255, 0.16);
-          color: #d7d9ff;
-          padding: 0.2rem 0.45rem;
-          border-radius: 4px;
-          font-family: 'Fira Code', 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-      }
-
-      .copy-button {
-          position: absolute;
-          top: 0.65rem;
-          right: 0.75rem;
-          background: rgba(93, 114, 255, 0.18);
-          color: #dbe1ff;
-          border: 1px solid rgba(93, 114, 255, 0.45);
-          padding: 0.35rem 0.85rem;
-          border-radius: 999px;
-          cursor: pointer;
-          font-size: 0.75rem;
-          font-weight: 500;
-          transition: background 0.2s ease, border 0.2s ease, color 0.2s ease;
-      }
-
-      .copy-button:hover {
-          background: rgba(93, 114, 255, 0.28);
-          border-color: rgba(93, 114, 255, 0.65);
-          color: #f3f5ff;
-      }
-
-      .params-table {
-          margin-top: 2rem;
-          border-radius: 12px;
-          border: 1px solid rgba(120, 130, 185, 0.28);
-          background: #14182b;
-          overflow: hidden;
-      }
-
-        .params-table h4 {
-            margin: 0;
-            padding: 1.25rem 1.75rem 0.85rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #f2f4ff;
-            border-bottom: 1px solid rgba(120, 130, 185, 0.28);
-        }
-
-        .params-table-row {
-            display: grid;
-            grid-template-columns: minmax(132px, 0.35fr) minmax(110px, 0.22fr) 1fr;
-            gap: 1.5rem;
-            padding: 0.95rem 1.75rem;
-            align-items: start;
-        }
-
-        .params-table-row + .params-table-row {
-            border-top: 1px solid rgba(120, 130, 185, 0.18);
-        }
-
-        .params-table-row.cols-4 {
-            grid-template-columns: minmax(132px, 0.28fr) minmax(110px, 0.2fr) minmax(90px, 0.18fr) 1fr;
-        }
-
-        .params-table-head {
-            color: #8e9ad1;
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-      }
-
-      .params-heading {
-          font-weight: 600;
-      }
-
-      .params-table-row > code {
-          display: inline-block;
-          font-size: 0.9rem;
-          padding: 0.35rem 0.85rem 0.2rem;
-          border-radius: 6px;
-          background: #1a2037;
-          border: 1px solid rgba(112, 134, 255, 0.35);
-          box-shadow: inset 0 -2px 0 rgba(112, 134, 255, 0.45);
-          color: #e1e6ff;
-      }
-
-        .param-type {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #bac4ff;
-            text-transform: lowercase;
-            line-height: 1.8;
-        }
-
-        .param-required {
-            font-size: 0.88rem;
-            font-weight: 500;
-            color: #7cd1ff;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .param-required.optional {
-            color: #929ac4;
-        }
-
-        .params-table-row p {
-            margin: 0;
-            color: #cdd3f0;
-            font-size: 0.96rem;
-            line-height: 1.65;
-        }
-
-        .events-intro {
-            margin-top: 1.75rem;
-            color: #c9cee7;
-            line-height: 1.65;
-        }
-
-        .events-grid {
-            margin-top: 1.25rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-        }
-
-        .event-card {
-            border-radius: 12px;
-            border: 1px solid rgba(120, 130, 185, 0.22);
-            background: #141a31;
-            padding: 1.1rem 1.25rem;
-            box-shadow: 0 12px 28px rgba(7, 11, 32, 0.35);
-        }
-
-        .event-pill {
-            display: inline-block;
-            padding: 0.35rem 0.85rem 0.2rem;
-            border-radius: 999px;
-            background: rgba(112, 134, 255, 0.16);
-            border: 1px solid rgba(112, 134, 255, 0.35);
-            color: #e1e6ff;
-            font-size: 0.82rem;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .event-card p {
-            margin: 0.65rem 0 0;
-            color: #aeb7dc;
-            font-size: 0.92rem;
-            line-height: 1.6;
-        }
-
-        .manual-events {
-            margin-top: 2.5rem;
-        }
-
-        .manual-events h3 {
-            margin-bottom: 0.75rem;
-        }
-
-        .manual-events p {
-            color: #c9cee7;
-            line-height: 1.65;
-        }
-
-        .manual-event {
-            margin-top: 1.75rem;
-        }
-
-        .manual-event + .manual-event {
-            margin-top: 2rem;
-        }
-
-        .verification-checklist {
-            margin-top: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .verification-step {
-            display: flex;
-            gap: 1.25rem;
-            align-items: flex-start;
-            padding: 1.35rem 1.6rem;
-            border-radius: 14px;
-            border: 1px solid rgba(112, 134, 255, 0.28);
-            background: linear-gradient(145deg, rgba(26, 31, 55, 0.95), rgba(19, 23, 40, 0.95));
-            box-shadow: 0 18px 36px rgba(7, 11, 32, 0.28);
-            transition: border-color 0.2s ease, transform 0.2s ease;
-        }
-
-        .verification-step:hover {
-            border-color: rgba(138, 158, 255, 0.55);
-            transform: translateY(-2px);
-        }
-
-        .verification-step .step-index {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 999px;
-            background: rgba(112, 134, 255, 0.22);
-            border: 1px solid rgba(112, 134, 255, 0.45);
-            color: #f2f4ff;
-            font-weight: 700;
-            font-size: 1.1rem;
-            letter-spacing: 0.05em;
-            flex-shrink: 0;
-        }
-
-        .verification-step h3 {
-            margin: 0;
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #f2f4ff;
-        }
-
-        .verification-step p {
-            margin: 0.45rem 0 0;
-            color: #b7c1ec;
-            line-height: 1.65;
-        }
-
-        .verification-step p:first-of-type {
-            margin-top: 0.35rem;
-        }
-
-      .code-container .token.comment {
-          color: #6f7d95;
-      }
-
-      .code-container .token.keyword {
-          color: #9aa7ff;
-      }
-
-      .code-container .token.string {
-          color: #79dca0;
-      }
-
-      .code-container .token.function {
-          color: #ffd479;
-      }
-
-      .code-container .token.operator,
-      .code-container .token.punctuation {
-          color: #adb7d5;
-      }
-
-      .code-container .token.boolean,
-      .code-container .token.number {
-          color: #f28fad;
-      }
-
+    }
   </style>
 </head>
 <body>
-<header class="header">
-  <div class="logo">RevoSurge</div>
-</header>
-<div class="main-container">
-  <aside class="sidebar">
-    <ul>
-      <li><a href="#" style="font-weight: bold;">DataPulse</a></li>
-      <li><a href="#" class="active" data-content="getting-started">Getting started</a>
-        <ul>
-          <li><a href="#" data-content="embed-sdk">Embed & Configure the SDK</a></li>
-          <li><a href="#" data-content="trigger-events">Trigger tracking events</a></li>
-          <li><a href="#" data-content="functional-verification">Functional Verification</a></li>
-        </ul>
-      </li>
-    </ul>
-  </aside>
-  <main class="content">
-    <div id="getting-started-content" class="content-section">
-      <h1>Getting started</h1>
-      <div class="card-container">
-        {gettingStartedCards.map((card) => (
-          <div class="card" data-content={card.id} set:key={card.id}>
-            <h3>{card.title}</h3>
-            <p>{card.description}</p>
-          </div>
-        ))}
+  <header class="page-header">
+    <div class="brand">RevoSurge</div>
+    <div class="tag">Web Tracker SDK</div>
+  </header>
+  <main class="layout">
+    <section class="hero">
+      <h1>Web Tracker SDK 集成简表</h1>
+      <p>按顺序完成三步：引入脚本 → 初始化 → 上报事件。</p>
+      <div class="hero-actions">
+        <a class="cta" href="#load-script">引入脚本</a>
+        <a class="cta" href="#init-sdk">初始化</a>
+        <a class="cta" href="#events">上报事件</a>
       </div>
-      <div class="navigation-container">
-        <div class="next-section-button" data-next="get-sdk">
-          <div>
-            <div class="nav-label">NEXT</div>
-          </div>
-          <span class="material-symbols-outlined">arrow_forward_ios</span>
-        </div>
-      </div>
-    </div>
+    </section>
 
-    <div id="embed-sdk-content" class="content-section" style="display: none;">
-      <h2>Embed &amp; Configure the SDK</h2>
-      <p>Follow these steps to integrate the Web Tracker SDK into your website.</p>
+    <section class="block" id="purpose">
+      <h2>SDK 作用</h2>
+      <p>专为 Web 端设计，帮你快速拿到真实转化链路。</p>
+      <ul class="simple">
+        <li>自动采集基础事件（浏览、点击、滚动），减少手写埋点。</li>
+        <li>内置 UTM / referrer 提取和唯一访客识别，定位来源和首访。</li>
+      </ul>
+    </section>
 
-      <h3>1. Include the SDK Script</h3>
-      <p>
-        First, you need to include the Web Tracker SDK script in your website's HTML.
-        Place the following script tag in the `</head>` section of your HTML file. This will load the SDK and make it available for use.
-      </p>
+    <section class="block" id="load-script">
+      <h2>1. 引入脚本</h2>
+      <p>在页面 <code>&lt;head&gt;</code> 添加脚本标签，确保在业务代码前加载。</p>
       <div class="code-container">
         <pre class="language-html"><code class="language-html">{INCLUDE_SDK}</code></pre>
-        <button class="copy-button">Copy</button>
+        <button class="copy-button">复制</button>
       </div>
+    </section>
 
-      <h3>2. Initialize the SDK</h3>
-      <p>
-        Next, initialize the SDK by creating a new `WebTracker` instance. You'll need to provide your unique tracker ID and other configuration options.
-        This should be done in a script tag in the `<body>` of your HTML, after the SDK script has been included.
-      </p>
+    <section class="block" id="init-sdk">
+      <h2>2. 初始化</h2>
+      <p>脚本加载后立即创建实例，填入后台分配的 <code>trackerId</code>，如需区分环境可补充 <code>env</code>。</p>
       <div class="code-container">
         <pre class="language-js"><code class="language-js">{CONSTRUCTOR}</code></pre>
-        <button class="copy-button">Copy</button>
+        <button class="copy-button">复制</button>
       </div>
       <div class="params-table">
-        <h4>Parameters</h4>
-        <div class="params-table-row params-table-head">
-          <span class="params-heading">Name</span>
-          <span class="params-heading">Type</span>
-          <span class="params-heading">Description</span>
+        <div class="params-head">
+          <span>参数</span>
+          <span>类型</span>
+          <span>必填</span>
+          <span>说明</span>
         </div>
         {constructorParams.map((param) => (
-          <div class="params-table-row" set:key={param.name}>
-            {param.name}
-            <span class="param-type">{param.type}</span>
-            <p set:html={param.description}></p>
+          <div class="params-row" set:key={param.name}>
+            <span>{param.name}</span>
+            <span>{param.type}</span>
+            <span class={param.required ? 'param-required' : 'param-optional'}>{param.required ? '必填' : '可选'}</span>
+            <span>{param.description}</span>
           </div>
         ))}
       </div>
+    </section>
 
-      <div class="navigation-container">
-        <div class="prev-section-button" data-prev="get-sdk">
-          <span class="material-symbols-outlined">arrow_back_ios</span>
-          <div>
-            <div class="nav-label">PREVIOUS</div>
-          </div>
-        </div>
-        <div class="next-section-button" data-next="trigger-events">
-          <div>
-            <div class="nav-label">NEXT</div>
-            <div class="nav-title">Trigger tracking events</div>
-          </div>
-          <span class="material-symbols-outlined">arrow_forward_ios</span>
-        </div>
-      </div>
-    </div>
-            <div id="trigger-events-content" class="content-section" style="display: none;">
-                <h2>Trigger tracking events</h2>
-                <p class="events-intro">The SDK captures a baseline of behavior automatically and gives you hooks for the key business milestones you want to measure.</p>
-
-                <h3>Automatic events tracking</h3>
-                <p class="events-intro">With <code>autoTrack</code> enabled, these events fire without additional code and provide a complete journey timeline.</p>
-                <div class="events-grid">
-                    {autoTrackedEvents.map((event) => (
-                        <div class="event-card" set:key={event.name}>
-                            <span class="event-pill">{event.name}</span>
-                            <p set:html={event.description}></p>
-                        </div>
-                    ))}
+    <section class="block" id="events">
+      <h2>3. 事件上报接口</h2>
+      <ol class="event-list">
+        {eventFlow.map((event) => (
+          <li class="event-card" set:key={event.id}>
+            <div class="event-header">
+              <span class="event-order">{event.order}</span>
+              <div>
+                <span class="event-pill">{event.label}</span>
+                <h3>{event.title}</h3>
+              </div>
+            </div>
+            <div class="params-table">
+              <div class="params-head">
+                <span>参数</span>
+                <span>类型</span>
+                <span>必填</span>
+                <span>说明</span>
+              </div>
+              {event.params.map((param) => (
+                <div class="params-row" set:key={param.name}>
+                  <span>{param.name}</span>
+                  <span>{param.type}</span>
+                  <span class={param.required ? 'param-required' : 'param-optional'}>
+                    {param.required ? '必填' : '可选'}
+                  </span>
+                  <span>{param.description}</span>
                 </div>
+              ))}
+            </div>
+            <div class="code-container">
+              <pre class="language-js"><code class="language-js">{event.snippet}</code></pre>
+              <button class="copy-button">复制</button>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
 
-                <div class="manual-events">
-                    <h3>Manual events tracking</h3>
-                    <p>There are also predefined user events to log business-specific milestones:</p>
-                    {manualTrackedEvents.map((event) => (
-                        <section class="manual-event" set:key={event.id}>
-                            <p>Event <span class="event-pill">{event.id}</span></p>
-                            <div class="params-table">
-                              <h4>{event.label}</h4>
-                              <div class="params-table-row params-table-head cols-4">
-                                <span class="params-heading">Parameter</span>
-                                <span class="params-heading">Type</span>
-                                <span class="params-heading">Required</span>
-                                <span class="params-heading">Description</span>
-                              </div>
-                              {event.params.map((param) => (
-                                  <div class="params-table-row cols-4" set:key={param.name}>
-                                    <span>{param.name}</span>
-                                    <span class="param-type">{param.type}</span>
-                                    <span class:list={{ 'param-required': true, optional: !param.required }}>
-                                              {param.required ? 'Required' : 'Optional'}
-                                          </span>
-                                    <p set:html={param.description}></p>
-                                  </div>
-                              ))}
-                            </div>
-                            <div class="code-container">
-                                <pre class="language-js"><code class="language-js">{event.snippet}</code></pre>
-                                <button class="copy-button">Copy</button>
-                            </div>
-
-                        </section>
-                    ))}
-                    <p>In addition, SDK provides a custom event tracker method for self-defined events.</p>
-                    <p>Event <span class="event-pill">CUSTOM_EVENT</span></p>
-                    <div class="code-container">
-                      <pre class="language-js"><code class="language-js">{TRACK_CUSTOM}</code></pre>
-                      <button class="copy-button">Copy</button>
-                    </div>
-                </div>
-
-                <div class="navigation-container">
-        <div class="prev-section-button" data-prev="embed-sdk">
-          <span class="material-symbols-outlined">arrow_back_ios</span>
-          <div>
-            <div class="nav-label">PREVIOUS</div>
-            <div class="nav-title">Embed & Configure the SDK</div>
-          </div>
-        </div>
-        <div class="next-section-button" data-next="functional-verification">
-          <div>
-            <div class="nav-label">NEXT</div>
-            <div class="nav-title">Functional Verification</div>
-          </div>
-          <span class="material-symbols-outlined">arrow_forward_ios</span>
-        </div>
-      </div>
-    </div>
-    <div id="functional-verification-content" class="content-section" style="display: none;">
-  <h2>Functional Verification</h2>
-  <p>Run these checks in your browser to confirm the SDK is embedded and emitting events:</p>
-  <div class="verification-checklist">
-    <div class="verification-step">
-      <span class="step-index">1</span>
-      <div>
-        <h3>Confirm the SDK bundle loads</h3>
-        <p>Open your page, launch DevTools (<code>Cmd+Option+I</code> / <code>Ctrl+Shift+I</code>), and verify <code>web-tracker-1.2.0.js</code> renders under the Sources panel without 404s.</p>
-      </div>
-    </div>
-    <div class="verification-step">
-      <span class="step-index">2</span>
-      <div>
-        <h3>Check initial auto tracking</h3>
-        <p>With DevTools open, switch to the Network tab, reload, and filter for <code>/collect</code>. A successful <span class="event-pill">page_view</span> POST returning 2xx confirms automatic bootstrapping.</p>
-      </div>
-    </div>
-    <div class="verification-step">
-      <span class="step-index">3</span>
-      <div>
-        <h3>Exercise built-in events</h3>
-        <p>Click around, scroll past mid-page, or submit a form and watch follow-up requests report the matching <code>event_type</code> values (e.g. <code>click</code>, <code>scroll</code>, <code>form_submit</code>).</p>
-      </div>
-    </div>
-    <div class="verification-step">
-      <span class="step-index">4</span>
-      <div>
-        <h3>Validate manual triggers</h3>
-        <p>Run any manual snippets you integrated and confirm they emit additional <code>/collect</code> POSTs without console errors or blocked network calls.</p>
-      </div>
-    </div>
-  </div>
-      <div class="navigation-container">
-        <div class="prev-section-button" data-prev="trigger-events">
-          <span class="material-symbols-outlined">arrow_back_ios</span>
-          <div>
-            <div class="nav-label">PREVIOUS</div>
-            <div class="nav-title">Trigger tracking events</div>
-          </div>
-        </div>
-        <div class="next-section-button" data-next="getting-started">
-          <div>
-            <div class="nav-label">BACK TO START</div>
-            <div class="nav-title">Getting started</div>
-          </div>
-          <span class="material-symbols-outlined">arrow_forward_ios</span>
-        </div>
-      </div>
-    </div>
   </main>
-</div>
 
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const sidebarLinks = document.querySelectorAll('.sidebar a');
-    const contentSections = document.querySelectorAll('.content-section');
-    const cards = document.querySelectorAll('.card');
-    const gettingStartedLink = document.querySelector('a[data-content="getting-started"]');
-    const prevSectionButtons = document.querySelectorAll('.prev-section-button');
-    const nextSectionButtons = document.querySelectorAll('.next-section-button');
-    const copyButtons = document.querySelectorAll('.copy-button');
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.Prism) {
+        window.Prism.highlightAll();
+      }
 
-    if (window.Prism) {
-      window.Prism.highlightAll();
-    }
-
-    copyButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const codeContainer = button.parentElement;
-        const code = codeContainer.querySelector('code').innerText;
-        navigator.clipboard.writeText(code).then(() => {
-          button.innerText = 'Copied!';
-          setTimeout(() => {
-            button.innerText = 'Copy';
-          }, 2000);
+      const copyButtons = document.querySelectorAll('.copy-button');
+      copyButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const code = button.parentElement.querySelector('code').innerText;
+          navigator.clipboard.writeText(code).then(() => {
+            button.innerText = '已复制';
+            setTimeout(() => {
+              button.innerText = '复制';
+            }, 1600);
+          });
         });
       });
     });
-
-    function showContent(contentId) {
-      // Hide all content sections
-      contentSections.forEach(section => {
-        section.style.display = 'none';
-      });
-
-      // Show the active section
-      const activeSection = document.getElementById(contentId + '-content');
-      if (activeSection) {
-        activeSection.style.display = 'block';
-      }
-
-      // Update sidebar active state
-      sidebarLinks.forEach(link => {
-        link.classList.remove('active');
-      });
-
-      const activeLink = document.querySelector(`a[data-content="${contentId}"]`);
-      if (activeLink) {
-        activeLink.classList.add('active');
-        // If the active link is a sub-item, also activate the parent "Getting started"
-        if (activeLink.parentElement.parentElement.previousElementSibling && activeLink.parentElement.parentElement.previousElementSibling.dataset.content === 'getting-started') {
-          gettingStartedLink.classList.add('active');
-        }
-      }
-    }
-
-    sidebarLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const contentId = link.dataset.content;
-        if (contentId) {
-          showContent(contentId);
-        }
-      });
-    });
-
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const contentId = card.dataset.content;
-        if (contentId) {
-          showContent(contentId);
-        }
-      });
-    });
-
-    prevSectionButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const prevContentId = button.dataset.prev;
-        if (prevContentId) {
-          showContent(prevContentId);
-        }
-      });
-    });
-
-    nextSectionButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const nextContentId = button.dataset.next;
-        if (nextContentId) {
-          showContent(nextContentId);
-        }
-      });
-    });
-
-    // Show 'getting-started' content by default
-    showContent('getting-started');
-  });
-</script>
+  </script>
 </body>
 </html>
