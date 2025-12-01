@@ -58,18 +58,6 @@ const constructorParams = [
 const eventFlow = [
   {
     order: 1,
-    id: 'download_click',
-    label: 'DOWNLOAD_CLICK',
-    title: '点击下载',
-    description: '标记用户在页面上触发的客户端下载或跳转行为。',
-    snippet: TRACK_DOWNLOAD_CLICK,
-    params: [
-      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID。' },
-      { name: 'store_type', type: 'string', required: false, description: '可选，下载渠道。例如 App Store、Play Store。' },
-    ],
-  },
-  {
-    order: 2,
     id: 'register',
     label: 'REGISTER',
     title: '注册',
@@ -81,18 +69,7 @@ const eventFlow = [
     ],
   },
   {
-    order: 3,
-    id: 'login',
-    label: 'LOGIN',
-    title: '登录',
-    description: '确认用户回访并继续同一账号的会话。',
-    snippet: TRACK_LOGIN,
-    params: [
-      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID，作为第一个参数传入。' },
-    ],
-  },
-  {
-    order: 4,
+    order: 2,
     id: 'deposit',
     label: 'DEPOSIT',
     title: '充值/入金',
@@ -106,7 +83,7 @@ const eventFlow = [
     ],
   },
   {
-    order: 5,
+    order: 3,
     id: 'enter_game',
     label: 'ENTER_GAME',
     title: '进入游戏/产品核心环节',
@@ -118,6 +95,29 @@ const eventFlow = [
       { name: 'game_name', type: 'string', required: true, description: '游戏名称或展示标题。' },
       { name: 'game_id', type: 'string', required: true, description: '游戏或核心功能的内部 ID。' },
       { name: 'game_provider', type: 'string', required: true, description: '提供方或合作方名称。' },
+    ],
+  },
+  {
+    order: 4,
+    id: 'login',
+    label: 'LOGIN',
+    title: '登录',
+    description: '确认用户回访并继续同一账号的会话。',
+    snippet: TRACK_LOGIN,
+    params: [
+      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID，作为第一个参数传入。' },
+    ],
+  },
+  {
+    order: 5,
+    id: 'download_click',
+    label: 'DOWNLOAD_CLICK',
+    title: '点击下载',
+    description: '标记用户在页面上触发的客户端下载或跳转行为。',
+    snippet: TRACK_DOWNLOAD_CLICK,
+    params: [
+      { name: 'user_id', type: 'string', required: true, description: '用户唯一 ID。' },
+      { name: 'store_type', type: 'string', required: false, description: '可选，下载渠道。例如 App Store、Play Store。' },
     ],
   },
   {
