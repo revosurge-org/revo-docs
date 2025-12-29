@@ -47,6 +47,18 @@ tracker.trackCustomEvent('custom_event_type', {
 });
 `;
 
+const GET_CLICKID = `
+const clickid = tracker.getClickid();
+if (clickid) {
+  console.log('Click ID:', clickid);
+}
+`;
+
+const GET_VERSION = `
+const version = tracker.getVersion();
+console.log('SDK Version:', version);
+`;
+
 const BASE_URL = import.meta.env.BASE_URL;
 const FAVICON_URL = `${BASE_URL}favicon.svg`;
 
@@ -421,6 +433,7 @@ const eventFlow = [
         <a class="cta" href="#load-script">引入脚本</a>
         <a class="cta" href="#init-sdk">初始化</a>
         <a class="cta" href="#events">上报事件</a>
+        <a class="cta" href="#utilities">工具方法</a>
       </div>
     </section>
 
@@ -503,6 +516,69 @@ const eventFlow = [
             </div>
           </li>
         ))}
+      </ol>
+    </section>
+
+    <section class="block" id="utilities">
+      <h2>4. 工具方法</h2>
+      <p>SDK 提供了一些实用的工具方法，用于获取存储的数据和版本信息。</p>
+      <ol class="event-list">
+        <li class="event-card">
+          <div class="event-header">
+            <span class="event-order">1</span>
+            <div>
+              <span class="event-pill">getClickid()</span>
+              <h3>获取点击ID</h3>
+            </div>
+          </div>
+          <p>从存储的 UTM 数据中获取 <code>clickid</code> 值。如果 URL 中包含 <code>?clickid=xxx</code> 参数，SDK 会自动提取并存储。</p>
+          <div class="params-table">
+            <div class="params-head">
+              <span>返回值</span>
+              <span>类型</span>
+              <span>说明</span>
+              <span>示例</span>
+            </div>
+            <div class="params-row">
+              <span>clickid</span>
+              <span>string | null</span>
+              <span>找到则返回 clickid 字符串，否则返回 null</span>
+              <span>"abc123" 或 null</span>
+            </div>
+          </div>
+          <div class="code-container">
+            <pre class="language-js"><code class="language-js">{GET_CLICKID}</code></pre>
+            <button class="copy-button">复制</button>
+          </div>
+        </li>
+        <li class="event-card">
+          <div class="event-header">
+            <span class="event-order">2</span>
+            <div>
+              <span class="event-pill">getVersion()</span>
+              <h3>获取SDK版本</h3>
+            </div>
+          </div>
+          <p>返回当前 SDK 的版本号字符串。</p>
+          <div class="params-table">
+            <div class="params-head">
+              <span>返回值</span>
+              <span>类型</span>
+              <span>说明</span>
+              <span>示例</span>
+            </div>
+            <div class="params-row">
+              <span>version</span>
+              <span>string</span>
+              <span>SDK 版本号</span>
+              <span>"1.0.2"</span>
+            </div>
+          </div>
+          <div class="code-container">
+            <pre class="language-js"><code class="language-js">{GET_VERSION}</code></pre>
+            <button class="copy-button">复制</button>
+          </div>
+        </li>
       </ol>
     </section>
 
