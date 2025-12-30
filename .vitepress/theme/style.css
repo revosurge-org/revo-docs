@@ -137,3 +137,14 @@
   --docsearch-primary-color: var(--vp-c-brand-1) !important;
 }
 
+/* Make the search trigger wider on desktop for easier access */
+.VPNavBar .DocSearch-Button {
+  min-width: 300px;
+}
+
+@media (max-width: 768px) {
+  .VPNavBar .DocSearch-Button {
+    min-width: auto;
+  }
+}
+

@@ -1,25 +1,23 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
-
 hero:
-  name: "RevoSurge Docs"
-  text: "RevoSurge Docs"
-  tagline: My great project tagline
+  name: "RevoSurge SDK"
+  text: "for web tracker"
+  tagline: Load the SDK, initialize, and start sending events with clear parameters.
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Get started
+      link: /install
     - theme: alt
-      text: API Examples
-      link: /api-examples
-
+      text: Event methods
+      link: /methods
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Built for web journeys
+    details: Designed for the web to quickly capture the real conversion path.
+  - title: Auto-tracked basics
+    details: Automatically captures views, clicks, and scrolls to reduce manual tagging.
+  - title: Easy setup
+    details: Add the script tag, initialize with your tracker ID, and you are ready.
+  - title: Events and utilities
+    details: Register, deposit, enter game, login, download click, custom events.
 ---
-

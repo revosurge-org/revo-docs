@@ -2,29 +2,23 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "RevoSurge Docs",
-  description: "RevoSurge Docs",
+  title: 'RevoSurge Web Tracker',
+  description: 'Integration guide for the RevoSurge Web Tracker SDK',
+  cleanUrls: true,
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Install', link: '/install' },
+      { text: 'Methods', link: '/methods' }
     ],
-
     sidebar: [
       {
-        text: 'Examples',
+        text: 'Integration Guide',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: 'Install', link: '/install' },
+          { text: 'Methods', link: '/methods' }
         ]
       }
     ],
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ],
-
     search: {
       provider: 'local'
     }
