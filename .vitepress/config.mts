@@ -3,8 +3,8 @@ import markdownItKatex from 'markdown-it-katex'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'RevoSurge Web Tracker',
-  description: 'Integration guide for the RevoSurge Web Tracker SDK',
+  title: 'RevoSurge Docs',
+  description: 'Documentation for the RevoSurge platform',
   cleanUrls: true,
   markdown: {
     config: (md) => {
@@ -13,16 +13,61 @@ export default defineConfig({
   },
   themeConfig: {
     nav: [
-      { text: 'Install', link: '/install' },
-      { text: 'Methods', link: '/methods' }
+      { text: 'Install', link: '/tracking/web-tracker-install' },
+      { text: 'Methods', link: '/tracking/methods' }
     ],
     sidebar: [
       {
-        text: 'Integration Guide',
+        text: 'RevoSurge',
+        link: '/revosurge/overview',
+        collapsed: false,
         items: [
-          { text: 'Install', link: '/install' },
-          { text: 'Methods', link: '/methods' },
-          { text: 'RevoSurge', link: '/revosurge' }
+          { text: 'Overview', link: '/revosurge/overview' },
+        ]
+      },
+      {
+        text: 'Growth',
+        link: '/growth/getting-started',
+        collapsed: false,
+        items: [
+          { text: 'Getting started', link: '/growth/getting-started' },
+          { text: 'Creating your account', link: '/growth/account' },
+          { text: 'Funding & wallet', link: '/growth/funding-wallet' }
+        ]
+      },
+      {
+        text: 'Tracking',
+        link: '/tracking/overview',
+        collapsed: false,
+        items: [
+          { text: 'Overview', link: '/tracking/overview' },
+          { text: 'Events', link: '/tracking/events' },
+          { text: 'Web tracker install', link: '/tracking/web-tracker-install' },
+          { text: 'Methods', link: '/tracking/methods' }
+        ]
+      },
+      {
+        text: 'AdWave',
+        link: '/adwave/guided-campaign-setup',
+        collapsed: false,
+        items: [
+          { text: 'Guided campaign setup', link: '/adwave/guided-campaign-setup' }
+        ]
+      },
+      {
+        text: 'Audience',
+        link: '/audience/segments',
+        collapsed: false,
+        items: [
+          { text: 'Segments', link: '/audience/segments' }
+        ]
+      },
+      {
+        text: 'API',
+        link: '/api/quickstart',
+        collapsed: false,
+        items: [
+          { text: 'API quickstart', link: '/api/quickstart' }
         ]
       }
     ],

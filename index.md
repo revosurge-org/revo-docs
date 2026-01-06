@@ -1,23 +1,23 @@
 ---
 layout: home
 hero:
-  name: "RevoSurge SDK"
-  text: "for web tracker"
-  tagline: Load the SDK, initialize, and start sending events with clear parameters.
+  name: "RevoSurge"
+  text: "Platform Docs"
+  tagline: A unified platform for running performance campaigns and measuring outcomes with first-party data.
   actions:
     - theme: brand
       text: Get started
-      link: /install
+      link: /growth/getting-started
     - theme: alt
-      text: Event methods
-      link: /methods
+      text: Overview
+      link: /revosurge/overview
 features:
-  - title: Built for web journeys
-    details: Designed for the web to quickly capture the real conversion path.
-  - title: Auto-tracked basics
-    details: Automatically captures views, clicks, and scrolls to reduce manual tagging.
-  - title: Easy setup
-    details: Add the script tag, initialize with your tracker ID, and you are ready.
-  - title: Events and utilities
-    details: Register, deposit, enter game, login, download click, custom events.
+  - title: Performance Campaigns
+    details: Launch and optimize campaigns in AdWave with guided setup workflows and real-time validation.
+  - title: First-Party Tracking
+    details: Install trackers, validate events, and measure outcomes using DataPulse analytics.
+  - title: Account Management
+    details: Manage your account, wallet, team members, and permissions all in one place.
+  - title: API Integration
+    details: Automate campaign management, reporting, and audience segmentation with comprehensive APIs.
 ---
