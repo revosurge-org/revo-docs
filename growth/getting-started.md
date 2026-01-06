@@ -28,7 +28,7 @@ Install the tracker on your site/app and validate:
 - Tracker status = Active / In-use
 - Key event status = Live
 
-→ See: [**Tracking → Web tracker install** and **Tracking → Events**](/tracking/events.md)
+→ See: [**Tracking → Web tracker install**](/tracking/web-tracker-install) and [**Tracking → Events**](/tracking/events.md)
 
 ## Step 5 — Launch a campaign in AdWave
 Use the guided flow to create Campaign + Ad Group + Ad in one workflow.
