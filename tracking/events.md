@@ -1,11 +1,11 @@
 ---
-title: Events and status
+title: User Events and Activities
 sidebar_label: Events
 ---
 
-# Events and status
+# User Events and Activities
 
-Events are business actions that RevoSurge tracks and aggregates.  
+User Events are business actions that RevoSurge tracks and aggregates.  
 They are used for analytics and (when supported) optimization targets in AdWave.
 
 ## Common event examples

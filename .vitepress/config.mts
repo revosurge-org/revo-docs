@@ -41,7 +41,7 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Overview', link: '/tracking/overview' },
-          { text: 'Events', link: '/tracking/events' },
+          { text: 'Server Events', link: '/tracking/events' },
           { text: 'Web tracker install', link: '/tracking/web-tracker-install' },
           { text: 'Methods', link: '/tracking/methods' }
         ]
@@ -67,7 +67,9 @@ export default defineConfig({
         link: '/api/quickstart',
         collapsed: false,
         items: [
-          { text: 'API quickstart', link: '/api/quickstart' }
+          { text: 'API quickstart', link: '/api/quickstart' },
+          { text: 'API Key', link: '/api/api-key' },
+          { text: 'Server Events API', link: '/api/s2s-events' }
         ]
       }
     ],
