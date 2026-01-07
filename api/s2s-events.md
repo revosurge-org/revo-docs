@@ -48,6 +48,8 @@ The request body accepts a JSON object with the following fields:
 | `ip_address` | String | Yes | IP address of the user (IPv4/IPv6). |
 | `user_agent` | String | No | User agent string of the browser or device. |
 | `event_name` | String | Yes | Name of the event (e.g., "login", "deposit"). |
+| `game_type` | String | Yes | Type of the game (e.g., "slot", "casino"). |
+| `game_channel` | String | Yes | Channel where the game is provided (e.g., "EA", "GGP"). |
 | `transaction_id` | String | *Yes* | Unique ID for the transaction (e.g., purchase ID). |
 | `timestamp` | Integer | Yes | Unix timestamp (in seconds) when the event occurred. |
 | `amount` | Float | *Yes* | Monetary value of the transaction (e.g., deposit amount). |
@@ -151,6 +153,7 @@ The request body accepts a JSON object of array type. The array item is referenc
   "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "bet",
   "game_type": "<<THE GAME TYPE>>",
+  "game_channel": "<<THE GAME CHANNEL>>",
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
@@ -174,6 +177,7 @@ The request body accepts a JSON object of array type. The array item is referenc
   "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "win | loss",
   "game_type": "<<THE GAME TYPE>>",
+  "game_channel": "<<THE GAME CHANNEL>>",
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
