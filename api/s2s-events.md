@@ -163,7 +163,6 @@ The request body accepts a JSON object of array type. The array item is referenc
 
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
-  "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "bet",
   "game_type": "<<THE GAME TYPE>>",
   "game_provider": "<<THE GAME PROVIDER>>",
@@ -186,7 +185,6 @@ The request body accepts a JSON object of array type. The array item is referenc
 
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
-  "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "win | loss",
   "game_type": "<<THE GAME TYPE>>",
   "game_provider": "<<THE GAME PROVIDER>>",
@@ -212,7 +210,6 @@ The request body accepts a JSON object of array type. The array item is referenc
   "client_user_id": "<<THE UNIQUE USER ID>>",
   "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "withdraw",
-  "game_type": "<<THE GAME TYPE>>",
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
