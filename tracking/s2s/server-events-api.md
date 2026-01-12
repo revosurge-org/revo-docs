@@ -194,7 +194,6 @@ The request body accepts a JSON object of array type. The array item is referenc
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
   "event_name": "withdraw",
-  "game_type": "<<THE GAME TYPE>>",
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
