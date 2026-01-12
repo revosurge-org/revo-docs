@@ -1,9 +1,9 @@
 ---
-title: Installing the web tracker
-sidebar_label: Web tracker install
+title: Instal the Web Tracker
+sidebar_label: Instal the Web Tracker
 ---
 
-# Installing the web tracker
+# Instal the Web Tracker
 
 **Audience:** Developers, tracking engineers, BI/analytics owners
 

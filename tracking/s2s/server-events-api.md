@@ -17,7 +17,7 @@ This API is designed for high-throughput scenarios and requires strict authentic
 
 | Environment | Base URL |
 |-------------|----------|
-| Production  | https://datapulse-api.revosurge.com/ |
+| Production  | `https://datapulse-api.revosurge.com/` |
 
 ## Authentication
  
@@ -62,21 +62,19 @@ The request body accepts a JSON object with the following fields:
 #### 1.2 Example Request (curl)
 
 ```bash
-
-    curl -X POST "https://<<our-url>>/v2/s2s/event" 
-       -H "Content-Type: application/json" 
-       -H "X-API-KEY: dp_test_key_123"
-       -d '{
-            "client_user_id": "user_001", 
-            "click_id": "clk_998877",
-            "ip_address": "203.0.113.1", 
-            "event_name":"deposit",      
-            "transaction_id": "tx_554433",   
-            "timestamp": 1702963200,   
-            "amount": 50.00,          
-            "currency": "USD"  
-          }'
-
+curl -X POST "https://<<our-url>>/v2/s2s/event" 
+    -H "Content-Type: application/json" 
+    -H "X-API-KEY: dp_test_key_123"
+    -d '{
+        "client_user_id": "user_001", 
+        "click_id": "clk_998877",
+        "ip_address": "203.0.113.1", 
+        "event_name":"deposit",      
+        "transaction_id": "tx_554433",   
+        "timestamp": 1702963200,   
+        "amount": 50.00,          
+        "currency": "USD"  
+        }'
 ```
 
 #### 2. Batch Ingest Event
@@ -111,7 +109,6 @@ The request body accepts a JSON object of array type. The array item is referenc
 #### User Register
 
 ``` JSON
-
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
   "click_id": "<<THE UNIQUE CLICK ID>>",
@@ -120,13 +117,11 @@ The request body accepts a JSON object of array type. The array item is referenc
   "ip_address": "<<THE END USER IP>>",
   "user_agent": "<<THE USER AGENT STRING>>"
 }
-
 ```
 
 #### User Login
 
 ``` JSON
-
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
   "click_id": "<<THE UNIQUE CLICK ID>>",
@@ -141,7 +136,6 @@ The request body accepts a JSON object of array type. The array item is referenc
 #### User Deposit
 
 ``` JSON
-
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
   "click_id": "<<THE UNIQUE CLICK ID>>",
@@ -153,17 +147,13 @@ The request body accepts a JSON object of array type. The array item is referenc
   "ip_address": "<<THE END USER IP>>",
   "is_crypto": true | false
 }
-
-
 ```
 
 #### User Bet
 
 ``` JSON
-
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
-  "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "bet",
   "game_type": "<<THE GAME TYPE>>",
   "game_provider": "<<THE GAME PROVIDER>>",
@@ -176,17 +166,13 @@ The request body accepts a JSON object of array type. The array item is referenc
   "bet_result": "win | loss",
   "bet_result_amount": 1.00
 }
-
-
 ```
 
 #### User Win/Loss
 
 ``` JSON
-
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
-  "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "win | loss",
   "game_type": "<<THE GAME TYPE>>",
   "game_provider": "<<THE GAME PROVIDER>>",
@@ -197,8 +183,6 @@ The request body accepts a JSON object of array type. The array item is referenc
   "timestamp": UTC milliseconds,
   "is_crypto": true | false
 }
-
-
 ```
 
 *PS: Could also be sent within `bet` event using `bet_result` and `bet_result_amount` field.*
@@ -207,10 +191,8 @@ The request body accepts a JSON object of array type. The array item is referenc
 #### User Withdraw
 
 ``` JSON
-
 {
   "client_user_id": "<<THE UNIQUE USER ID>>",
-  "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "withdraw",
   "game_type": "<<THE GAME TYPE>>",
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
@@ -220,7 +202,5 @@ The request body accepts a JSON object of array type. The array item is referenc
   "ip_address": "<<THE END USER IP>>",
   "is_crypto": true | false
 }
-
-
 ```
 

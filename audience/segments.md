@@ -1,31 +1,23 @@
----
-title: Working with audience segments
-sidebar_label: Audience segments
----
+# Audience segments
 
-# Working with audience segments
+**For:** UA managers, Growth teams, Campaign operators
 
-Audience Segments help you target specific user groups more precisely.
+Audience Segments let you define groups of users based on behavior signals, then use those segments for targeting campaigns.
 
-## Audience Segment dashboard
-A central hub to manage segments:
-- Name
-- In-use status (active/inactive)
-- Estimated size (updated daily)
-- Creation date
-- Source (User-defined / Algorithmic)
-- Actions: Edit, Delete, Use, View details
+## In this article
+- What an audience segment is
+- Where segments are used
+- Create a segment (based on current UI)
+- Segment details & fields
+- Notes and limitations (current version)
 
-## Segment builder (manual)
-- Build rules using attributes (demographic / behavioral / contextual)
-- Support AND / OR logic
-- Live size preview
-- Name + optional description required
+## What is an audience segment?
+An **Audience Segment** is a saved definition that groups users who match specific conditions (e.g., users who clicked an ad, visited a site, etc.).
 
-## Algorithmic segments (recommended)
-The platform can recommend segments (e.g., “High-value users”, “Recent visitors”) based on 1st/2nd party data and behavior.
+Segments are typically used to:
+- Retarget engaged users
+- Exclude low-quality users
+- Create interest-based or behavior-based audiences
 
-## Use segments in AdWave
-When setting up AdWave targeting:
-- Select one or more audience labels/segments (optional)
-- Multiple labels produce an **intersection** audience
+## Where segments are used
+Segments can be used in campaign targeting (Step 3 in [**AdWave → Guided campaign setup**](/adwave/guided-campaign-setup.md)) when the UI allows selecting audience labels/segments.

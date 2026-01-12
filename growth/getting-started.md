@@ -1,36 +1,65 @@
----
-title: Getting started with RevoSurge
-sidebar_label: Getting started
----
+# Getting started
 
-# Getting started with RevoSurge
+**For:** Account owners, Admins, Operations, UA managers, Finance
 
-This guide walks you through the minimum steps to launch your first AdWave campaign with measurable results.
+## In this article
+- Account structure & roles
+- Funding & billing basics
+- Product setup (high-level)
+- Launching your first pilot
+- What to measure in the first 72 hours
 
-## Step 1 — Create your account
-- Provide legal company information
-- Accept the online agreement (required for account to become **Ready**)
-- Add teammates and assign roles
+## 1) Account structure & roles
+A RevoSurge account represents your business on the platform. It includes:
+- Company identity (legal name, region)
+- Users, roles, and permissions
+- Billing and wallet balance
+- Products (websites/apps)
+- Campaigns and reporting
 
-→ See: [**Growth → Creating your RevoSurge account**](/growth/account.md)
+**Common roles (example):**
+- **Admin / Master:** Full access, user management, billing visibility  
+- **Ad Executive:** Campaign and creative management  
+- **Data Analyst:** Reporting and measurement (where available)  
+- **Finance:** Balance, invoices, transaction records  
 
-## Step 2 — Fund your shared wallet
-AdWave and DataPulse share the same account-level wallet.
+> Tip: Keep at least one Admin/Master user active to avoid access lockouts.
 
-→ See: [**Growth → Funding your shared wallet**](/growth/funding-wallet.md)
+## 2) Funding & wallet basics
+RevoSurge uses an **account-level shared wallet**.  
+Before running campaigns, confirm:
+- Wallet has enough balance for planned spend
+- Your finance team understands deposit flow and transaction records
 
-## Step 3 — Create a Product
-A **Product** is the destination you promote (a website domain or an app).  
-Each Product has **one tracker data source**.
+What you should be able to see:
+- Current balance (wallet)
+- Transaction history / deposit records
+- Campaign spend totals (in AdWave)
 
-## Step 4 — Install and verify tracking
-Install the tracker on your site/app and validate:
-- Tracker status = Active / In-use
-- Key event status = Live
+## 3) Product setup (high-level)
+A **Product** is the site/app you promote.  
+At minimum you need:
+- A product selected in AdWave
+- Tracking readiness (see [**Tracking → Overview**](/tracking/overview.md))
 
-→ See: [**Tracking → Web tracker install**](/tracking/web-tracker-install) and [**Tracking → Events**](/tracking/events.md)
+## 4) Launching your first pilot (recommended checklist)
+Before going live:
+- ✅ Product selected  
+- ✅ Target event selected (must be available/live depending on current rules)  
+- ✅ Creative uploaded & reviewed  
+- ✅ Geo targeting set  
+- ✅ Daily budget & CPM/bid set  
+- ✅ Monitoring plan agreed (who reviews spend, performance, quality)
 
-## Step 5 — Launch a campaign in AdWave
-Use the guided flow to create Campaign + Ad Group + Ad in one workflow.
+## 5) What to measure in the first 72 hours
+**Client-side effectiveness (advertiser view):**
+- Impressions, Clicks, CTR
+- Landing sessions / visits (if measured)
+- Conversions (if available)
+- Spend, CPM, CPC, CPA (if applicable)
 
-→ See: [**AdWave → Guided campaign setup**](/adwave/guided-campaign-setup.md)
+**Ops & unit economics (platform view):**
+- Spend distribution by SSP / publisher
+- Win rate, clearing eCPM distribution
+- Media cost vs client billed spend (markup realization)
+- Inventory quality signals (e.g., “high imps / no clicks” outliers)

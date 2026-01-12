@@ -1,45 +1,26 @@
----
-title: RevoSurge API quickstart
-sidebar_label: API quickstart
----
+# API Quickstart
 
-# RevoSurge API quickstart
+**For:** Developers, Technical integrators, BI engineers
 
-**Audience:** Engineers, technical integrators, BI teams
+RevoSurge APIs let you automate workflows and integrate reporting and events into your own systems.
 
-## What you can do with the APIs
-RevoSurge APIs enable automation for:
+## In this article
+- What you can do with the API
+- Typical integration patterns
+- Before you start (auth)
 
-### Account & product
-- Fetch account details and status
-- List products and check readiness (tracker installed, events live)
+## What you can do with the API
+Common use cases include:
+- Send **Server-to-Server (S2S) events**
+- Pull reporting aggregates (imps, clicks, spend, conversions) where available
+- Manage keys and access (depending on console capabilities)
 
-### Campaigns
-- Create/update campaigns (similar fields as guided setup)
-- Adjust budgets and bids within limits
-- Pause/resume/query campaign status
+## Typical integration patterns
+- Daily export to data warehouse for reporting
+- Server events for deposits/transactions
+- Building user segments (if/when supported by API)
 
-### Reporting
-- Pull aggregated metrics (imps, clicks, spend, registrations, target events, ROAS, etc.)
-- Filter by date range, campaign, product, geo, channel/source
-
-### Audience
-- List segments
-- Create segments (rule definitions)
-- Attach segments to campaigns
-- Get estimated sizes and basic stats
-
-> Exact endpoints depend on the current API release.
-
-## Authentication
-APIs are protected by secure authentication (e.g., API key or OAuth).
-- Keep credentials secret (never commit to git)
-- Store in env vars / secrets manager
-- Rotate keys regularly
-
-## Example integration flow
-1. Pull daily performance data into your warehouse
-2. Join with internal CRM / game data
-3. Build audiences (high-value, churn-risk, etc.)
-4. Push audiences back as segments
-5. Launch campaigns targeting those segments
+## Before you start
+You will need:
+- An API key (see **API Key**)
+- The correct base URL and endpoint reference (see **Server Events API**)

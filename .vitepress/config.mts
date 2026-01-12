@@ -13,16 +13,16 @@ export default defineConfig({
   },
   themeConfig: {
     nav: [
-      { text: 'Install', link: '/tracking/web-tracker-install' },
-      { text: 'Methods', link: '/tracking/methods' }
+      { text: 'Install', link: '/tracking/web-tracker/install' },
+      { text: 'Reference', link: '/tracking/web-tracker/reference' }
     ],
     sidebar: [
       {
         text: 'RevoSurge',
-        link: '/revosurge/overview',
+        link: '/revosurge/welcome',
         collapsed: false,
         items: [
-          { text: 'Overview', link: '/revosurge/overview' },
+          { text: 'Welcome to RevoSurge', link: '/revosurge/welcome' },
         ]
       },
       {
@@ -41,9 +41,22 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: 'Overview', link: '/tracking/overview' },
-          { text: 'Server Events', link: '/tracking/events' },
-          { text: 'Web tracker install', link: '/tracking/web-tracker-install' },
-          { text: 'Methods', link: '/tracking/methods' }
+          {
+            text: 'Web Tracker',
+            link: '/tracking/web-tracker',
+            items: [
+              { text: 'Install the Web Tracker', link: '/tracking/web-tracker/install' },
+              { text: 'Web Tracker SDK Reference', link: '/tracking/web-tracker/reference' }
+            ]
+          },
+          {
+            text: 'Server-to-server (S2S)',
+            link: '/tracking/s2s/overview',
+            items: [
+              { text: 'Overview', link: '/tracking/s2s/overview' },
+              { text: 'Server Events API', link: '/tracking/s2s/server-events-api' }
+            ]
+          },
         ]
       },
       {
@@ -51,7 +64,7 @@ export default defineConfig({
         link: '/adwave/guided-campaign-setup',
         collapsed: false,
         items: [
-          { text: 'Guided campaign setup', link: '/adwave/guided-campaign-setup' }
+          { text: 'Guided Campaign Setup', link: '/adwave/guided-campaign-setup' }
         ]
       },
       {
@@ -59,7 +72,9 @@ export default defineConfig({
         link: '/audience/segments',
         collapsed: false,
         items: [
-          { text: 'Segments', link: '/audience/segments' }
+          { text: 'Segments', link: '/audience/segments' },
+          { text: 'Segment Details', link: '/audience/segment-details' },
+          { text: 'Create Audience Segment', link: '/audience/create-audience-segment' }
         ]
       },
       {
@@ -67,9 +82,8 @@ export default defineConfig({
         link: '/api/quickstart',
         collapsed: false,
         items: [
-          { text: 'API quickstart', link: '/api/quickstart' },
-          { text: 'API Key', link: '/api/api-key' },
-          { text: 'Server Events API', link: '/api/s2s-events' }
+          { text: 'API Quickstart', link: '/api/quickstart' },
+          { text: 'API Key', link: '/api/api-key' }
         ]
       }
     ],

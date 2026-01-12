@@ -1,10 +1,10 @@
 ---
-title: Methods
+title: Web Tracker SDK Reference
 ---
 
-# Methods
+# Web Tracker SDK Reference
 
-Use these methods after the SDK is loaded and initialized. Start with registration, then track downstream actions in the order they occur for clearer attribution.
+Use these reference after the SDK is loaded and initialized. Start with registration, then track downstream actions in the order they occur for clearer attribution.
 
 ## Event reporting APIs
 
@@ -105,7 +105,7 @@ tracker.trackCustomEvent('custom_event_type', {
 | event_type | string | Yes | Custom event name. |
 | payload | object | No | Key-value payload for the event. |
 
-## Utility methods
+## Utility reference
 
 ### getClickid()
 

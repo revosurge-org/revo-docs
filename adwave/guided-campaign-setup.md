@@ -1,64 +1,94 @@
----
-title: Guided campaign setup in AdWave
-sidebar_label: Guided campaign setup
----
+# Guided campaign setup
 
-# Guided campaign setup in AdWave
+**For:** UA managers, Campaign operators, Growth teams
 
-**Audience:** UA managers, campaign specialists, growth teams
+Guided Campaign Setup is a step-by-step flow to create: **Campaign → Ad group → Ad (creative)** in one place, while validating prerequisites.
 
-## What is guided setup?
-Guided Campaign Setup is a multi-step workflow that:
-- Verifies prerequisites (account readiness, product readiness, Live events)
-- Lets you create **Campaign + Ad Group + Ad** in one flow
-- Applies real-time validation to reduce setup mistakes
-
-It follows the hierarchy:
-**Account → Product → Campaign → Ad Group → Ad**
+## In this article
+- Prerequisites
+- Step 1: Product & target event
+- Step 2: Campaign settings
+- Step 3: Targeting
+- Step 4: Creatives
+- Step 5: Review & publish
+- What to monitor after launch
 
 ## Prerequisites
-Before creating a campaign:
-- Account status = **Ready** (online agreement signed)
-- At least one Product with:
-  - Tracker active / In-use
-  - At least one **Live** event
-- Sufficient wallet balance to cover planned spend
+Before you start, ensure:
+- Account status is ready
+- Wallet has sufficient balance
+- At least one Product is available
+- Target events you need are available for selection (depends on current rollout rules)
 
-## Step 1 — Select Product & target event
-- Select a Product (only **Ready** products are selectable)
-- Select a **Target event** (must be **Live** and belongs to that Product)
+## 1) Select Product & target event
+1) Choose the **Product** you want to promote  
+2) Select the **Target event** (optimization goal), such as:
+- Register  
+- First Time Deposit (FTD)  
+- Deposit (if supported)  
 
-## Step 2 — Campaign settings (Internal Campaign)
-- Campaign name (max 255 chars)
-- Campaign Type / Ad Format (one required; cannot change after publish)
-  - Display, Native, Pop-Under, Push, Interstitial, Pop-Up
-- Schedule
-  - Start time and end time (end must be ≥ 24h after start)
-- Budget & bid
-  - Daily budget (USD, 2 decimals)
-  - Target bid (USD, 2 decimals)
-  - Validation: target bid < daily budget
-- Budget pacing strategy
-  - Front-loaded or Even pacing
-- Optional limits
-  - Lifetime total budget cap
-  - Frequency cap
-  - Daily/total impression caps
+Your target event is used for:
+- Optimization logic (where enabled)
+- Performance reporting and evaluation
 
-## Step 3 — Targeting (Internal Ad Group)
-- Required: one or more locations
-- Optional: Audience labels / segments
-- If multiple labels are selected, the resulting segment is an **intersection** of all labels
+## 2) Campaign settings (campaign-level)
+Set the core campaign configuration:
 
-## Step 4 — Creatives (Internal Ad)
-- Upload one or more creatives
-- System validates compatibility with the selected ad format
-- Preview before publish
+**Campaign name**  
+- Human-readable name used in reporting
 
-## Step 5 — Review & publish
-- Review all settings
-- Choose:
-  - Save Draft → campaign saved as Draft
-  - Publish
-    - Start time in future → Scheduled
-    - Start time now/past + sufficient balance → Running
+**Campaign type / Ad format**  
+- Example: Display, Pop, Native (based on current availability)  
+- Some formats may be locked after publish (depends on product rule)
+
+**Schedule**
+- Start time: now or future  
+- End time: must be at least 24h after start (if required)
+
+**Budget**
+- Daily budget (USD)
+
+**Bid / target CPM**
+- Set your target CPM (or bid goal) used for RTB bidding strategy
+
+> Important: In some current versions, billing markup may be applied **after** bidding/reporting. Align on the billing logic with your internal owner before using pilot data for revenue conclusions.
+
+## 3) Targeting (ad group-level)
+Targeting defines **who and where** you want to reach.
+
+**Required**
+- Geo: one or more locations (e.g., Country)
+
+**Optional**
+- Audience Segment(s) created under **Audience**  
+- If multiple segments are selected, the resulting audience is the **intersection** (AND logic), unless your UI explicitly supports OR logic.
+
+## 4) Creatives (ad-level)
+Upload one or more creatives compatible with the selected ad format:
+- Image / HTML / etc. depending on format
+
+For each creative, configure:
+- Destination URL (landing page)
+- Format-specific fields (title, description, CTA) if required
+
+## 5) Review & publish
+On the review screen:
+- Confirm product, event, budget, bid/CPM, targeting, and creatives
+
+Actions:
+- **Save Draft** (if available)
+- **Publish** to activate / schedule the campaign
+
+## After launch: what to monitor (pilot checklist)
+**Delivery**
+- Impressions, Spend, CPM
+- Win rate (if available)
+- Geo mix vs expected
+
+**Engagement**
+- Clicks, CTR
+- Very high imps + near-zero clicks → investigate inventory quality
+
+**Outcomes (if connected)**
+- Conversions (Register/FTD)
+- CPA / ROAS (if available)

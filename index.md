@@ -10,7 +10,7 @@ hero:
       link: /growth/getting-started
     - theme: alt
       text: Overview
-      link: /revosurge/overview
+      link: /revosurge/welcome
 features:
   - title: Performance Campaigns
     details: Launch and optimize campaigns in AdWave with guided setup workflows and real-time validation.
