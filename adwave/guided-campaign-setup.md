@@ -53,17 +53,7 @@ Set the core campaign configuration:
 
 > Important: In some current versions, billing markup may be applied **after** bidding/reporting. Align on the billing logic with your internal owner before using pilot data for revenue conclusions.
 
-## 3) Targeting (ad group-level)
-Targeting defines **who and where** you want to reach.
-
-**Required**
-- Geo: one or more locations (e.g., Country)
-
-**Optional**
-- Audience Segment(s) created under **Audience**  
-- If multiple segments are selected, the resulting audience is the **intersection** (AND logic), unless your UI explicitly supports OR logic.
-
-## 4) Creatives (ad-level)
+## 3) Creatives (ad-level)
 Upload one or more creatives compatible with the selected ad format:
 - Image / HTML / etc. depending on format
 
@@ -71,7 +61,7 @@ For each creative, configure:
 - Destination URL (landing page)
 - Format-specific fields (title, description, CTA) if required
 
-## 5) Review & publish
+## 4) Review & publish
 On the review screen:
 - Confirm product, event, budget, bid/CPM, targeting, and creatives
 
