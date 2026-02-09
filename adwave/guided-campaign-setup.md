@@ -2,15 +2,14 @@
 
 **For:** UA managers, Campaign operators, Growth teams
 
-Guided Campaign Setup is a step-by-step flow to create: **Campaign → Ad group → Ad (creative)** in one place, while validating prerequisites.
+Guided Campaign Setup is a step-by-step flow to create: **Campaign → Ad (creative)** in one place, while validating prerequisites.
 
 ## In this article
 - Prerequisites
 - Step 1: Product & target event
 - Step 2: Campaign settings
-- Step 3: Targeting
-- Step 4: Creatives
-- Step 5: Review & publish
+- Step 3: Creatives
+- Step 4: Review & publish
 - What to monitor after launch
 
 ## Prerequisites
