@@ -148,3 +148,18 @@
   }
 }
 
+/**
+ * Language selector: highlight the selected language title
+ * -------------------------------------------------------------------------- */
+
+ .menu .VPMenu .trans-title,
+.menu .VPMenu .title {
+  font-weight: 600;
+  color: var(--vp-c-brand-1);
+  background-color: var(--vp-c-brand-soft);
+  padding: 2px 12px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  cursor: default;
+}
+

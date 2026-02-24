@@ -18,8 +18,9 @@ npm run dev
 
 ## Development guidelines (keep it simple)
 
-- **Docs live in Markdown**: add/edit pages under the top-level folders (e.g. `tracking/`, `growth/`, `api/`, `adwave/`).
-- **Navigation lives in VitePress config**: update sidebar/nav in `.vitepress/config.mts` when you add/move pages.
+- **Docs live in Markdown**: add/edit pages under `en/`, `cn/`, `hk/` (example: `en/tracking/`, `en/growth/`, `en/api/`, `en/adwave/`).
+- **English is the source of truth**: 简/繁 (`cn/`, `hk/`) are **AI-generated translations** and may need occasional tweaks.
+- **Navigation lives in VitePress config**: update nav/sidebar in `.vitepress/config/en.ts`, `.vitepress/config/cn.ts`, `.vitepress/config/hk.ts` when you add/move pages. (Ask Bobby)
 - **Prefer clean, stable paths**: avoid renaming/moving pages unless necessary; keep links relative.
 - **Keep pages concise**: lead with the “how”, include copy-pastable snippets, and avoid long essays.
 
@@ -27,7 +28,7 @@ npm run dev
 
 Use this for **small edits to a single page** (typos, wording updates, adding a paragraph).
 
-- **Find the file** by clicking the folder for the area you want (e.g. `tracking/`, `growth/`, `api/`), then click the `.md` file you want to change.
+- **Find the file** under `en/`, `cn/`, or `hk/`, then click the `.md` file you want to change.
 - Click the **pencil icon (Edit)**.
 - Make your changes in the editor.
 - Click **Commit changes…**

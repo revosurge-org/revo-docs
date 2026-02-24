@@ -1,5 +1,8 @@
 import { defineConfig } from 'vitepress'
 import markdownItKatex from 'markdown-it-katex'
+import { en } from './config/en'
+import { cn } from './config/cn'
+import { hk } from './config/hk'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -11,84 +14,35 @@ export default defineConfig({
       md.use(markdownItKatex)
     }
   },
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico' }]
+  ],
+  locales: {
+    en: {
+      label: 'English',
+      lang: 'en',
+      themeConfig: { nav: en.nav }
+    },
+    cn: {
+      label: '简体中文',
+      lang: 'zh-CN',
+      themeConfig: { nav: cn.nav }
+    },
+    hk: {
+      label: '繁體中文',
+      lang: 'zh-HK',
+      themeConfig: { nav: hk.nav }
+    }
+  },
   themeConfig: {
-    nav: [
-      { text: 'Install', link: '/tracking/web-tracker/install' },
-      { text: 'Reference', link: '/tracking/web-tracker/reference' }
-    ],
-    sidebar: [
-      {
-        text: 'RevoSurge',
-        link: '/revosurge/welcome',
-        collapsed: false,
-        items: [
-          { text: 'Welcome to RevoSurge', link: '/revosurge/welcome' },
-        ]
-      },
-      {
-        text: 'Growth',
-        link: '/growth/getting-started',
-        collapsed: false,
-        items: [
-          { text: 'Getting started', link: '/growth/getting-started' },
-          { text: 'Creating your account', link: '/growth/account' },
-          { text: 'Funding & wallet', link: '/growth/funding-wallet' }
-        ]
-      },
-      {
-        text: 'Tracking',
-        link: '/tracking/overview',
-        collapsed: false,
-        items: [
-          { text: 'Overview', link: '/tracking/overview' },
-          {
-            text: 'Web Tracker',
-            link: '/tracking/web-tracker',
-            items: [
-              { text: 'Install the Web Tracker', link: '/tracking/web-tracker/install' },
-              { text: 'Web Tracker SDK Reference', link: '/tracking/web-tracker/reference' }
-            ]
-          },
-          {
-            text: 'Server-to-server (S2S)',
-            link: '/tracking/s2s/overview',
-            items: [
-              { text: 'Overview', link: '/tracking/s2s/overview' },
-              { text: 'Server Events API', link: '/tracking/s2s/server-events-api' }
-            ]
-          },
-        ]
-      },
-      {
-        text: 'AdWave',
-        link: '/adwave/guided-campaign-setup',
-        collapsed: false,
-        items: [
-          { text: 'Guided Campaign Setup', link: '/adwave/guided-campaign-setup' }
-        ]
-      },
-      {
-        text: 'Audience',
-        link: '/audience/segments',
-        collapsed: false,
-        items: [
-          { text: 'Segments', link: '/audience/segments' },
-          { text: 'Segment Details', link: '/audience/segment-details' },
-          { text: 'Create Audience Segment', link: '/audience/create-audience-segment' }
-        ]
-      },
-      {
-        text: 'API',
-        link: '/api/quickstart',
-        collapsed: false,
-        items: [
-          { text: 'API Quickstart', link: '/api/quickstart' },
-          { text: 'API Key', link: '/api/api-key' }
-        ]
-      }
-    ],
     search: {
       provider: 'local'
+    },
+    // SidebarMulti: path-specific sidebars ensure each locale shows only its content
+    sidebar: {
+      '/en/': en.sidebar,
+      '/cn/': cn.sidebar,
+      '/hk/': hk.sidebar
     }
   }
 })
