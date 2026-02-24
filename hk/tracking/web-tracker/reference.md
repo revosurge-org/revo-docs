@@ -87,7 +87,7 @@ tracker.trackDownloadClick('user_123', {
 
 | 參數 | 類型 | 必填 | 說明 |
 | --- | --- | --- | --- |
-| user_id | string | 是 | 唯一用戶 ID。 |
+| user_id | string | 否 | 唯一用戶 ID。 |
 | store_type | string | 否 | 下載渠道，如 App Store 或 Play Store。 |
 
 ### trackCustomEvent

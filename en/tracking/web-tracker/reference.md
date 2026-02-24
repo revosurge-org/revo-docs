@@ -87,7 +87,7 @@ tracker.trackDownloadClick('user_123', {
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| user_id | string | Yes | Unique user ID. |
+| user_id | string | No | Unique user ID. |
 | store_type | string | No | Channel of the download, e.g., App Store or Play Store. |
 
 ### trackCustomEvent
