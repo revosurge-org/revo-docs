@@ -24,7 +24,7 @@ This guide covers how to integrate ads into your website. We offer two integrati
 
 adflow.js is a self-contained JavaScript SDK that encapsulates all Prebid.js S2S bidding logic into a single script. Publishers only need to include one `<script>` tag and place `<iframe>` tags at ad positions — no need to manually load Prebid.js or write any bidding code.
 
-[adflow.js Debugger](/en/adflow/adflowjs-debugger) · [Download adflow.min.js](/adflow/adflow.min.js)
+[adflow.js Debugger](/en/adflow/adflowjs-debugger) · <a href="/adflow/adflow.min.js" download="adflow.min.js">Download adflow.min.js</a>
 
 ::: tip Recommended
 If you want the fastest and simplest integration, adflow.js is the best choice. No need to understand Prebid.js configuration details — just two lines of HTML to get started.

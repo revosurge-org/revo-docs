@@ -24,7 +24,7 @@ description: 接入 adflow.js 或 Prebid S2S 在網站投放廣告。adflow.js�
 
 adflow.js 是一个自包含的 JavaScript SDK，将 Prebid.js S2S 竞价的所有逻辑封装在一个脚本中。客户只需引入一个 `<script>` 标签并在廣告位放置 `<iframe>` 标签即可完成接入，无需手动加载 Prebid.js 或編寫竞价代码。
 
-[adflow.js 調試器](/hk/adflow/adflowjs-debugger) · [下載 adflow.min.js](/adflow/adflow.min.js)
+[adflow.js 調試器](/hk/adflow/adflowjs-debugger) · <a href="/adflow/adflow.min.js" download="adflow.min.js">下載 adflow.min.js</a>
 
 ::: tip 推薦
 如果你希望以最简方式快速接入，adflow.js 是最佳选择。无需了解 Prebid.js 的配置细节，两行 HTML 即可完成接入。
