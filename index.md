@@ -1,10 +1,10 @@
 ---
 layout: page
+title: RevoSurge Platform Docs
 head:
   - - meta
     - http-equiv: refresh
       content: 0;url=/en/
-title: Redirecting
 ---
 
 <script setup>
