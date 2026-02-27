@@ -1,6 +1,6 @@
 ---
 title: 建立受眾細分
-description: 在 AdWave 中建立受眾細分 — 元數據、匹配類型（AND/OR）、行為規則、驗證、儲存。
+description: 在 AdWave 中建立受眾細分 — 元數據、匹配類型(AND/OR)、行為規則、驗證、儲存。
 ---
 
 # 建立受眾細分（目前 UI）

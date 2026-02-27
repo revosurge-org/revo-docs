@@ -39,3 +39,13 @@ Use this for **small edits to a single page** (typos, wording updates, adding a 
 If your change involves more complex tasks such as **adding/moving pages**, **navigation/sidebars**, or anything that feels unclear, **ask Bobby**.
 
 
+
+## OG images (social sharing previews)
+
+Per-page Open Graph images are generated at build time. Run manually before deploying:
+
+```bash
+npm run generate:og
+```
+
+This creates `public/og/{locale}/{path}.png` for each page. Commit the generated images so they deploy with the site. Add `public/og-logo.png` or `public/logo.png` for a custom logo (otherwise “RevoSurge” text is used).

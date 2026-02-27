@@ -26,11 +26,16 @@ export default defineConfig({
     pageData.frontmatter.head ??= []
     const head = pageData.frontmatter.head as [string, Record<string, string>][]
 
+    const ogImagePath = path ? `og/${path}.png` : 'og/en/index.png'
+    const ogImageUrl = `${SITE_URL}/${ogImagePath}`
+
     head.push(['meta', { property: 'og:type', content: 'website' }])
     head.push(['meta', { property: 'og:title', content: pageData.title ?? siteConfig.title }])
     head.push(['meta', { property: 'og:description', content: effectiveDesc }])
     head.push(['meta', { property: 'og:url', content: canonicalUrl }])
+    head.push(['meta', { property: 'og:image', content: ogImageUrl }])
     head.push(['meta', { name: 'twitter:card', content: 'summary_large_image' }])
+    head.push(['meta', { name: 'twitter:image', content: ogImageUrl }])
     head.push(['meta', { name: 'twitter:title', content: pageData.title ?? siteConfig.title }])
     head.push(['meta', { name: 'twitter:description', content: effectiveDesc }])
     head.push(['link', { rel: 'canonical', href: canonicalUrl }])
@@ -41,7 +46,7 @@ export default defineConfig({
     }
   },
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }]
+    ['link', { rel: 'icon', href: '/og-logo.png', type: 'image/png' }]
   ],
   locales: {
     en: {
@@ -73,6 +78,7 @@ export default defineConfig({
     }
   },
   themeConfig: {
+    logo: '/og-logo.png',
     search: {
       provider: 'local'
     },

@@ -2,12 +2,19 @@
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
-    "preview": "vitepress preview"
-  },
-  "dependencies": {
+    "preview": "vitepress preview",
+    "generate:og": "tsx scripts/generate-og.ts"
   },
   "devDependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/noto-sans-sc": "^5.2.9",
+    "@fontsource/noto-sans-tc": "^5.2.9",
+    "@resvg/resvg-js": "^2.6.2",
+    "gray-matter": "^4.0.3",
     "markdown-it-katex": "^2.0.3",
+    "react": "^19.2.4",
+    "satori": "^0.19.2",
+    "tsx": "^4.21.0",
     "vitepress": "^2.0.0-alpha.15",
     "vue": "^3.5.26"
   }
