@@ -1,6 +1,7 @@
 ---
 title: RevoSurge Overview
 sidebar_label: Overview
+description: Overview of RevoSurge platform — AdWave (DSP), DataPulse (Analytics), account structure, wallet, and workflow for advertisers.
 ---
 
 # Welcome to RevoSurge

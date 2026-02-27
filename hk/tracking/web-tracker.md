@@ -1,5 +1,6 @@
 ---
-title: 追蹤概述
+title: Web 追蹤器
+description: RevoSurge 追蹤層連接 AdWave 投放與站內成效。歸因、點擊 ID、UTM、事件連結。
 ---
 
 # 追蹤概述

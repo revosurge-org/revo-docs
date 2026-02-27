@@ -1,3 +1,8 @@
+---
+title: Getting started
+description: Account setup, funding, product configuration, and launching your first campaign on RevoSurge.
+---
+
 # Getting started
 
 **For:** Account owners, Admins, Operations, UA managers, Finance

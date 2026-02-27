@@ -1,6 +1,7 @@
 ---
 title: 用户事件与活动
 sidebar_label: 事件
+description: RevoSurge 用户事件 — Register、FTD、Deposit、Login。事件状态（Live/Inactive）与最佳实践。
 ---
 
 # 用户事件与活动

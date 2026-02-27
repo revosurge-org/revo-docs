@@ -1,6 +1,7 @@
 ---
 title: Funding your shared wallet
 sidebar_label: Funding & wallet
+description: Deposit funds to your RevoSurge shared wallet. Payment methods, verification, and transaction records.
 ---
 
 # Funding your shared wallet

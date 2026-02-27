@@ -1,6 +1,7 @@
 ---
 title: Instal the Web Tracker
 sidebar_label: Instal the Web Tracker
+description: Install the RevoSurge Web Tracker — create a product, add the script, and configure events for attribution.
 ---
 
 # Instal the Web Tracker

@@ -1,6 +1,7 @@
 ---
 title: 创建 RevoSurge 账户
 sidebar_label: 创建账户
+description: 创建或激活 RevoSurge 账户。公司身份、计费、用户、产品、前提条件。
 ---
 
 # 创建 RevoSurge 账户

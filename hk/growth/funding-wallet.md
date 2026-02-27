@@ -1,6 +1,7 @@
 ---
 title: 充值共享錢包
 sidebar_label: 充值與錢包
+description: 向 RevoSurge 共享錢包充值。支付方式、驗證、交易記錄。
 ---
 
 # 充值共享錢包

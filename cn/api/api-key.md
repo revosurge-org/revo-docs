@@ -1,3 +1,8 @@
+---
+title: API 密钥
+description: RevoSurge API 密钥认证。安全最佳实践、密钥轮换、密钥管理。
+---
+
 # API 密钥
 
 **面向：** 开发者、管理员

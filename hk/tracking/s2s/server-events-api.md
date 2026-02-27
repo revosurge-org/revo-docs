@@ -1,6 +1,7 @@
 ---
 title: RevoSurge 伺服器事件 API
 sidebar_label: 伺服器事件 API
+description: 向 DataPulse 發送 S2S 事件。API 參考、認證、單條/批次接入、請求結構。
 ---
 
 # RevoSurge 伺服器事件 API

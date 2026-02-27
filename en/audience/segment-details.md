@@ -1,3 +1,8 @@
+---
+title: Audience segment details
+description: View segment details — name, type, source, match type, size, status, and usage across campaigns.
+---
+
 # Audience segment details
 
 **For:** UA managers, Operations

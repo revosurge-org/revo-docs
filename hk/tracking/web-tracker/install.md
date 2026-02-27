@@ -1,6 +1,7 @@
 ---
 title: 安裝 Web 追蹤器
 sidebar_label: 安裝 Web 追蹤器
+description: 安裝 RevoSurge Web 追蹤器 — 建立產品、添加腳本、配置事件歸因。
 ---
 
 # 安裝 Web 追蹤器

@@ -1,3 +1,8 @@
+---
+title: API 快速入门
+description: RevoSurge API 概述 — S2S 事件、报表、API 密钥、开发者集成模式。
+---
+
 # API 快速入门
 
 **面向：** 开发者、技术集成方、BI 工程师

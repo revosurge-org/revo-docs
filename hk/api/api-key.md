@@ -1,3 +1,8 @@
+---
+title: API 金鑰
+description: RevoSurge API 金鑰認證。安全最佳實踐、金鑰輪換、金鑰管理。
+---
+
 # API 金鑰
 
 **對象：** 開發者、管理員

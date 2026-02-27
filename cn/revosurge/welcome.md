@@ -1,6 +1,7 @@
 ---
 title: RevoSurge 概述
 sidebar_label: 概述
+description: RevoSurge 平台概述 — AdWave (DSP)、DataPulse（分析）、账户结构、钱包、广告主工作流。
 ---
 
 # 欢迎使用 RevoSurge

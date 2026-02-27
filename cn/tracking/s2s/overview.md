@@ -1,5 +1,6 @@
 ---
 title: 服务器到服务器 (S2S) 概述
+description: 从后端向 RevoSurge 发送转化事件。S2S vs Web 追踪器、要求、认证。
 ---
 
 # 服务器到服务器 (S2S) 概述

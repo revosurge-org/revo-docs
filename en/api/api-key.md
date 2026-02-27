@@ -1,3 +1,8 @@
+---
+title: API Key
+description: RevoSurge API key authentication. Security best practices, key rotation, and secrets management.
+---
+
 # API Key
 
 **For:** Developers, Admins

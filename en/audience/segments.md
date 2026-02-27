@@ -1,3 +1,8 @@
+---
+title: Audience segments
+description: Define user segments by behavior for campaign targeting. Retarget engaged users, exclude low-quality traffic, create interest-based audiences.
+---
+
 # Audience segments
 
 **For:** UA managers, Growth teams, Campaign operators

@@ -4,11 +4,37 @@ import { en } from './config/en'
 import { cn } from './config/cn'
 import { hk } from './config/hk'
 
+const SITE_URL = process.env.SITE_URL ?? 'https://docs.revosurge.com'
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'RevoSurge Docs',
   description: 'Documentation for the RevoSurge platform',
   cleanUrls: true,
+  transformPageData(pageData, { siteConfig }) {
+    const defaultDesc = siteConfig.description ?? 'Documentation for the RevoSurge platform'
+    const effectiveDesc =
+      pageData.description && pageData.description !== defaultDesc
+        ? pageData.description
+        : pageData.title
+          ? `${pageData.title} — RevoSurge documentation`
+          : defaultDesc
+
+    const path = pageData.relativePath.replace(/\.md$/, '').replace(/\/index$/, '')
+    const canonicalUrl = path ? `${SITE_URL}/${path}` : SITE_URL
+
+    pageData.frontmatter.head ??= []
+    const head = pageData.frontmatter.head as [string, Record<string, string>][]
+
+    head.push(['meta', { property: 'og:type', content: 'website' }])
+    head.push(['meta', { property: 'og:title', content: pageData.title ?? siteConfig.title }])
+    head.push(['meta', { property: 'og:description', content: effectiveDesc }])
+    head.push(['meta', { property: 'og:url', content: canonicalUrl }])
+    head.push(['meta', { name: 'twitter:card', content: 'summary_large_image' }])
+    head.push(['meta', { name: 'twitter:title', content: pageData.title ?? siteConfig.title }])
+    head.push(['meta', { name: 'twitter:description', content: effectiveDesc }])
+    head.push(['link', { rel: 'canonical', href: canonicalUrl }])
+  },
   markdown: {
     config: (md) => {
       md.use(markdownItKatex)

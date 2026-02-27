@@ -1,5 +1,6 @@
 ---
 title: S2S 调试器
+description: 测试 Prebid S2S 配置。生成并验证服务器到服务器接入的竞价请求。
 ---
 
 # S2S 调试

@@ -1,6 +1,7 @@
 ---
 title: User Events and Activities
 sidebar_label: Events
+description: RevoSurge user events — Register, FTD, Deposit, Login. Event status (Live/Inactive) and best practices.
 ---
 
 # User Events and Activities

@@ -1,5 +1,6 @@
 ---
 layout: home
+description: RevoSurge 平台文件。效果廣告、第一方追蹤、帳戶管理、API 整合。
 hero:
   name: "RevoSurge"
   text: "平台文件"

@@ -1,6 +1,7 @@
 ---
 title: 安装 Web 追踪器
 sidebar_label: 安装 Web 追踪器
+description: 安装 RevoSurge Web 追踪器 — 创建产品、添加脚本、配置事件归因。
 ---
 
 # 安装 Web 追踪器

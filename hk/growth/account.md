@@ -1,6 +1,7 @@
 ---
 title: 建立 RevoSurge 帳戶
 sidebar_label: 建立帳戶
+description: 建立或啟用 RevoSurge 帳戶。公司身份、計費、用戶、產品、前提條件。
 ---
 
 # 建立 RevoSurge 帳戶

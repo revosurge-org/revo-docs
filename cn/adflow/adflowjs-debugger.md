@@ -1,5 +1,6 @@
 ---
 title: adflow.js 调试器
+description: 在浏览器中测试 adflow.js 接入。配置服务器 URL、账户 ID、广告位以验证 Prebid S2S 竞价。
 ---
 
 # adflow.js 测试

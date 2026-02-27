@@ -1,5 +1,6 @@
 ---
 title: Web 追蹤器 SDK 參考
+description: Web 追蹤器 SDK API 參考 — trackRegister、trackDeposit、trackEnterGame 等事件方法。
 ---
 
 # Web 追蹤器 SDK 參考

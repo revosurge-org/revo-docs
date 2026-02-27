@@ -1,5 +1,6 @@
 ---
 title: Publisher 接入文档
+description: 接入 adflow.js 或 Prebid S2S 在网站投放广告。adflow.js（两行 HTML）或手动 S2S 配置分步指南。
 ---
 
 # Publisher 接入文档

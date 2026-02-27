@@ -1,5 +1,6 @@
 ---
-title: Tracking overview
+title: Web Tracker
+description: RevoSurge tracking layer connecting AdWave delivery to on-site outcomes. Attribution, click IDs, UTM, and event linking.
 ---
 
 # Tracking overview
