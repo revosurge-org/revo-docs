@@ -57,6 +57,16 @@ export const en: DefaultTheme.Config = {
       ]
     },
     {
+      text: 'AdFlow',
+      link: '/en/adflow/integration-guide',
+      collapsed: false,
+      items: [
+        { text: 'Integration Guide', link: '/en/adflow/integration-guide' },
+        { text: 'adflow.js Debugger', link: '/en/adflow/adflowjs-debugger' },
+        { text: 'S2S Debugger', link: '/en/adflow/s2s-debugger' },
+      ]
+    },
+    {
       text: 'Audience',
       link: '/en/audience/segments',
       collapsed: false,

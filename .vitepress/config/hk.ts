@@ -57,6 +57,16 @@ export const hk: DefaultTheme.Config = {
       ]
     },
     {
+      text: 'AdFlow',
+      link: '/hk/adflow/integration-guide',
+      collapsed: false,
+      items: [
+        { text: '接入指南', link: '/hk/adflow/integration-guide' },
+        { text: 'adflow.js 調試器', link: '/hk/adflow/adflowjs-debugger' },
+        { text: 'S2S 調試器', link: '/hk/adflow/s2s-debugger' },
+      ]
+    },
+    {
       text: '受眾',
       link: '/hk/audience/segments',
       collapsed: false,

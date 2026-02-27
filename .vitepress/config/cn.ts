@@ -57,6 +57,16 @@ export const cn: DefaultTheme.Config = {
       ]
     },
     {
+      text: 'AdFlow',
+      link: '/cn/adflow/integration-guide',
+      collapsed: false,
+      items: [
+        { text: '接入指南', link: '/cn/adflow/integration-guide' },
+        { text: 'adflow.js 调试器', link: '/cn/adflow/adflowjs-debugger' },
+        { text: 'S2S 调试器', link: '/cn/adflow/s2s-debugger' },
+      ]
+    },
+    {
       text: '受众',
       link: '/cn/audience/segments',
       collapsed: false,
