@@ -1,6 +1,6 @@
 ---
 title: Server-to-Server (S2S) overview
-description: Send conversion events from your backend to RevoSurge. When to use S2S vs Web Tracker, requirements, and authentication.
+description: Send conversion events from backend. S2S vs Web Tracker, requirements, auth.
 ---
 
 # Server-to-Server (S2S) overview

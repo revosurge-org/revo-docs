@@ -1,6 +1,6 @@
 ---
 title: Publisher Integration Guide
-description: Integrate adflow.js or Prebid S2S to place ads on your site. Step-by-step guide for publishers with adflow.js (2 lines of HTML) or manual S2S configuration.
+description: Integrate adflow.js or Prebid S2S to place ads. adflow.js or S2S step-by-step guide.
 ---
 
 # Publisher Integration Guide

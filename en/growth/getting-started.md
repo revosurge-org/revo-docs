@@ -1,6 +1,6 @@
 ---
 title: Getting started
-description: Account setup, funding, product configuration, and launching your first campaign on RevoSurge.
+description: Account setup, funding, product config, launching first campaign.
 ---
 
 # Getting started

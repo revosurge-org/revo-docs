@@ -1,6 +1,6 @@
 ---
 title: S2S Debugger
-description: Test Prebid S2S configuration. Generate and validate bid requests for server-to-server integration with custom Prebid.js setup.
+description: Test Prebid S2S config. Generate and validate bid requests for S2S integration.
 ---
 
 # S2S Debugger

@@ -1,6 +1,6 @@
 ---
 title: Guided campaign setup
-description: Step-by-step flow to create campaigns and creatives in AdWave. Prerequisites, validation, and launch checklist.
+description: Create campaigns and creatives in AdWave. Prerequisites, validation, launch checklist.
 ---
 
 # Guided campaign setup

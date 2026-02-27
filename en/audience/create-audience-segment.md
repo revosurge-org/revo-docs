@@ -1,6 +1,6 @@
 ---
 title: Create an audience segment
-description: Create audience segments in AdWave — metadata, match type (AND/OR), behavioural rules, validation, and save.
+description: Create segments in AdWave — metadata, match type (AND/OR), rules, validation.
 ---
 
 # Create an audience segment (current UI)

@@ -1,7 +1,7 @@
 ---
 title: RevoSurge Platform Docs
 layout: home
-description: RevoSurge platform documentation. Performance campaigns, first-party tracking, account management, and API integration.
+description: RevoSurge docs. Performance campaigns, first-party tracking, account, API.
 hero:
   name: "RevoSurge"
   text: "Platform Docs"

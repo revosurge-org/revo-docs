@@ -1,6 +1,6 @@
 ---
 title: adflow.js Debugger
-description: Test adflow.js integration in-browser. Configure server URL, account ID, and placement to validate Prebid S2S bidding and ad rendering.
+description: Test adflow.js in-browser. Configure URL, account ID, placement to validate S2S bidding.
 ---
 
 # adflow.js Test

@@ -1,7 +1,7 @@
 ---
 title: RevoSurge 平台文档
 layout: home
-description: RevoSurge 平台文档。效果广告、一方数据追踪、账户管理、API 集成。
+description: RevoSurge 平台文档。效果广告、一方追踪、账户、API。
 hero:
   name: "RevoSurge"
   text: "平台文档"

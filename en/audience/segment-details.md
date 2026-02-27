@@ -1,6 +1,6 @@
 ---
 title: Audience segment details
-description: View segment details — name, type, source, match type, size, status, and usage across campaigns.
+description: Segment details — name, type, source, match type, size, status, usage.
 ---
 
 # Audience segment details

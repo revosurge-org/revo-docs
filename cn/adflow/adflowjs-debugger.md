@@ -1,6 +1,6 @@
 ---
 title: adflow.js 调试器
-description: 在浏览器中测试 adflow.js 接入。配置服务器 URL、账户 ID、广告位以验证 Prebid S2S 竞价。
+description: 在浏览器测试 adflow.js。配置 URL、账户 ID、广告位验证 S2S 竞价。
 ---
 
 # adflow.js 测试
@@ -278,7 +278,7 @@ onMounted(async () => {
           log('========== 测试完成：竞价成功 ==========', 'success');
         } else {
           setStatus('af-status-render', 'warn', '无出价');
-          log('========== 测试完成：已连接但无出价（测试环境属正常现象） ==========', 'warn');
+          log('========== 测试完成：已连接但无出价(测试环境属正常现象) ==========', 'warn');
         }
         btn.disabled = false;
         btn.textContent = '重新测试';

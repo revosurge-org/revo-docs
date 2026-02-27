@@ -1,6 +1,6 @@
 ---
 title: Tracking overview
-description: Web tracker vs S2S events — when to use each, attribution basics, and how tracking connects ad delivery to measurable outcomes.
+description: Web tracker vs S2S — when to use, attribution, how tracking connects to outcomes.
 ---
 
 # Tracking overview

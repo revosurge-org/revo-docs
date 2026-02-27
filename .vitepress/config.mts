@@ -18,7 +18,7 @@ export default defineConfig({
     // Root / redirects to /en/ — use same metadata as English index
     const defaultDesc = siteConfig.description ?? 'Documentation for the RevoSurge platform'
     const effectiveDesc = isRootIndex
-      ? 'RevoSurge platform documentation. Performance campaigns, first-party tracking, account management, and API integration.'
+      ? 'RevoSurge docs. Performance campaigns, first-party tracking, account, API.'
       : pageData.description && pageData.description !== defaultDesc
         ? pageData.description
         : pageData.title

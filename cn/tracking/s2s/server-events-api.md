@@ -1,7 +1,7 @@
 ---
 title: RevoSurge 服务器事件 API
 sidebar_label: 服务器事件 API
-description: 向 DataPulse 发送 S2S 事件。API 参考、认证、单条/批量接入、请求结构。
+description: 向 DataPulse 发送 S2S 事件。API 参考、认证、单条/批量接入。
 ---
 
 # RevoSurge 服务器事件 API
@@ -46,19 +46,19 @@ description: 向 DataPulse 发送 S2S 事件。API 参考、认证、单条/批�
 |-------------|----------|-------------|-------------|
 | `client_user_id` | String | 是 | 您系统中用户的唯一标识符。 |
 | `click_id` | String | 是 | 广告点击的唯一 ID。<br > **建议**。 |
-| `event_name` | String | 是 | 事件名称（如 "register"、"login"、"deposit"）。 |
-| `timestamp` | Integer | 是 | 事件发生的 Unix 时间戳（秒）。 |
-| `ip_address` | String | 是 | 用户的 IP 地址（IPv4/IPv6）。 |
+| `event_name` | String | 是 | 事件名称(如 "register"、"login"、"deposit")。 |
+| `timestamp` | Integer | 是 | 事件发生的 Unix 时间戳(秒)。 |
+| `ip_address` | String | 是 | 用户的 IP 地址(IPv4/IPv6)。 |
 | `user_agent` | String | 否 | 浏览器或设备的 User Agent 字符串。 |
-| `game_type` | String | 否 | 游戏类型（如 "slot"、"casino"）。 |
-| `game_provider` | String | 否 | 游戏提供商（如 "EA"、"GGP"）。 |
-| `transaction_id` | String | *是** | 交易唯一 ID（如购买 ID）。 |
-| `amount` | Float | *是** | 交易金额（如充值金额）。 |
-| `currency` | String | *是** | 法币的 3 字母 ISO 货币代码（如 USD、EUR），或加密货币的任意代码。 |
+| `game_type` | String | 否 | 游戏类型(如 "slot"、"casino")。 |
+| `game_provider` | String | 否 | 游戏提供商(如 "EA"、"GGP")。 |
+| `transaction_id` | String | *是** | 交易唯一 ID(如购买 ID)。 |
+| `amount` | Float | *是** | 交易金额(如充值金额)。 |
+| `currency` | String | *是** | 法币的 3 字母 ISO 货币代码(如 USD、EUR)，或加密货币的任意代码。 |
 | `is_crypto` | Boolean | 否 | 若为加密货币交易则为 `true`，否则为 `false`。 |
 | `<<any_prop>>` | String | 否 | 其他自定义属性的键值对。 |
 
-*注：非财务事件（如 login）中 `transaction_id`、`amount`、`currency` 非必填。*
+*注：非财务事件(如 login)中 `transaction_id`、`amount`、`currency` 非必填。*
 
 #### 1.2 示例请求 (curl)
 
@@ -101,7 +101,7 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
 ## 速率限制
 
   * 限制按 X-API-KEY 应用。
-  * 标准限制：每分钟 60 次请求（默认）。
+  * 标准限制：每分钟 60 次请求(默认)。
   * 超出限制将返回 429 响应。 
   * 重试策略：建议在遇到 429 或 500 错误时实施指数退避策略。   
 

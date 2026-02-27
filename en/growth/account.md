@@ -1,7 +1,7 @@
 ---
 title: Creating your RevoSurge account
 sidebar_label: Creating your account
-description: Create or activate a RevoSurge account. Company identity, billing, users, products, and prerequisites.
+description: Create or activate account. Company identity, billing, users, products.
 ---
 
 # Creating your RevoSurge account

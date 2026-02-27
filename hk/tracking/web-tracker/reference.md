@@ -1,6 +1,6 @@
 ---
 title: Web 追蹤器 SDK 參考
-description: Web 追蹤器 SDK API 參考 — trackRegister、trackDeposit、trackEnterGame 等事件方法。
+description: Web 追蹤器 SDK — trackRegister、trackDeposit、trackEnterGame 等方法。
 ---
 
 # Web 追蹤器 SDK 參考
@@ -45,7 +45,7 @@ tracker.trackDeposit('user_123', {
 
 ### trackEnterGame
 
-擷取用戶開始核心體驗（遊戲或關鍵流程）時。
+擷取用戶開始核心體驗(遊戲或關鍵流程)時。
 
 ```js
 tracker.trackEnterGame('user_123', {

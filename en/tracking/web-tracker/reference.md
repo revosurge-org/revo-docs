@@ -1,6 +1,6 @@
 ---
 title: Web Tracker SDK Reference
-description: Web Tracker SDK API reference — trackRegister, trackDeposit, trackEnterGame, and other event methods.
+description: Web Tracker SDK — trackRegister, trackDeposit, trackEnterGame, event methods.
 ---
 
 # Web Tracker SDK Reference

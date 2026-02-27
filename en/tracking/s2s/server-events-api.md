@@ -1,7 +1,7 @@
 ---
 title: RevoSurge Server Events API
 sidebar_label: Server Events API
-description: Send S2S events to DataPulse. API reference, authentication, single/batch ingest, request schema.
+description: S2S events to DataPulse. API reference, auth, single/batch ingest.
 ---
 
 # RevoSurge Server Events API

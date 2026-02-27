@@ -1,13 +1,13 @@
 ---
 title: 用戶事件與活動
 sidebar_label: 事件
-description: RevoSurge 用戶事件 — Register、FTD、Deposit、Login。事件狀態（Live/Inactive）與最佳實踐。
+description: 用戶事件 — Register、FTD、Deposit、Login。狀態與最佳實踐。
 ---
 
 # 用戶事件與活動
 
 用戶事件是 RevoSurge 追蹤及匯總的業務動作。  
-用於分析，以及（在支援時）AdWave 中的優化目標。
+用於分析，以及(在支援時)AdWave 中的優化目標。
 
 ## 常見事件示例
 - Register
@@ -24,4 +24,4 @@ description: RevoSurge 用戶事件 — Register、FTD、Deposit、Login。事�
 ## 最佳實踐
 對於效果廣告，始終至少驗證：
 - Register
-- Deposit / FTD（如您的業務模型以充值為主要轉化）
+- Deposit / FTD(如您的業務模型以充值為主要轉化)

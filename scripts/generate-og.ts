@@ -179,7 +179,7 @@ async function generateImage(
       'h1',
       {
         style: {
-          fontSize: 100,
+          fontSize: 80,
           fontWeight: 700,
           color: '#0f172a',
           margin: 0,

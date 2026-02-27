@@ -1,6 +1,6 @@
 ---
 title: S2S 調試器
-description: 測試 Prebid S2S 配置。生成並驗證伺服器到伺服器接入的競價請求。
+description: 測試 Prebid S2S 配置。生成並驗證 S2S 競價請求。
 ---
 
 # S2S 調試
@@ -284,7 +284,7 @@ onMounted(async () => {
                   + '<div style="color:var(--vp-c-text-2);font-size:12px;">S2S 通道正常，但未返回有效出價</div>'
                   + '</div>';
               }
-              log('========== 測試完成：已連接但無出價（測試環境屬正常現象） ==========', 'warn');
+              log('========== 測試完成：已連接但無出價(測試環境屬正常現象) ==========', 'warn');
             }
 
             btn.disabled = false;

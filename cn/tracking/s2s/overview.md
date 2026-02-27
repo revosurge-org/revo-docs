@@ -1,6 +1,6 @@
 ---
 title: 服务器到服务器 (S2S) 概述
-description: 从后端向 RevoSurge 发送转化事件。S2S vs Web 追踪器、要求、认证。
+description: 从后端发送转化事件。S2S vs Web 追踪器、要求、认证。
 ---
 
 # 服务器到服务器 (S2S) 概述
@@ -8,14 +8,14 @@ description: 从后端向 RevoSurge 发送转化事件。S2S vs Web 追踪器、
 服务器到服务器 (S2S) 追踪允许您直接从后端向 RevoSurge 发送转化事件。
 
 在以下情况使用 S2S：
-- 需要后端确认的事件（支付结算、充值完成）
-- 客户端追踪不可靠（广告拦截、浏览器限制）
-- 需要包含安全交易字段（amount、currency、transaction_id）
+- 需要后端确认的事件(支付结算、充值完成)
+- 客户端追踪不可靠(广告拦截、浏览器限制)
+- 需要包含安全交易字段(amount、currency、transaction_id)
 
 ## S2S vs Web 追踪器
 
 ### Web 追踪器适用于
-- 捕获会话和 Web 上下文（URL、来源）
+- 捕获会话和 Web 上下文(URL、来源)
 - 在落地时提取 click_id / UTM
 - 网站快速实施
 
@@ -28,5 +28,5 @@ description: 从后端向 RevoSurge 发送转化事件。S2S vs Web 追踪器、
 
 ## S2S 所需
 - 可调用 RevoSurge 端点的服务器集成
-- 认证（根据环境使用 API key/token）
-- 一致的用户标识策略（如 user_id）
+- 认证(根据环境使用 API key/token)
+- 一致的用户标识策略(如 user_id)

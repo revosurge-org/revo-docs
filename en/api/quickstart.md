@@ -1,6 +1,6 @@
 ---
 title: API Quickstart
-description: RevoSurge API overview — S2S events, reporting, API keys, and integration patterns for developers.
+description: API overview — S2S events, reporting, API keys, integration patterns.
 ---
 
 # API Quickstart

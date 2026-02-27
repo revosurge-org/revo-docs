@@ -1,6 +1,6 @@
 ---
 title: Audience segments
-description: Define user segments by behavior for campaign targeting. Retarget engaged users, exclude low-quality traffic, create interest-based audiences.
+description: Define segments by behavior for targeting. Retarget, exclude low-quality, interest audiences.
 ---
 
 # Audience segments

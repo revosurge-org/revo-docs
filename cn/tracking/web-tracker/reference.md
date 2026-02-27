@@ -1,6 +1,6 @@
 ---
 title: Web 追踪器 SDK 参考
-description: Web 追踪器 SDK API 参考 — trackRegister、trackDeposit、trackEnterGame 等事件方法。
+description: Web 追踪器 SDK — trackRegister、trackDeposit、trackEnterGame 等方法。
 ---
 
 # Web 追踪器 SDK 参考
@@ -45,7 +45,7 @@ tracker.trackDeposit('user_123', {
 
 ### trackEnterGame
 
-捕获用户开始核心体验（游戏或关键流程）时。
+捕获用户开始核心体验(游戏或关键流程)时。
 
 ```js
 tracker.trackEnterGame('user_123', {
