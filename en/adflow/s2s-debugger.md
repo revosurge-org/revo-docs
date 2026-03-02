@@ -219,7 +219,7 @@ onMounted(async () => {
         timeout: 3000
       };
 
-      var ortb2 = { device: { geo: { country: 'IND' } } };
+      var ortb2 = {};
 
       try {
         if (window.pbjs.adUnits && window.pbjs.adUnits.length > 0) {
