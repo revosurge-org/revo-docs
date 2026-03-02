@@ -24,7 +24,7 @@ This guide covers how to integrate ads into your website. We offer two integrati
 
 adflow.js is a self-contained JavaScript SDK that encapsulates all Prebid.js S2S bidding logic into a single script. Publishers only need to include one `<script>` tag and place `<iframe>` tags at ad positions — no need to manually load Prebid.js or write any bidding code.
 
-[adflow.js Debugger](/en/adflow/adflowjs-debugger) · <a href="/adflow/adflow.min.js" download="adflow.min.js">Download adflow.min.js</a>
+[adflow.js Debugger](/en/adflow/adflowjs-debugger)
 
 ::: tip Recommended
 If you want the fastest and simplest integration, adflow.js is the best choice. No need to understand Prebid.js configuration details — just two lines of HTML to get started.
@@ -39,8 +39,7 @@ Integration requires just two steps:
 Add a `<script>` tag to your page with global configuration via data attributes:
 
 ```html
-<script src="adflow.min.js"
-    data-server-url="https://prebid-server.revosurge.com"
+<script src="https://assets.revosurge.com/js/adflow.min.js"
     data-account-id="your-account-id"></script>
 ```
 
@@ -92,8 +91,7 @@ Below is a minimal complete page example that you can copy and use directly.
 <html>
 <head>
     <title>My Website</title>
-    <script src="adflow.min.js"
-        data-server-url="https://prebid-server.revosurge.com"
+    <script src="https://assets.revosurge.com/js/adflow.min.js"
         data-account-id="your-account-id"></script>
 </head>
 <body>
