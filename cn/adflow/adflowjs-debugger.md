@@ -134,7 +134,7 @@ onMounted(async () => {
 
     var html = '';
     html += '<span class="hl-comment">&lt;!-- Include adflow.js --&gt;</span>\n';
-    html += '<span class="hl-tag">&lt;script</span> <span class="hl-attr">src</span>=<span class="hl-val">"adflow.min.js"</span>\n';
+    html += '<span class="hl-tag">&lt;script</span> <span class="hl-attr">src</span>=<span class="hl-val">"https://assets.revosurge.com/js/adflow.min.js"</span>\n';
     html += '    <span class="hl-attr">data-server-url</span>=<span class="hl-val">"' + escapeHtml(serverUrl) + '"</span>\n';
     html += '    <span class="hl-attr">data-account-id</span>=<span class="hl-val">"' + escapeHtml(accountId) + '"</span>\n';
     html += '    <span class="hl-attr">data-debug</span><span class="hl-tag">&gt;&lt;/script&gt;</span>\n';
@@ -339,7 +339,7 @@ onMounted(async () => {
 
     var script = document.createElement('script');
     script.id = 'af-adflow-script';
-    script.src = '/adflow/adflow.min.js';
+    script.src = 'https://assets.revosurge.com/js/adflow.min.js';
     script.setAttribute('data-server-url', serverUrl);
     script.setAttribute('data-account-id', accountId);
     script.setAttribute('data-debug', '');
