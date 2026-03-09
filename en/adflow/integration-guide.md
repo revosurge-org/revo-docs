@@ -120,6 +120,16 @@ Below is a minimal complete page example that you can copy and use directly.
 Add the `data-debug` attribute to the `<script>` tag to view detailed `[AdFlow]` prefixed logs in the browser console. You can also inspect runtime configuration and slot info via the `window.__adflow` object.
 :::
 
+### Diagnostic Script {#adflow-diagnostic}
+
+If you encounter issues with adflow.js, run the following diagnostic script in your browser's developer console (DevTools → Console) to quickly identify common problems:
+
+```js
+fetch('https://assets.revosurge.com/js/adflow.diagnostic.js').then(r=>r.text()).then(eval)
+```
+
+The diagnostic script will check your integration setup and output actionable suggestions directly in the console.
+
 ## S2S Configuration {#s2s-integration}
 
 For more granular control, or if you need to customize Prebid.js configuration (ad formats, first-party data, user sync, etc.), use the manual S2S configuration approach. This requires including Prebid.js on your page and writing bidding code.
