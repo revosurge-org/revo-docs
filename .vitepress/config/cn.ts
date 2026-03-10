@@ -84,6 +84,15 @@ export const cn: DefaultTheme.Config = {
         { text: 'API 快速入门', link: '/cn/api/quickstart' },
         { text: 'API 密钥', link: '/cn/api/api-key' }
       ]
+    },
+    {
+      text: 'LLM 资源',
+      link: '/llms.txt',
+      collapsed: false,
+      items: [
+        { text: 'llms.txt', link: '/llms.txt', target: '_blank', rel: 'noopener noreferrer' },
+        { text: 'llms-full.txt', link: '/llms-full.txt', target: '_blank', rel: 'noopener noreferrer' }
+      ]
     }
   ],
 }

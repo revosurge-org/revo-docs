@@ -17,5 +17,8 @@
     "tsx": "^4.21.0",
     "vitepress": "^2.0.0-alpha.15",
     "vue": "^3.5.26"
+  },
+  "dependencies": {
+    "vitepress-plugin-llmstxt": "^0.5.1"
   }
 }

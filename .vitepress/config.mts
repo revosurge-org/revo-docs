@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import markdownItKatex from 'markdown-it-katex'
+import llmstxtPlugin from 'vitepress-plugin-llmstxt'
 import { en } from './config/en'
 import { cn } from './config/cn'
 import { hk } from './config/hk'
@@ -56,6 +57,26 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/og-logo.png', type: 'image/png' }]
   ],
+  vite: {
+    plugins: [
+      llmstxtPlugin({
+        hostname: 'https://docs.revosurge.com',
+        ignore: ['**/cn/**', '**/hk/**'],
+        llmsFile: { indexTOC: 'only-llms' },
+        llmsFullFile: true,
+        mdFiles: false,
+        transform: ({ page }) => {
+          if (page.path === '/llms.txt') {
+            page.content =
+              '# RevoSurge Documentation\n\n' +
+              '> Documentation for the RevoSurge platform: performance campaigns, first-party tracking, audience segmentation, and API integration.\n\n' +
+              page.content
+          }
+          return page
+        },
+      }),
+    ],
+  },
   locales: {
     en: {
       label: 'English',

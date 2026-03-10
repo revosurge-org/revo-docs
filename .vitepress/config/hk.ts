@@ -84,6 +84,15 @@ export const hk: DefaultTheme.Config = {
         { text: 'API 快速入門', link: '/hk/api/quickstart' },
         { text: 'API 金鑰', link: '/hk/api/api-key' }
       ]
+    },
+    {
+      text: 'LLM 資源',
+      link: '/llms.txt',
+      collapsed: false,
+      items: [
+        { text: 'llms.txt', link: '/llms.txt', target: '_blank', rel: 'noopener noreferrer' },
+        { text: 'llms-full.txt', link: '/llms-full.txt', target: '_blank', rel: 'noopener noreferrer' }
+      ]
     }
   ],
 }

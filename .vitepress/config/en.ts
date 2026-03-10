@@ -84,6 +84,15 @@ export const en: DefaultTheme.Config = {
         { text: 'API Quickstart', link: '/en/api/quickstart' },
         { text: 'API Key', link: '/en/api/api-key' }
       ]
+    },
+    {
+      text: 'LLM Resources',
+      link: '/llms.txt',
+      collapsed: false,
+      items: [
+        { text: 'llms.txt', link: '/llms.txt', target: '_blank', rel: 'noopener noreferrer' },
+        { text: 'llms-full.txt', link: '/llms-full.txt', target: '_blank', rel: 'noopener noreferrer' }
+      ]
     }
   ],
 }
