@@ -20,5 +20,10 @@
   },
   "dependencies": {
     "vitepress-plugin-llmstxt": "^0.5.1"
+  },
+  "overrides": {
+    "vitepress-plugin-llmstxt": {
+      "vitepress": "$vitepress"
+    }
   }
 }
