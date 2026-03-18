@@ -40,11 +40,11 @@ This keeps private network access, authentication, and API shaping outside the d
 
 The implementation will use these files:
 
-- `en/api/exchange-rates.md`
+- `en/reference-data/exchange-rates.md`
 - `.vitepress/theme/components/ExchangeRatesTable.vue`
 - `.vitepress/config/en.ts`
 
-`en/api/exchange-rates.md` will contain the page copy, import the page-specific component locally, and pass one required prop: `indexUrl`. `.vitepress/config/en.ts` will add the page to the English sidebar. The component will not be registered globally in `.vitepress/theme/index.ts`.
+`en/reference-data/exchange-rates.md` will contain the page copy, import the page-specific component locally, and pass one required prop: `indexUrl`. `.vitepress/config/en.ts` will add a top-level English sidebar group named `Reference Data`, with a page entry named `Exchange Rate Reference`. The component will not be registered globally in `.vitepress/theme/index.ts`.
 
 ## Runtime Architecture
 
@@ -197,7 +197,8 @@ Explicit boundaries:
 
 Implementation is complete when all of the following are true:
 
-- The English page exists and is linked in the English sidebar.
+- The English page exists at `en/reference-data/exchange-rates.md`.
+- The English sidebar contains a top-level `Reference Data` group with an `Exchange Rate Reference` entry.
 - Opening the page loads the latest available month by default.
 - Switching months updates the displayed metadata and table correctly.
 - The `loading`, `error`, and `empty` states are each supported.
