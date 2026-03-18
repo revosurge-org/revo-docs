@@ -10,8 +10,7 @@ Monthly exchange-rate reference data published from the internal finance pipelin
 <script setup>
 import ExchangeRatesTable from '../../.vitepress/theme/components/ExchangeRatesTable.vue'
 
-// Replace this with the production CDN index URL before merge.
-const exchangeRatesIndexUrl = 'https://example.invalid/exchange-rates/index.json'
+const exchangeRatesIndexUrl = 'https://assets.revosurge.com/exchange-rates/index.json'
 </script>
 
 <ExchangeRatesTable :index-url="exchangeRatesIndexUrl" />
