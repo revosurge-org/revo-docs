@@ -86,6 +86,14 @@ export const en: DefaultTheme.Config = {
       ]
     },
     {
+      text: 'Reference Data',
+      link: '/en/reference-data/exchange-rates',
+      collapsed: false,
+      items: [
+        { text: 'Exchange Rate Reference', link: '/en/reference-data/exchange-rates' }
+      ]
+    },
+    {
       text: 'LLM Resources',
       link: '/llms.txt',
       collapsed: false,
