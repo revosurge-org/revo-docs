@@ -441,6 +441,105 @@ pbjs.que.push(function() {
 在 S2S 模式下，广告单元的 `bids` 配置保持不变。Prebid.js 会自动将 `s2sConfig.bidders` 中列出的 Bidder 请求转发到 Prebid Server。
 :::
 
+### 广告服务器集成（GAM） {#s2s-gam}
+
+如果发布商使用 Google Ad Manager（GAM）管理广告库存，推荐采用 Prebid.js + S2S + GPT 的接入方式。Revosurge 仍然通过 `s2sConfig` 参与竞价，然后由 Prebid 将价格 key-values 写入 GPT，最终由 GAM 决定实际返回并展示哪个 line item。
+
+流程：
+
+1. 先加载 GPT 和 Prebid.js，然后在页面上定义 GAM 广告位。
+2. 在 GPT 中调用 `disableInitialLoad()`，避免广告位过早发起请求。
+3. 通过 `pbjs.setConfig({ s2sConfig })` 配置 Revosurge。
+4. 竞价完成后，调用 `pbjs.setTargetingForGPTAsync()` 写入 header bidding 键值。
+5. 最后调用 `googletag.pubads().refresh()`，由 GAM 返回最终广告。
+
+#### 示例：Prebid S2S + GAM Managed
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prebid S2S + GAM</title>
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script async src="/js/prebid.js"></script>
+</head>
+<body>
+    <div id="div-gpt-ad-1" style="min-width:300px;min-height:250px;"></div>
+
+    <script>
+        var PREBID_TIMEOUT = 3000;
+        var FAILSAFE_TIMEOUT = 4000;
+
+        window.googletag = window.googletag || { cmd: [] };
+        window.pbjs = window.pbjs || {};
+        pbjs.que = pbjs.que || [];
+
+        var adUnits = [{
+            code: 'div-gpt-ad-1',
+            mediaTypes: {
+                banner: {
+                    sizes: [[300, 250]]
+                }
+            },
+            bids: [{
+                bidder: 'revosurge',
+                params: {
+                    placementId: 'your-placement-id'
+                }
+            }]
+        }];
+
+        googletag.cmd.push(function() {
+            googletag.defineSlot('/1234567/example/banner', [[300, 250]], 'div-gpt-ad-1')
+                .addService(googletag.pubads());
+
+            googletag.pubads().disableInitialLoad();
+            googletag.enableServices();
+        });
+
+        pbjs.que.push(function() {
+            pbjs.setConfig({
+                s2sConfig: {
+                    accountId: 'your-account-id',
+                    bidders: ['revosurge'],
+                    adapter: 'prebidServer',
+                    enabled: true,
+                    endpoint: 'https://prebid-server.revosurge.com/openrtb2/auction',
+                    syncEndpoint: 'https://prebid-server.revosurge.com/cookie_sync',
+                    timeout: PREBID_TIMEOUT
+                },
+                userSync: {
+                    iframeEnabled: true,
+                    pixelEnabled: true
+                }
+            });
+
+            pbjs.addAdUnits(adUnits);
+
+            pbjs.requestBids({
+                timeout: PREBID_TIMEOUT,
+                bidsBackHandler: sendAdServerRequest
+            });
+        });
+
+        function sendAdServerRequest() {
+            if (sendAdServerRequest.called) return;
+            sendAdServerRequest.called = true;
+
+            googletag.cmd.push(function() {
+                pbjs.que.push(function() {
+                    pbjs.setTargetingForGPTAsync(['div-gpt-ad-1']);
+                    googletag.pubads().refresh();
+                });
+            });
+        }
+
+        setTimeout(sendAdServerRequest, FAILSAFE_TIMEOUT);
+    </script>
+</body>
+</html>
+```
+
 ### 竞价参数 {#bidder-params}
 
 Revosurge Bidder 支持以下参数：
