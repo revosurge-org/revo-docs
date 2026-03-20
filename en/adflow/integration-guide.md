@@ -441,6 +441,105 @@ pbjs.que.push(function() {
 In S2S mode, the Ad Unit `bids` configuration remains the same. Prebid.js will automatically forward requests for Bidders listed in `s2sConfig.bidders` to Prebid Server.
 :::
 
+### Ad Server Integration (GAM) {#s2s-gam}
+
+If the publisher uses Google Ad Manager (GAM) to manage inventory, the recommended pattern is Prebid.js + S2S + GPT. Revosurge still participates through `s2sConfig`, then Prebid writes price key-values into GPT, and GAM decides which line item finally serves.
+
+Flow:
+
+1. Load GPT and Prebid.js, then define the GAM slot on the page.
+2. Call `disableInitialLoad()` in GPT so the slot does not request too early.
+3. Configure Revosurge through `pbjs.setConfig({ s2sConfig })`.
+4. After bidding completes, call `pbjs.setTargetingForGPTAsync()` to write header bidding keys.
+5. Finally call `googletag.pubads().refresh()` so GAM can return the final ad.
+
+#### Example: Prebid S2S + GAM Managed
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prebid S2S + GAM</title>
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script async src="/js/prebid.js"></script>
+</head>
+<body>
+    <div id="div-gpt-ad-1" style="min-width:300px;min-height:250px;"></div>
+
+    <script>
+        var PREBID_TIMEOUT = 3000;
+        var FAILSAFE_TIMEOUT = 4000;
+
+        window.googletag = window.googletag || { cmd: [] };
+        window.pbjs = window.pbjs || {};
+        pbjs.que = pbjs.que || [];
+
+        var adUnits = [{
+            code: 'div-gpt-ad-1',
+            mediaTypes: {
+                banner: {
+                    sizes: [[300, 250]]
+                }
+            },
+            bids: [{
+                bidder: 'revosurge',
+                params: {
+                    placementId: 'your-placement-id'
+                }
+            }]
+        }];
+
+        googletag.cmd.push(function() {
+            googletag.defineSlot('/1234567/example/banner', [[300, 250]], 'div-gpt-ad-1')
+                .addService(googletag.pubads());
+
+            googletag.pubads().disableInitialLoad();
+            googletag.enableServices();
+        });
+
+        pbjs.que.push(function() {
+            pbjs.setConfig({
+                s2sConfig: {
+                    accountId: 'your-account-id',
+                    bidders: ['revosurge'],
+                    adapter: 'prebidServer',
+                    enabled: true,
+                    endpoint: 'https://prebid-server.revosurge.com/openrtb2/auction',
+                    syncEndpoint: 'https://prebid-server.revosurge.com/cookie_sync',
+                    timeout: PREBID_TIMEOUT
+                },
+                userSync: {
+                    iframeEnabled: true,
+                    pixelEnabled: true
+                }
+            });
+
+            pbjs.addAdUnits(adUnits);
+
+            pbjs.requestBids({
+                timeout: PREBID_TIMEOUT,
+                bidsBackHandler: sendAdServerRequest
+            });
+        });
+
+        function sendAdServerRequest() {
+            if (sendAdServerRequest.called) return;
+            sendAdServerRequest.called = true;
+
+            googletag.cmd.push(function() {
+                pbjs.que.push(function() {
+                    pbjs.setTargetingForGPTAsync(['div-gpt-ad-1']);
+                    googletag.pubads().refresh();
+                });
+            });
+        }
+
+        setTimeout(sendAdServerRequest, FAILSAFE_TIMEOUT);
+    </script>
+</body>
+</html>
+```
+
 ### Bid Parameters {#bidder-params}
 
 The Revosurge Bidder supports the following parameters:
