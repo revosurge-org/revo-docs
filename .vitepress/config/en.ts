@@ -77,6 +77,17 @@ export const en: DefaultTheme.Config = {
       ]
     },
     {
+      text: 'Supply (SSP Integration)',
+      link: '/en/supply/overview',
+      collapsed: false,
+      items: [
+        { text: 'Overview', link: '/en/supply/overview' },
+        { text: 'Getting Started', link: '/en/supply/getting-started' },
+        { text: 'Bid Endpoint Reference', link: '/en/supply/bid-endpoint' },
+        { text: 'Notifications', link: '/en/supply/notifications' },
+      ]
+    },
+    {
       text: 'API',
       link: '/en/api/quickstart',
       collapsed: false,
