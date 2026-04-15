@@ -78,6 +78,7 @@ The following data attributes are supported on the `<iframe>` tag:
 | `data-placement-id` | Required | — | Ad placement ID, obtained from the AdFlow dashboard |
 | `width` | Optional | `300` | Ad slot width in pixels |
 | `height` | Optional | `250` | Ad slot height in pixels |
+| `data-adflow-responsive` | Optional | — | Set to `1` to enable auto width (`width: 100%`) on the iframe for responsive layouts |
 | `data-deal-id` | Optional | — | Preferred Deal ID |
 
 ### Full Example {#adflow-example}
@@ -186,6 +187,7 @@ The following data attributes are supported on the `<iframe>` tag:
 | `data-deal-id` | Optional | — | Preferred Deal ID |
 | `width` | Optional | `320` | Ad slot width in pixels |
 | `height` | Optional | `50` | Ad slot height in pixels |
+| `data-adflow-responsive` | Optional | — | Set to `1` to enable auto width (`width: 100%`) on the iframe for responsive layouts |
 
 ### Full Example {#adflow-tma-example}
 
