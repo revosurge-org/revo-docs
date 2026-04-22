@@ -91,6 +91,23 @@ tracker.trackDownloadClick('user_123', {
 | user_id | string | No | Unique user ID. |
 | store_type | string | No | Channel of the download, e.g., App Store or Play Store. |
 
+### trackDownloadClickRegister
+
+Mark when a user triggers a download or store jump tied to a registration flow.
+
+```js
+tracker.trackDownloadClickRegister('user_123', {
+  store_type: 'App Store',
+  identifier: 'hashed_email_or_phone'
+});
+```
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| user_id | string | No | Unique user ID. |
+| store_type | string | No | Channel of the download, e.g., App Store or Play Store. |
+| identifier | string | No | Hashed email or phone number. |
+
 ### trackCustomEvent
 
 Add business-specific events such as mission complete or item purchase.

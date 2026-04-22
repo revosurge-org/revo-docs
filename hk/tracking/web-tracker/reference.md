@@ -91,6 +91,23 @@ tracker.trackDownloadClick('user_123', {
 | user_id | string | 否 | 唯一用戶 ID。 |
 | store_type | string | 否 | 下載渠道，如 App Store 或 Play Store。 |
 
+### trackDownloadClickRegister
+
+標記用戶在註冊流程中觸發下載或跳轉應用商店時。
+
+```js
+tracker.trackDownloadClickRegister('user_123', {
+  store_type: 'App Store',
+  identifier: 'hashed_email_or_phone'
+});
+```
+
+| 參數 | 類型 | 必填 | 說明 |
+| --- | --- | --- | --- |
+| user_id | string | 否 | 唯一用戶 ID。 |
+| store_type | string | 否 | 下載渠道，如 App Store 或 Play Store。 |
+| identifier | string | 否 | 雜湊後的電郵或電話號碼。 |
+
 ### trackCustomEvent
 
 新增業務特定事件，如任務完成或物品購買。
