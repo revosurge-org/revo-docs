@@ -78,8 +78,52 @@ The following data attributes are supported on the `<iframe>` tag:
 | `data-placement-id` | Required | — | Ad placement ID, obtained from the AdFlow dashboard |
 | `width` | Optional | `300` | Ad slot width in pixels |
 | `height` | Optional | `250` | Ad slot height in pixels |
-| `data-adflow-responsive` | Optional | — | Set to `1` to enable auto width (`width: 100%`) on the iframe for responsive layouts |
+| `data-adflow-responsive` | Optional | — | Set to `1` so the iframe stretches to `width: 100%` of **your** parent container. You must provide and style that wrapper (see [Responsive layout](#adflow-responsive)) |
 | `data-deal-id` | Optional | — | Preferred Deal ID |
+
+### Responsive layout {#adflow-responsive}
+
+`data-adflow-responsive="1"` only changes how the `<iframe>` is sized in the page: it fills the **width** of its parent element. AdFlow does **not** create an outer layout box for you. You are responsible for wrapping the iframe in a container (for example a `<div>`) and applying CSS for width, height, max-width, centering, and breakpoints so the slot matches your design.
+
+Keep the `width` and `height` attributes on the iframe so the SDK can request the correct creative size; the wrapper controls how much horizontal space the slot occupies on screen.
+
+**Fixed-size slot (e.g. 728×90)**
+
+```html
+<style>
+.your-ad-slot {
+    width: 728px;
+    height: 90px;
+}
+</style>
+<div class="your-ad-slot">
+    <iframe data-adflow-ad
+        data-placement-id="your-placement-id"
+        data-adflow-responsive="1"
+        width="728"
+        height="90"></iframe>
+</div>
+```
+
+**Fluid width with a max width**
+
+```html
+<style>
+.your-ad-slot {
+    width: 100%;
+    max-width: 728px;
+    height: 90px;
+    margin: 0 auto;
+}
+</style>
+<div class="your-ad-slot">
+    <iframe data-adflow-ad
+        data-placement-id="your-placement-id"
+        data-adflow-responsive="1"
+        width="728"
+        height="90"></iframe>
+</div>
+```
 
 ### Full Example {#adflow-example}
 
@@ -187,7 +231,27 @@ The following data attributes are supported on the `<iframe>` tag:
 | `data-deal-id` | Optional | — | Preferred Deal ID |
 | `width` | Optional | `320` | Ad slot width in pixels |
 | `height` | Optional | `50` | Ad slot height in pixels |
-| `data-adflow-responsive` | Optional | — | Set to `1` to enable auto width (`width: 100%`) on the iframe for responsive layouts |
+| `data-adflow-responsive` | Optional | — | Set to `1` so the iframe stretches to `width: 100%` of **your** parent container. You must provide and style that wrapper (see [Responsive layout](#adflow-tma-responsive)) |
+
+### Responsive layout {#adflow-tma-responsive}
+
+Same behavior as [adflow.js](#adflow-responsive): with `data-adflow-responsive="1"`, the iframe uses the full width of the element you wrap it in. Provide your own container and CSS; keep `width` and `height` on the iframe for the requested slot size.
+
+```html
+<style>
+.your-ad-slot {
+    width: 320px;
+    height: 50px;
+}
+</style>
+<div class="your-ad-slot">
+    <iframe data-adflow-ad
+        data-placement-id="your-placement-id"
+        data-adflow-responsive="1"
+        width="320"
+        height="50"></iframe>
+</div>
+```
 
 ### Full Example {#adflow-tma-example}
 
