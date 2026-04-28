@@ -169,6 +169,8 @@ The request body accepts a JSON object of array type. The array item is referenc
 }
 ```
 
+*Note: `bet_result_amount` represents the player's net result. Send a **positive** value when `bet_result` is `win`, and a **negative** value when `bet_result` is `loss` (e.g. `-5.00`).*
+
 #### User Win/Loss
 
 ``` JSON
@@ -185,6 +187,8 @@ The request body accepts a JSON object of array type. The array item is referenc
   "is_crypto": true | false
 }
 ```
+
+*Note: `amount` represents the player's net result. Send a **positive** value when `event_name` is `win`, and a **negative** value when `event_name` is `loss` (e.g. `-5.00`).*
 
 *PS: Could also be sent within `bet` event using `bet_result` and `bet_result_amount` field.*
 

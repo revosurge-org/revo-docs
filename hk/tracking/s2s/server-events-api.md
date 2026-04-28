@@ -169,6 +169,8 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
 }
 ```
 
+*註：`bet_result_amount` 表示玩家的淨輸贏結果。當 `bet_result` 為 `win` 時填寫**正值**；當 `bet_result` 為 `loss` 時填寫**負值**（例如 `-5.00`）。*
+
 #### 用戶輸贏
 
 ``` JSON
@@ -185,6 +187,8 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
   "is_crypto": true | false
 }
 ```
+
+*註：`amount` 表示玩家的淨輸贏結果。當 `event_name` 為 `win` 時填寫**正值**；當 `event_name` 為 `loss` 時填寫**負值**（例如 `-5.00`）。*
 
 *註：也可在 `bet` 事件中透過 `bet_result` 及 `bet_result_amount` 欄位發送。*
 
