@@ -150,7 +150,14 @@ The request body accepts a JSON object of array type. The array item is referenc
 }
 ```
 
-#### User Bet
+#### User Bet & Win/Loss
+
+The bet stake (`bet`) and its settlement outcome (`win` / `loss`) must both be reported. Depending on when the game settles, **choose one of the two patterns below — do not use both**, or the result will be double-counted.
+
+- **Pattern A — Combined (for instantly-settled games such as slots or roulette):** include `bet_result` and `bet_result_amount` directly in the `bet` event so the stake and the outcome are reported in a single call.
+- **Pattern B — Separate (for delayed-settlement games such as sports betting or poker):** first send the `bet` event without the result fields, then send a standalone `win` or `loss` event after settlement, linking it back to the original bet via `parent_transaction_id`.
+
+##### Pattern A: bet event with embedded result
 
 ``` JSON
 {
@@ -169,9 +176,11 @@ The request body accepts a JSON object of array type. The array item is referenc
 }
 ```
 
-*Note: `bet_result_amount` represents the player's net result. Send a **positive** value when `bet_result` is `win`, and a **negative** value when `bet_result` is `loss` (e.g. `-5.00`).*
+*Note: `amount` is the stake placed by the player; `bet_result_amount` represents the player's net result. Send a **positive** value when `bet_result` is `win`, and a **negative** value when `bet_result` is `loss` (e.g. `-5.00`).*
 
-#### User Win/Loss
+##### Pattern B: standalone win / loss event
+
+Send a `bet` event without `bet_result` / `bet_result_amount` first (recording only the stake), then send the corresponding `win` or `loss` event once the bet settles:
 
 ``` JSON
 {
@@ -182,15 +191,13 @@ The request body accepts a JSON object of array type. The array item is referenc
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
-  "parent_transaction_id": "<<THE PARENT BET TRANSACTION ID>>" 
+  "parent_transaction_id": "<<THE PARENT BET TRANSACTION ID>>",
   "timestamp": UTC milliseconds,
   "is_crypto": true | false
 }
 ```
 
-*Note: `amount` represents the player's net result. Send a **positive** value when `event_name` is `win`, and a **negative** value when `event_name` is `loss` (e.g. `-5.00`).*
-
-*PS: Could also be sent within `bet` event using `bet_result` and `bet_result_amount` field.*
+*Note: `amount` represents the player's net result. Send a **positive** value when `event_name` is `win`, and a **negative** value when `event_name` is `loss` (e.g. `-5.00`). `parent_transaction_id` must match the `transaction_id` of the original `bet` event so the two can be linked.*
 
 
 #### User Withdraw

@@ -150,7 +150,14 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
 }
 ```
 
-#### 用户投注
+#### 用户投注与输赢
+
+投注的下注金额（`bet`）与结算结果（`win` / `loss`）需要分别上报。根据游戏的结算时机，**请在以下两种方式中二选一**上报结算结果，**切勿同时使用**，否则会导致重复计入。
+
+- **方式 A — 合并上报（适用于即时结算游戏，如老虎机、轮盘）**：在 `bet` 事件中直接带上 `bet_result` 与 `bet_result_amount`，下注与结算一次性完成。
+- **方式 B — 分开上报（适用于延迟结算游戏，如体育投注、扑克）**：先发送不带结算字段的 `bet` 事件，待结算完成后再发送独立的 `win` 或 `loss` 事件，并通过 `parent_transaction_id` 关联到原 `bet` 事件的 `transaction_id`。
+
+##### 方式 A：bet 事件合并上报结算结果
 
 ``` JSON
 {
@@ -169,9 +176,11 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
 }
 ```
 
-*注：`bet_result_amount` 表示玩家的净输赢结果。当 `bet_result` 为 `win` 时填写**正值**；当 `bet_result` 为 `loss` 时填写**负值**（例如 `-5.00`）。*
+*注：`amount` 为玩家的下注金额；`bet_result_amount` 表示玩家的净输赢结果。当 `bet_result` 为 `win` 时填写**正值**；当 `bet_result` 为 `loss` 时填写**负值**（例如 `-5.00`）。*
 
-#### 用户输赢
+##### 方式 B：独立的 win / loss 事件
+
+先发送不含 `bet_result` / `bet_result_amount` 的 `bet` 事件（仅记录下注），结算后再发送对应的 `win` 或 `loss` 事件：
 
 ``` JSON
 {
@@ -182,15 +191,13 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
-  "parent_transaction_id": "<<THE PARENT BET TRANSACTION ID>>" 
+  "parent_transaction_id": "<<THE PARENT BET TRANSACTION ID>>",
   "timestamp": UTC milliseconds,
   "is_crypto": true | false
 }
 ```
 
-*注：`amount` 表示玩家的净输赢结果。当 `event_name` 为 `win` 时填写**正值**；当 `event_name` 为 `loss` 时填写**负值**（例如 `-5.00`）。*
-
-*注：也可在 `bet` 事件中通过 `bet_result` 和 `bet_result_amount` 字段发送。*
+*注：`amount` 表示玩家的净输赢结果。当 `event_name` 为 `win` 时填写**正值**；当 `event_name` 为 `loss` 时填写**负值**（例如 `-5.00`）。`parent_transaction_id` 必须与对应 `bet` 事件的 `transaction_id` 一致，用于建立关联。*
 
 
 #### 用户提现

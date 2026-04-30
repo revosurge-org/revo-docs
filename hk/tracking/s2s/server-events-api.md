@@ -150,7 +150,14 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
 }
 ```
 
-#### 用戶投注
+#### 用戶投注與輸贏
+
+投注的下注金額（`bet`）與結算結果（`win` / `loss`）需要分別上報。根據遊戲的結算時機，**請在以下兩種方式中二選一**上報結算結果，**切勿同時使用**，否則會導致重複計入。
+
+- **方式 A — 合併上報（適用於即時結算遊戲，如老虎機、輪盤）**：在 `bet` 事件中直接帶上 `bet_result` 與 `bet_result_amount`，下注與結算一次性完成。
+- **方式 B — 分開上報（適用於延遲結算遊戲，如體育博彩、撲克）**：先發送不帶結算欄位的 `bet` 事件，待結算完成後再發送獨立的 `win` 或 `loss` 事件，並透過 `parent_transaction_id` 關聯到原 `bet` 事件的 `transaction_id`。
+
+##### 方式 A：bet 事件合併上報結算結果
 
 ``` JSON
 {
@@ -169,9 +176,11 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
 }
 ```
 
-*註：`bet_result_amount` 表示玩家的淨輸贏結果。當 `bet_result` 為 `win` 時填寫**正值**；當 `bet_result` 為 `loss` 時填寫**負值**（例如 `-5.00`）。*
+*註：`amount` 為玩家的下注金額；`bet_result_amount` 表示玩家的淨輸贏結果。當 `bet_result` 為 `win` 時填寫**正值**；當 `bet_result` 為 `loss` 時填寫**負值**（例如 `-5.00`）。*
 
-#### 用戶輸贏
+##### 方式 B：獨立的 win / loss 事件
+
+先發送不含 `bet_result` / `bet_result_amount` 的 `bet` 事件（僅記錄下注），結算後再發送對應的 `win` 或 `loss` 事件：
 
 ``` JSON
 {
@@ -182,15 +191,13 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
-  "parent_transaction_id": "<<THE PARENT BET TRANSACTION ID>>" 
+  "parent_transaction_id": "<<THE PARENT BET TRANSACTION ID>>",
   "timestamp": UTC milliseconds,
   "is_crypto": true | false
 }
 ```
 
-*註：`amount` 表示玩家的淨輸贏結果。當 `event_name` 為 `win` 時填寫**正值**；當 `event_name` 為 `loss` 時填寫**負值**（例如 `-5.00`）。*
-
-*註：也可在 `bet` 事件中透過 `bet_result` 及 `bet_result_amount` 欄位發送。*
+*註：`amount` 表示玩家的淨輸贏結果。當 `event_name` 為 `win` 時填寫**正值**；當 `event_name` 為 `loss` 時填寫**負值**（例如 `-5.00`）。`parent_transaction_id` 必須與對應 `bet` 事件的 `transaction_id` 一致，用於建立關聯。*
 
 
 #### 用戶提現
