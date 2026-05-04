@@ -85,6 +85,7 @@ export const en: DefaultTheme.Config = {
         { text: 'Getting Started', link: '/en/supply/getting-started' },
         { text: 'Bid Endpoint Reference', link: '/en/supply/bid-endpoint' },
         { text: 'Notifications', link: '/en/supply/notifications' },
+        { text: 'Daily Report API', link: '/en/supply/daily-report' },
       ]
     },
     {
