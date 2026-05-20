@@ -14,7 +14,7 @@ RevoSurge is a Demand-Side Platform (DSP) that bids on ad inventory via Real-Tim
 | Dimension | Details |
 |---|---|
 | **Protocol** | OpenRTB 2.5 |
-| **Ad formats** | Banner, Native, Popunder |
+| **Ad formats** | Banner, Native, Popunder, Push (native) |
 | **Auction type** | First-price (`at: 1`) |
 | **Currency** | USD |
 | **Geographic focus** | Global — Asia, US, EU regions active |
