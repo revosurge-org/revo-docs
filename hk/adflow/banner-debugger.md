@@ -1,13 +1,13 @@
 ---
-title: adflow.js Debugger
-description: Test adflow.js in-browser. Configure URL, account ID, placement to validate S2S bidding.
+title: Banner 調試器
+description: 在瀏覽器測試 adflow.js。配置 URL、帳戶 ID、廣告位驗證 S2S 競價。
 ---
 
-# adflow.js Test
+# Banner 調試器
 
-Test the adflow.js one-script integration: just include the script and place iframe tags to enable Prebid S2S bidding.
+測試 adflow.js 對 **Banner（橫幅）**廣告類型的支持。
 
-## Configuration
+## 配置參數
 
 <ClientOnly>
 <div class="adflowjs-dbg">
@@ -22,69 +22,69 @@ Test the adflow.js one-script integration: just include the script and place ifr
     </div>
     <div class="input-group">
       <label>Placement ID</label>
-      <input type="text" id="af-placementId1" value="test-placement-1" />
+      <input type="text" id="af-placementId1" value="test-banner-1" />
     </div>
-    <button id="af-runBtn">Run Test</button>
+    <button id="af-runBtn">運行測試</button>
   </div>
 </div>
 </ClientOnly>
 
-## Code Preview
+## 代碼預覽
 
-Auto-generated integration code based on the parameters above. Publishers can copy and paste to integrate:
+根據上方配置參數自動生成的接入代碼，客戶只需複製以下代碼即可接入：
 
 <ClientOnly>
 <div class="adflowjs-dbg">
   <div class="card" style="margin-bottom: 24px;">
-    <h3>Generated HTML Code</h3>
+    <h3>生成的 HTML 代碼</h3>
     <div id="af-codePreview" class="code-block"></div>
   </div>
 </div>
 </ClientOnly>
 
-## Test Status
+## 測試狀態
 
 <ClientOnly>
 <div class="adflowjs-dbg">
   <div class="grid">
     <div class="card">
-      <h3>Execution Status</h3>
+      <h3>執行狀態</h3>
       <div>
-        <div class="test-row"><span class="test-name">Script Load</span><span class="status pending" id="af-status-script">Waiting</span></div>
-        <div class="test-row"><span class="test-name">Config Read</span><span class="status pending" id="af-status-config">Waiting</span></div>
-        <div class="test-row"><span class="test-name">Slot Discovery</span><span class="status pending" id="af-status-slots">Waiting</span></div>
-        <div class="test-row"><span class="test-name">Prebid.js Load</span><span class="status pending" id="af-status-prebid">Waiting</span></div>
-        <div class="test-row"><span class="test-name">S2S Auction</span><span class="status pending" id="af-status-auction">Waiting</span></div>
-        <div class="test-row"><span class="test-name">Ad Rendering</span><span class="status pending" id="af-status-render">Waiting</span></div>
+        <div class="test-row"><span class="test-name">腳本加載</span><span class="status pending" id="af-status-script">等待測試</span></div>
+        <div class="test-row"><span class="test-name">配置讀取</span><span class="status pending" id="af-status-config">等待測試</span></div>
+        <div class="test-row"><span class="test-name">廣告位發現</span><span class="status pending" id="af-status-slots">等待測試</span></div>
+        <div class="test-row"><span class="test-name">Prebid.js 加載</span><span class="status pending" id="af-status-prebid">等待測試</span></div>
+        <div class="test-row"><span class="test-name">S2S 競價</span><span class="status pending" id="af-status-auction">等待測試</span></div>
+        <div class="test-row"><span class="test-name">廣告渲染</span><span class="status pending" id="af-status-render">等待測試</span></div>
       </div>
     </div>
     <div class="card" id="af-runtime-config">
-      <h3>Runtime Config</h3>
+      <h3>運行時配置</h3>
       <div id="af-runtimeConfig" class="config-display">
-        <div><span class="key">Status:</span> <span class="val">Not Started</span></div>
+        <div><span class="key">狀態:</span> <span class="val">未啓動</span></div>
       </div>
     </div>
   </div>
 </div>
 </ClientOnly>
 
-## Ad Preview
+## 廣告預覽
 
 <ClientOnly>
 <div class="adflowjs-dbg">
   <div class="card" style="margin-bottom: 24px;">
-    <h3>Test Ad Slot (300x250)</h3>
+    <h3>測試廣告位 (300x250)</h3>
     <div class="ad-slot-wrapper" id="af-ad-wrapper-1">
-      <div class="ad-slot-label">data-placement-id="<span id="af-label-pid-1">test-placement-1</span>"</div>
+      <div class="ad-slot-label">data-placement-id="<span id="af-label-pid-1">test-banner-1</span>"</div>
       <div id="af-ad-container-1" style="width:300px;height:250px;display:flex;align-items:center;justify-content:center;color:var(--vp-c-text-3);">
-        Waiting for auction...
+        等待競價...
       </div>
     </div>
   </div>
 </div>
 </ClientOnly>
 
-## Logs
+## 日誌
 
 <ClientOnly>
 <div class="adflowjs-dbg">
@@ -150,42 +150,42 @@ onMounted(async () => {
 
   function trackStatus(msg) {
     if (msg.indexOf('Initializing') !== -1) {
-      setStatus('af-status-script', 'success', 'Loaded');
-      setStatus('af-status-config', 'success', 'Read');
+      setStatus('af-status-script', 'success', '已加載');
+      setStatus('af-status-config', 'success', '已讀取');
     }
     if (msg.indexOf('Found') !== -1 && msg.indexOf('ad slot') !== -1) {
       var match = msg.match(/Found (\d+)/);
-      setStatus('af-status-slots', 'success', 'Found ' + (match ? match[1] : '') + ' slot(s)');
+      setStatus('af-status-slots', 'success', '發現 ' + (match ? match[1] : '') + ' 個廣告位');
     }
     if (msg.indexOf('Prebid.js loaded') !== -1 || msg.indexOf('Prebid.js already loaded') !== -1) {
-      setStatus('af-status-prebid', 'success', 'Loaded');
+      setStatus('af-status-prebid', 'success', '已加載');
     }
     if (msg.indexOf('Loading Prebid.js') !== -1) {
-      setStatus('af-status-prebid', 'pending', 'Loading...');
+      setStatus('af-status-prebid', 'pending', '加載中...');
     }
     if (msg.indexOf('S2S config') !== -1) {
-      setStatus('af-status-auction', 'pending', 'Bidding...');
+      setStatus('af-status-auction', 'pending', '競價中...');
     }
     if (msg.indexOf('Auction complete') !== -1) {
-      setStatus('af-status-auction', 'success', 'Auction Complete');
+      setStatus('af-status-auction', 'success', '競價完成');
     }
     if (msg.indexOf('won by') !== -1) {
-      setStatus('af-status-render', 'success', 'Rendered');
+      setStatus('af-status-render', 'success', '已渲染');
     }
     if (msg.indexOf('no bids') !== -1) {
       var el = document.getElementById('af-status-render');
-      if (el && (el.textContent === 'Waiting' || el.textContent === 'Bidding...')) {
-        setStatus('af-status-render', 'warn', 'No Bids');
+      if (el && (el.textContent === '等待測試' || el.textContent === '競價中...')) {
+        setStatus('af-status-render', 'warn', '無出價');
       }
     }
     if (msg.indexOf('Failed to load Prebid.js') !== -1) {
-      setStatus('af-status-prebid', 'error', 'Load Failed');
+      setStatus('af-status-prebid', 'error', '加載失敗');
     }
     if (msg.indexOf('data-account-id is required') !== -1) {
-      setStatus('af-status-config', 'error', 'Missing account-id');
+      setStatus('af-status-config', 'error', '缺少 account-id');
     }
     if (msg.indexOf('No valid') !== -1) {
-      setStatus('af-status-slots', 'error', 'No Slots Found');
+      setStatus('af-status-slots', 'error', '未找到廣告位');
     }
   }
 
@@ -215,20 +215,20 @@ onMounted(async () => {
     var el = document.getElementById('af-runtimeConfig');
     if (!el) return;
     if (!ads || !ads.config) {
-      el.innerHTML = '<div><span class="key">Status:</span> <span class="val">Not Initialized</span></div>';
+      el.innerHTML = '<div><span class="key">狀態:</span> <span class="val">未初始化</span></div>';
       return;
     }
     var c = ads.config;
     var html = '';
-    html += '<div><span class="key">Version:</span> <span class="val">' + (ads.version || '-') + '</span></div>';
-    html += '<div><span class="key">Server:</span> <span class="val">' + escapeHtml(c.serverUrl) + '</span></div>';
-    html += '<div><span class="key">Account:</span> <span class="val">' + escapeHtml(c.accountId) + '</span></div>';
-    html += '<div><span class="key">Bidder:</span> <span class="val">' + escapeHtml(c.bidder) + '</span></div>';
-    html += '<div><span class="key">Timeout:</span> <span class="val">' + c.timeout + 'ms</span></div>';
-    html += '<div><span class="key">Debug:</span> <span class="val">' + c.debug + '</span></div>';
+    html += '<div><span class="key">版本:</span> <span class="val">' + (ads.version || '-') + '</span></div>';
+    html += '<div><span class="key">服務器:</span> <span class="val">' + escapeHtml(c.serverUrl) + '</span></div>';
+    html += '<div><span class="key">帳號:</span> <span class="val">' + escapeHtml(c.accountId) + '</span></div>';
+    html += '<div><span class="key">競價方:</span> <span class="val">' + escapeHtml(c.bidder) + '</span></div>';
+    html += '<div><span class="key">超時:</span> <span class="val">' + c.timeout + 'ms</span></div>';
+    html += '<div><span class="key">調試:</span> <span class="val">' + c.debug + '</span></div>';
     if (ads.slots && ads.slots.length > 0) {
       html += '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--vp-c-divider);">';
-      html += '<div style="font-weight:600;margin-bottom:4px;color:var(--vp-c-text-1);">Slots:</div>';
+      html += '<div style="font-weight:600;margin-bottom:4px;color:var(--vp-c-text-1);">廣告位:</div>';
       ads.slots.forEach(function(slot) {
         html += '<div><span class="key">' + escapeHtml(slot.code) + ':</span> '
           + '<span class="val">' + escapeHtml(slot.placementId)
@@ -274,22 +274,22 @@ onMounted(async () => {
       if (done) {
         clearInterval(timer);
         if (rendered) {
-          setStatus('af-status-render', 'success', 'Ad Rendered');
-          log('========== Test Complete: Auction Won ==========', 'success');
+          setStatus('af-status-render', 'success', '廣告已渲染');
+          log('========== 測試完成：競價成功 ==========', 'success');
         } else {
-          setStatus('af-status-render', 'warn', 'No Bids');
-          log('========== Test Complete: Connected but no bids returned (normal for test env) ==========', 'warn');
+          setStatus('af-status-render', 'warn', '無出價');
+          log('========== 測試完成：已連接但無出價(測試環境屬正常現象) ==========', 'warn');
         }
         btn.disabled = false;
-        btn.textContent = 'Re-test';
+        btn.textContent = '重新測試';
         return;
       }
       if (attempts >= maxAttempts) {
         clearInterval(timer);
-        log('Test timeout (20s)', 'warn');
-        setStatus('af-status-render', 'warn', 'No Bids');
+        log('測試超時 (20s)', 'warn');
+        setStatus('af-status-render', 'warn', '無出價');
         btn.disabled = false;
-        btn.textContent = 'Re-test';
+        btn.textContent = '重新測試';
       }
     }, 500);
   }
@@ -297,11 +297,11 @@ onMounted(async () => {
   function runTest() {
     var btn = document.getElementById('af-runBtn');
     btn.disabled = true;
-    btn.textContent = 'Testing...';
+    btn.textContent = '測試中...';
     logBox.innerHTML = '';
 
     ['af-status-script', 'af-status-config', 'af-status-slots', 'af-status-prebid', 'af-status-auction', 'af-status-render'].forEach(function(id) {
-      setStatus(id, 'pending', 'Waiting...');
+      setStatus(id, 'pending', '等待中...');
     });
 
     var wrapper = document.getElementById('af-ad-wrapper-1');
@@ -316,7 +316,7 @@ onMounted(async () => {
     var accountId = document.getElementById('af-accountId').value.trim();
     var pid1 = document.getElementById('af-placementId1').value.trim();
 
-    log('========== Starting adflow.js Test ==========', 'info');
+    log('========== 開始 adflow.js 測試 ==========', 'info');
     log('Server URL: ' + serverUrl);
     log('Account ID: ' + accountId);
     log('Placement ID: ' + pid1 + ' (300x250)');
@@ -332,7 +332,7 @@ onMounted(async () => {
     iframe1.style.border = 'none';
     container1.appendChild(iframe1);
 
-    log('Created <iframe data-adflow-ad> element');
+    log('已創建 <iframe data-adflow-ad> 元素');
 
     var oldScript = document.getElementById('af-adflow-script');
     if (oldScript) oldScript.parentNode.removeChild(oldScript);
@@ -345,22 +345,21 @@ onMounted(async () => {
     script.setAttribute('data-debug', '');
 
     script.onload = function() {
-      log('adflow.js loaded', 'success');
+      log('adflow.js 已加載', 'success');
       updateRuntimeConfig();
       pollForCompletion(btn);
     };
     script.onerror = function() {
-      log('Failed to load adflow.js!', 'error');
-      setStatus('af-status-script', 'error', 'Load Failed');
+      log('adflow.js 加載失敗！', 'error');
+      setStatus('af-status-script', 'error', '加載失敗');
       btn.disabled = false;
-      btn.textContent = 'Re-test';
+      btn.textContent = '重新測試';
     };
 
-    log('Injecting adflow.js script...');
+    log('正在注入 adflow.js 腳本...');
     document.body.appendChild(script);
   }
 
-  // Attach event listeners
   var runBtn = document.getElementById('af-runBtn');
   if (runBtn) runBtn.addEventListener('click', runTest);
 
