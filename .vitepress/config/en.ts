@@ -62,7 +62,9 @@ export const en: DefaultTheme.Config = {
       collapsed: false,
       items: [
         { text: 'Integration Guide', link: '/en/adflow/integration-guide' },
-        { text: 'adflow.js Debugger', link: '/en/adflow/adflowjs-debugger' },
+        { text: 'Banner Debugger', link: '/en/adflow/banner-debugger' },
+        { text: 'Pop Debugger', link: '/en/adflow/pop-debugger' },
+        { text: 'Push Debugger', link: '/en/adflow/push-debugger' },
         { text: 'S2S Debugger', link: '/en/adflow/s2s-debugger' },
       ]
     },

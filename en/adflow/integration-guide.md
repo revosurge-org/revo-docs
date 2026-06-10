@@ -13,7 +13,7 @@ This guide covers how to integrate ads into your website. We offer two integrati
 | --- | --- | --- |
 | **Complexity** | Minimal — just 2 lines of HTML | Moderate — requires JS coding |
 | **Prebid.js Knowledge** | Not required | Required |
-| **Ad Formats** | Banner | Banner / Video / Native / Multi-Format |
+| **Ad Formats** | Banner / Pop / Push | Banner / Video / Native / Multi-Format |
 | **Rendering** | Automatic iframe rendering | Full control, custom rendering supported |
 | **Configuration** | HTML data attributes | Full Prebid.js config API |
 | **Preferred Deal** | Supported | Supported |
@@ -22,9 +22,9 @@ This guide covers how to integrate ads into your website. We offer two integrati
 
 ## adflow.js Quick Integration {#adflow-sdk}
 
-adflow.js is a self-contained JavaScript SDK that encapsulates all Prebid.js S2S bidding logic into a single script. Publishers only need to include one `<script>` tag and place `<iframe>` tags at ad positions — no need to manually load Prebid.js or write any bidding code.
+adflow.js is a self-contained JavaScript SDK that encapsulates all Prebid.js S2S bidding logic into a single script. Publishers only need to include one `<script>` tag and place `<iframe>` tags at ad positions — no need to manually load Prebid.js or write any bidding code. It supports three ad types — **Banner**, **Pop** (popunder), and **Push** (push notification) — selected via the `data-ad-type` attribute on each ad slot.
 
-[adflow.js Debugger](/en/adflow/adflowjs-debugger)
+[Banner Debugger](/en/adflow/banner-debugger) · [Pop Debugger](/en/adflow/pop-debugger) · [Push Debugger](/en/adflow/push-debugger)
 
 ::: tip Recommended
 If you want the fastest and simplest integration, adflow.js is the best choice. No need to understand Prebid.js configuration details — just two lines of HTML to get started.
@@ -55,6 +55,48 @@ Add `<iframe>` tags where you want ads to appear:
 
 adflow.js automatically handles the entire flow: Load Prebid.js → Configure S2S → Discover ad slots on the page → Run auction → Render winning ads.
 
+### Ad Types {#adflow-ad-types}
+
+adflow.js supports three ad types. The script integration is identical for all of them — the only difference is the `data-ad-type` attribute on the ad slot `<iframe>`.
+
+#### Banner (default) {#adflow-type-banner}
+
+A standard in-page banner. The winning creative renders directly inside the `<iframe>`. When `data-ad-type` is omitted the slot is a Banner; set its size with `width` / `height`.
+
+```html
+<iframe data-adflow-ad
+    data-placement-id="your-placement-id"
+    width="300" height="250"></iframe>
+```
+
+#### Pop (popunder) {#adflow-type-pop}
+
+Add `data-ad-type="pop"`. A Pop ad has **no in-page creative**: after the auction, the winning ad opens in a background ("popunder") window on the user's **first click anywhere on the page** — browsers require `window.open()` to run inside a user gesture — and it fires only once per page. A Pop slot needs no `width` / `height`.
+
+```html
+<iframe data-adflow-ad
+    data-placement-id="your-placement-id"
+    data-ad-type="pop"></iframe>
+```
+
+[Pop Debugger](/en/adflow/pop-debugger)
+
+#### Push (push notification) {#adflow-type-push}
+
+Add `data-ad-type="push"`. A Push ad also has **no in-page creative**; instead it surfaces as a real browser notification via the `Notification API` (title, body, and icon come from the creative, and clicking it opens the landing page). It requires the user to **grant notification permission** (browsers only prompt from a user gesture in a secure HTTPS context). A Push slot needs no `width` / `height` — the notification icon is always requested at 192×192.
+
+```html
+<iframe data-adflow-ad
+    data-placement-id="your-placement-id"
+    data-ad-type="push"></iframe>
+```
+
+[Push Debugger](/en/adflow/push-debugger)
+
+::: info Disable the notification
+Push ads pop a browser notification by default. To receive the bid without showing a notification, add `data-push-notification="false"` to the `<script>` tag.
+:::
+
 ### Script Attributes {#adflow-script-attrs}
 
 The following data attributes are supported on the `<script>` tag:
@@ -67,6 +109,7 @@ The following data attributes are supported on the `<script>` tag:
 | `data-timeout` | Optional | `3000` | S2S timeout in milliseconds |
 | `data-prebid-url` | Optional | jsdelivr CDN | Custom Prebid.js URL |
 | `data-debug` | Optional | — | Enable debug mode (presence attribute, no value needed) |
+| `data-push-notification` | Optional | `true` | Whether a Push ad pops a browser notification when it wins; set to `false` to disable |
 
 ### Ad Slot Attributes {#adflow-iframe-attrs}
 
@@ -76,8 +119,9 @@ The following data attributes are supported on the `<iframe>` tag:
 | --- | --- | --- | --- |
 | `data-adflow-ad` | Required | — | Marks this element as an ad slot (no value needed) |
 | `data-placement-id` | Required | — | Ad placement ID, obtained from the AdFlow dashboard |
-| `width` | Optional | `300` | Ad slot width in pixels |
-| `height` | Optional | `250` | Ad slot height in pixels |
+| `data-ad-type` | Optional | `banner` | Ad type: `banner` (default), `pop` (popunder), or `push` (push notification) |
+| `width` | Optional | `300` | Ad slot width in pixels (`banner` only) |
+| `height` | Optional | `250` | Ad slot height in pixels (`banner` only) |
 | `data-adflow-responsive` | Optional | — | Set to `1` so the iframe stretches to `width: 100%` of **your** parent container. You must provide and style that wrapper (see [Responsive layout](#adflow-responsive)) |
 | `data-deal-id` | Optional | — | Preferred Deal ID |
 
@@ -157,6 +201,16 @@ Below is a minimal complete page example that you can copy and use directly.
         data-placement-id="placement-3"
         data-deal-id="deal-001"
         width="970" height="250"></iframe>
+
+    <!-- Pop ad (no width/height needed) -->
+    <iframe data-adflow-ad
+        data-placement-id="placement-4"
+        data-ad-type="pop"></iframe>
+
+    <!-- Push notification ad (no width/height needed) -->
+    <iframe data-adflow-ad
+        data-placement-id="placement-5"
+        data-ad-type="push"></iframe>
 </body>
 </html>
 ```

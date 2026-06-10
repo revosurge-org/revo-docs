@@ -62,7 +62,9 @@ export const cn: DefaultTheme.Config = {
       collapsed: false,
       items: [
         { text: '接入指南', link: '/cn/adflow/integration-guide' },
-        { text: 'adflow.js 调试器', link: '/cn/adflow/adflowjs-debugger' },
+        { text: 'Banner 调试器', link: '/cn/adflow/banner-debugger' },
+        { text: 'Pop 调试器', link: '/cn/adflow/pop-debugger' },
+        { text: 'Push 调试器', link: '/cn/adflow/push-debugger' },
         { text: 'S2S 调试器', link: '/cn/adflow/s2s-debugger' },
       ]
     },
