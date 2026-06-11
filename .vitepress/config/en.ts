@@ -65,6 +65,7 @@ export const en: DefaultTheme.Config = {
         { text: 'Banner Debugger', link: '/en/adflow/banner-debugger' },
         { text: 'Pop Debugger', link: '/en/adflow/pop-debugger' },
         { text: 'Push Debugger', link: '/en/adflow/push-debugger' },
+        { text: 'In-page Push Debugger', link: '/en/adflow/inpage-push-debugger' },
         { text: 'S2S Debugger', link: '/en/adflow/s2s-debugger' },
       ]
     },

@@ -13,7 +13,7 @@ This guide covers how to integrate ads into your website. We offer two integrati
 | --- | --- | --- |
 | **Complexity** | Minimal — just 2 lines of HTML | Moderate — requires JS coding |
 | **Prebid.js Knowledge** | Not required | Required |
-| **Ad Formats** | Banner / Pop / Push | Banner / Video / Native / Multi-Format |
+| **Ad Formats** | Banner / Pop / Push / In-page Push | Banner / Video / Native / Multi-Format |
 | **Rendering** | Automatic iframe rendering | Full control, custom rendering supported |
 | **Configuration** | HTML data attributes | Full Prebid.js config API |
 | **Preferred Deal** | Supported | Supported |
@@ -22,9 +22,9 @@ This guide covers how to integrate ads into your website. We offer two integrati
 
 ## adflow.js Quick Integration {#adflow-sdk}
 
-adflow.js is a self-contained JavaScript SDK that encapsulates all Prebid.js S2S bidding logic into a single script. Publishers only need to include one `<script>` tag and place `<iframe>` tags at ad positions — no need to manually load Prebid.js or write any bidding code. It supports three ad types — **Banner**, **Pop** (popunder), and **Push** (push notification) — selected via the `data-ad-type` attribute on each ad slot.
+adflow.js is a self-contained JavaScript SDK that encapsulates all Prebid.js S2S bidding logic into a single script. Publishers only need to include one `<script>` tag and place `<iframe>` tags at ad positions — no need to manually load Prebid.js or write any bidding code. It supports four ad types — **Banner**, **Pop** (popunder), **Push** (push notification), and **In-page Push** (centered popup) — selected via the `data-ad-type` attribute on each ad slot.
 
-[Banner Debugger](/en/adflow/banner-debugger) · [Pop Debugger](/en/adflow/pop-debugger) · [Push Debugger](/en/adflow/push-debugger)
+[Banner Debugger](/en/adflow/banner-debugger) · [Pop Debugger](/en/adflow/pop-debugger) · [Push Debugger](/en/adflow/push-debugger) · [In-page Push Debugger](/en/adflow/inpage-push-debugger)
 
 ::: tip Recommended
 If you want the fastest and simplest integration, adflow.js is the best choice. No need to understand Prebid.js configuration details — just two lines of HTML to get started.
@@ -57,7 +57,7 @@ adflow.js automatically handles the entire flow: Load Prebid.js → Configure S2
 
 ### Ad Types {#adflow-ad-types}
 
-adflow.js supports three ad types. The script integration is identical for all of them — the only difference is the `data-ad-type` attribute on the ad slot `<iframe>`.
+adflow.js supports four ad types. The script integration is identical for all of them — the only difference is the `data-ad-type` attribute on the ad slot `<iframe>`.
 
 #### Banner (default) {#adflow-type-banner}
 
@@ -97,6 +97,19 @@ Add `data-ad-type="push"`. A Push ad also has **no in-page creative**; instead i
 Push ads pop a browser notification by default. To receive the bid without showing a notification, add `data-push-notification="false"` to the `<script>` tag.
 :::
 
+#### In-page Push (centered popup) {#adflow-type-inpage-push}
+
+Add `data-ad-type="inpage-push"`. The auction request is identical to Push (a native creative with image + title + body), but it shows **no system notification and needs no permission**: on a win, adflow.js renders a popup card **centered on the page** — image full-width on top, title and body below, with a close button in the corner. Clicking the card opens the landing page. `width` / `height` set the requested image size, defaulting to **492×328**.
+
+```html
+<iframe data-adflow-ad
+    data-placement-id="your-placement-id"
+    data-ad-type="inpage-push"
+    width="492" height="328"></iframe>
+```
+
+[In-page Push Debugger](/en/adflow/inpage-push-debugger)
+
 ### Script Attributes {#adflow-script-attrs}
 
 The following data attributes are supported on the `<script>` tag:
@@ -119,9 +132,9 @@ The following data attributes are supported on the `<iframe>` tag:
 | --- | --- | --- | --- |
 | `data-adflow-ad` | Required | — | Marks this element as an ad slot (no value needed) |
 | `data-placement-id` | Required | — | Ad placement ID, obtained from the AdFlow dashboard |
-| `data-ad-type` | Optional | `banner` | Ad type: `banner` (default), `pop` (popunder), or `push` (push notification) |
-| `width` | Optional | `300` | Ad slot width in pixels (`banner` only) |
-| `height` | Optional | `250` | Ad slot height in pixels (`banner` only) |
+| `data-ad-type` | Optional | `banner` | Ad type: `banner` (default), `pop` (popunder), `push` (push notification), or `inpage-push` (centered popup) |
+| `width` | Optional | `300` / `492` | Ad slot width in pixels. Creative size for `banner` (default 300); requested image width for `inpage-push` (default 492) |
+| `height` | Optional | `250` / `328` | Ad slot height in pixels. Creative size for `banner` (default 250); requested image height for `inpage-push` (default 328) |
 | `data-adflow-responsive` | Optional | — | Set to `1` so the iframe stretches to `width: 100%` of **your** parent container. You must provide and style that wrapper (see [Responsive layout](#adflow-responsive)) |
 | `data-deal-id` | Optional | — | Preferred Deal ID |
 
@@ -211,6 +224,11 @@ Below is a minimal complete page example that you can copy and use directly.
     <iframe data-adflow-ad
         data-placement-id="placement-5"
         data-ad-type="push"></iframe>
+
+    <!-- In-page Push ad (width/height optional, default 492×328) -->
+    <iframe data-adflow-ad
+        data-placement-id="placement-6"
+        data-ad-type="inpage-push"></iframe>
 </body>
 </html>
 ```
