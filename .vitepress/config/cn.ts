@@ -66,6 +66,7 @@ export const cn: DefaultTheme.Config = {
         { text: 'Pop 调试器', link: '/cn/adflow/pop-debugger' },
         { text: 'Push 调试器', link: '/cn/adflow/push-debugger' },
         { text: 'In-page Push 调试器', link: '/cn/adflow/inpage-push-debugger' },
+        { text: 'Native 调试器', link: '/cn/adflow/native-debugger' },
         { text: 'S2S 调试器', link: '/cn/adflow/s2s-debugger' },
       ]
     },
