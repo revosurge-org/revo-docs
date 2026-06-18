@@ -114,7 +114,7 @@ The request body accepts a JSON object of array type. The array item is referenc
   "client_user_id": "<<THE UNIQUE USER ID>>",
   "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "register",
-  "timestamp": UTC milliseconds,
+  "timestamp": UTC seconds,
   "ip_address": "<<THE END USER IP>>",
   "user_agent": "<<THE USER AGENT STRING>>"
 }
@@ -127,7 +127,7 @@ The request body accepts a JSON object of array type. The array item is referenc
   "client_user_id": "<<THE UNIQUE USER ID>>",
   "click_id": "<<THE UNIQUE CLICK ID>>",
   "event_name": "login",
-  "timestamp": UTC milliseconds,
+  "timestamp": UTC seconds,
   "ip_address": "<<THE END USER IP>>",
   "user_agent": "<<THE USER AGENT STRING>>"
 }
@@ -144,7 +144,7 @@ The request body accepts a JSON object of array type. The array item is referenc
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
-  "timestamp": UTC milliseconds,
+  "timestamp": UTC seconds,
   "ip_address": "<<THE END USER IP>>",
   "is_crypto": true | false
 }
@@ -168,7 +168,7 @@ The bet stake (`bet`) and its settlement outcome (`win` / `loss`) must both be r
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
-  "timestamp": UTC milliseconds,
+  "timestamp": UTC seconds,
   "is_crypto": true | false,
 
   "bet_result": "win | loss",
@@ -192,7 +192,7 @@ Send a `bet` event without `bet_result` / `bet_result_amount` first (recording o
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
   "parent_transaction_id": "<<THE PARENT BET TRANSACTION ID>>",
-  "timestamp": UTC milliseconds,
+  "timestamp": UTC seconds,
   "is_crypto": true | false
 }
 ```
@@ -209,7 +209,7 @@ Send a `bet` event without `bet_result` / `bet_result_amount` first (recording o
   "currency": "<<THE CURRENCY, eg: USD | EUR | BTC>>",
   "amount": 5.00,
   "transaction_id": "<<THE UNIQUE TRANSACTION ID>>",
-  "timestamp": UTC milliseconds,
+  "timestamp": UTC seconds,
   "ip_address": "<<THE END USER IP>>",
   "is_crypto": true | false
 }
