@@ -163,3 +163,17 @@
   cursor: default;
 }
 
+/**
+ * Doc tables: tinted header for richer, more scannable reference tables
+ * -------------------------------------------------------------------------- */
+.vp-doc thead th {
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 55%, transparent);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.vp-doc table code {
+  font-size: 0.85em;
+}
+
