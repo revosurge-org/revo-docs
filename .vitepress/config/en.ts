@@ -43,7 +43,19 @@ export const en: DefaultTheme.Config = {
           link: '/en/tracking/s2s/overview',
           items: [
             { text: 'Overview', link: '/en/tracking/s2s/overview' },
-            { text: 'Server Events API', link: '/en/tracking/s2s/server-events-api' }
+            { text: 'Server Events API (v2)', link: '/en/tracking/s2s/server-events-api' },
+            {
+              text: 'Server Events API (v3)',
+              link: '/en/tracking/s2s/v3/server-events-api',
+              items: [
+                { text: 'API Reference', link: '/en/tracking/s2s/v3/server-events-api' },
+                { text: 'Envelope & base properties', link: '/en/tracking/s2s/v3/mandatory-properties' },
+                { text: 'Catalog & validation', link: '/en/tracking/s2s/v3/catalog-governance' },
+                { text: 'Standard events', link: '/en/tracking/s2s/v3/events-standard' },
+                { text: 'iGaming events', link: '/en/tracking/s2s/v3/events-igaming' },
+                { text: 'Migrating from v2', link: '/en/tracking/s2s/v3/migration' }
+              ]
+            }
           ]
         },
       ]

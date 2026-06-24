@@ -43,7 +43,19 @@ export const hk: DefaultTheme.Config = {
           link: '/hk/tracking/s2s/overview',
           items: [
             { text: '概述', link: '/hk/tracking/s2s/overview' },
-            { text: '伺服器事件 API', link: '/hk/tracking/s2s/server-events-api' }
+            { text: '伺服器事件 API (v2)', link: '/hk/tracking/s2s/server-events-api' },
+            {
+              text: '伺服器事件 API (v3)',
+              link: '/hk/tracking/s2s/v3/server-events-api',
+              items: [
+                { text: 'API 參考', link: '/hk/tracking/s2s/v3/server-events-api' },
+                { text: '信封與基礎屬性', link: '/hk/tracking/s2s/v3/mandatory-properties' },
+                { text: '目錄與驗證', link: '/hk/tracking/s2s/v3/catalog-governance' },
+                { text: '標準事件', link: '/hk/tracking/s2s/v3/events-standard' },
+                { text: 'iGaming 事件', link: '/hk/tracking/s2s/v3/events-igaming' },
+                { text: '從 v2 遷移', link: '/hk/tracking/s2s/v3/migration' }
+              ]
+            }
           ]
         },
       ]

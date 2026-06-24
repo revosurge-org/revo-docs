@@ -43,7 +43,19 @@ export const cn: DefaultTheme.Config = {
           link: '/cn/tracking/s2s/overview',
           items: [
             { text: '概述', link: '/cn/tracking/s2s/overview' },
-            { text: '服务器事件 API', link: '/cn/tracking/s2s/server-events-api' }
+            { text: '服务器事件 API (v2)', link: '/cn/tracking/s2s/server-events-api' },
+            {
+              text: '服务器事件 API (v3)',
+              link: '/cn/tracking/s2s/v3/server-events-api',
+              items: [
+                { text: 'API 参考', link: '/cn/tracking/s2s/v3/server-events-api' },
+                { text: '信封与基础属性', link: '/cn/tracking/s2s/v3/mandatory-properties' },
+                { text: '目录与校验', link: '/cn/tracking/s2s/v3/catalog-governance' },
+                { text: '标准事件', link: '/cn/tracking/s2s/v3/events-standard' },
+                { text: 'iGaming 事件', link: '/cn/tracking/s2s/v3/events-igaming' },
+                { text: '从 v2 迁移', link: '/cn/tracking/s2s/v3/migration' }
+              ]
+            }
           ]
         },
       ]

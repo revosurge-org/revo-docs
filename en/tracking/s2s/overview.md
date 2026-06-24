@@ -30,3 +30,18 @@ Use S2S when:
 - A server integration that can call RevoSurge endpoints
 - Authentication (API key/token depending on your environment)
 - A consistent user identifier strategy (e.g., user_id)
+
+## Choosing an API version
+
+The Server Events API has two versions. Both are supported.
+
+| | v2 | v3 |
+|---|----|----|
+| Status | Stable | New <Badge type="tip" text="recommended for new integrations" /> |
+| Endpoints | `/v2/s2s/event`, `/v2/s2s/batch` | `/v3/s2s/event`, `/v3/s2s/batch` |
+| Payload | Flat object, free `event_name` | Envelope (`event`/`identity`/`context`) + typed catalog |
+| `timestamp` | Unix seconds | Unix milliseconds |
+| Docs | [Server Events API (v2)](/en/tracking/s2s/server-events-api) | [Server Events API (v3)](/en/tracking/s2s/v3/server-events-api) |
+
+- **New integrations:** start with [v3](/en/tracking/s2s/v3/server-events-api).
+- **Existing v2 integrations:** see [Migrating from v2](/en/tracking/s2s/v3/migration).
