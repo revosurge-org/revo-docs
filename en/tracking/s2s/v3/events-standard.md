@@ -72,23 +72,6 @@ Send the full state of all four channels each time (including the default consen
 | `context.allow_whatsapp` | Boolean | **Required** | Consent to WhatsApp. |
 | `context.update_source` | String | Suggested | One of `signup` · `settings_page` · `unsubscribe_link` · `support` · `admin`. |
 
-### `account_blocked`
-
-Exclude blocked accounts from LTV / churn models.
-
-| Field | Type | Requirement | Description |
-|-------|------|-------------|-------------|
-| `context.block_reason` | String | **Required** | One of `fraud` · `bonus_abuse` · `multi_account` · `self_exclusion` · `compliance` · `payment_chargeback` · `other`. |
-| `context.block_duration` | String | Suggested | One of `permanent` · `temporary` · `under_review`. |
-| `context.expected_unblock_at` | Number | Suggested | UTC ms; for temporary blocks. |
-
-### `account_unblocked`
-
-| Field | Type | Requirement | Description |
-|-------|------|-------------|-------------|
-| `context.unblock_reason` | String | **Required** | One of `review_passed` · `appeal_approved` · `temporary_expired` · `manual_admin` · `other`. |
-| `context.previous_block_reason` | String | Suggested | Reason of the block being lifted. |
-
 ## App Lifecycle
 
 > [!NOTE]

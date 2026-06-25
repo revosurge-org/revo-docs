@@ -8,7 +8,7 @@ description: S2S Events v3 iGaming 目录——面向 iGaming 垂直行业的资
 
 **受众：** 面向 iGaming 产品的工程师、技术集成方
 
-iGaming 事件（`igaming` 预设）涵盖游戏垂直行业：扩展的用户生命周期、KYC、资金、游戏和奖金生命周期。
+iGaming 事件（`igaming` 预设）涵盖游戏垂直行业：扩展的用户生命周期、KYC 与账户状态、资金、游戏和奖金生命周期。
 
 > [!IMPORTANT]
 > iGaming 是一个**按订阅启用的行业预设**。在这些事件被接受之前，你的产品必须已订阅（由 RevoSurge 团队启用）——否则它们会被拒绝为 `422 EVENT_DISABLED`。参见[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
@@ -70,6 +70,23 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.jurisdiction` | String | **必填** | ISO 3166-1 国家代码。 |
 | `context.rejection_reason` | String | **必填** | `document_invalid` · `face_mismatch` · `sanctions_hit` · `underage` · `duplicate` · `other` 之一。 |
 | `context.verification_method` | String | 建议 | 尝试的验证方式。 |
+
+### `account_blocked`
+
+将被封禁的账户从 LTV / 流失模型中排除。
+
+| 字段 | 类型 | 要求 | 说明 |
+|-------|------|-------------|-------------|
+| `context.block_reason` | String | **必填** | `fraud` · `bonus_abuse` · `multi_account` · `self_exclusion` · `compliance` · `payment_chargeback` · `other` 之一。 |
+| `context.block_duration` | String | 建议 | `permanent` · `temporary` · `under_review` 之一。 |
+| `context.expected_unblock_at` | Number | 建议 | UTC 毫秒；用于临时封禁。 |
+
+### `account_unblocked`
+
+| 字段 | 类型 | 要求 | 说明 |
+|-------|------|-------------|-------------|
+| `context.unblock_reason` | String | **必填** | `review_passed` · `appeal_approved` · `temporary_expired` · `manual_admin` · `other` 之一。 |
+| `context.previous_block_reason` | String | 建议 | 被解除的封禁的原因。 |
 
 ## 资金
 

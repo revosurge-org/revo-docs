@@ -132,20 +132,6 @@ export const s2sV3Events: EventDef[] = [
     f('update_source', 'context', 'String', 'suggested', 'settings_page',
       tri('What triggered the change.', '变更触发来源。', '變更觸發來源。'), { enumValues: ['signup', 'settings_page', 'unsubscribe_link', 'support', 'admin'] }),
   ]),
-  def('account_blocked', 'standard', 'verification_consent', [
-    f('block_reason', 'context', 'String', 'required', 'fraud',
-      tri('Why the account was blocked.', '账户被封禁的原因。', '帳戶被封鎖的原因。'), { enumValues: ['fraud', 'bonus_abuse', 'multi_account', 'self_exclusion', 'compliance', 'payment_chargeback', 'other'] }),
-    f('block_duration', 'context', 'String', 'suggested', 'temporary',
-      tri('Block duration class.', '封禁时长类型。', '封鎖時長類型。'), { enumValues: ['permanent', 'temporary', 'under_review'] }),
-    f('expected_unblock_at', 'context', 'Number', 'suggested', 1718880000000,
-      tri('UTC ms; for temporary blocks.', 'UTC 毫秒；用于临时封禁。', 'UTC 毫秒；用於臨時封鎖。')),
-  ]),
-  def('account_unblocked', 'standard', 'verification_consent', [
-    f('unblock_reason', 'context', 'String', 'required', 'review_passed',
-      tri('Why the account was unblocked.', '账户被解封的原因。', '帳戶被解封的原因。'), { enumValues: ['review_passed', 'appeal_approved', 'temporary_expired', 'manual_admin', 'other'] }),
-    f('previous_block_reason', 'context', 'String', 'suggested', 'fraud',
-      tri('Reason of the block being lifted.', '被解除的封禁原因。', '被解除的封鎖原因。')),
-  ]),
   def('app_install', 'standard', 'app_lifecycle', [
     f('platform', 'context', 'String', 'required', 'android', D_PLATFORM, { enumValues: ['ios', 'android', 'web'] }),
     f('app_version', 'context', 'String', 'suggested', '3.4.1', tri('App version on install.', '安装时的 App 版本。', '安裝時的 App 版本。')),
@@ -190,6 +176,20 @@ export const s2sV3Events: EventDef[] = [
     f('jurisdiction', 'context', 'String', 'required', 'BR', tri('ISO 3166-1 country code.', 'ISO 3166-1 国家代码。', 'ISO 3166-1 國家代碼。')),
     f('rejection_reason', 'context', 'String', 'required', 'document_invalid', tri('Why KYC was rejected.', 'KYC 被拒原因。', 'KYC 被拒原因。'), { enumValues: ['document_invalid', 'face_mismatch', 'sanctions_hit', 'underage', 'duplicate', 'other'] }),
     f('verification_method', 'context', 'String', 'suggested', 'id_document', tri('Verification method attempted.', '尝试的验证方式。', '嘗試的驗證方式。')),
+  ]),
+  def('account_blocked', 'igaming', 'verification_consent', [
+    f('block_reason', 'context', 'String', 'required', 'fraud',
+      tri('Why the account was blocked.', '账户被封禁的原因。', '帳戶被封鎖的原因。'), { enumValues: ['fraud', 'bonus_abuse', 'multi_account', 'self_exclusion', 'compliance', 'payment_chargeback', 'other'] }),
+    f('block_duration', 'context', 'String', 'suggested', 'temporary',
+      tri('Block duration class.', '封禁时长类型。', '封鎖時長類型。'), { enumValues: ['permanent', 'temporary', 'under_review'] }),
+    f('expected_unblock_at', 'context', 'Number', 'suggested', 1718880000000,
+      tri('UTC ms; for temporary blocks.', 'UTC 毫秒；用于临时封禁。', 'UTC 毫秒；用於臨時封鎖。')),
+  ]),
+  def('account_unblocked', 'igaming', 'verification_consent', [
+    f('unblock_reason', 'context', 'String', 'required', 'review_passed',
+      tri('Why the account was unblocked.', '账户被解封的原因。', '帳戶被解封的原因。'), { enumValues: ['review_passed', 'appeal_approved', 'temporary_expired', 'manual_admin', 'other'] }),
+    f('previous_block_reason', 'context', 'String', 'suggested', 'fraud',
+      tri('Reason of the block being lifted.', '被解除的封禁原因。', '被解除的封鎖原因。')),
   ]),
   def('deposit', 'igaming', 'financial', [
     f('transaction_id', 'context', 'String', 'required', 'txn_554433', D_TXN),
