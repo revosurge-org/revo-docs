@@ -8,7 +8,7 @@ description: The S2S Events v3 iGaming catalog — financial, gaming, and bonus-
 
 **Audience:** Engineers, technical integrators for iGaming products
 
-iGaming events (the `igaming` preset) cover the gaming vertical: extended user lifecycle, KYC, financial, gaming, and bonus lifecycle.
+iGaming events (the `igaming` preset) cover the gaming vertical: extended user lifecycle, KYC & account status, financial, gaming, and bonus lifecycle.
 
 > [!IMPORTANT]
 > iGaming is an **industry preset enabled by subscription**. Your product must be subscribed (the RevoSurge team enables it) before these events are accepted — otherwise they are rejected as `422 EVENT_DISABLED`. See [Event catalog & validation](/en/tracking/s2s/v3/catalog-governance).
@@ -70,6 +70,23 @@ Counterpart to `kyc_completed`; for KYC funnel / rejection-rate diagnostics.
 | `context.jurisdiction` | String | **Required** | ISO 3166-1 country code. |
 | `context.rejection_reason` | String | **Required** | One of `document_invalid` · `face_mismatch` · `sanctions_hit` · `underage` · `duplicate` · `other`. |
 | `context.verification_method` | String | Suggested | Verification method attempted. |
+
+### `account_blocked`
+
+Exclude blocked accounts from LTV / churn models.
+
+| Field | Type | Requirement | Description |
+|-------|------|-------------|-------------|
+| `context.block_reason` | String | **Required** | One of `fraud` · `bonus_abuse` · `multi_account` · `self_exclusion` · `compliance` · `payment_chargeback` · `other`. |
+| `context.block_duration` | String | Suggested | One of `permanent` · `temporary` · `under_review`. |
+| `context.expected_unblock_at` | Number | Suggested | UTC ms; for temporary blocks. |
+
+### `account_unblocked`
+
+| Field | Type | Requirement | Description |
+|-------|------|-------------|-------------|
+| `context.unblock_reason` | String | **Required** | One of `review_passed` · `appeal_approved` · `temporary_expired` · `manual_admin` · `other`. |
+| `context.previous_block_reason` | String | Suggested | Reason of the block being lifted. |
 
 ## Financial
 

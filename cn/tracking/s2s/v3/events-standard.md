@@ -72,23 +72,6 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.allow_whatsapp` | Boolean | **必填** | 同意 WhatsApp。 |
 | `context.update_source` | String | 建议 | `signup` · `settings_page` · `unsubscribe_link` · `support` · `admin` 之一。 |
 
-### `account_blocked`
-
-将被封禁的账户从 LTV / 流失模型中排除。
-
-| 字段 | 类型 | 要求 | 说明 |
-|-------|------|-------------|-------------|
-| `context.block_reason` | String | **必填** | `fraud` · `bonus_abuse` · `multi_account` · `self_exclusion` · `compliance` · `payment_chargeback` · `other` 之一。 |
-| `context.block_duration` | String | 建议 | `permanent` · `temporary` · `under_review` 之一。 |
-| `context.expected_unblock_at` | Number | 建议 | UTC 毫秒；用于临时封禁。 |
-
-### `account_unblocked`
-
-| 字段 | 类型 | 要求 | 说明 |
-|-------|------|-------------|-------------|
-| `context.unblock_reason` | String | **必填** | `review_passed` · `appeal_approved` · `temporary_expired` · `manual_admin` · `other` 之一。 |
-| `context.previous_block_reason` | String | 建议 | 被解除的封禁的原因。 |
-
 ## 应用生命周期
 
 > [!NOTE]
