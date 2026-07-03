@@ -186,3 +186,11 @@
   overflow: visible;
 }
 
+/* Component section titles should not inherit vp-doc h2 top dividers. */
+.vp-doc .exchange-rates__title,
+.vp-doc .rate-converter__title {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+

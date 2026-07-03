@@ -26,11 +26,14 @@ const converterLabels = {
   directionFromUsd: '从 USD 换算',
   invalidAmount: '请输入有效的非负数字。',
   loadError: '汇率数据加载失败。',
+  fixedCurrency: '基准货币（固定）',
+  fixedCurrencyTag: '固定',
 }
 
 const labels = {
   loading: '正在加载汇率数据...',
   retry: '重试',
+  ratesTitle: '参考汇率',
   baseCurrency: '基准货币',
   currency: '货币',
   rate: '汇率',

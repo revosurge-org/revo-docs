@@ -6,6 +6,7 @@ import { formatRate } from '../utils/exchange-rates'
 type Labels = {
   loading: string
   retry: string
+  ratesTitle: string
   baseCurrency: string
   currency: string
   rate: string
@@ -19,6 +20,7 @@ type Labels = {
 const defaultLabels: Labels = {
   loading: 'Loading exchange rates...',
   retry: 'Retry',
+  ratesTitle: 'Reference Rates',
   baseCurrency: 'Base Currency',
   currency: 'Currency',
   rate: 'Rate',
@@ -79,28 +81,35 @@ function handleRetry(): void {
     </div>
 
     <div v-else class="exchange-rates__content">
-      <div v-if="monthData" class="exchange-rates__meta">
-        <span class="exchange-rates__meta-chip">{{ t.baseCurrency }}: {{ monthData.baseCurrency }}</span>
-      </div>
-
       <div v-if="isEmptyData" class="exchange-rates__state">
         {{ t.emptyData }}
       </div>
 
-      <div v-else-if="monthData" class="exchange-rates__table-section">
-        <div class="exchange-rates__table-toolbar">
-          <label class="exchange-rates__label" for="exchange-rates-search">{{ t.search }}</label>
-          <input
-            id="exchange-rates-search"
-            v-model="searchQuery"
-            type="search"
-            class="exchange-rates__search"
-            :placeholder="t.searchPlaceholder"
-            autocomplete="off"
-          />
-        </div>
+      <div v-else-if="monthData" class="exchange-rates__panel">
+        <header class="exchange-rates__header">
+          <h2 class="exchange-rates__title">{{ t.ratesTitle }}</h2>
 
-        <div v-if="isEmptySearch" class="exchange-rates__state">
+          <div class="exchange-rates__toolbar">
+            <div class="exchange-rates__base-badge" :title="t.baseCurrency">
+              <span class="exchange-rates__base-label">{{ t.baseCurrency }}</span>
+              <span class="exchange-rates__base-value">{{ monthData.baseCurrency }}</span>
+            </div>
+
+            <label class="exchange-rates__search-field" for="exchange-rates-search">
+              <span class="exchange-rates__search-label">{{ t.search }}</span>
+              <input
+                id="exchange-rates-search"
+                v-model="searchQuery"
+                type="search"
+                class="exchange-rates__search"
+                :placeholder="t.searchPlaceholder"
+                autocomplete="off"
+              />
+            </label>
+          </div>
+        </header>
+
+        <div v-if="isEmptySearch" class="exchange-rates__state exchange-rates__state--inline">
           {{ t.noSearchResults }}
         </div>
 
@@ -137,47 +146,93 @@ function handleRetry(): void {
   width: 100%;
 }
 
-.exchange-rates__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.exchange-rates__panel {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 14px;
+  background: var(--vp-c-bg);
 }
 
-.exchange-rates__meta-chip {
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-text-1);
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.exchange-rates__table-section {
+.exchange-rates__header {
   display: grid;
   gap: 12px;
   width: 100%;
 }
 
-.exchange-rates__table-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-.exchange-rates__label {
-  font-size: 14px;
-  font-weight: 600;
+.exchange-rates__title {
+  margin: 0;
+  padding-top: 0;
+  border-top: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: normal;
   color: var(--vp-c-text-1);
 }
 
+.exchange-rates__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.exchange-rates__base-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 18%, var(--vp-c-divider));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 65%, transparent);
+}
+
+.exchange-rates__base-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-2);
+}
+
+.exchange-rates__base-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--vp-c-text-1);
+}
+
+.exchange-rates__search-field {
+  display: flex;
+  flex: 1 1 260px;
+  align-items: center;
+  gap: 10px;
+  min-width: min(100%, 280px);
+  max-width: 420px;
+  margin-left: auto;
+}
+
+.exchange-rates__search-label {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+}
+
 .exchange-rates__search {
-  flex: 1 1 220px;
-  min-width: 180px;
+  flex: 1;
+  min-width: 0;
   padding: 10px 12px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
-  background: var(--vp-c-bg);
+  background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
 }
 
@@ -203,6 +258,10 @@ function handleRetry(): void {
   color: var(--vp-c-text-1);
 }
 
+.exchange-rates__state--inline {
+  margin: 0;
+}
+
 .exchange-rates__retry {
   padding: 10px 14px;
   border: 0;
@@ -221,8 +280,8 @@ function handleRetry(): void {
   width: 100%;
   overflow-x: auto;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 14px;
-  background: var(--vp-c-bg);
+  border-radius: 10px;
+  background: var(--vp-c-bg-soft);
 }
 
 .exchange-rates__table {
@@ -264,17 +323,19 @@ function handleRetry(): void {
 }
 
 @media (max-width: 640px) {
-  .exchange-rates__meta-chip {
-    width: 100%;
-    border-radius: 12px;
-  }
-
-  .exchange-rates__table-toolbar {
+  .exchange-rates__toolbar {
     align-items: stretch;
   }
 
-  .exchange-rates__search {
-    width: 100%;
+  .exchange-rates__search-field {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .exchange-rates__base-badge {
+    align-self: flex-start;
   }
 }
 </style>

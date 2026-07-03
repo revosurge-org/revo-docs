@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import CurrencySelect from './CurrencySelect.vue'
 import { useExchangeRates } from '../composables/useExchangeRates'
 import {
   convertCurrencyToUsd,
@@ -26,6 +27,8 @@ type Labels = {
   directionFromUsd: string
   invalidAmount: string
   loadError: string
+  fixedCurrency: string
+  fixedCurrencyTag: string
 }
 
 const defaultLabels: Labels = {
@@ -41,6 +44,8 @@ const defaultLabels: Labels = {
   directionFromUsd: 'Convert from USD',
   invalidAmount: 'Enter a valid non-negative number.',
   loadError: 'Failed to load exchange rates.',
+  fixedCurrency: 'Base currency (fixed)',
+  fixedCurrencyTag: 'Fixed',
 }
 
 const props = defineProps<{ dataUrl: string; labels?: Partial<Labels> }>()
@@ -139,17 +144,20 @@ function handleRetry(): void {
               :placeholder="t.amountPlaceholder"
               autocomplete="off"
             />
-            <select
+            <CurrencySelect
               v-if="direction === 'toUsd'"
               v-model="selectedCurrency"
-              class="rate-converter__select"
+              :options="currencies"
               :aria-label="t.currency"
+            />
+            <span
+              v-else
+              class="rate-converter__currency-badge rate-converter__currency-badge--fixed"
+              :title="t.fixedCurrency"
             >
-              <option v-for="currency in currencies" :key="currency" :value="currency">
-                {{ currency }}
-              </option>
-            </select>
-            <span v-else class="rate-converter__currency-badge">USD</span>
+              <span class="rate-converter__currency-code">USD</span>
+              <span class="rate-converter__currency-tag">{{ t.fixedCurrencyTag }}</span>
+            </span>
           </div>
         </div>
 
@@ -167,17 +175,20 @@ function handleRetry(): void {
           <span class="rate-converter__label">{{ t.result }}</span>
           <div class="rate-converter__control-row">
             <div class="rate-converter__result">{{ formattedResult }}</div>
-            <span v-if="direction === 'toUsd'" class="rate-converter__currency-badge">USD</span>
-            <select
+            <span
+              v-if="direction === 'toUsd'"
+              class="rate-converter__currency-badge rate-converter__currency-badge--fixed"
+              :title="t.fixedCurrency"
+            >
+              <span class="rate-converter__currency-code">USD</span>
+              <span class="rate-converter__currency-tag">{{ t.fixedCurrencyTag }}</span>
+            </span>
+            <CurrencySelect
               v-else
               v-model="selectedCurrency"
-              class="rate-converter__select"
+              :options="currencies"
               :aria-label="t.currency"
-            >
-              <option v-for="currency in currencies" :key="currency" :value="currency">
-                {{ currency }}
-              </option>
-            </select>
+            />
           </div>
         </div>
       </div>
@@ -205,8 +216,12 @@ function handleRetry(): void {
 
 .rate-converter__title {
   margin: 0 0 16px;
+  padding-top: 0;
+  border-top: none;
   font-size: 1.25rem;
   font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: normal;
   color: var(--vp-c-text-1);
 }
 
@@ -255,7 +270,6 @@ function handleRetry(): void {
 }
 
 .rate-converter__input,
-.rate-converter__select,
 .rate-converter__result,
 .rate-converter__currency-badge {
   min-height: 42px;
@@ -270,12 +284,7 @@ function handleRetry(): void {
   width: 100%;
 }
 
-.rate-converter__select {
-  min-width: 96px;
-}
-
-.rate-converter__input:focus,
-.rate-converter__select:focus {
+.rate-converter__input:focus {
   outline: 2px solid color-mix(in srgb, var(--vp-c-brand-1) 35%, transparent);
   outline-offset: 1px;
 }
@@ -288,11 +297,35 @@ function handleRetry(): void {
 
 .rate-converter__currency-badge {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 72px;
-  font-size: 13px;
+  gap: 2px;
+  min-width: 96px;
+  cursor: default;
+  user-select: none;
+}
+
+.rate-converter__currency-badge--fixed {
+  border-color: color-mix(in srgb, var(--vp-c-brand-1) 28%, var(--vp-c-divider));
+  background: color-mix(in srgb, var(--vp-c-brand-soft) 75%, var(--vp-c-bg-soft));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent);
+}
+
+.rate-converter__currency-code {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--vp-c-brand-1);
+  letter-spacing: 0.04em;
+}
+
+.rate-converter__currency-tag {
+  font-size: 10px;
   font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--vp-c-text-2);
 }
 
