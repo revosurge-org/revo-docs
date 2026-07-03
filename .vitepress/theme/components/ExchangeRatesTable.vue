@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-
-const FIXED_MONTH = '2026-06'
-
-type RateRow = {
-  currency: string
-  rate: number
-}
-
-type MonthPayload = {
-  month: string
-  baseCurrency: string
-  generatedAt: string
-  rates: RateRow[]
-}
+import { computed, ref } from 'vue'
+import { useExchangeRates } from '../composables/useExchangeRates'
+import { formatRate } from '../utils/exchange-rates'
 
 type Labels = {
   loading: string
@@ -45,9 +33,8 @@ const props = defineProps<{ dataUrl: string; labels?: Partial<Labels> }>()
 
 const t = computed<Labels>(() => ({ ...defaultLabels, ...props.labels }))
 
-const monthData = ref<MonthPayload | null>(null)
-const loading = ref(true)
-const errorMessage = ref('')
+const { data: monthData, loading, errorMessage, reload } = useExchangeRates(props.dataUrl, t.value.loadError)
+
 const searchQuery = ref('')
 
 const filteredRates = computed(() => {
@@ -73,84 +60,9 @@ const isEmptySearch = computed(
     filteredRates.value.length === 0
 )
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-}
-
-function assertMonthPayload(value: unknown): MonthPayload {
-  if (!isRecord(value)) {
-    throw new Error('Invalid exchange-rate payload.')
-  }
-
-  const { month, baseCurrency, generatedAt, rates } = value
-
-  if (month !== FIXED_MONTH) {
-    throw new Error(`Exchange-rate month mismatch for ${FIXED_MONTH}.`)
-  }
-
-  if (typeof baseCurrency !== 'string' || !baseCurrency.trim()) {
-    throw new Error('Exchange-rate payload is missing baseCurrency.')
-  }
-
-  if (typeof generatedAt !== 'string' || Number.isNaN(Date.parse(generatedAt))) {
-    throw new Error('Exchange-rate payload is missing a valid generatedAt.')
-  }
-
-  if (
-    !Array.isArray(rates) ||
-    rates.some((row) => {
-      if (!isRecord(row)) return true
-      return (
-        typeof row.currency !== 'string' ||
-        !row.currency.trim() ||
-        typeof row.rate !== 'number' ||
-        !Number.isFinite(row.rate)
-      )
-    })
-  ) {
-    throw new Error('Exchange-rate payload has invalid rates.')
-  }
-
-  return {
-    month,
-    baseCurrency,
-    generatedAt,
-    rates: rates as RateRow[],
-  }
-}
-
-function formatRate(rate: number): string {
-  return new Intl.NumberFormat('en-US', {
-    maximumFractionDigits: 6,
-  }).format(rate)
-}
-
-async function loadData(): Promise<void> {
-  loading.value = true
-  errorMessage.value = ''
-  monthData.value = null
-
-  try {
-    const response = await fetch(props.dataUrl)
-    if (!response.ok) {
-      throw new Error(t.value.loadError)
-    }
-
-    monthData.value = assertMonthPayload(await response.json())
-  } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t.value.loadError
-  } finally {
-    loading.value = false
-  }
-}
-
 function handleRetry(): void {
-  void loadData()
+  void reload()
 }
-
-onMounted(() => {
-  void loadData()
-})
 </script>
 
 <template>
