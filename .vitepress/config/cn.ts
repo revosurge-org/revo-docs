@@ -93,12 +93,31 @@ export const cn: DefaultTheme.Config = {
       ]
     },
     {
+      text: '供应端（SSP 接入）',
+      link: '/cn/supply/overview',
+      collapsed: false,
+      items: [
+        { text: '概述', link: '/cn/supply/overview' },
+        { text: '快速开始', link: '/cn/supply/getting-started' },
+        { text: '竞价接口参考', link: '/cn/supply/bid-endpoint' },
+        { text: '通知回调', link: '/cn/supply/notifications' },
+      ]
+    },
+    {
       text: 'API',
       link: '/cn/api/quickstart',
       collapsed: false,
       items: [
         { text: 'API 快速入门', link: '/cn/api/quickstart' },
         { text: 'API 密钥', link: '/cn/api/api-key' }
+      ]
+    },
+    {
+      text: '参考数据',
+      link: '/cn/reference-data/exchange-rates',
+      collapsed: false,
+      items: [
+        { text: '汇率参考', link: '/cn/reference-data/exchange-rates' }
       ]
     },
     {

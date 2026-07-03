@@ -18,7 +18,41 @@ type MonthPayload = {
   rates: RateRow[]
 }
 
-const props = defineProps<{ indexUrl: string }>()
+type Labels = {
+  loadingIndex: string
+  loadingMonth: string
+  retry: string
+  referenceMonth: string
+  month: string
+  baseCurrency: string
+  generatedAt: string
+  currency: string
+  rate: string
+  emptyMonth: string
+  noMonths: string
+  loadIndexError: string
+  loadMonthError: string
+}
+
+const defaultLabels: Labels = {
+  loadingIndex: 'Loading exchange rates...',
+  loadingMonth: 'Loading selected month...',
+  retry: 'Retry',
+  referenceMonth: 'Reference Month',
+  month: 'Month',
+  baseCurrency: 'Base Currency',
+  generatedAt: 'Generated At (UTC)',
+  currency: 'Currency',
+  rate: 'Rate',
+  emptyMonth: 'No exchange-rate rows are available for this month.',
+  noMonths: 'No exchange-rate months are available.',
+  loadIndexError: 'Failed to load exchange-rate index.',
+  loadMonthError: 'Failed to load exchange rates.',
+}
+
+const props = defineProps<{ indexUrl: string; labels?: Partial<Labels> }>()
+
+const t = computed<Labels>(() => ({ ...defaultLabels, ...props.labels }))
 
 const months = ref<string[]>([])
 const selectedMonth = ref('')
@@ -147,7 +181,7 @@ function formatRate(rate: number): string {
 async function loadIndex(): Promise<IndexPayload> {
   const response = await fetch(props.indexUrl)
   if (!response.ok) {
-    throw new Error('Failed to load exchange-rate index.')
+    throw new Error(t.value.loadIndexError)
   }
 
   return assertIndexPayload(await response.json())
@@ -169,14 +203,14 @@ async function loadMonth(month: string): Promise<void> {
   try {
     const response = await fetch(monthUrl(month))
     if (!response.ok) {
-      throw new Error(`Failed to load exchange rates for ${month}.`)
+      throw new Error(`${t.value.loadMonthError} (${month})`)
     }
 
     const payload = assertMonthPayload(await response.json(), month)
     monthCache.set(month, payload)
     monthData.value = payload
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Failed to load exchange rates.'
+    errorMessage.value = error instanceof Error ? error.message : t.value.loadMonthError
   } finally {
     loadingMonth.value = false
   }
@@ -194,7 +228,7 @@ async function initialize(): Promise<void> {
     months.value = [...indexPayload.months].sort().reverse()
     await loadMonth(indexPayload.latestMonth)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Failed to load exchange-rate index.'
+    errorMessage.value = error instanceof Error ? error.message : t.value.loadIndexError
   } finally {
     loadingIndex.value = false
   }
@@ -222,19 +256,19 @@ onMounted(() => {
 <template>
   <section class="exchange-rates">
     <div v-if="loadingIndex" class="exchange-rates__state">
-      Loading exchange rates...
+      {{ t.loadingIndex }}
     </div>
 
     <div v-else-if="isBlockingError" class="exchange-rates__state exchange-rates__state--error">
-      <p>{{ errorMessage || 'No exchange-rate months are available.' }}</p>
+      <p>{{ errorMessage || t.noMonths }}</p>
       <button type="button" class="exchange-rates__retry" @click="handleRetry">
-        Retry
+        {{ t.retry }}
       </button>
     </div>
 
     <div v-else class="exchange-rates__content">
       <div class="exchange-rates__toolbar">
-        <label class="exchange-rates__label" for="exchange-rates-month">Reference Month</label>
+        <label class="exchange-rates__label" for="exchange-rates-month">{{ t.referenceMonth }}</label>
         <select
           id="exchange-rates-month"
           class="exchange-rates__select"
@@ -248,32 +282,32 @@ onMounted(() => {
       </div>
 
       <div v-if="monthData" class="exchange-rates__meta">
-        <span class="exchange-rates__meta-chip">Month: {{ monthData.month }}</span>
-        <span class="exchange-rates__meta-chip">Base Currency: {{ monthData.baseCurrency }}</span>
-        <span class="exchange-rates__meta-chip">Generated At (UTC): {{ formattedGeneratedAt }}</span>
+        <span class="exchange-rates__meta-chip">{{ t.month }}: {{ monthData.month }}</span>
+        <span class="exchange-rates__meta-chip">{{ t.baseCurrency }}: {{ monthData.baseCurrency }}</span>
+        <span class="exchange-rates__meta-chip">{{ t.generatedAt }}: {{ formattedGeneratedAt }}</span>
       </div>
 
       <div v-if="loadingMonth" class="exchange-rates__state">
-        Loading selected month...
+        {{ t.loadingMonth }}
       </div>
 
       <div v-else-if="isMonthError" class="exchange-rates__state exchange-rates__state--error">
         <p>{{ errorMessage }}</p>
         <button type="button" class="exchange-rates__retry" @click="handleRetry">
-          Retry
+          {{ t.retry }}
         </button>
       </div>
 
       <div v-else-if="isEmptyMonth" class="exchange-rates__state">
-        No exchange-rate rows are available for this month.
+        {{ t.emptyMonth }}
       </div>
 
       <div v-else-if="monthData" class="exchange-rates__table-wrap">
         <table class="exchange-rates__table">
           <thead>
             <tr>
-              <th>Currency</th>
-              <th>Rate</th>
+              <th>{{ t.currency }}</th>
+              <th>{{ t.rate }}</th>
             </tr>
           </thead>
           <tbody>

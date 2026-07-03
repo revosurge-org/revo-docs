@@ -93,12 +93,31 @@ export const hk: DefaultTheme.Config = {
       ]
     },
     {
+      text: '供應端（SSP 接入）',
+      link: '/hk/supply/overview',
+      collapsed: false,
+      items: [
+        { text: '概述', link: '/hk/supply/overview' },
+        { text: '快速開始', link: '/hk/supply/getting-started' },
+        { text: '競價接口參考', link: '/hk/supply/bid-endpoint' },
+        { text: '通知回調', link: '/hk/supply/notifications' },
+      ]
+    },
+    {
       text: 'API',
       link: '/hk/api/quickstart',
       collapsed: false,
       items: [
         { text: 'API 快速入門', link: '/hk/api/quickstart' },
         { text: 'API 金鑰', link: '/hk/api/api-key' }
+      ]
+    },
+    {
+      text: '參考數據',
+      link: '/hk/reference-data/exchange-rates',
+      collapsed: false,
+      items: [
+        { text: '匯率參考', link: '/hk/reference-data/exchange-rates' }
       ]
     },
     {
