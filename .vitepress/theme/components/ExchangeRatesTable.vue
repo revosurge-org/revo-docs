@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 
-type IndexPayload = {
-  latestMonth: string
-  months: string[]
-}
+const FIXED_MONTH = '2026-06'
 
 type RateRow = {
   currency: string
@@ -19,130 +16,84 @@ type MonthPayload = {
 }
 
 type Labels = {
-  loadingIndex: string
-  loadingMonth: string
+  loading: string
   retry: string
-  referenceMonth: string
-  month: string
   baseCurrency: string
-  generatedAt: string
   currency: string
   rate: string
-  emptyMonth: string
-  noMonths: string
-  loadIndexError: string
-  loadMonthError: string
+  search: string
+  searchPlaceholder: string
+  emptyData: string
+  noSearchResults: string
+  loadError: string
 }
 
 const defaultLabels: Labels = {
-  loadingIndex: 'Loading exchange rates...',
-  loadingMonth: 'Loading selected month...',
+  loading: 'Loading exchange rates...',
   retry: 'Retry',
-  referenceMonth: 'Reference Month',
-  month: 'Month',
   baseCurrency: 'Base Currency',
-  generatedAt: 'Generated At (UTC)',
   currency: 'Currency',
   rate: 'Rate',
-  emptyMonth: 'No exchange-rate rows are available for this month.',
-  noMonths: 'No exchange-rate months are available.',
-  loadIndexError: 'Failed to load exchange-rate index.',
-  loadMonthError: 'Failed to load exchange rates.',
+  search: 'Search currency',
+  searchPlaceholder: 'e.g. USD',
+  emptyData: 'No exchange-rate rows are available.',
+  noSearchResults: 'No currencies match your search.',
+  loadError: 'Failed to load exchange rates.',
 }
 
-const props = defineProps<{ indexUrl: string; labels?: Partial<Labels> }>()
+const props = defineProps<{ dataUrl: string; labels?: Partial<Labels> }>()
 
 const t = computed<Labels>(() => ({ ...defaultLabels, ...props.labels }))
 
-const months = ref<string[]>([])
-const selectedMonth = ref('')
 const monthData = ref<MonthPayload | null>(null)
-const loadingIndex = ref(true)
-const loadingMonth = ref(false)
+const loading = ref(true)
 const errorMessage = ref('')
-const monthCache = new Map<string, MonthPayload>()
+const searchQuery = ref('')
 
-const baseUrl = computed(() => new URL('.', props.indexUrl).toString())
-const hasMonths = computed(() => months.value.length > 0)
-const isBlockingError = computed(
-  () => !loadingIndex.value && (!hasMonths.value || (!selectedMonth.value && Boolean(errorMessage.value)))
-)
-const isMonthError = computed(
-  () =>
-    !loadingIndex.value &&
-    !loadingMonth.value &&
-    hasMonths.value &&
-    Boolean(selectedMonth.value) &&
-    Boolean(errorMessage.value) &&
-    !monthData.value
-)
-const isEmptyMonth = computed(
-  () => !loadingIndex.value && !loadingMonth.value && !errorMessage.value && monthData.value?.rates.length === 0
-)
-const formattedGeneratedAt = computed(() => {
-  if (!monthData.value) return ''
+const filteredRates = computed(() => {
+  if (!monthData.value) return []
 
-  const parsed = new Date(monthData.value.generatedAt)
-  if (Number.isNaN(parsed.getTime())) {
-    return monthData.value.generatedAt
-  }
+  const query = searchQuery.value.trim().toLowerCase()
+  if (!query) return monthData.value.rates
 
-  return `${parsed.toISOString().replace('.000Z', 'Z')} UTC`
+  return monthData.value.rates.filter((row) => row.currency.toLowerCase().includes(query))
 })
+
+const hasSearchQuery = computed(() => searchQuery.value.trim().length > 0)
+const isEmptyData = computed(
+  () => !loading.value && !errorMessage.value && monthData.value?.rates.length === 0
+)
+const isEmptySearch = computed(
+  () =>
+    !loading.value &&
+    !errorMessage.value &&
+    hasSearchQuery.value &&
+    monthData.value !== null &&
+    monthData.value.rates.length > 0 &&
+    filteredRates.value.length === 0
+)
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-function isMonthString(value: string): boolean {
-  return /^\d{4}-\d{2}$/.test(value)
-}
-
-function assertIndexPayload(value: unknown): IndexPayload {
+function assertMonthPayload(value: unknown): MonthPayload {
   if (!isRecord(value)) {
-    throw new Error('Invalid exchange-rate index payload.')
-  }
-
-  const { latestMonth, months: rawMonths } = value
-
-  if (typeof latestMonth !== 'string' || !isMonthString(latestMonth)) {
-    throw new Error('Exchange-rate index is missing a valid latestMonth.')
-  }
-
-  if (
-    !Array.isArray(rawMonths) ||
-    rawMonths.some((month) => typeof month !== 'string' || !isMonthString(month))
-  ) {
-    throw new Error('Exchange-rate index has invalid months.')
-  }
-
-  if (!rawMonths.includes(latestMonth)) {
-    throw new Error('Exchange-rate index latestMonth is not present in months.')
-  }
-
-  return {
-    latestMonth,
-    months: rawMonths,
-  }
-}
-
-function assertMonthPayload(value: unknown, requestedMonth: string): MonthPayload {
-  if (!isRecord(value)) {
-    throw new Error('Invalid monthly exchange-rate payload.')
+    throw new Error('Invalid exchange-rate payload.')
   }
 
   const { month, baseCurrency, generatedAt, rates } = value
 
-  if (month !== requestedMonth) {
-    throw new Error(`Exchange-rate month mismatch for ${requestedMonth}.`)
+  if (month !== FIXED_MONTH) {
+    throw new Error(`Exchange-rate month mismatch for ${FIXED_MONTH}.`)
   }
 
   if (typeof baseCurrency !== 'string' || !baseCurrency.trim()) {
-    throw new Error('Monthly exchange-rate payload is missing baseCurrency.')
+    throw new Error('Exchange-rate payload is missing baseCurrency.')
   }
 
   if (typeof generatedAt !== 'string' || Number.isNaN(Date.parse(generatedAt))) {
-    throw new Error('Monthly exchange-rate payload is missing a valid generatedAt.')
+    throw new Error('Exchange-rate payload is missing a valid generatedAt.')
   }
 
   if (
@@ -157,7 +108,7 @@ function assertMonthPayload(value: unknown, requestedMonth: string): MonthPayloa
       )
     })
   ) {
-    throw new Error('Monthly exchange-rate payload has invalid rates.')
+    throw new Error('Exchange-rate payload has invalid rates.')
   }
 
   return {
@@ -168,155 +119,95 @@ function assertMonthPayload(value: unknown, requestedMonth: string): MonthPayloa
   }
 }
 
-function monthUrl(month: string): string {
-  return new URL(`${month}.json`, baseUrl.value).toString()
-}
-
 function formatRate(rate: number): string {
   return new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 6,
   }).format(rate)
 }
 
-async function loadIndex(): Promise<IndexPayload> {
-  const response = await fetch(props.indexUrl)
-  if (!response.ok) {
-    throw new Error(t.value.loadIndexError)
-  }
-
-  return assertIndexPayload(await response.json())
-}
-
-async function loadMonth(month: string): Promise<void> {
-  selectedMonth.value = month
+async function loadData(): Promise<void> {
+  loading.value = true
   errorMessage.value = ''
   monthData.value = null
 
-  const cached = monthCache.get(month)
-  if (cached) {
-    monthData.value = cached
-    return
-  }
-
-  loadingMonth.value = true
-
   try {
-    const response = await fetch(monthUrl(month))
+    const response = await fetch(props.dataUrl)
     if (!response.ok) {
-      throw new Error(`${t.value.loadMonthError} (${month})`)
+      throw new Error(t.value.loadError)
     }
 
-    const payload = assertMonthPayload(await response.json(), month)
-    monthCache.set(month, payload)
-    monthData.value = payload
+    monthData.value = assertMonthPayload(await response.json())
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t.value.loadMonthError
+    errorMessage.value = error instanceof Error ? error.message : t.value.loadError
   } finally {
-    loadingMonth.value = false
+    loading.value = false
   }
-}
-
-async function initialize(): Promise<void> {
-  loadingIndex.value = true
-  errorMessage.value = ''
-  months.value = []
-  selectedMonth.value = ''
-  monthData.value = null
-
-  try {
-    const indexPayload = await loadIndex()
-    months.value = [...indexPayload.months].sort().reverse()
-    await loadMonth(indexPayload.latestMonth)
-  } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : t.value.loadIndexError
-  } finally {
-    loadingIndex.value = false
-  }
-}
-
-function handleMonthChange(event: Event): void {
-  const value = (event.target as HTMLSelectElement).value
-  void loadMonth(value)
 }
 
 function handleRetry(): void {
-  if (!months.value.length || !selectedMonth.value) {
-    void initialize()
-    return
-  }
-
-  void loadMonth(selectedMonth.value)
+  void loadData()
 }
 
 onMounted(() => {
-  void initialize()
+  void loadData()
 })
 </script>
 
 <template>
   <section class="exchange-rates">
-    <div v-if="loadingIndex" class="exchange-rates__state">
-      {{ t.loadingIndex }}
+    <div v-if="loading" class="exchange-rates__state">
+      {{ t.loading }}
     </div>
 
-    <div v-else-if="isBlockingError" class="exchange-rates__state exchange-rates__state--error">
-      <p>{{ errorMessage || t.noMonths }}</p>
+    <div v-else-if="errorMessage" class="exchange-rates__state exchange-rates__state--error">
+      <p>{{ errorMessage }}</p>
       <button type="button" class="exchange-rates__retry" @click="handleRetry">
         {{ t.retry }}
       </button>
     </div>
 
     <div v-else class="exchange-rates__content">
-      <div class="exchange-rates__toolbar">
-        <label class="exchange-rates__label" for="exchange-rates-month">{{ t.referenceMonth }}</label>
-        <select
-          id="exchange-rates-month"
-          class="exchange-rates__select"
-          :value="selectedMonth"
-          @change="handleMonthChange"
-        >
-          <option v-for="month in months" :key="month" :value="month">
-            {{ month }}
-          </option>
-        </select>
-      </div>
-
       <div v-if="monthData" class="exchange-rates__meta">
-        <span class="exchange-rates__meta-chip">{{ t.month }}: {{ monthData.month }}</span>
         <span class="exchange-rates__meta-chip">{{ t.baseCurrency }}: {{ monthData.baseCurrency }}</span>
-        <span class="exchange-rates__meta-chip">{{ t.generatedAt }}: {{ formattedGeneratedAt }}</span>
       </div>
 
-      <div v-if="loadingMonth" class="exchange-rates__state">
-        {{ t.loadingMonth }}
+      <div v-if="isEmptyData" class="exchange-rates__state">
+        {{ t.emptyData }}
       </div>
 
-      <div v-else-if="isMonthError" class="exchange-rates__state exchange-rates__state--error">
-        <p>{{ errorMessage }}</p>
-        <button type="button" class="exchange-rates__retry" @click="handleRetry">
-          {{ t.retry }}
-        </button>
-      </div>
+      <div v-else-if="monthData" class="exchange-rates__table-section">
+        <div class="exchange-rates__table-toolbar">
+          <label class="exchange-rates__label" for="exchange-rates-search">{{ t.search }}</label>
+          <input
+            id="exchange-rates-search"
+            v-model="searchQuery"
+            type="search"
+            class="exchange-rates__search"
+            :placeholder="t.searchPlaceholder"
+            autocomplete="off"
+          />
+        </div>
 
-      <div v-else-if="isEmptyMonth" class="exchange-rates__state">
-        {{ t.emptyMonth }}
-      </div>
+        <div v-if="isEmptySearch" class="exchange-rates__state">
+          {{ t.noSearchResults }}
+        </div>
 
-      <div v-else-if="monthData" class="exchange-rates__table-wrap">
-        <table class="exchange-rates__table">
-          <thead>
-            <tr>
-              <th>{{ t.currency }}</th>
-              <th>{{ t.rate }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in monthData.rates" :key="row.currency">
-              <td>{{ row.currency }}</td>
-              <td>{{ formatRate(row.rate) }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-else class="exchange-rates__table-wrap">
+          <table class="exchange-rates__table">
+            <thead>
+              <tr>
+                <th>{{ t.currency }}</th>
+                <th>{{ t.rate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in filteredRates" :key="row.currency">
+                <td>{{ row.currency }}</td>
+                <td>{{ formatRate(row.rate) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>
@@ -325,33 +216,13 @@ onMounted(() => {
 <style scoped>
 .exchange-rates {
   margin-top: 24px;
+  width: 100%;
 }
 
 .exchange-rates__content {
   display: grid;
   gap: 16px;
-}
-
-.exchange-rates__toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-.exchange-rates__label {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-}
-
-.exchange-rates__select {
-  min-width: 180px;
-  padding: 10px 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
+  width: 100%;
 }
 
 .exchange-rates__meta {
@@ -367,6 +238,40 @@ onMounted(() => {
   color: var(--vp-c-text-1);
   font-size: 13px;
   line-height: 1.4;
+}
+
+.exchange-rates__table-section {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.exchange-rates__table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.exchange-rates__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.exchange-rates__search {
+  flex: 1 1 220px;
+  min-width: 180px;
+  padding: 10px 12px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+}
+
+.exchange-rates__search:focus {
+  outline: 2px solid color-mix(in srgb, var(--vp-c-brand-1) 35%, transparent);
+  outline-offset: 1px;
 }
 
 .exchange-rates__state {
@@ -401,6 +306,7 @@ onMounted(() => {
 }
 
 .exchange-rates__table-wrap {
+  width: 100%;
   overflow-x: auto;
   border: 1px solid var(--vp-c-divider);
   border-radius: 14px;
@@ -408,9 +314,12 @@ onMounted(() => {
 }
 
 .exchange-rates__table {
+  display: table;
   width: 100%;
-  min-width: 420px;
+  max-width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
+  margin: 0;
 }
 
 .exchange-rates__table th,
@@ -418,6 +327,17 @@ onMounted(() => {
   padding: 12px 14px;
   border-bottom: 1px solid var(--vp-c-divider);
   text-align: left;
+}
+
+.exchange-rates__table th:first-child,
+.exchange-rates__table td:first-child {
+  width: 38%;
+}
+
+.exchange-rates__table th:last-child,
+.exchange-rates__table td:last-child {
+  width: 62%;
+  text-align: right;
 }
 
 .exchange-rates__table th {
@@ -437,11 +357,11 @@ onMounted(() => {
     border-radius: 12px;
   }
 
-  .exchange-rates__toolbar {
+  .exchange-rates__table-toolbar {
     align-items: stretch;
   }
 
-  .exchange-rates__select {
+  .exchange-rates__search {
     width: 100%;
   }
 }

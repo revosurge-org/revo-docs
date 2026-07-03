@@ -1,6 +1,6 @@
 ---
 title: Exchange Rate Reference
-description: Browse monthly exchange-rate reference data by month.
+description: Browse exchange-rate reference data.
 ---
 
 # Exchange Rate Reference
@@ -10,7 +10,7 @@ Monthly exchange-rate reference data published from the internal finance pipelin
 <script setup>
 import ExchangeRatesTable from '../../.vitepress/theme/components/ExchangeRatesTable.vue'
 
-const exchangeRatesIndexUrl = 'https://assets.revosurge.com/exchange-rates/index.json'
+const exchangeRatesDataUrl = 'https://assets.revosurge.com/exchange-rates/2026-06.json'
 </script>
 
-<ExchangeRatesTable :index-url="exchangeRatesIndexUrl" />
+<ExchangeRatesTable :data-url="exchangeRatesDataUrl" />

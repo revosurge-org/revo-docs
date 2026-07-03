@@ -177,3 +177,12 @@
   font-size: 0.85em;
 }
 
+/* ExchangeRatesTable lives inside .vp-doc; reset vp-doc's block-table layout. */
+.vp-doc .exchange-rates table {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow: visible;
+}
+
