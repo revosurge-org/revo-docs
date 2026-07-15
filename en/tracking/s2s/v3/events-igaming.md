@@ -36,6 +36,12 @@ Session length is a strong player-level churn predictor.
 | `context.session_id` | String | **Required** | Unique session ID. |
 | `context.session_start_at` | Number | **Required** | Session start, UTC ms. |
 | `context.duration_minutes` | Number | **Required** | Total session length (minutes). |
+| `context.total_wagered` | Number | Suggested | Total wagered in session. |
+| `context.total_won` | Number | Suggested | Total won in session. |
+| `context.bet_count` | Number | Suggested | Number of bets in session. |
+| `context.currency` | String | Suggested | Required if `total_wagered` / `total_won` is sent. |
+| `context.is_crypto` | Boolean | Suggested | `true` if crypto-denominated. |
+| `context.end_reason` | String | Suggested | One of `user_logout` · `timeout` · `forced_logout` · `unknown`. |
 
 ### `vip_tier_changed`
 
@@ -44,6 +50,7 @@ A downgrade is a strong churn signal. For an initial tier, use `direction: upgra
 | Field | Type | Requirement | Description |
 |-------|------|-------------|-------------|
 | `context.new_tier` | String | **Required** | Current tier (e.g. `gold`, `vip_1`). |
+| `context.previous_tier` | String | Suggested | Tier before this change. |
 | `context.direction` | String | **Required** | One of `upgrade` · `downgrade` · `lateral`. |
 | `context.trigger` | String | Suggested | One of `lifetime_deposits` · `monthly_wagering` · `loyalty_points` · `manual_admin` · `tier_review` · `other`. |
 
@@ -68,8 +75,9 @@ Counterpart to `kyc_completed`; for KYC funnel / rejection-rate diagnostics.
 |-------|------|-------------|-------------|
 | `context.kyc_level` | String | **Required** | One of `basic` · `enhanced` · `full`. |
 | `context.jurisdiction` | String | **Required** | ISO 3166-1 country code. |
-| `context.rejection_reason` | String | **Required** | One of `document_invalid` · `face_mismatch` · `sanctions_hit` · `underage` · `duplicate` · `other`. |
+| `context.rejection_reason` | String | **Required** | One of `document_invalid` · `face_mismatch` · `sanctions_hit` · `underage` · `duplicate` · `document_unreadable` · `document_expired` · `name_mismatch` · `age_restriction` · `suspected_fraud` · `other`. |
 | `context.verification_method` | String | Suggested | Verification method attempted. |
+| `context.time_to_reject_minutes` | Number | Suggested | Minutes from `register` to this event. |
 
 ### `account_blocked`
 
@@ -85,7 +93,7 @@ Exclude blocked accounts from LTV / churn models.
 
 | Field | Type | Requirement | Description |
 |-------|------|-------------|-------------|
-| `context.unblock_reason` | String | **Required** | One of `review_passed` · `appeal_approved` · `temporary_expired` · `manual_admin` · `other`. |
+| `context.unblock_reason` | String | **Required** | Prefer `review_passed` · `appeal_approved` · `cooldown_ended` · `manual_admin` · `other`. (`temporary_expired` still accepted but deprecated.) |
 | `context.previous_block_reason` | String | Suggested | Reason of the block being lifted. |
 
 ## Financial

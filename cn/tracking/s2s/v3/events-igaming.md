@@ -36,6 +36,12 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.session_id` | String | **必填** | 唯一会话 ID。 |
 | `context.session_start_at` | Number | **必填** | 会话开始时间，UTC 毫秒。 |
 | `context.duration_minutes` | Number | **必填** | 会话总时长（分钟）。 |
+| `context.total_wagered` | Number | 建议 | 会话内总投注额。 |
+| `context.total_won` | Number | 建议 | 会话内总赢额。 |
+| `context.bet_count` | Number | 建议 | 会话内投注次数。 |
+| `context.currency` | String | 建议 | 若上报 `total_wagered` / `total_won` 则必填。 |
+| `context.is_crypto` | Boolean | 建议 | 加密货币计价为 `true`。 |
+| `context.end_reason` | String | 建议 | `user_logout` · `timeout` · `forced_logout` · `unknown` 之一。 |
 
 ### `vip_tier_changed`
 
@@ -44,6 +50,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | 字段 | 类型 | 要求 | 说明 |
 |-------|------|-------------|-------------|
 | `context.new_tier` | String | **必填** | 当前等级（例如 `gold`、`vip_1`）。 |
+| `context.previous_tier` | String | 建议 | 本次变更前的等级。 |
 | `context.direction` | String | **必填** | `upgrade` · `downgrade` · `lateral` 之一。 |
 | `context.trigger` | String | 建议 | `lifetime_deposits` · `monthly_wagering` · `loyalty_points` · `manual_admin` · `tier_review` · `other` 之一。 |
 
@@ -68,8 +75,9 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 |-------|------|-------------|-------------|
 | `context.kyc_level` | String | **必填** | `basic` · `enhanced` · `full` 之一。 |
 | `context.jurisdiction` | String | **必填** | ISO 3166-1 国家代码。 |
-| `context.rejection_reason` | String | **必填** | `document_invalid` · `face_mismatch` · `sanctions_hit` · `underage` · `duplicate` · `other` 之一。 |
+| `context.rejection_reason` | String | **必填** | `document_invalid` · `face_mismatch` · `sanctions_hit` · `underage` · `duplicate` · `document_unreadable` · `document_expired` · `name_mismatch` · `age_restriction` · `suspected_fraud` · `other` 之一。 |
 | `context.verification_method` | String | 建议 | 尝试的验证方式。 |
+| `context.time_to_reject_minutes` | Number | 建议 | 从 `register` 到本事件的分钟数。 |
 
 ### `account_blocked`
 
@@ -85,7 +93,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 
 | 字段 | 类型 | 要求 | 说明 |
 |-------|------|-------------|-------------|
-| `context.unblock_reason` | String | **必填** | `review_passed` · `appeal_approved` · `temporary_expired` · `manual_admin` · `other` 之一。 |
+| `context.unblock_reason` | String | **必填** | 建议用 `review_passed` · `appeal_approved` · `cooldown_ended` · `manual_admin` · `other`。（`temporary_expired` 仍接受但已弃用。） |
 | `context.previous_block_reason` | String | 建议 | 被解除的封禁的原因。 |
 
 ## 资金

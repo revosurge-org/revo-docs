@@ -35,6 +35,21 @@ A new user account is created.
 | `context.privacy.phone_hash` | String | Suggested | SHA-256 of E.164-normalized phone. Never plaintext. |
 | `context.privacy.marketing_consent` | Boolean | Suggested | Whether the user consents to marketing. |
 | `context.attribution.install_source` | String | Suggested | Install / acquisition source. |
+| `context.phone_country_code` | String | Suggested | E.164 country calling code (e.g. `+55`). |
+| `context.consent_timestamp` | Number | Suggested | Last consent change, UTC ms. |
+| `context.attribution.utm_source` | String | Suggested | UTM source. |
+| `context.attribution.utm_medium` | String | Suggested | UTM medium. |
+| `context.attribution.utm_campaign` | String | Suggested | UTM campaign. |
+| `context.attribution.utm_content` | String | Suggested | UTM content. |
+| `context.attribution.utm_term` | String | Suggested | UTM term. |
+
+### `referral_register`
+
+A registration attributed to a referral — carries the referrer's user id.
+
+| Field | Type | Requirement | Description |
+|-------|------|-------------|-------------|
+| `context.referral_client_user_id` | String | Suggested | The referrer's `client_user_id` (the user who referred this registration). |
 
 ### `login`
 
@@ -58,7 +73,8 @@ A user authenticates into your platform.
 | Field | Type | Requirement | Description |
 |-------|------|-------------|-------------|
 | `context.phone_hash` | String | Suggested | SHA-256 of phone. Never plaintext. |
-| `context.verification_method` | String | Suggested | One of `sms_otp` · `call` · `whatsapp`. |
+| `context.phone_country_code` | String | Suggested | E.164 country calling code (e.g. `+91`). |
+| `context.verification_method` | String | Suggested | Prefer `sms_otp` · `voice_call` · `whatsapp_otp`. (`call` · `whatsapp` still accepted but deprecated.) |
 
 ### `marketing_consent_updated`
 
@@ -87,6 +103,9 @@ Fired once when the app is first installed & opened.
 | `context.app_version` | String | Suggested | App version on install. |
 | `context.attribution.install_source` | String | Suggested | Media source / channel (from MMP). |
 | `context.device_id` | String | Suggested | Device identifier. |
+| `context.store` | String | Suggested | Install store: `app_store` · `play_store` · `apk_direct`. |
+| `context.campaign_id` | String | Suggested | Campaign ID (from MMP). |
+| `context.is_reattribution` | Boolean | Suggested | `true` if reinstall / reattribution. |
 
 ### `app_open`
 
@@ -97,6 +116,7 @@ Fired on app launch / foreground.
 | `context.platform` | String | **Required** | One of `ios` · `android` · `web`. |
 | `context.app_version` | String | Suggested | App version. |
 | `context.session_id` | String | Suggested | Session identifier. |
+| `context.is_first_open` | Boolean | Suggested | `true` for first open after install. |
 
 ### `app_uninstall`
 
@@ -106,6 +126,7 @@ A strong churn signal (MMP detects via push-token expiry).
 |-------|------|-------------|-------------|
 | `context.platform` | String | **Required** | One of `ios` · `android` · `web`. |
 | `context.app_version` | String | Suggested | Last installed version. |
+| `context.days_since_install` | Number | Suggested | Days from install to uninstall. |
 
 ### `push_permission_updated`
 
@@ -115,3 +136,5 @@ Push reachability / opt-in signal.
 |-------|------|-------------|-------------|
 | `context.platform` | String | **Required** | One of `ios` · `android` · `web`. |
 | `context.permission_status` | String | **Required** | One of `granted` · `denied` · `provisional` · `revoked`. |
+| `context.push_enabled` | Boolean | Suggested | `true` if push permission granted. |
+| `context.update_source` | String | Suggested | What triggered the change: `system_prompt` · `settings` · `onboarding`. |

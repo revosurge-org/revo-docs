@@ -35,6 +35,21 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.privacy.phone_hash` | String | 建议 | E.164 归一化电话号码的 SHA-256。绝不可以是明文。 |
 | `context.privacy.marketing_consent` | Boolean | 建议 | 用户是否同意接收营销信息。 |
 | `context.attribution.install_source` | String | 建议 | 安装/获客来源。 |
+| `context.phone_country_code` | String | 建议 | E.164 国家区号（如 `+55`）。 |
+| `context.consent_timestamp` | Number | 建议 | 最近一次授权变更，UTC 毫秒。 |
+| `context.attribution.utm_source` | String | 建议 | UTM 来源。 |
+| `context.attribution.utm_medium` | String | 建议 | UTM 媒介。 |
+| `context.attribution.utm_campaign` | String | 建议 | UTM 活动。 |
+| `context.attribution.utm_content` | String | 建议 | UTM 内容。 |
+| `context.attribution.utm_term` | String | 建议 | UTM 关键词。 |
+
+### `referral_register`
+
+带推荐归因的注册——携带推荐人的用户 ID。
+
+| 字段 | 类型 | 要求 | 说明 |
+|-------|------|-------------|-------------|
+| `context.referral_client_user_id` | String | 建议 | 推荐人的 `client_user_id`（推荐本次注册的用户）。 |
 
 ### `login`
 
@@ -58,7 +73,8 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | 字段 | 类型 | 要求 | 说明 |
 |-------|------|-------------|-------------|
 | `context.phone_hash` | String | 建议 | 电话号码的 SHA-256。绝不可以是明文。 |
-| `context.verification_method` | String | 建议 | `sms_otp` · `call` · `whatsapp` 之一。 |
+| `context.phone_country_code` | String | 建议 | E.164 国家区号（如 `+91`）。 |
+| `context.verification_method` | String | 建议 | 建议用 `sms_otp` · `voice_call` · `whatsapp_otp`。（`call` · `whatsapp` 仍接受但已弃用。） |
 
 ### `marketing_consent_updated`
 
@@ -87,6 +103,9 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.app_version` | String | 建议 | 安装时的应用版本。 |
 | `context.attribution.install_source` | String | 建议 | 媒体来源/渠道（来自 MMP）。 |
 | `context.device_id` | String | 建议 | 设备标识符。 |
+| `context.store` | String | 建议 | 安装商店：`app_store` · `play_store` · `apk_direct`。 |
+| `context.campaign_id` | String | 建议 | 广告活动 ID（来自 MMP）。 |
+| `context.is_reattribution` | Boolean | 建议 | 重装/重新归因为 `true`。 |
 
 ### `app_open`
 
@@ -97,6 +116,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.platform` | String | **必填** | `ios` · `android` · `web` 之一。 |
 | `context.app_version` | String | 建议 | 应用版本。 |
 | `context.session_id` | String | 建议 | 会话标识符。 |
+| `context.is_first_open` | Boolean | 建议 | 安装后首次打开为 `true`。 |
 
 ### `app_uninstall`
 
@@ -106,6 +126,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 |-------|------|-------------|-------------|
 | `context.platform` | String | **必填** | `ios` · `android` · `web` 之一。 |
 | `context.app_version` | String | 建议 | 最后安装的版本。 |
+| `context.days_since_install` | Number | 建议 | 从安装到卸载的天数。 |
 
 ### `push_permission_updated`
 
@@ -115,3 +136,5 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 |-------|------|-------------|-------------|
 | `context.platform` | String | **必填** | `ios` · `android` · `web` 之一。 |
 | `context.permission_status` | String | **必填** | `granted` · `denied` · `provisional` · `revoked` 之一。 |
+| `context.push_enabled` | Boolean | 建议 | 已授予推送权限为 `true`。 |
+| `context.update_source` | String | 建议 | 变更触发来源：`system_prompt` · `settings` · `onboarding`。 |
