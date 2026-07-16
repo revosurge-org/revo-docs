@@ -65,7 +65,8 @@ export const hk: DefaultTheme.Config = {
       link: '/hk/adwave/guided-campaign-setup',
       collapsed: false,
       items: [
-        { text: '引導式廣告系列設定', link: '/hk/adwave/guided-campaign-setup' }
+        { text: '引導式廣告系列設定', link: '/hk/adwave/guided-campaign-setup' },
+        { text: '素材要求與範例', link: '/hk/adwave/creative-requirements' }
       ]
     },
     {

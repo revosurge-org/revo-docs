@@ -65,7 +65,8 @@ export const cn: DefaultTheme.Config = {
       link: '/cn/adwave/guided-campaign-setup',
       collapsed: false,
       items: [
-        { text: '引导式广告系列设置', link: '/cn/adwave/guided-campaign-setup' }
+        { text: '引导式广告系列设置', link: '/cn/adwave/guided-campaign-setup' },
+        { text: '素材要求与范例', link: '/cn/adwave/creative-requirements' }
       ]
     },
     {

@@ -65,7 +65,8 @@ export const en: DefaultTheme.Config = {
       link: '/en/adwave/guided-campaign-setup',
       collapsed: false,
       items: [
-        { text: 'Guided Campaign Setup', link: '/en/adwave/guided-campaign-setup' }
+        { text: 'Guided Campaign Setup', link: '/en/adwave/guided-campaign-setup' },
+        { text: 'Creative Requirements & Examples', link: '/en/adwave/creative-requirements' }
       ]
     },
     {

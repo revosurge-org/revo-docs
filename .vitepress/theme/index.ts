@@ -6,6 +6,7 @@ import 'katex/dist/katex.min.css'
 import './style.css'
 import HttpMethod from './components/HttpMethod.vue'
 import EventPayloadExplorer from './components/EventPayloadExplorer.vue'
+import CreativePreviews from './components/CreativePreviews.vue'
 
 export default {
   extends: DefaultTheme,
@@ -18,5 +19,6 @@ export default {
     // Globally registered so any locale's Markdown can use them without imports.
     app.component('HttpMethod', HttpMethod)
     app.component('EventPayloadExplorer', EventPayloadExplorer)
+    app.component('CreativePreviews', CreativePreviews)
   }
 } satisfies Theme
