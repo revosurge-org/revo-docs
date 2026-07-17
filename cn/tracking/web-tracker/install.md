@@ -1,10 +1,10 @@
 ---
-title: 安装 Web 追踪器
-sidebar_label: 安装 Web 追踪器
+title: 安装
+sidebar_label: 安装
 description: 安装 RevoSurge Web 追踪器——添加脚本、初始化、发送关键事件，并验证其在 AdWave 中变为 Live。
 ---
 
-# 安装 Web 追踪器
+# 安装
 
 **受众：** 开发者、追踪工程师、BI／分析负责人
 **安装时长：** 约 15 分钟
@@ -120,7 +120,7 @@ SDK 为目录中的每个事件提供了带类型的辅助方法（register、lo
 
 1. 在初始化中将 `env` 改为 `"prod"`。
 2. 重新部署。
-3. 你的产品即可用于 [AdWave 广告系列](/cn/adwave/guided-campaign-setup)。
+3. 你的产品即可用于 [AdWave 广告系列](/cn/adwave/campaign-setup)。
 
 ## 你的事件能解锁什么
 
@@ -154,4 +154,4 @@ SDK 为目录中的每个事件提供了带类型的辅助方法（register、lo
 
 - [Web 追踪器 SDK 参考](/cn/tracking/web-tracker/reference) — 每个方法与字段
 - [服务器事件 API（S2S）](/cn/tracking/s2s/overview) — 从后端发送事件
-- [引导式广告系列设置](/cn/adwave/guided-campaign-setup) — 上线你的第一个 AdWave 广告系列
+- [广告系列设置](/cn/adwave/campaign-setup) — 上线你的第一个 AdWave 广告系列

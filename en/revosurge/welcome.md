@@ -45,6 +45,6 @@ This guide covers:
 ## Where to go next
 - If you're new: start in [**Growth → Getting started**](/en/growth/getting-started)
 - If you're integrating tracking: go to [**Tracking → Overview**](/en/tracking/overview)
-- If you're launching ads: go to [**AdWave → Guided campaign setup**](/en/adwave/guided-campaign-setup)
+- If you're launching ads: go to [**AdWave → Campaign setup**](/en/adwave/campaign-setup)
 - If you need audience targeting: go to [**Audience**](/en/audience/segments)
 - If you're building integrations: go to [**API → API quickstart**](/en/api/quickstart)

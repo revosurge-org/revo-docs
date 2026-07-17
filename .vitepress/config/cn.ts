@@ -34,7 +34,7 @@ export const cn: DefaultTheme.Config = {
           text: 'Web 追踪器',
           link: '/cn/tracking/web-tracker',
           items: [
-            { text: '安装 Web 追踪器', link: '/cn/tracking/web-tracker/install' },
+            { text: '安装', link: '/cn/tracking/web-tracker/install' },
             { text: 'Web 追踪器 SDK 参考', link: '/cn/tracking/web-tracker/reference' }
           ]
         },
@@ -62,10 +62,10 @@ export const cn: DefaultTheme.Config = {
     },
     {
       text: 'AdWave',
-      link: '/cn/adwave/guided-campaign-setup',
+      link: '/cn/adwave/campaign-setup',
       collapsed: false,
       items: [
-        { text: '引导式广告系列设置', link: '/cn/adwave/guided-campaign-setup' },
+        { text: '广告系列设置', link: '/cn/adwave/campaign-setup' },
         { text: '素材要求与范例', link: '/cn/adwave/creative-requirements' }
       ]
     },

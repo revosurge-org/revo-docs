@@ -25,4 +25,4 @@ Segments are typically used to:
 - Create interest-based or behavior-based audiences
 
 ## Where segments are used
-Segments can be used in campaign targeting (Step 3 in [**AdWave → Guided campaign setup**](/en/adwave/guided-campaign-setup)) when the UI allows selecting audience labels/segments.
+Segments can be used in campaign targeting (Step 3 in [**AdWave → Campaign setup**](/en/adwave/campaign-setup)) when the UI allows selecting audience labels/segments.

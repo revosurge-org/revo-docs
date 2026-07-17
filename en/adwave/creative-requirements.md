@@ -124,4 +124,4 @@ Every creative must carry **responsible-gambling and age-restriction wording** (
 
 ## Related
 
-- [Guided campaign setup](/en/adwave/guided-campaign-setup) — where you add these creatives to a campaign.
+- [Campaign setup](/en/adwave/campaign-setup) — where you add these creatives to a campaign.

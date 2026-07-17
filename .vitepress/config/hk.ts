@@ -34,7 +34,7 @@ export const hk: DefaultTheme.Config = {
           text: 'Web 追蹤器',
           link: '/hk/tracking/web-tracker',
           items: [
-            { text: '安裝 Web 追蹤器', link: '/hk/tracking/web-tracker/install' },
+            { text: '安裝', link: '/hk/tracking/web-tracker/install' },
             { text: 'Web 追蹤器 SDK 參考', link: '/hk/tracking/web-tracker/reference' }
           ]
         },
@@ -62,10 +62,10 @@ export const hk: DefaultTheme.Config = {
     },
     {
       text: 'AdWave',
-      link: '/hk/adwave/guided-campaign-setup',
+      link: '/hk/adwave/campaign-setup',
       collapsed: false,
       items: [
-        { text: '引導式廣告系列設定', link: '/hk/adwave/guided-campaign-setup' },
+        { text: '廣告系列設定', link: '/hk/adwave/campaign-setup' },
         { text: '素材要求與範例', link: '/hk/adwave/creative-requirements' }
       ]
     },

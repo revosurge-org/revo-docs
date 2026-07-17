@@ -34,7 +34,7 @@ export const en: DefaultTheme.Config = {
           text: 'Web Tracker',
           link: '/en/tracking/web-tracker',
           items: [
-            { text: 'Install the Web Tracker', link: '/en/tracking/web-tracker/install' },
+            { text: 'Install', link: '/en/tracking/web-tracker/install' },
             { text: 'Web Tracker SDK Reference', link: '/en/tracking/web-tracker/reference' }
           ]
         },
@@ -62,10 +62,10 @@ export const en: DefaultTheme.Config = {
     },
     {
       text: 'AdWave',
-      link: '/en/adwave/guided-campaign-setup',
+      link: '/en/adwave/campaign-setup',
       collapsed: false,
       items: [
-        { text: 'Guided Campaign Setup', link: '/en/adwave/guided-campaign-setup' },
+        { text: 'Campaign Setup', link: '/en/adwave/campaign-setup' },
         { text: 'Creative Requirements & Examples', link: '/en/adwave/creative-requirements' }
       ]
     },

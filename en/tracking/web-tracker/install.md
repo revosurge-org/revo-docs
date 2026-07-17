@@ -1,10 +1,10 @@
 ---
-title: Install the Web Tracker
-sidebar_label: Install the Web Tracker
+title: Install
+sidebar_label: Install
 description: Install the RevoSurge Web Tracker — add the script, initialize, send key events, and verify they go Live for AdWave.
 ---
 
-# Install the Web Tracker
+# Install
 
 **Audience:** Developers, tracking engineers, BI / analytics owners
 **Time to install:** ~15 minutes
@@ -134,7 +134,7 @@ When your key events read **Live**:
 
 1. Change `env` to `"prod"` in your initialization.
 2. Redeploy.
-3. Your Product is ready for [AdWave campaigns](/en/adwave/guided-campaign-setup).
+3. Your Product is ready for [AdWave campaigns](/en/adwave/campaign-setup).
 
 ## What your events unlock
 
@@ -170,4 +170,4 @@ Yes. For backend-generated events (payments confirmed server-side, KYC, bonuses)
 
 - [Web Tracker SDK Reference](/en/tracking/web-tracker/reference) — every method and field
 - [Server Events API (S2S)](/en/tracking/s2s/overview) — send events from your backend
-- [Guided Campaign Setup](/en/adwave/guided-campaign-setup) — launch your first AdWave campaign
+- [Campaign Setup](/en/adwave/campaign-setup) — launch your first AdWave campaign
