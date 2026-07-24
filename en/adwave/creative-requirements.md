@@ -16,9 +16,8 @@ description: How to prepare AdWave creatives — creative sets, Round 1 plan, an
 - [What to prepare for Round 1](#what-to-prepare-for-round-1)
 - [Supported placements & specs](#supported-placements-specs)
 - [Round 1 · Creative previews](#round-1-creative-previews)
-- [Compliance](#compliance)
 
-## Why 8–10 sets
+## Why 8–10 sets {#why-8-10-sets}
 
 - **The algorithm learns from variety.** The more varied and distinct your creatives, the faster and more accurately it learns.
 - **Lower cost per acquisition (CPA).** More room to optimize means more conversions for the same budget.
@@ -110,17 +109,13 @@ We support the following four placements — please provide assets to spec.
 - **Size:** 300×250
 - **Style:** blends into content — image + title + description.
 
-## Round 1 · Creative previews
+## Round 1 · Creative previews {#round-1-creative-previews}
 
 Reference mockups for the Round 1 plan above, one section per placement.
 
 > **Note:** Examples are component references only, not design references. Replace all branding and imagery with your own approved assets.
 
 <CreativePreviews lang="en" />
-
-## Compliance
-
-Every creative must carry **responsible-gambling and age-restriction wording** (18+ / 21+ depending on market) plus a link to the **Terms & Conditions**. Final copy must follow your approved version.
 
 ## Related
 
