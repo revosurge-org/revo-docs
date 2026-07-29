@@ -98,6 +98,16 @@ Exclude blocked accounts from LTV / churn models.
 
 ## Financial
 
+### `deposit_initiated`
+
+| Field | Type | Requirement | Description |
+|-------|------|-------------|-------------|
+| `context.transaction_id` | String | **Required** | Payment order ID (PK; must match the later `deposit` / `deposit_failed`). |
+| `context.amount` | Number | **Required** | Requested deposit amount (monetary). |
+| `context.currency` | String | **Required** | ISO 4217 (fiat) or crypto symbol. |
+| `context.is_crypto` | Boolean | Suggested | `true` for crypto. |
+| `context.payment_method` | String | Suggested | Payment channel picked by the user, e.g. `card_visa` · `usdt_trc20` · `pix`. |
+
 ### `deposit`
 
 | Field | Type | Requirement | Description |

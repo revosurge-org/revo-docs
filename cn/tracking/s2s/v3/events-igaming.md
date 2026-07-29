@@ -98,6 +98,16 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 
 ## 资金
 
+### `deposit_initiated`
+
+| 字段 | 类型 | 要求 | 说明 |
+|-------|------|-------------|-------------|
+| `context.transaction_id` | String | **必填** | 支付订单 ID（主键；须与后续 `deposit` / `deposit_failed` 一致）。 |
+| `context.amount` | Number | **必填** | 申请充值的金额（货币）。 |
+| `context.currency` | String | **必填** | ISO 4217（法币）或加密货币符号。 |
+| `context.is_crypto` | Boolean | 建议 | 加密货币为 `true`。 |
+| `context.payment_method` | String | 建议 | 用户所选支付渠道，例如 `card_visa` · `usdt_trc20` · `pix`。 |
+
 ### `deposit`
 
 | 字段 | 类型 | 要求 | 说明 |

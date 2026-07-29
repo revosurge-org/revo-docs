@@ -229,6 +229,13 @@ export const s2sV3Events: EventDef[] = [
     f('previous_block_reason', 'context', 'String', 'suggested', 'fraud',
       tri('Reason of the block being lifted.', '被解除的封禁原因。', '被解除的封鎖原因。')),
   ]),
+  def('deposit_initiated', 'igaming', 'financial', [
+    f('transaction_id', 'context', 'String', 'required', 'txn_554433', tri('Payment order ID (PK; must match the later deposit / deposit_failed).', '支付订单 ID（主键；须与后续 deposit / deposit_failed 一致）。', '支付訂單 ID（主鍵；須與後續 deposit / deposit_failed 一致）。')),
+    f('amount', 'context', 'Number', 'required', 100.0, tri('Requested deposit amount.', '申请充值的金额。', '申請充值的金額。'), { monetary: true }),
+    f('currency', 'context', 'String', 'required', 'USD', D_CURRENCY),
+    f('is_crypto', 'context', 'Boolean', 'suggested', false, D_CRYPTO),
+    f('payment_method', 'context', 'String', 'suggested', 'pix', tri('Payment channel picked by the user, e.g. card_visa / usdt_trc20 / pix.', '用户所选支付渠道，如 card_visa / usdt_trc20 / pix。', '用戶所選支付渠道，如 card_visa / usdt_trc20 / pix。')),
+  ]),
   def('deposit', 'igaming', 'financial', [
     f('transaction_id', 'context', 'String', 'required', 'txn_554433', D_TXN),
     f('amount', 'context', 'Number', 'required', 100.0, tri('Deposit amount.', '充值金额。', '充值金額。'), { monetary: true }),

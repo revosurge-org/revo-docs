@@ -98,6 +98,16 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 
 ## 資金
 
+### `deposit_initiated`
+
+| 欄位 | 類型 | 要求 | 說明 |
+|-------|------|-------------|-------------|
+| `context.transaction_id` | String | **必填** | 支付訂單 ID（PK；須與後續 `deposit` / `deposit_failed` 一致）。 |
+| `context.amount` | Number | **必填** | 申請充值的金額（貨幣）。 |
+| `context.currency` | String | **必填** | ISO 4217（法定貨幣）或加密貨幣代號。 |
+| `context.is_crypto` | Boolean | 建議 | 加密貨幣為 `true`。 |
+| `context.payment_method` | String | 建議 | 用戶所選支付渠道，例如 `card_visa` · `usdt_trc20` · `pix`。 |
+
 ### `deposit`
 
 | 欄位 | 類型 | 要求 | 說明 |
