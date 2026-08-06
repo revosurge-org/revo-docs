@@ -168,10 +168,10 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 
 #### `game_type` 規範值 {#game-type-values}
 
-`context.game_type`（String，**必填**）為下表中的**規範遊戲類型**。細分的遊戲名稱統一歸入這些大類。
+`context.game_type`（String，**必填**）會正規化為下表中的**規範類型**。可以發送規範鍵本身，也可以發送它對應的任意別名，兩者都會正規化為同一個規範類型。
 
-| `game_type` | 涵蓋（Includes） |
-|-------------|----------|
+| `game_type` | 可接受的別名（Aliases） |
+|-------------|------------------|
 | `slot` | `slot`（老虎機）· `pachinko`（彈珠機） |
 | `live_casino` | `live`（真人）· `gameshow`（真人遊戲秀） |
 | `sportsbook` | `sport`（體育）· `cockfight`（鬥雞） |
@@ -182,7 +182,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `esports` | `esport`（電競） |
 | `crash` | `crash` · `aviator`（崩盤／墜機遊戲） |
 
-`game_type` 為受校驗的枚舉——只能發送上表中的值，未登記的值會被拒收。
+`game_type` 為受校驗的欄位——只能發送規範鍵或其所列別名，未登記的值會被拒收。
 
 ## 獎金生命週期
 

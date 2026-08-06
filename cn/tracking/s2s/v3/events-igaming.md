@@ -168,10 +168,10 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 
 #### `game_type` 规范值 {#game-type-values}
 
-`context.game_type`（String，**必填**）为下表中的**规范游戏类型**。细分的游戏名称统一归入这些大类。
+`context.game_type`（String，**必填**）会归一化为下表中的**规范类型**。可以发送规范键本身，也可以发送它对应的任意别名，两者都会归一化为同一个规范类型。
 
-| `game_type` | 涵盖（Includes） |
-|-------------|----------|
+| `game_type` | 可接受的别名（Aliases） |
+|-------------|------------------|
 | `slot` | `slot`（老虎机）· `pachinko`（弹珠机） |
 | `live_casino` | `live`（真人）· `gameshow`（真人游戏秀） |
 | `sportsbook` | `sport`（体育）· `cockfight`（斗鸡） |
@@ -182,7 +182,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `esports` | `esport`（电竞） |
 | `crash` | `crash` · `aviator`（崩盘／坠机游戏） |
 
-`game_type` 为受校验的枚举——只能发送上表中的值，未登记的值会被拒收。
+`game_type` 为受校验的字段——只能发送规范键或其所列别名，未登记的值会被拒收。
 
 ## 奖金生命周期
 

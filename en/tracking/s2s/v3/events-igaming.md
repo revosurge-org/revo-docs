@@ -168,10 +168,10 @@ A single settled-bet event — the stake and its outcome are reported together v
 
 #### `game_type` values
 
-`context.game_type` (String, **Required**) is a **canonical game type** from the fixed list below. Granular titles map up into these groups.
+`context.game_type` (String, **Required**) resolves to one of the **canonical types** below. Send either the canonical key or any of its aliases — both are accepted and normalize to the same canonical type.
 
-| `game_type` | Includes |
-|-------------|----------|
+| `game_type` | Accepted aliases |
+|-------------|------------------|
 | `slot` | `slot` · `pachinko` |
 | `live_casino` | `live` · `gameshow` |
 | `sportsbook` | `sport` · `cockfight` |
@@ -182,7 +182,7 @@ A single settled-bet event — the stake and its outcome are reported together v
 | `esports` | `esport` |
 | `crash` | `crash` · `aviator` |
 
-`game_type` is a validated enum — send one of the values above; unknown values are rejected.
+`game_type` is validated — send a canonical key or one of its listed aliases; unknown values are rejected.
 
 ## Bonus Lifecycle
 
