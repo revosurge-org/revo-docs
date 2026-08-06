@@ -172,20 +172,17 @@ A single settled-bet event — the stake and its outcome are reported together v
 
 | `game_type` | Includes |
 |-------------|----------|
-| `slot` | slot, pachinko |
-| `live_casino` | live, gameshow |
-| `sportsbook` | sport, cockfight |
-| `fishing` | fish, arcade |
-| `table_games` | baccarat, blackjack, roulette, dice, card, table |
-| `poker` | poker |
-| `lottery` | lottery, bingo, instant |
-| `esports` | esport |
-| `crash` | crash, aviator |
+| `slot` | `slot` · `pachinko` |
+| `live_casino` | `live` · `gameshow` |
+| `sportsbook` | `sport` · `cockfight` |
+| `fishing` | `fish` · `arcade` |
+| `table_games` | `baccarat` · `blackjack` · `roulette` · `dice` · `card` · `table` |
+| `poker` | `poker` |
+| `lottery` | `lottery` · `bingo` · `instant` |
+| `esports` | `esport` |
+| `crash` | `crash` · `aviator` |
 
 `game_type` is a validated enum — send one of the values above; unknown values are rejected.
-
-> [!NOTE]
-> If you're unsure which type a game should be mapped to, please contact your AM.
 
 ## Bonus Lifecycle
 

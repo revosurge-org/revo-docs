@@ -172,20 +172,17 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 
 | `game_type` | 涵盖（Includes） |
 |-------------|----------|
-| `slot` | 老虎机、弹珠机 |
-| `live_casino` | 真人、真人游戏秀 |
-| `sportsbook` | 体育、斗鸡 |
-| `fishing` | 捕鱼、街机 |
-| `table_games` | 百家乐、二十一点、轮盘、骰宝、纸牌、桌台 |
-| `poker` | 德州扑克 |
-| `lottery` | 彩票、宾果、即开彩／刮刮乐 |
-| `esports` | 电竞 |
-| `crash` | 崩盘／坠机游戏 |
+| `slot` | `slot`（老虎机）· `pachinko`（弹珠机） |
+| `live_casino` | `live`（真人）· `gameshow`（真人游戏秀） |
+| `sportsbook` | `sport`（体育）· `cockfight`（斗鸡） |
+| `fishing` | `fish`（捕鱼）· `arcade`（街机） |
+| `table_games` | `baccarat`（百家乐）· `blackjack`（二十一点）· `roulette`（轮盘）· `dice`（骰宝）· `card`（纸牌）· `table`（桌台） |
+| `poker` | `poker`（德州扑克） |
+| `lottery` | `lottery`（彩票）· `bingo`（宾果）· `instant`（即开彩／刮刮乐） |
+| `esports` | `esport`（电竞） |
+| `crash` | `crash` · `aviator`（崩盘／坠机游戏） |
 
 `game_type` 为受校验的枚举——只能发送上表中的值，未登记的值会被拒收。
-
-> [!NOTE]
-> 如不确定某款游戏应归入哪一类，请联系您的 AM。
 
 ## 奖金生命周期
 
