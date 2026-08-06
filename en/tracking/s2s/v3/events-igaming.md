@@ -152,7 +152,7 @@ A single settled-bet event — the stake and its outcome are reported together v
 | Field | Type | Requirement | Description |
 |-------|------|-------------|-------------|
 | `context.transaction_id` | String | **Required** | Unique bet / ticket ID (PK). |
-| `context.game_type` | String | **Required** | One of `slot` · `live_casino` · `crash` · `sportsbook`. |
+| `context.game_type` | String | **Required** | Canonical game type — see values below. |
 | `context.game_provider` | String | **Required** | e.g. `Pragmatic Play`, `Evolution Gaming`. |
 | `context.game_name` | String | Suggested | Specific game title (e.g. `Sweet Bonanza`). |
 | `context.amount` | Number | **Required** | Total stake (monetary). |
@@ -165,6 +165,27 @@ A single settled-bet event — the stake and its outcome are reported together v
 | `context.is_live` | Boolean | Suggested | Sportsbook in-play bet. |
 | `context.is_free` | Boolean | Suggested | Free-bet token (excluded from LTV). |
 | `context.is_crypto` | Boolean | Suggested | `true` for crypto. |
+
+#### `game_type` values
+
+`context.game_type` (String, **Required**) is a **canonical game type** from the fixed list below. Granular titles map up into these groups.
+
+| `game_type` | Includes |
+|-------------|----------|
+| `slot` | slot, pachinko |
+| `live_casino` | live, gameshow |
+| `sportsbook` | sport, cockfight |
+| `fishing` | fish, arcade |
+| `table_games` | baccarat, blackjack, roulette, dice, card, table |
+| `poker` | poker |
+| `lottery` | lottery, bingo, instant |
+| `esports` | esport |
+| `crash` | crash, aviator |
+
+`game_type` is a validated enum — send one of the values above; unknown values are rejected.
+
+> [!NOTE]
+> If you're unsure which type a game should be mapped to, please contact your AM.
 
 ## Bonus Lifecycle
 

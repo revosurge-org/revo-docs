@@ -259,7 +259,7 @@ export const s2sV3Events: EventDef[] = [
   ]),
   def('bet', 'igaming', 'gaming', [
     f('transaction_id', 'context', 'String', 'required', 'bet_554433', tri('Unique bet / ticket ID (PK).', '唯一投注/票据 ID（主键）。', '唯一投注/票據 ID（主鍵）。')),
-    f('game_type', 'context', 'String', 'required', 'slot', tri('Canonical game type.', '规范化游戏类型。', '規範化遊戲類型。'), { enumValues: ['slot', 'live_casino', 'crash', 'sportsbook'] }),
+    f('game_type', 'context', 'String', 'required', 'slot', tri('Canonical game type.', '规范化游戏类型。', '規範化遊戲類型。'), { enumValues: ['slot', 'live_casino', 'sportsbook', 'fishing', 'table_games', 'poker', 'lottery', 'esports', 'crash'] }),
     f('game_provider', 'context', 'String', 'required', 'Pragmatic Play', tri('Game provider.', '游戏提供商。', '遊戲提供商。')),
     f('game_name', 'context', 'String', 'suggested', 'Sweet Bonanza', tri('Specific game title.', '具体游戏名称。', '具體遊戲名稱。')),
     f('amount', 'context', 'Number', 'required', 100.0, tri('Total stake.', '总投注额。', '總投注額。'), { monetary: true }),

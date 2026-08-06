@@ -152,7 +152,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | 字段 | 类型 | 要求 | 说明 |
 |-------|------|-------------|-------------|
 | `context.transaction_id` | String | **必填** | 唯一投注/票据 ID（主键）。 |
-| `context.game_type` | String | **必填** | `slot` · `live_casino` · `crash` · `sportsbook` 之一。 |
+| `context.game_type` | String | **必填** | 规范游戏类型——见下方取值。 |
 | `context.game_provider` | String | **必填** | 例如 `Pragmatic Play`、`Evolution Gaming`。 |
 | `context.game_name` | String | 建议 | 具体游戏名称（例如 `Sweet Bonanza`）。 |
 | `context.amount` | Number | **必填** | 总投注额（货币）。 |
@@ -165,6 +165,27 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.is_live` | Boolean | 建议 | 体育博彩滚球投注。 |
 | `context.is_free` | Boolean | 建议 | 免费投注令牌（从 LTV 中排除）。 |
 | `context.is_crypto` | Boolean | 建议 | 加密货币为 `true`。 |
+
+#### `game_type` 规范值 {#game-type-values}
+
+`context.game_type`（String，**必填**）为下表中的**规范游戏类型**。细分的游戏名称统一归入这些大类。
+
+| `game_type` | 涵盖（Includes） |
+|-------------|----------|
+| `slot` | 老虎机、弹珠机 |
+| `live_casino` | 真人、真人游戏秀 |
+| `sportsbook` | 体育、斗鸡 |
+| `fishing` | 捕鱼、街机 |
+| `table_games` | 百家乐、二十一点、轮盘、骰宝、纸牌、桌台 |
+| `poker` | 德州扑克 |
+| `lottery` | 彩票、宾果、即开彩／刮刮乐 |
+| `esports` | 电竞 |
+| `crash` | 崩盘／坠机游戏 |
+
+`game_type` 为受校验的枚举——只能发送上表中的值，未登记的值会被拒收。
+
+> [!NOTE]
+> 如不确定某款游戏应归入哪一类，请联系您的 AM。
 
 ## 奖金生命周期
 
