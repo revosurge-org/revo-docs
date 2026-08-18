@@ -275,7 +275,7 @@ export const s2sV3Events: EventDef[] = [
   ], base('bet', 'required', 'suggested')),
   def('bonus_offered', 'igaming', 'bonus_lifecycle', [
     f('bonus_id', 'context', 'String', 'required', 'bns_9', tri('Unique bonus instance ID (PK; consistent across lifecycle).', '唯一奖金实例 ID（主键；贯穿生命周期保持一致）。', '唯一獎金實例 ID（主鍵；貫穿生命週期保持一致）。')),
-    f('bonus_type', 'context', 'String', 'required', 'welcome', tri('Bonus type.', '奖金类型。', '獎金類型。'), { enumValues: ['welcome', 'reload', 'cashback', 'freespin', 'promo_code', 'tournament', 'other'] }),
+    f('bonus_type', 'context', 'String', 'required', 'welcome', tri('Bonus type.', '奖金类型。', '獎金類型。'), { enumValues: ['welcome', 'reload', 'cashback', 'freespin', 'promo_code', 'tournament', 'value_voucher', 'promo_cash', 'other'] }),
     f('bonus_value_max', 'context', 'Number', 'required', 50.0, tri('Max grantable amount.', '最大可授予金额。', '最大可授予金額。')),
     f('currency', 'context', 'String', 'required', 'USD', tri('Currency.', '货币。', '貨幣。')),
     f('wagering_multiplier', 'context', 'Number', 'required', 30, tri('Wagering multiplier (30 = 30x; 0 = none).', '流水倍数（30 = 30 倍；0 = 无）。', '流水倍數（30 = 30 倍；0 = 無）。')),

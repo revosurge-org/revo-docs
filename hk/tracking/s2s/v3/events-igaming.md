@@ -193,7 +193,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | 欄位 | 類型 | 要求 | 說明 |
 |-------|------|-------------|-------------|
 | `context.bonus_id` | String | **必填** | 唯一獎金實例 ID（PK；在整個生命週期內保持一致）。 |
-| `context.bonus_type` | String | **必填** | `welcome` · `reload` · `cashback` · `freespin` · `promo_code` · `tournament` · `other` 其中之一。 |
+| `context.bonus_type` | String | **必填** | `welcome` · `reload` · `cashback` · `freespin` · `promo_code` · `tournament` · `value_voucher`（優惠券發放）· `promo_cash`（優惠金發放）· `other` 其中之一。 |
 | `context.bonus_value_max` | Number | **必填** | 最大可授予金額。 |
 | `context.currency` | String | **必填** | 貨幣。 |
 | `context.wagering_multiplier` | Number | **必填** | 投注倍數（30 = 30x；0 = 無）。 |
