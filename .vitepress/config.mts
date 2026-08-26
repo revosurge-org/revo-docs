@@ -55,7 +55,11 @@ export default defineConfig({
     }
   },
   head: [
-    ['link', { rel: 'icon', href: '/og-logo.png', type: 'image/png' }]
+    ['link', { rel: 'icon', href: '/icon-192.png', type: 'image/png', sizes: '192x192' }],
+    ['link', { rel: 'icon', href: '/icon-512.png', type: 'image/png', sizes: '512x512' }],
+    ['link', { rel: 'apple-touch-icon', href: '/icon-192.png', sizes: '192x192' }],
+    ['link', { rel: 'manifest', href: '/manifest.webmanifest' }],
+    ['meta', { name: 'theme-color', content: '#1c7ae9' }]
   ],
   vite: {
     plugins: [
@@ -107,7 +111,7 @@ export default defineConfig({
     }
   },
   themeConfig: {
-    logo: '/og-logo.png',
+    logo: '/icon-192.png',
     search: {
       provider: 'local'
     },
