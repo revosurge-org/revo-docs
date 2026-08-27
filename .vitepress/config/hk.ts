@@ -58,6 +58,13 @@ export const hk: DefaultTheme.Config = {
             }
           ]
         },
+        {
+          text: 'Postback 回傳',
+          link: '/hk/tracking/postback/partner-postback',
+          items: [
+            { text: '合作夥伴 Postback API', link: '/hk/tracking/postback/partner-postback' }
+          ]
+        },
       ]
     },
     {

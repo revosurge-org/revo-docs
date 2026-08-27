@@ -58,6 +58,13 @@ export const en: DefaultTheme.Config = {
             }
           ]
         },
+        {
+          text: 'Postback',
+          link: '/en/tracking/postback/partner-postback',
+          items: [
+            { text: 'Partner Postback API', link: '/en/tracking/postback/partner-postback' }
+          ]
+        },
       ]
     },
     {
