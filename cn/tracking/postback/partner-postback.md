@@ -30,10 +30,10 @@ description: 合作方 Postback 参考——端点、密钥认证、宏参数、
 
 | 环境 | 基础 URL |
 |-------------|----------|
-| 生产环境  | `https://<postback-host>` |
+| 生产环境  | `https://mmp.revosurge.com` |
 
 > [!NOTE]
-> 确切的主机名、你的**合作方标识（partner slug）**与**密钥**由 RevoSurge 在对接时下发。下文一律以 `acme` 作为示例标识。
+> 你的**合作方标识（partner slug）**与**密钥**由 RevoSurge 在对接时下发。下文路径中的 `{partner}` 代表你的标识，注册 URL 前请替换掉。
 
 ## 认证
 
@@ -116,16 +116,16 @@ RevoSurge 采用**本地 postback（local postback）**：每种事件类型一�
 
 ### URL 模板
 
-注册以下四条 URL，替换其中的主机名与密钥。`{...}` 里的值是**你后台的宏名**——下例采用常见的 `sub1`／`sub2` 约定。
+注册以下四条 URL，替换其中的合作方标识与密钥。`{...}` 里的值是**你后台的宏名**——下例采用常见的 `sub1`／`sub2` 约定。
 
 ```text
-https://<postback-host>/v1/pb/acme/registration?k=<KEY>&click_id={sub1}&ctx={sub2}&event={event}&user_id={user_id}&event_id={event_id}&txid={transaction_id}&amount={amount}&ts={date}&country={country}&hash_id={hash_id}&hash_name={hash_name}&source_id={source_id}&source_name={source_name}
+https://mmp.revosurge.com/v1/pb/{partner}/registration?k=<KEY>&click_id={sub1}&ctx={sub2}&event={event}&user_id={user_id}&event_id={event_id}&txid={transaction_id}&amount={amount}&ts={date}&country={country}&hash_id={hash_id}&hash_name={hash_name}&source_id={source_id}&source_name={source_name}
 
-https://<postback-host>/v1/pb/acme/first-deposit?k=<KEY>&…相同的查询串…
+https://mmp.revosurge.com/v1/pb/{partner}/first-deposit?k=<KEY>&…相同的查询串…
 
-https://<postback-host>/v1/pb/acme/repeat-deposit?k=<KEY>&…相同的查询串…
+https://mmp.revosurge.com/v1/pb/{partner}/repeat-deposit?k=<KEY>&…相同的查询串…
 
-https://<postback-host>/v1/pb/acme/revenue?k=<KEY>&…相同的查询串…
+https://mmp.revosurge.com/v1/pb/{partner}/revenue?k=<KEY>&…相同的查询串…
 ```
 
 ### 一次实际触发
@@ -134,7 +134,7 @@ https://<postback-host>/v1/pb/acme/revenue?k=<KEY>&…相同的查询串…
 
 ```bash [cURL]
 curl -sS -o /dev/null -w '%{http_code}\n' -G \
-  "https://<postback-host>/v1/pb/acme/first-deposit" \
+  "https://mmp.revosurge.com/v1/pb/{partner}/first-deposit" \
   --data-urlencode "k=$REVOSURGE_POSTBACK_KEY" \
   --data-urlencode "click_id=8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de" \
   --data-urlencode "ctx=ctx_9931" \
@@ -148,7 +148,7 @@ curl -sS -o /dev/null -w '%{http_code}\n' -G \
 ```
 
 ```text [最终 URL]
-https://<postback-host>/v1/pb/acme/first-deposit
+https://mmp.revosurge.com/v1/pb/{partner}/first-deposit
   ?k=<KEY>
   &click_id=8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de
   &ctx=ctx_9931
@@ -218,19 +218,19 @@ URL 被粘进邮件或工单后，会被链接扫描器抓取，此时宏仍是�
 在切真实流量之前，请确认以下四种行为：
 
 ```bash
-HOST="<postback-host>"; KEY="<your-key>"
+KEY="<your-key>"
 
 # 1. 正常路径——预期 200 {"status":"ok"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY&click_id=test-click-001&user_id=p_test"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY&click_id=test-click-001&user_id=p_test"
 
 # 2. 错误密钥——预期 403
-curl -s -o /dev/null -w '%{http_code}\n' "https://$HOST/v1/pb/acme/revenue?k=WRONG"
+curl -s -o /dev/null -w '%{http_code}\n' "https://mmp.revosurge.com/v1/pb/{partner}/revenue?k=WRONG"
 
 # 3. 无身份标识——预期 200 {"status":"ignored"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY"
 
 # 4. 未替换的宏——预期 200 {"status":"ignored"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY&click_id=%7Bsub1%7D"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY&click_id=%7Bsub1%7D"
 ```
 
 随后请通过你的后台发送一条真实的测试转化，并请我们逐字段核对。有三项特别值得明确确认，因为其中任何一项出错都会产出"看起来干净、实则错误"的数据：

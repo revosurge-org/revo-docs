@@ -30,10 +30,10 @@ description: 合作夥伴 Postback 參考 — 端點、金鑰認證、宏參數�
 
 | 環境 | 基礎 URL |
 |-------------|----------|
-| Production  | `https://<postback-host>` |
+| Production  | `https://mmp.revosurge.com` |
 
 > [!NOTE]
-> 確切的主機名稱、你的**夥伴代號 (partner slug)** 與**金鑰**，由 RevoSurge 在對接時發放。下文一律以 `acme` 作為示例代號。
+> 你的**夥伴代號 (partner slug)** 與**金鑰**由 RevoSurge 在對接時發放。下文路徑中的 `{partner}` 代表你的代號，註冊 URL 前請先替換。
 
 ## 認證
 
@@ -116,16 +116,16 @@ RevoSurge 採用**本地 postback (local postback)**：每種事件類型一條 
 
 ### URL 模板
 
-註冊以下四條 URL，替換當中的主機名稱與金鑰。`{...}` 內的值是**你後台的宏名稱** — 下例採用常見的 `sub1`／`sub2` 慣例。
+註冊以下四條 URL，替換當中的夥伴代號與金鑰。`{...}` 內的值是**你後台的宏名稱** — 下例採用常見的 `sub1`／`sub2` 慣例。
 
 ```text
-https://<postback-host>/v1/pb/acme/registration?k=<KEY>&click_id={sub1}&ctx={sub2}&event={event}&user_id={user_id}&event_id={event_id}&txid={transaction_id}&amount={amount}&ts={date}&country={country}&hash_id={hash_id}&hash_name={hash_name}&source_id={source_id}&source_name={source_name}
+https://mmp.revosurge.com/v1/pb/{partner}/registration?k=<KEY>&click_id={sub1}&ctx={sub2}&event={event}&user_id={user_id}&event_id={event_id}&txid={transaction_id}&amount={amount}&ts={date}&country={country}&hash_id={hash_id}&hash_name={hash_name}&source_id={source_id}&source_name={source_name}
 
-https://<postback-host>/v1/pb/acme/first-deposit?k=<KEY>&…相同的查詢字串…
+https://mmp.revosurge.com/v1/pb/{partner}/first-deposit?k=<KEY>&…相同的查詢字串…
 
-https://<postback-host>/v1/pb/acme/repeat-deposit?k=<KEY>&…相同的查詢字串…
+https://mmp.revosurge.com/v1/pb/{partner}/repeat-deposit?k=<KEY>&…相同的查詢字串…
 
-https://<postback-host>/v1/pb/acme/revenue?k=<KEY>&…相同的查詢字串…
+https://mmp.revosurge.com/v1/pb/{partner}/revenue?k=<KEY>&…相同的查詢字串…
 ```
 
 ### 一次實際觸發
@@ -134,7 +134,7 @@ https://<postback-host>/v1/pb/acme/revenue?k=<KEY>&…相同的查詢字串…
 
 ```bash [cURL]
 curl -sS -o /dev/null -w '%{http_code}\n' -G \
-  "https://<postback-host>/v1/pb/acme/first-deposit" \
+  "https://mmp.revosurge.com/v1/pb/{partner}/first-deposit" \
   --data-urlencode "k=$REVOSURGE_POSTBACK_KEY" \
   --data-urlencode "click_id=8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de" \
   --data-urlencode "ctx=ctx_9931" \
@@ -148,7 +148,7 @@ curl -sS -o /dev/null -w '%{http_code}\n' -G \
 ```
 
 ```text [最終 URL]
-https://<postback-host>/v1/pb/acme/first-deposit
+https://mmp.revosurge.com/v1/pb/{partner}/first-deposit
   ?k=<KEY>
   &click_id=8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de
   &ctx=ctx_9931
@@ -218,19 +218,19 @@ URL 被貼進電郵或工單後，會被連結掃描器抓取，此時宏仍是�
 在切入真實流量之前，請確認以下四種行為：
 
 ```bash
-HOST="<postback-host>"; KEY="<your-key>"
+KEY="<your-key>"
 
 # 1. 正常路徑 — 預期 200 {"status":"ok"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY&click_id=test-click-001&user_id=p_test"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY&click_id=test-click-001&user_id=p_test"
 
 # 2. 錯誤金鑰 — 預期 403
-curl -s -o /dev/null -w '%{http_code}\n' "https://$HOST/v1/pb/acme/revenue?k=WRONG"
+curl -s -o /dev/null -w '%{http_code}\n' "https://mmp.revosurge.com/v1/pb/{partner}/revenue?k=WRONG"
 
 # 3. 沒有身分識別 — 預期 200 {"status":"ignored"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY"
 
 # 4. 未替換的宏 — 預期 200 {"status":"ignored"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY&click_id=%7Bsub1%7D"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY&click_id=%7Bsub1%7D"
 ```
 
 之後請透過你的後台送出一筆真實的測試轉換，並請我們逐欄核對。有三項特別值得明確確認，因為當中任何一項出錯，都會產出「看來乾淨、實際錯誤」的數據：

@@ -30,10 +30,10 @@ The Partner Postback API lets an operator or affiliate platform report conversio
 
 | Environment | Base URL |
 |-------------|----------|
-| Production  | `https://<postback-host>` |
+| Production  | `https://mmp.revosurge.com` |
 
 > [!NOTE]
-> RevoSurge issues the exact host, your **partner slug**, and your **key** during onboarding. Everything below uses `acme` as the example slug.
+> RevoSurge issues your **partner slug** and your **key** during onboarding. `{partner}` in the paths below stands for your slug — substitute it before registering the URLs.
 
 ## Authentication
 
@@ -116,16 +116,16 @@ Parameters not listed here are **kept verbatim** on the stored event, so a macro
 
 ### URL template
 
-Register these four URLs, substituting your host and key. The `{...}` values are **your back office's macro names** — the example below uses the common `sub1`/`sub2` convention.
+Register these four URLs, substituting your partner slug and key. The `{...}` values are **your back office's macro names** — the example below uses the common `sub1`/`sub2` convention.
 
 ```text
-https://<postback-host>/v1/pb/acme/registration?k=<KEY>&click_id={sub1}&ctx={sub2}&event={event}&user_id={user_id}&event_id={event_id}&txid={transaction_id}&amount={amount}&ts={date}&country={country}&hash_id={hash_id}&hash_name={hash_name}&source_id={source_id}&source_name={source_name}
+https://mmp.revosurge.com/v1/pb/{partner}/registration?k=<KEY>&click_id={sub1}&ctx={sub2}&event={event}&user_id={user_id}&event_id={event_id}&txid={transaction_id}&amount={amount}&ts={date}&country={country}&hash_id={hash_id}&hash_name={hash_name}&source_id={source_id}&source_name={source_name}
 
-https://<postback-host>/v1/pb/acme/first-deposit?k=<KEY>&…same query string…
+https://mmp.revosurge.com/v1/pb/{partner}/first-deposit?k=<KEY>&…same query string…
 
-https://<postback-host>/v1/pb/acme/repeat-deposit?k=<KEY>&…same query string…
+https://mmp.revosurge.com/v1/pb/{partner}/repeat-deposit?k=<KEY>&…same query string…
 
-https://<postback-host>/v1/pb/acme/revenue?k=<KEY>&…same query string…
+https://mmp.revosurge.com/v1/pb/{partner}/revenue?k=<KEY>&…same query string…
 ```
 
 ### A fired postback
@@ -134,7 +134,7 @@ https://<postback-host>/v1/pb/acme/revenue?k=<KEY>&…same query string…
 
 ```bash [cURL]
 curl -sS -o /dev/null -w '%{http_code}\n' -G \
-  "https://<postback-host>/v1/pb/acme/first-deposit" \
+  "https://mmp.revosurge.com/v1/pb/{partner}/first-deposit" \
   --data-urlencode "k=$REVOSURGE_POSTBACK_KEY" \
   --data-urlencode "click_id=8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de" \
   --data-urlencode "ctx=ctx_9931" \
@@ -148,7 +148,7 @@ curl -sS -o /dev/null -w '%{http_code}\n' -G \
 ```
 
 ```text [Resulting URL]
-https://<postback-host>/v1/pb/acme/first-deposit
+https://mmp.revosurge.com/v1/pb/{partner}/first-deposit
   ?k=<KEY>
   &click_id=8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de
   &ctx=ctx_9931
@@ -218,19 +218,19 @@ A URL pasted into an email or a ticket gets fetched by link scanners with the ma
 Before switching real traffic on, confirm all four behaviours:
 
 ```bash
-HOST="<postback-host>"; KEY="<your-key>"
+KEY="<your-key>"
 
 # 1. Happy path — expect 200 {"status":"ok"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY&click_id=test-click-001&user_id=p_test"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY&click_id=test-click-001&user_id=p_test"
 
 # 2. Wrong key — expect 403
-curl -s -o /dev/null -w '%{http_code}\n' "https://$HOST/v1/pb/acme/revenue?k=WRONG"
+curl -s -o /dev/null -w '%{http_code}\n' "https://mmp.revosurge.com/v1/pb/{partner}/revenue?k=WRONG"
 
 # 3. No identity — expect 200 {"status":"ignored"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY"
 
 # 4. Unsubstituted macro — expect 200 {"status":"ignored"}
-curl -s "https://$HOST/v1/pb/acme/registration?k=$KEY&click_id=%7Bsub1%7D"
+curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY&click_id=%7Bsub1%7D"
 ```
 
 Then send one real test conversion through your back office and ask us to confirm, field by field. Three things are worth checking explicitly, because each one produces clean-looking but wrong data if it is off:
