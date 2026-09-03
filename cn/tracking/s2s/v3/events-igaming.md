@@ -193,7 +193,7 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | 字段 | 类型 | 要求 | 说明 |
 |-------|------|-------------|-------------|
 | `context.bonus_id` | String | **必填** | 唯一奖金实例 ID（主键；在整个生命周期内保持一致）。 |
-| `context.bonus_type` | String | **必填** | `welcome` · `reload` · `cashback` · `freespin` · `promo_code` · `tournament` · `value_voucher`（优惠券发放）· `promo_cash`（优惠金发放）· `other` 之一。 |
+| `context.bonus_type` | String | **必填** | `welcome` · `reload` · `cashback` · `freespin` · `promo_code` · `tournament` · `voucher`（优惠券发放）· `promcash`（优惠金发放）· `other` 之一。 |
 | `context.bonus_value_max` | Number | **必填** | 可授予的最大金额。 |
 | `context.currency` | String | **必填** | 货币。 |
 | `context.wagering_multiplier` | Number | **必填** | 流水倍数（30 = 30x；0 = 无）。 |

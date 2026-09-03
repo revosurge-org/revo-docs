@@ -64,9 +64,21 @@ Initialize once, after the script has loaded. Replace the Tracker ID with your o
 ```js
 const tracker = new WebTracker({
   trackerId: "your-product's-tracker-id",
-  env: "test" // "prod" | "test" | "dev"
+  env: "test", // "prod" | "test" | "dev"
+
+  // Optional — only if you use AppsFlyer as your MMP.
+  // Use the App ID from your AppsFlyer dashboard, not the package/bundle ID.
+  androidAppsFlyerId: "your-android-app-id-in-appsflyer",
+  iOSAppsFlyerId: "your-ios-app-id-in-appsflyer"
 });
 ```
+
+| Option | Type | Required | Description |
+| ------ | ---- | -------- | ----------- |
+| `trackerId` | string | Yes | Your product's Tracker ID. |
+| `env` | string | Yes | `prod` · `test` · `dev` — see the table below. |
+| `androidAppsFlyerId` | string | No | The **AppsFlyer App ID** of your Android app (not the package name). Find it in your AppsFlyer dashboard under the app's settings. |
+| `iOSAppsFlyerId` | string | No | The **AppsFlyer App ID** of your iOS app (not the bundle ID). Find it in your AppsFlyer dashboard under the app's settings. |
 
 Start in `test` while you integrate — test traffic is validated and visible in your
 dashboard but excluded from campaign optimization. Switch to `prod` only after your
@@ -77,6 +89,13 @@ events verify in [Step 5](#step-5-verify-then-go-live).
 | `prod` | Live production traffic                  | Yes                         |
 | `test` | Staging / QA during integration         | No                          |
 | `dev`  | Local development                       | No                          |
+
+::: info Using AppsFlyer as your MMP?
+`androidAppsFlyerId` and `iOSAppsFlyerId` are only needed if you have integrated
+AppsFlyer as your MMP, so web-to-app journeys can be attributed. They are independent —
+set whichever platforms you have and omit the other. If you do not use AppsFlyer, leave
+both out.
+:::
 
 ## Step 4: Send key events
 

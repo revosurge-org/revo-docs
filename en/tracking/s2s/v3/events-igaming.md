@@ -193,7 +193,7 @@ The four bonus events must share one consistent `bonus_id`, fired in order: `bon
 | Field | Type | Requirement | Description |
 |-------|------|-------------|-------------|
 | `context.bonus_id` | String | **Required** | Unique bonus instance ID (PK; consistent across lifecycle). |
-| `context.bonus_type` | String | **Required** | One of `welcome` · `reload` · `cashback` · `freespin` · `promo_code` · `tournament` · `value_voucher` · `promo_cash` · `other`. |
+| `context.bonus_type` | String | **Required** | One of `welcome` · `reload` · `cashback` · `freespin` · `promo_code` · `tournament` · `voucher` · `promcash` · `other`. |
 | `context.bonus_value_max` | Number | **Required** | Max grantable amount. |
 | `context.currency` | String | **Required** | Currency. |
 | `context.wagering_multiplier` | Number | **Required** | Wagering multiplier (30 = 30x; 0 = none). |
