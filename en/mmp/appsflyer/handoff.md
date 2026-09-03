@@ -15,7 +15,6 @@ Checklist, not a how-to. Both configuration halves are covered elsewhere — [Se
 - [ ] Every required rule in [Integration validation](/en/mmp/appsflyer/validation#required-rules) passes ([AF-R-01](/en/mmp/appsflyer/validation#af-r-01) — [AF-R-11](/en/mmp/appsflyer/validation#af-r-11))
 - [ ] The recommended rules pass, or you have a reason for each one that does not
 - [ ] Done separately for **each app** — Android and iOS are configured independently
-- [ ] The web tracker's `env` is set to **`prod`**. Traffic on `test` and `dev` is validated and visible but **excluded from optimization** — a launch that leaves `env` on `test` looks correct and optimizes against nothing
 - [ ] Your in-app events are live in production, not just in staging
 
 ## What to send your account manager
@@ -66,7 +65,6 @@ Work from the symptom, not from the top of the config.
 | Install postback arrives; in-app events never do | [AF-R-06](/en/mmp/appsflyer/validation#af-r-06), [AF-R-07](/en/mmp/appsflyer/validation#af-r-07) |
 | Events arrive but carry no revenue | [AF-R-08](/en/mmp/appsflyer/validation#af-r-08) |
 | iOS install volume far below Android, same spend | [AF-R-02](/en/mmp/appsflyer/validation#af-r-02), [AF-R-03](/en/mmp/appsflyer/validation#af-r-03) |
-| Everything arrives, but nothing counts toward optimization | The tracker's `env` is not `prod` |
 | Volumes differ between the two dashboards, but both show data | Expected up to a point — see [Reconciling AppsFlyer against RevoSurge](/en/mmp/appsflyer/macros#reconciling-appsflyer-against-revosurge) |
 
 ## After go-live: changes that require a re-check

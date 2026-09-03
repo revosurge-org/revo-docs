@@ -47,7 +47,6 @@ Pass the AppsFlyer App ID for each platform you promote in the tracker's init op
 ```js
 const tracker = new WebTracker({
   trackerId: "your-product's-tracker-id",
-  env: "prod",
 
   // Required for AppsFlyer click forwarding — set the platforms you promote.
   androidAppsFlyerId: "your-android-app-id-in-appsflyer",

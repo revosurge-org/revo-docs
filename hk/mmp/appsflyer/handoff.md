@@ -15,7 +15,6 @@ description: 收尾 AppsFlyer 整合的檢查清單 — 要交給 RevoSurge 客�
 - [ ] [整合驗證](/hk/mmp/appsflyer/validation#必要規則)中每一條必要規則都通過（[AF-R-01](/hk/mmp/appsflyer/validation#af-r-01) — [AF-R-11](/hk/mmp/appsflyer/validation#af-r-11)）
 - [ ] 建議規則也通過，或者每一條未通過的都有明確理由
 - [ ] **每個 App** 分別完成 — Android 與 iOS 是獨立設定的
-- [ ] web tracker 的 `env` 已設為 **`prod`**。`test` 與 `dev` 的流量會被驗證、也能看到，但**不計入最佳化** — 把 `env` 留在 `test` 上線，看起來一切正常，實際上最佳化沒有任何依據
 - [ ] 你的應用內事件已在生產環境上線，而不只是在測試環境
 
 ## 要交給客戶經理什麼
@@ -66,7 +65,6 @@ AppsFlyer 是隨事件發生即時發送 postback 的，因此設定正確的安
 | 安裝 postback 到了；應用內事件始終不到 | [AF-R-06](/hk/mmp/appsflyer/validation#af-r-06)、[AF-R-07](/hk/mmp/appsflyer/validation#af-r-07) |
 | 事件到了，但不帶收入 | [AF-R-08](/hk/mmp/appsflyer/validation#af-r-08) |
 | 同等花費下 iOS 安裝量遠低於 Android | [AF-R-02](/hk/mmp/appsflyer/validation#af-r-02)、[AF-R-03](/hk/mmp/appsflyer/validation#af-r-03) |
-| 數據都到了，但沒有任何一條計入最佳化 | tracker 的 `env` 不是 `prod` |
 | 兩邊看板量級不同，但都有數據 | 一定範圍內屬正常 — 見[AppsFlyer 與 RevoSurge 對帳](/hk/mmp/appsflyer/macros#appsflyer-與-revosurge-對帳) |
 
 ## 上線之後：哪些改動需要重新驗證

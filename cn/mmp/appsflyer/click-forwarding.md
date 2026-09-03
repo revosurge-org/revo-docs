@@ -47,7 +47,6 @@ AppsFlyer 把随后的安装归因给 RevoSurge
 ```js
 const tracker = new WebTracker({
   trackerId: "your-product's-tracker-id",
-  env: "prod",
 
   // AppsFlyer 点击转发必需——按你推广的平台填写。
   androidAppsFlyerId: "your-android-app-id-in-appsflyer",
