@@ -68,6 +68,26 @@ export const cn: DefaultTheme.Config = {
       ]
     },
     {
+      text: 'MMP 集成',
+      link: '/cn/mmp/appsflyer/overview',
+      collapsed: false,
+      items: [
+        {
+          text: 'AppsFlyer',
+          link: '/cn/mmp/appsflyer/overview',
+          items: [
+            { text: '概述', link: '/cn/mmp/appsflyer/overview' },
+            { text: '配置 postback', link: '/cn/mmp/appsflyer/postbacks' },
+            { text: '点击转发', link: '/cn/mmp/appsflyer/click-forwarding' },
+            { text: '宏参数', link: '/cn/mmp/appsflyer/macros' },
+            { text: '合作伙伴权限', link: '/cn/mmp/appsflyer/permissions' },
+            { text: '集成校验', link: '/cn/mmp/appsflyer/validation' },
+            { text: '交付与上线', link: '/cn/mmp/appsflyer/handoff' }
+          ]
+        }
+      ]
+    },
+    {
       text: 'AdWave',
       link: '/cn/adwave/campaign-setup',
       collapsed: false,
