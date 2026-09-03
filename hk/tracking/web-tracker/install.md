@@ -13,9 +13,9 @@ Web 追蹤器是一個輕量級 JavaScript SDK，將用戶事件從你的網站�
 
 ::: tip 摘要（TL;DR）
 1. 將[腳本](#step-2-add-the-tracker-script)添加到 `<head>`。
-2. 用你的追蹤器 ID 在 `test` 模式下[初始化](#step-3-initialize-the-tracker) `WebTracker`。
+2. 用你的追蹤器 ID [初始化](#step-3-initialize-the-tracker) `WebTracker`。
 3. 在註冊、充值等關鍵動作上[觸發事件](#step-4-send-key-events)。
-4. [驗證](#step-5-verify-then-go-live)其顯示為 **Live**，再切換到 `prod`。
+4. [驗證](#step-5-verify-then-go-live)其顯示為 **Live**。
 :::
 
 ## 開始前
@@ -58,7 +58,6 @@ Web 追蹤器是一個輕量級 JavaScript SDK，將用戶事件從你的網站�
 ```js
 const tracker = new WebTracker({
   trackerId: "your-product's-tracker-id",
-  env: "test", // "prod" | "test" | "dev"
 
   // 可選——僅在使用 AppsFlyer 作為 MMP 時配置。
   // 填 AppsFlyer 後台的 App ID，不是套件名稱 / Bundle ID。
@@ -70,17 +69,10 @@ const tracker = new WebTracker({
 | 參數 | 類型 | 是否必填 | 說明 |
 | ---- | ---- | -------- | ---- |
 | `trackerId` | string | 是 | 你的產品追蹤器 ID。 |
-| `env` | string | 是 | `prod` · `test` · `dev`，見下表。 |
 | `androidAppsFlyerId` | string | 否 | Android 應用在 AppsFlyer 中的 **App ID**（不是套件名稱），在 AppsFlyer 後台的應用設定中查看。 |
 | `iOSAppsFlyerId` | string | 否 | iOS 應用在 AppsFlyer 中的 **App ID**（不是 Bundle ID），在 AppsFlyer 後台的應用設定中查看。 |
 
-整合期間先用 `test`——測試流量會被校驗並顯示在你的儀表板中，但不計入廣告系列優化。僅在事件於[步驟 5](#step-5-verify-then-go-live)驗證通過後再切換到 `prod`。
-
-| `env`  | 何時使用                 | 是否計入優化？ |
-| ------ | ------------------------ | -------------- |
-| `prod` | 線上生產流量             | 是             |
-| `test` | 整合期間的預發佈 / QA    | 否             |
-| `dev`  | 本地開發                 | 否             |
+你發送的所有事件都按線上生產流量處理——不存在需要切換出來的獨立測試環境。請先在[步驟 5](#step-5-verify-then-go-live)驗證事件，再把廣告預算投向它們。
 
 ::: info 使用 AppsFlyer 作為 MMP？
 `androidAppsFlyerId` 與 `iOSAppsFlyerId` 僅在你已接入 AppsFlyer 作為 MMP 平台時才需要配置，用於打通並歸因 Web 到 App 的用戶路徑。兩者互相獨立、不必同時提供——有哪個平台就配哪個，另一個可以省略。若未使用 AppsFlyer，兩個參數都可以不傳。
@@ -132,11 +124,7 @@ SDK 為目錄中的每個事件提供了帶類型的輔助方法（register、lo
 | Live                 | 可作為廣告系列優化目標     |
 | Inactive / Not ready | 數據不足或近期無事件       |
 
-當關鍵事件顯示為 **Live** 時：
-
-1. 在初始化中將 `env` 改為 `"prod"`。
-2. 重新部署。
-3. 你的產品即可用於 [AdWave 廣告系列](/hk/adwave/campaign-setup)。
+當關鍵事件顯示為 **Live** 時，你的產品即可用於 [AdWave 廣告系列](/hk/adwave/campaign-setup)——無需再改動追蹤器。
 
 ## 你的事件能解鎖什麼
 
@@ -155,7 +143,6 @@ SDK 為目錄中的每個事件提供了帶類型的輔助方法（register、lo
 - 確認腳本標籤位於 `<head>` 中且已載入（在 Network 面板查找 `web-tracker.js`）。
 - 確保 `new WebTracker({...})` 在腳本載入**之後**運行。
 - 確認 `trackerId` 與產品設定中的完全一致。
-- 記住 `test` 事件不會出現在生產／優化視圖中——請查看測試視圖。
 :::
 
 ::: details 事件顯示為 「Not ready」 ／ 始終不變為 Live

@@ -68,6 +68,26 @@ export const en: DefaultTheme.Config = {
       ]
     },
     {
+      text: 'MMP Integration',
+      link: '/en/mmp/appsflyer/overview',
+      collapsed: false,
+      items: [
+        {
+          text: 'AppsFlyer',
+          link: '/en/mmp/appsflyer/overview',
+          items: [
+            { text: 'Overview', link: '/en/mmp/appsflyer/overview' },
+            { text: 'Set up postbacks', link: '/en/mmp/appsflyer/postbacks' },
+            { text: 'Click forwarding', link: '/en/mmp/appsflyer/click-forwarding' },
+            { text: 'Macros', link: '/en/mmp/appsflyer/macros' },
+            { text: 'Partner permissions', link: '/en/mmp/appsflyer/permissions' },
+            { text: 'Integration validation', link: '/en/mmp/appsflyer/validation' },
+            { text: 'Handoff & go-live', link: '/en/mmp/appsflyer/handoff' }
+          ]
+        }
+      ]
+    },
+    {
       text: 'AdWave',
       link: '/en/adwave/campaign-setup',
       collapsed: false,

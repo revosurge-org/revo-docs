@@ -15,9 +15,9 @@ targets for AdWave campaigns and power Source Intelligence, LTV, ROAS, and churn
 
 ::: tip TL;DR
 1. Add the [script](#step-2-add-the-tracker-script) to `<head>`.
-2. [Initialize](#step-3-initialize-the-tracker) `WebTracker` with your Tracker ID in `test` mode.
+2. [Initialize](#step-3-initialize-the-tracker) `WebTracker` with your Tracker ID.
 3. [Fire events](#step-4-send-key-events) on register, deposit, and other key actions.
-4. [Verify](#step-5-verify-then-go-live) they read **Live**, then switch to `prod`.
+4. [Verify](#step-5-verify-then-go-live) they read **Live**.
 :::
 
 ## Before you start
@@ -64,7 +64,6 @@ Initialize once, after the script has loaded. Replace the Tracker ID with your o
 ```js
 const tracker = new WebTracker({
   trackerId: "your-product's-tracker-id",
-  env: "test", // "prod" | "test" | "dev"
 
   // Optional — only if you use AppsFlyer as your MMP.
   // Use the App ID from your AppsFlyer dashboard, not the package/bundle ID.
@@ -76,19 +75,12 @@ const tracker = new WebTracker({
 | Option | Type | Required | Description |
 | ------ | ---- | -------- | ----------- |
 | `trackerId` | string | Yes | Your product's Tracker ID. |
-| `env` | string | Yes | `prod` · `test` · `dev` — see the table below. |
 | `androidAppsFlyerId` | string | No | The **AppsFlyer App ID** of your Android app (not the package name). Find it in your AppsFlyer dashboard under the app's settings. |
 | `iOSAppsFlyerId` | string | No | The **AppsFlyer App ID** of your iOS app (not the bundle ID). Find it in your AppsFlyer dashboard under the app's settings. |
 
-Start in `test` while you integrate — test traffic is validated and visible in your
-dashboard but excluded from campaign optimization. Switch to `prod` only after your
-events verify in [Step 5](#step-5-verify-then-go-live).
-
-| `env`  | When to use it                          | Counts toward optimization? |
-| ------ | --------------------------------------- | --------------------------- |
-| `prod` | Live production traffic                  | Yes                         |
-| `test` | Staging / QA during integration         | No                          |
-| `dev`  | Local development                       | No                          |
+Everything you send counts as live production traffic — there is no separate test
+environment to switch out of. Verify your events in [Step 5](#step-5-verify-then-go-live)
+before you point campaign budget at them.
 
 ::: info Using AppsFlyer as your MMP?
 `androidAppsFlyerId` and `iOSAppsFlyerId` are only needed if you have integrated
@@ -149,11 +141,8 @@ Open **Tracking → Status** and watch for events to arrive (usually within a mi
 | Live                | Ready to use as a campaign optimization target     |
 | Inactive / Not ready| Insufficient data or no recent events              |
 
-When your key events read **Live**:
-
-1. Change `env` to `"prod"` in your initialization.
-2. Redeploy.
-3. Your Product is ready for [AdWave campaigns](/en/adwave/campaign-setup).
+When your key events read **Live**, your Product is ready for
+[AdWave campaigns](/en/adwave/campaign-setup) — no further tracker change is needed.
 
 ## What your events unlock
 
@@ -172,7 +161,6 @@ The more of the catalog you cover, the more accurate targeting and optimization 
 - Confirm the script tag is in `<head>` and loads (check the Network tab for `web-tracker.js`).
 - Make sure `new WebTracker({...})` runs **after** the script loads.
 - Check the `trackerId` matches the one in your product settings exactly.
-- Remember `test` events won't appear in production/optimization views — check the test view.
 :::
 
 ::: details Events show as "Not ready" / never go Live

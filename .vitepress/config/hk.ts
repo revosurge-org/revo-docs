@@ -68,6 +68,26 @@ export const hk: DefaultTheme.Config = {
       ]
     },
     {
+      text: 'MMP 整合',
+      link: '/hk/mmp/appsflyer/overview',
+      collapsed: false,
+      items: [
+        {
+          text: 'AppsFlyer',
+          link: '/hk/mmp/appsflyer/overview',
+          items: [
+            { text: '概述', link: '/hk/mmp/appsflyer/overview' },
+            { text: '設定 postback', link: '/hk/mmp/appsflyer/postbacks' },
+            { text: '點擊轉發', link: '/hk/mmp/appsflyer/click-forwarding' },
+            { text: '宏參數', link: '/hk/mmp/appsflyer/macros' },
+            { text: '合作夥伴權限', link: '/hk/mmp/appsflyer/permissions' },
+            { text: '整合驗證', link: '/hk/mmp/appsflyer/validation' },
+            { text: '交付與上線', link: '/hk/mmp/appsflyer/handoff' }
+          ]
+        }
+      ]
+    },
+    {
       text: 'AdWave',
       link: '/hk/adwave/campaign-setup',
       collapsed: false,

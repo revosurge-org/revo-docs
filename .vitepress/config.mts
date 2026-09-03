@@ -12,6 +12,8 @@ export default defineConfig({
   title: 'RevoSurge Docs',
   description: 'Documentation for the RevoSurge platform',
   cleanUrls: true,
+  // Internal specs and plans under docs/ are working documents, not published pages.
+  srcExclude: ['docs/**'],
   transformPageData(pageData, { siteConfig }) {
     const path = pageData.relativePath.replace(/\.md$/, '').replace(/\/index$/, '')
     const isRootIndex = !path
@@ -65,7 +67,7 @@ export default defineConfig({
     plugins: [
       llmstxtPlugin({
         hostname: 'https://docs.revosurge.com',
-        ignore: ['**/cn/**', '**/hk/**'],
+        ignore: ['**/cn/**', '**/hk/**', '**/docs/**'],
         llmsFile: { indexTOC: 'only-llms' },
         llmsFullFile: true,
         mdFiles: false,
