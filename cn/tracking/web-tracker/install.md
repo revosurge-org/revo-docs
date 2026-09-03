@@ -58,9 +58,21 @@ Web 追踪器是一个轻量级 JavaScript SDK，将用户事件从你的网站�
 ```js
 const tracker = new WebTracker({
   trackerId: "your-product's-tracker-id",
-  env: "test" // "prod" | "test" | "dev"
+  env: "test", // "prod" | "test" | "dev"
+
+  // 可选——仅在使用 AppsFlyer 作为 MMP 时配置。
+  // 填 AppsFlyer 后台的 App ID，不是包名 / Bundle ID。
+  androidAppsFlyerId: "your-android-app-id-in-appsflyer",
+  iOSAppsFlyerId: "your-ios-app-id-in-appsflyer"
 });
 ```
+
+| 参数 | 类型 | 是否必填 | 说明 |
+| ---- | ---- | -------- | ---- |
+| `trackerId` | string | 是 | 你的产品追踪器 ID。 |
+| `env` | string | 是 | `prod` · `test` · `dev`，见下表。 |
+| `androidAppsFlyerId` | string | 否 | Android 应用在 AppsFlyer 中的 **App ID**（不是包名），在 AppsFlyer 后台的应用设置中查看。 |
+| `iOSAppsFlyerId` | string | 否 | iOS 应用在 AppsFlyer 中的 **App ID**（不是 Bundle ID），在 AppsFlyer 后台的应用设置中查看。 |
 
 集成期间先用 `test`——测试流量会被校验并显示在你的仪表盘中，但不计入广告系列优化。仅在事件于[步骤 5](#step-5-verify-then-go-live)验证通过后再切换到 `prod`。
 
@@ -69,6 +81,10 @@ const tracker = new WebTracker({
 | `prod` | 线上生产流量             | 是             |
 | `test` | 集成期间的预发布 / QA    | 否             |
 | `dev`  | 本地开发                 | 否             |
+
+::: info 使用 AppsFlyer 作为 MMP？
+`androidAppsFlyerId` 与 `iOSAppsFlyerId` 仅在你已接入 AppsFlyer 作为 MMP 平台时才需要配置，用于打通并归因 Web 到 App 的用户路径。两者相互独立、不必同时提供——有哪个平台就配哪个，另一个可以省略。若未使用 AppsFlyer，两个参数都可以不传。
+:::
 
 ## 步骤 4: 发送关键事件 {#step-4-send-key-events}
 
