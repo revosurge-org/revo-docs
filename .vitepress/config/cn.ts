@@ -29,18 +29,34 @@ export const cn: DefaultTheme.Config = {
       link: '/cn/tracking/overview',
       collapsed: false,
       items: [
-        { text: '概述', link: '/cn/tracking/overview' },
+        { text: '概述 · 我该用哪个？', link: '/cn/tracking/overview' },
         {
-          text: 'Web 追踪器',
+          text: '1. Web 追踪器',
           link: '/cn/tracking/web-tracker',
+          collapsed: true,
           items: [
             { text: '安装', link: '/cn/tracking/web-tracker/install' },
             { text: 'Web 追踪器 SDK 参考', link: '/cn/tracking/web-tracker/reference' }
           ]
         },
         {
-          text: '服务器到服务器 (S2S)',
+          text: '2. AppsFlyer（App MMP）',
+          link: '/cn/mmp/appsflyer/overview',
+          collapsed: true,
+          items: [
+            { text: '概述', link: '/cn/mmp/appsflyer/overview' },
+            { text: '配置 postback', link: '/cn/mmp/appsflyer/postbacks' },
+            { text: '点击转发', link: '/cn/mmp/appsflyer/click-forwarding' },
+            { text: '宏参数', link: '/cn/mmp/appsflyer/macros' },
+            { text: '合作伙伴权限', link: '/cn/mmp/appsflyer/permissions' },
+            { text: '集成校验', link: '/cn/mmp/appsflyer/validation' },
+            { text: '交付与上线', link: '/cn/mmp/appsflyer/handoff' }
+          ]
+        },
+        {
+          text: '3. S2S 服务器事件',
           link: '/cn/tracking/s2s/overview',
+          collapsed: true,
           items: [
             { text: '概述', link: '/cn/tracking/s2s/overview' },
             { text: '服务器事件 API (v2)', link: '/cn/tracking/s2s/server-events-api' },
@@ -59,30 +75,11 @@ export const cn: DefaultTheme.Config = {
           ]
         },
         {
-          text: 'Postback 回传',
+          text: '4. Partner Postback',
           link: '/cn/tracking/postback/partner-postback',
+          collapsed: true,
           items: [
             { text: '合作方 Postback API', link: '/cn/tracking/postback/partner-postback' }
-          ]
-        },
-      ]
-    },
-    {
-      text: 'MMP 集成',
-      link: '/cn/mmp/appsflyer/overview',
-      collapsed: false,
-      items: [
-        {
-          text: 'AppsFlyer',
-          link: '/cn/mmp/appsflyer/overview',
-          items: [
-            { text: '概述', link: '/cn/mmp/appsflyer/overview' },
-            { text: '配置 postback', link: '/cn/mmp/appsflyer/postbacks' },
-            { text: '点击转发', link: '/cn/mmp/appsflyer/click-forwarding' },
-            { text: '宏参数', link: '/cn/mmp/appsflyer/macros' },
-            { text: '合作伙伴权限', link: '/cn/mmp/appsflyer/permissions' },
-            { text: '集成校验', link: '/cn/mmp/appsflyer/validation' },
-            { text: '交付与上线', link: '/cn/mmp/appsflyer/handoff' }
           ]
         }
       ]

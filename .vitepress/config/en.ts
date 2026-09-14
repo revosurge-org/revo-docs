@@ -29,18 +29,34 @@ export const en: DefaultTheme.Config = {
       link: '/en/tracking/overview',
       collapsed: false,
       items: [
-        { text: 'Overview', link: '/en/tracking/overview' },
+        { text: 'Overview · Which one to use?', link: '/en/tracking/overview' },
         {
-          text: 'Web Tracker',
+          text: '1. Web Tracker',
           link: '/en/tracking/web-tracker',
+          collapsed: true,
           items: [
             { text: 'Install', link: '/en/tracking/web-tracker/install' },
             { text: 'Web Tracker SDK Reference', link: '/en/tracking/web-tracker/reference' }
           ]
         },
         {
-          text: 'Server-to-server (S2S)',
+          text: '2. AppsFlyer (App MMP)',
+          link: '/en/mmp/appsflyer/overview',
+          collapsed: true,
+          items: [
+            { text: 'Overview', link: '/en/mmp/appsflyer/overview' },
+            { text: 'Set up postbacks', link: '/en/mmp/appsflyer/postbacks' },
+            { text: 'Click forwarding', link: '/en/mmp/appsflyer/click-forwarding' },
+            { text: 'Macros', link: '/en/mmp/appsflyer/macros' },
+            { text: 'Partner permissions', link: '/en/mmp/appsflyer/permissions' },
+            { text: 'Integration validation', link: '/en/mmp/appsflyer/validation' },
+            { text: 'Handoff & go-live', link: '/en/mmp/appsflyer/handoff' }
+          ]
+        },
+        {
+          text: '3. S2S Server Events',
           link: '/en/tracking/s2s/overview',
+          collapsed: true,
           items: [
             { text: 'Overview', link: '/en/tracking/s2s/overview' },
             { text: 'Server Events API (v2)', link: '/en/tracking/s2s/server-events-api' },
@@ -59,30 +75,11 @@ export const en: DefaultTheme.Config = {
           ]
         },
         {
-          text: 'Postback',
+          text: '4. Partner Postback',
           link: '/en/tracking/postback/partner-postback',
+          collapsed: true,
           items: [
             { text: 'Partner Postback API', link: '/en/tracking/postback/partner-postback' }
-          ]
-        },
-      ]
-    },
-    {
-      text: 'MMP Integration',
-      link: '/en/mmp/appsflyer/overview',
-      collapsed: false,
-      items: [
-        {
-          text: 'AppsFlyer',
-          link: '/en/mmp/appsflyer/overview',
-          items: [
-            { text: 'Overview', link: '/en/mmp/appsflyer/overview' },
-            { text: 'Set up postbacks', link: '/en/mmp/appsflyer/postbacks' },
-            { text: 'Click forwarding', link: '/en/mmp/appsflyer/click-forwarding' },
-            { text: 'Macros', link: '/en/mmp/appsflyer/macros' },
-            { text: 'Partner permissions', link: '/en/mmp/appsflyer/permissions' },
-            { text: 'Integration validation', link: '/en/mmp/appsflyer/validation' },
-            { text: 'Handoff & go-live', link: '/en/mmp/appsflyer/handoff' }
           ]
         }
       ]

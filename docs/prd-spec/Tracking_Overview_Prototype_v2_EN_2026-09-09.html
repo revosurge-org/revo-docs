@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tracking Overview | RevoSurge Docs</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --primary: #7c3aed;
+  --primary-light: #ede9fe;
+  --primary-dark: #5b21b6;
+  --text: #1a1a2e;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --bg-subtle: #f9fafb;
+  --success: #10b981;
+  --warn: #f59e0b;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif; color: var(--text); background: #fff; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+header { height: 64px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; position: fixed; top: 0; left: 0; right: 0; background: #fff; z-index: 100; }
+.logo { font-weight: 700; font-size: 17px; color: var(--primary); text-decoration: none; letter-spacing: -0.01em; }
+.logo::before { content: "🌊  "; }
+.search { flex: 1; max-width: 480px; margin: 0 32px; background: var(--bg-subtle); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 14px; }
+.search kbd { margin-left: auto; padding: 2px 6px; background: var(--border); border-radius: 4px; font-size: 12px; font-family: inherit; }
+.nav-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.nav-right .cta-support { padding: 6px 14px; background: var(--primary); color: #fff; border-radius: 6px; font-size: 13px; text-decoration: none; font-weight: 600; }
+.nav-right button { padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; cursor: pointer; background: #fff; }
+
+/* Language picker */
+.lang-picker { position: relative; }
+.lang-btn { padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; cursor: pointer; background: #fff; display: flex; align-items: center; gap: 4px; }
+.lang-menu { display: none; position: absolute; top: calc(100% + 4px); right: 0; background: #fff; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); min-width: 160px; overflow: hidden; z-index: 200; }
+.lang-menu.open { display: block; }
+.lang-menu a { display: block; padding: 10px 14px; color: var(--text); font-size: 13px; text-decoration: none; cursor: pointer; }
+.lang-menu a:hover { background: var(--bg-subtle); color: var(--primary); }
+.lang-menu a.current { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+
+.layout { display: grid; grid-template-columns: 280px 1fr 240px; max-width: 1440px; margin: 0 auto; padding-top: 64px; }
+
+aside.sidebar { padding: 24px 16px; border-right: 1px solid var(--border); height: calc(100vh - 64px); overflow-y: auto; position: sticky; top: 64px; }
+.sidebar-section { margin-bottom: 24px; }
+.sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px; padding: 0 12px; }
+.sidebar ul { list-style: none; }
+.sidebar li > a { display: block; padding: 6px 12px; color: #4b5563; font-size: 14px; border-radius: 6px; text-decoration: none; margin-bottom: 2px; }
+.sidebar li > a:hover { background: var(--bg-subtle); color: var(--text); }
+.sidebar li.active > a { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+.sidebar li.folder > a::before { content: "▸  "; opacity: 0.4; font-size: 10px; }
+.new-badge { display: inline-block; margin-left: 6px; padding: 1px 6px; background: var(--success); color: #fff; font-size: 10px; border-radius: 8px; font-weight: 600; }
+
+main { padding: 40px 56px 80px; max-width: 900px; }
+.breadcrumb { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+.breadcrumb a { color: var(--text-muted); text-decoration: none; }
+h1 { font-size: 40px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.03em; }
+.subtitle { font-size: 17px; color: var(--text-muted); margin-bottom: 32px; }
+h2 { font-size: 24px; font-weight: 700; margin-top: 56px; margin-bottom: 16px; padding-top: 32px; border-top: 1px solid var(--border); scroll-margin-top: 80px; letter-spacing: -0.01em; }
+h3 { font-size: 18px; font-weight: 600; margin: 20px 0 8px; }
+p { margin-bottom: 12px; color: #374151; }
+code { background: var(--bg-subtle); padding: 2px 6px; border-radius: 4px; font-family: "SF Mono", Consolas, monospace; font-size: 13px; color: var(--primary); }
+
+.decision-helper { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid var(--primary-light); border-radius: 16px; padding: 32px; margin-bottom: 32px; }
+.decision-helper h2 { border: none; padding: 0; margin: 0 0 8px; font-size: 20px; color: var(--primary-dark); }
+.decision-helper p.helper-lead { color: var(--text); margin-bottom: 20px; }
+.helper-question { margin-bottom: 20px; }
+.helper-question-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.helper-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.helper-option { padding: 12px 14px; background: #fff; border: 2px solid transparent; border-radius: 10px; cursor: pointer; font-size: 13px; text-align: center; transition: all 0.15s; user-select: none; color: var(--text); }
+.helper-option:hover { border-color: var(--primary); }
+.helper-option.selected { border-color: var(--primary); background: var(--primary); color: #fff; font-weight: 600; }
+.helper-option .hint { display: block; font-size: 11px; opacity: 0.7; margin-top: 2px; }
+.helper-result { display: none; margin-top: 20px; padding: 16px 20px; background: #fff; border-radius: 10px; border-left: 4px solid var(--primary); }
+.helper-result.show { display: block; }
+.helper-result-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.05em; }
+.helper-result-method { font-size: 20px; font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; }
+.helper-result-why { font-size: 14px; color: #374151; }
+.helper-result-cta { display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--primary); color: #fff; border-radius: 6px; font-size: 13px; text-decoration: none; font-weight: 600; }
+
+.scenarios { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0 32px; }
+.scenario-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; transition: all 0.15s; text-decoration: none; color: var(--text); display: block; }
+.scenario-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(124, 58, 237, 0.08); }
+.scenario-card .scenario-lead { font-size: 14px; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+.scenario-card .scenario-arrow { font-size: 12px; color: var(--primary); font-weight: 600; }
+.scenario-card .scenario-arrow strong { font-size: 13px; }
+
+.method { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin: 16px 0; }
+.method-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+.method-icon { flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.method-title { flex: 1; }
+.method-title h3 { margin: 0; font-size: 19px; font-weight: 700; }
+.method-title .method-tagline { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.method-badge { display: inline-block; padding: 3px 10px; background: var(--primary-light); color: var(--primary); border-radius: 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.03em; }
+.method-badge.hot { background: #fef2f2; color: #ef4444; }
+.method-body { color: #4b5563; font-size: 14px; line-height: 1.65; margin-bottom: 14px; }
+.method-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 16px; font-size: 13px; }
+.meta-item { padding: 10px 12px; background: var(--bg-subtle); border-radius: 8px; }
+.meta-label { display: block; color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; font-weight: 700; }
+.method-cta { display: inline-block; padding: 8px 16px; background: var(--primary); color: #fff; border-radius: 6px; font-size: 13px; text-decoration: none; font-weight: 600; }
+.method-cta:hover { background: var(--primary-dark); }
+.method-cta-secondary { display: inline-block; padding: 8px 16px; color: var(--primary); font-size: 13px; text-decoration: none; font-weight: 600; margin-left: 8px; }
+
+.method-subtier { border: 1px dashed var(--border); border-left: 3px solid var(--primary); border-radius: 6px; padding: 12px 16px; margin: 10px 0; background: #faf9ff; }
+.method-subtier-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--primary-dark); }
+.method-subtier-desc { font-size: 13px; color: #4b5563; line-height: 1.6; }
+.callout.info { background: #eff6ff; border-color: #3b82f6; color: #1e40af; }
+
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item summary { padding: 16px 0; cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: "+"; font-size: 20px; color: var(--text-muted); transition: transform 0.2s; }
+.faq-item[open] summary::after { content: "−"; }
+.faq-item summary:hover { color: var(--primary); }
+.faq-answer { padding: 0 0 16px; font-size: 14px; color: #4b5563; line-height: 1.65; }
+
+.callout { padding: 16px 20px; border-radius: 10px; margin: 16px 0; display: flex; gap: 12px; font-size: 14px; }
+.callout.warn { background: #fffbeb; border-left: 4px solid var(--warn); color: #92400e; }
+.callout-icon { flex-shrink: 0; font-size: 18px; }
+
+.bottom-cta { margin-top: 48px; padding: 28px 32px; background: linear-gradient(135deg, #1a1a2e 0%, #16162a 100%); color: #fff; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.bottom-cta .cta-text h3 { margin: 0 0 4px; font-size: 18px; color: #fff; font-weight: 700; }
+.bottom-cta .cta-text p { margin: 0; color: #cbd5e1; font-size: 14px; }
+.bottom-cta .cta-btn { flex-shrink: 0; padding: 10px 20px; background: #fff; color: var(--primary); border-radius: 8px; font-size: 14px; text-decoration: none; font-weight: 700; white-space: nowrap; }
+
+.page-footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; gap: 12px; justify-content: space-between; }
+.footer-link { flex: 1; padding: 14px 18px; border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: #4b5563; transition: all 0.15s; }
+.footer-link:hover { border-color: var(--primary); }
+.footer-link .footer-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; display: block; letter-spacing: 0.05em; }
+.footer-link .footer-title { font-weight: 600; color: var(--text); font-size: 14px; }
+.footer-link.next { text-align: right; }
+
+aside.toc { padding: 40px 24px; font-size: 13px; position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto; }
+.toc-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px; }
+aside.toc ul { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--border); }
+aside.toc a { color: var(--text-muted); text-decoration: none; padding: 6px 0 6px 16px; display: block; border-left: 2px solid transparent; margin-left: -1px; }
+aside.toc a:hover { color: var(--text); }
+aside.toc a.active { color: var(--primary); font-weight: 600; border-left-color: var(--primary); }
+
+.prototype-note { position: fixed; bottom: 16px; right: 16px; background: var(--text); color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 12px; opacity: 0.85; z-index: 200; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">RevoSurge Docs</a>
+  <div class="search">
+    <span>🔍</span>
+    <span data-i18n="searchPlaceholder">Search docs...</span>
+    <kbd>⌘K</kbd>
+  </div>
+  <div class="nav-right">
+    <a href="#support" class="cta-support" data-i18n="talkToUs">Talk to us</a>
+    <div class="lang-picker">
+      <button class="lang-btn" id="lang-btn"><span id="lang-current">EN</span> ▾</button>
+      <div class="lang-menu" id="lang-menu">
+        <a data-lang="en" class="current">EN · English</a>
+        <a data-lang="cn">简体中文</a>
+        <a data-lang="hk">繁體中文</a>
+      </div>
+    </div>
+    <button>🌙</button>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <ul><li><a href="#"><span data-i18n="navWelcome">👋 Welcome</span></a></li></ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-title" data-i18n="navGrowth">Growth</div>
+    <ul>
+      <li class="folder"><a href="#" data-i18n="navGettingStarted">Getting Started</a></li>
+      <li class="folder"><a href="#" data-i18n="navAccount">Account</a></li>
+      <li class="folder"><a href="#" data-i18n="navFunding">Funding</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-title" data-i18n="navTracking">Tracking</div>
+    <ul>
+      <li class="active"><a href="#" data-i18n="navOverview">📡 Overview · Which one to use?</a></li>
+      <li><a href="#" data-i18n="navWebTracker">1. Web Tracker</a></li>
+      <li><a href="#"><span data-i18n="navAppsFlyer">2. AppsFlyer (App MMP)</span><span class="new-badge" data-i18n="navMoved">MOVED</span></a></li>
+      <li><a href="#" data-i18n="navS2S">3. S2S Server Events</a></li>
+      <li><a href="#" data-i18n="navPartnerPostback">4. Partner Postback</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-title" data-i18n="navProducts">Products</div>
+    <ul>
+      <li class="folder"><a href="#">AdWave</a></li>
+      <li class="folder"><a href="#">AdFlow</a></li>
+      <li class="folder"><a href="#" data-i18n="navAudience">Audience</a></li>
+      <li class="folder"><a href="#" data-i18n="navSupply">Supply / SSP</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-title" data-i18n="navDeveloper">Developer</div>
+    <ul>
+      <li class="folder"><a href="#">API</a></li>
+      <li class="folder"><a href="#" data-i18n="navReferenceData">Reference Data</a></li>
+    </ul>
+  </div>
+</aside>
+
+<main>
+  <div class="breadcrumb"><a href="#" data-i18n="crumbDocs">Docs</a>  /  <a href="#" data-i18n="crumbTracking">Tracking</a>  /  <span data-i18n="crumbOverview">Overview</span></div>
+
+  <h1 data-i18n="h1">Tracking Overview</h1>
+  <p class="subtitle" data-i18n="subtitle">4 ways to send conversions to RevoSurge. Pick yours in 60 seconds.</p>
+
+  <section class="decision-helper" id="decide">
+    <h2 data-i18n="helperH2">Which method is right for you?</h2>
+    <p class="helper-lead" data-i18n="helperLead">Answer 2 quick questions — we'll recommend the fastest path.</p>
+
+    <div class="helper-question">
+      <div class="helper-question-label" data-i18n="q1Label">1. How do you run your back-office?</div>
+      <div class="helper-options" id="q1">
+        <div class="helper-option" data-q="1" data-v="own" data-i18n="q1Own">Own custom back-office<span class="hint">(you have engineers)</span></div>
+        <div class="helper-option" data-q="1" data-v="saas" data-i18n="q1Saas">SaaS affiliate platform<span class="hint">(Affilka / Cellxpert / Smartico ...)</span></div>
+        <div class="helper-option" data-q="1" data-v="none" data-i18n="q1None">Fastest start possible<span class="hint">(no engineering)</span></div>
+      </div>
+    </div>
+
+    <div class="helper-question">
+      <div class="helper-question-label" data-i18n="q2Label">2. Where do users convert?</div>
+      <div class="helper-options" id="q2">
+        <div class="helper-option" data-q="2" data-v="web" data-i18n="q2Web">Web only</div>
+        <div class="helper-option" data-q="2" data-v="app" data-i18n="q2App">App only</div>
+        <div class="helper-option" data-q="2" data-v="both" data-i18n="q2Both">Web + App</div>
+      </div>
+    </div>
+
+    <div class="helper-result" id="result">
+      <div class="helper-result-label" data-i18n="resultLabel">Recommended method</div>
+      <div class="helper-result-method" id="result-method">—</div>
+      <div class="helper-result-why" id="result-why">—</div>
+      <a href="#methods" class="helper-result-cta" id="result-cta" data-i18n="resultCta">Read the details →</a>
+    </div>
+  </section>
+
+  <h2 id="scenarios" data-i18n="scenariosH2">Or browse by scenario</h2>
+  <p data-i18n="scenariosP">Which one describes you?</p>
+  <div class="scenarios">
+    <a href="#partner-postback" class="scenario-card">
+      <div class="scenario-lead" data-i18n="scenario1Lead">"I use <strong>Affilka / Cellxpert / Smartico / MyAffiliates / NetRefer</strong> and want to be live today."</div>
+      <div class="scenario-arrow" data-i18n="scenario1Arrow">→ <strong>Partner Postback</strong> · same day · no engineering</div>
+    </a>
+    <a href="#s2s" class="scenario-card">
+      <div class="scenario-lead" data-i18n="scenario2Lead">"I built <strong>my own back-office</strong> and have engineers who can integrate an API."</div>
+      <div class="scenario-arrow" data-i18n="scenario2Arrow">→ <strong>S2S Server Events</strong> · deepest control · full iGaming event catalog</div>
+    </a>
+    <a href="#appsflyer" class="scenario-card">
+      <div class="scenario-lead" data-i18n="scenario3Lead">"I run a <strong>native Android / iOS App</strong> on Play Store or App Store."</div>
+      <div class="scenario-arrow" data-i18n="scenario3Arrow">→ <strong>AppsFlyer</strong> · industry-standard App MMP</div>
+    </a>
+    <a href="#web-tracker" class="scenario-card">
+      <div class="scenario-lead" data-i18n="scenario4Lead">"I only have a <strong>landing page + advertiser website</strong> — no App, no back-office API."</div>
+      <div class="scenario-arrow" data-i18n="scenario4Arrow">→ <strong>Web Tracker</strong> · first-party JS snippet</div>
+    </a>
+  </div>
+
+  <h2 id="methods" data-i18n="methodsH2">The 4 methods</h2>
+
+  <div class="method" id="web-tracker">
+    <div class="method-header">
+      <div class="method-icon">🌐</div>
+      <div class="method-title">
+        <h3><span data-i18n="mWebName">Web Tracker</span> <span class="method-badge" data-i18n="mWebBadge">Web</span></h3>
+        <div class="method-tagline" data-i18n="mWebTagline">First-party JS on your landing page & advertiser site.</div>
+      </div>
+    </div>
+    <p class="method-body" data-i18n="mWebBody">Fires conversion events (registration, deposit, FTD) as users move through your web funnel. Persists <code>click_id</code> in a first-party cookie (1-year expiry) — a user who lands, bounces, and returns 3 days later still attributes.</p>
+    <div class="method-meta">
+      <div class="meta-item"><span class="meta-label" data-i18n="lblBestFor">Best for</span><span data-i18n="mWebBestFor">Web-only funnels, no server integration available</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblSkipIf">Skip if</span><span data-i18n="mWebSkipIf">Your funnel lives inside a mobile App</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblDelivery">Delivery</span><span data-i18n="mWebDelivery">JS snippet + GTM template (planned)</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblEffort">Effort</span><span data-i18n="mWebEffort">~1 day · frontend only</span></div>
+    </div>
+    <a href="#" class="method-cta" data-i18n="mWebCta">Start with Web Tracker →</a>
+    <a href="#" class="method-cta-secondary" data-i18n="ctaApiRef">See API reference</a>
+  </div>
+
+  <div class="method" id="appsflyer">
+    <div class="method-header">
+      <div class="method-icon">📱</div>
+      <div class="method-title">
+        <h3><span data-i18n="mAfName">AppsFlyer</span> <span class="method-badge" data-i18n="mAfBadge">App MMP</span></h3>
+        <div class="method-tagline" data-i18n="mAfTagline">Third-party mobile measurement partner. Industry standard.</div>
+      </div>
+    </div>
+    <p class="method-body" data-i18n="mAfBody">RevoSurge integrates as a media source. AppsFlyer forwards install and in-app event postbacks to us. You configure <code>androidAppsFlyerId</code> / <code>iOSAppsFlyerId</code> on your landing page when initializing the web-tracker; we appear as a partner tile in your AppsFlyer dashboard. Play Store / App Store distribution uses Install Referrer (deterministic); APK / H5 wrapper falls back to probabilistic attribution with lower match rates.</p>
+    <div class="method-meta">
+      <div class="meta-item"><span class="meta-label" data-i18n="lblBestFor">Best for</span><span data-i18n="mAfBestFor">Any mobile App — Play Store, App Store, APK, or H5 wrapper</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblSkipIf">Skip if</span><span data-i18n="mAfSkipIf">You don't have a mobile App at all (web-only funnel)</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblDelivery">Delivery</span><span data-i18n="mAfDelivery">Configured on your landing page when initializing web-tracker · partner tile in AppsFlyer</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblEffort">Effort</span><span data-i18n="mAfEffort">~2 hours · landing-page config</span></div>
+    </div>
+    <a href="#" class="method-cta" data-i18n="mAfCta">Start with AppsFlyer →</a>
+    <a href="#" class="method-cta-secondary" data-i18n="ctaHealthCheck">Config health check</a>
+  </div>
+
+  <div class="method" id="s2s">
+    <div class="method-header">
+      <div class="method-icon">🔧</div>
+      <div class="method-title">
+        <h3><span data-i18n="mS2sName">S2S Server Events</span> <span class="method-badge" data-i18n="mS2sBadge">S2S</span></h3>
+        <div class="method-tagline" data-i18n="mS2sTagline">Your back-office → our S2S API. Deepest control.</div>
+      </div>
+    </div>
+    <p class="method-body" data-i18n="mS2sBody">Server-to-server, fully programmatic. <strong>Pick one of two tiers</strong> based on what you want to measure — both share the same authentication and event contract, so upgrading later is drop-in.</p>
+    <div class="method-subtier">
+      <div class="method-subtier-title" data-i18n="mS2sBasicTitle">S2S-Basic — reg + FTD only</div>
+      <div class="method-subtier-desc" data-i18n="mS2sBasicDesc">Core acquisition metrics through the S2S channel. REST API subset (2 endpoints). More control than Partner Postback; no revenue / repeat-deposit tracking yet.</div>
+    </div>
+    <div class="method-subtier">
+      <div class="method-subtier-title" data-i18n="mS2sFullTitle">S2S-Full — complete iGaming event catalog</div>
+      <div class="method-subtier-desc" data-i18n="mS2sFullDesc">Everything in Basic plus repeat deposits, revenue events, cross-channel dedup, reconciliation. Contract: never-4xx · dedup fallback chain · 30-day acceptance window · <code>is_claimable</code> operator FTD claims.</div>
+    </div>
+    <div class="method-meta">
+      <div class="meta-item"><span class="meta-label" data-i18n="lblBestFor">Best for</span><span data-i18n="mS2sBestFor">Own back-office + engineering · Basic for acquisition, Full for LTV / dedup / revenue</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblSkipIf">Skip if</span><span data-i18n="mS2sSkipIf">No engineering capacity to integrate an HTTP API</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblDelivery">Delivery</span><span data-i18n="mS2sDelivery">REST API (OpenAPI v3) · optional PHP / Node SDK · reconciliation file drop for Full</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblEffort">Effort</span><span data-i18n="mS2sEffort">Basic ~3-5 days · Full ~1-2 weeks · backend engineering</span></div>
+    </div>
+    <a href="#" class="method-cta" data-i18n="mS2sCta">Start with S2S →</a>
+    <a href="#" class="method-cta-secondary" data-i18n="ctaApiRef">See API reference</a>
+  </div>
+
+  <div class="method" id="partner-postback">
+    <div class="method-header">
+      <div class="method-icon">🔗</div>
+      <div class="method-title">
+        <h3><span data-i18n="mPbName">Partner Postback</span> <span class="method-badge hot" data-i18n="mPbBadge">🔥 Fastest start</span></h3>
+        <div class="method-tagline" data-i18n="mPbTagline">Paste 2 URLs into your affiliate platform. Live today.</div>
+      </div>
+    </div>
+    <p class="method-body" data-i18n="mPbBody">Your SaaS affiliate / back-office platform fires postbacks to us on registration and FTD. No code, no engineering, no waiting. Works out-of-the-box with Affilka, Cellxpert, Smartico, MyAffiliates, NetRefer, and other iGaming-friendly platforms.</p>
+    <div class="method-meta">
+      <div class="meta-item"><span class="meta-label" data-i18n="lblBestFor">Best for</span><span data-i18n="mPbBestFor">SaaS affiliate platform users · want same-day integration</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblSkipIf">Skip if</span><span data-i18n="mPbSkipIf">You need cross-channel dedup with AppsFlyer, or arbitrary in-app events (upgrade to S2S)</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblDelivery">Delivery</span><span data-i18n="mPbDelivery">2 postback URLs (reg + FTD) · self-serve slug + key</span></div>
+      <div class="meta-item"><span class="meta-label" data-i18n="lblEffort">Effort</span><span data-i18n="mPbEffort">Same day · no engineering</span></div>
+    </div>
+    <a href="#" class="method-cta" data-i18n="mPbCta">Start with Partner Postback →</a>
+    <a href="#" class="method-cta-secondary" data-i18n="ctaMacroMap">Platform macro map</a>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div data-i18n="warnApk"><strong>APK / H5-wrapped App distribution:</strong> Supported via probabilistic attribution — match rates are materially lower than Play Store / App Store (no Install Referrer). Weigh whether the reduced accuracy fits your CPA target.</div>
+  </div>
+
+  <h2 id="faq" data-i18n="faqH2">FAQ</h2>
+
+  <details class="faq-item"><summary data-i18n="faq1Q">Which method is most accurate?</summary><div class="faq-answer" data-i18n="faq1A">Web Tracker + S2S give the highest fidelity because they don't depend on third-party matching. AppsFlyer is industry-standard for App attribution. Partner Postback is only as good as your affiliate platform's macro coverage.</div></details>
+
+  <details class="faq-item"><summary data-i18n="faq2Q">What if I send the same FTD through AppsFlyer <em>and</em> my back-office?</summary><div class="faq-answer" data-i18n="faq2A">Both are stored. Your Integration Health Score surfaces conflicts. Cross-channel canonicalization policy is being finalized — until then, treat both signals as complementary and inspect divergences in the dashboard.</div></details>
+
+  <details class="faq-item"><summary data-i18n="faq3Q">Do you accept postbacks in local currency (INR / MYR / USDT)?</summary><div class="faq-answer" data-i18n="faq3A">Yes — we auto-convert using our published exchange rates. You don't need to convert to USD first.</div></details>
+
+  <details class="faq-item"><summary data-i18n="faq4Q">Seconds vs milliseconds timestamps?</summary><div class="faq-answer" data-i18n="faq4A">We normalize automatically, but you'll receive a loud integration warning if we detect ambiguity. Please stabilize on one format.</div></details>
+
+  <details class="faq-item"><summary data-i18n="faq5Q">Is there a test mode / sandbox?</summary><div class="faq-answer" data-i18n="faq5A">Yes. Test keys route to a visible event stream so you can self-validate without touching production. <code>dryrun=1</code> on S2S and postback endpoints parses, validates, and echoes back exactly what we would record — without storing.</div></details>
+
+  <details class="faq-item"><summary data-i18n="faq6Q">How do I know my integration is healthy?</summary><div class="faq-answer" data-i18n="faq6A">Each product page shows an <strong>Integration Health Score</strong> — <code>click_id</code> coverage, <code>event_id</code> presence, identity coverage, median event age at receipt, suggested-field completeness — with a ranked remediation list and the CPA delta attached.</div></details>
+
+  <details class="faq-item"><summary data-i18n="faq7Q">APK / H5-wrapper Apps — is that supported?</summary><div class="faq-answer" data-i18n="faq7A">Yes, supported via probabilistic attribution. Match rates are materially lower than Play Store / App Store (no Install Referrer). Factor the reduced accuracy into your CPA target.</div></details>
+
+  <div class="bottom-cta" id="support">
+    <div class="cta-text">
+      <h3 data-i18n="ctaBottomH3">Still not sure which method fits?</h3>
+      <p data-i18n="ctaBottomP">Ping your RevoSurge BD contact, or message us on Slack — we'll help you pick and get live.</p>
+    </div>
+    <a href="#" class="cta-btn" data-i18n="ctaBottomBtn">Talk to us →</a>
+  </div>
+
+  <div class="page-footer">
+    <a href="#" class="footer-link">
+      <span class="footer-label" data-i18n="prevLabel">← Previous</span>
+      <span class="footer-title" data-i18n="prevTitle">Growth · Funding</span>
+    </a>
+    <a href="#" class="footer-link next">
+      <span class="footer-label" data-i18n="nextLabel">Next →</span>
+      <span class="footer-title" data-i18n="nextTitle">Web Tracker</span>
+    </a>
+  </div>
+</main>
+
+<aside class="toc">
+  <div class="toc-title" data-i18n="tocTitle">On this page</div>
+  <ul>
+    <li><a href="#decide" class="active" data-i18n="toc1">Which method?</a></li>
+    <li><a href="#scenarios" data-i18n="toc2">Browse by scenario</a></li>
+    <li><a href="#methods" data-i18n="toc3">The 4 methods</a></li>
+    <li><a href="#faq" data-i18n="toc5">FAQ</a></li>
+    <li><a href="#support" data-i18n="toc6">Talk to us</a></li>
+  </ul>
+</aside>
+
+</div>
+
+<div class="prototype-note" data-i18n="protoNote">Prototype v2 · 2026-09-09 · Open in browser to interact</div>
+
+<script>
+const i18n = {
+  en: {
+    searchPlaceholder: "Search docs...",
+    talkToUs: "Talk to us",
+    navWelcome: "👋 Welcome",
+    navGrowth: "Growth",
+    navGettingStarted: "Getting Started",
+    navAccount: "Account",
+    navFunding: "Funding",
+    navTracking: "Tracking",
+    navOverview: "📡 Overview · Which one to use?",
+    navWebTracker: "1. Web Tracker",
+    navAppsFlyer: "2. AppsFlyer (App MMP)",
+    navMoved: "MOVED",
+    navS2S: "3. S2S Server Events",
+    navPartnerPostback: "4. Partner Postback",
+    navProducts: "Products",
+    navAudience: "Audience",
+    navSupply: "Supply / SSP",
+    navDeveloper: "Developer",
+    navReferenceData: "Reference Data",
+    crumbDocs: "Docs",
+    crumbTracking: "Tracking",
+    crumbOverview: "Overview",
+    h1: "Tracking Overview",
+    subtitle: "4 ways to send conversions to RevoSurge. Pick yours in 60 seconds.",
+    helperH2: "Which method is right for you?",
+    helperLead: "Answer 2 quick questions — we'll recommend the fastest path.",
+    q1Label: "1. How do you run your back-office?",
+    q1Own: 'Own custom back-office<span class="hint">(you have engineers)</span>',
+    q1Saas: 'SaaS affiliate platform<span class="hint">(Affilka / Cellxpert / Smartico ...)</span>',
+    q1None: 'Fastest start possible<span class="hint">(no engineering)</span>',
+    q2Label: "2. Where do users convert?",
+    q2Web: "Web only",
+    q2App: "App only",
+    q2Both: "Web + App",
+    resultLabel: "Recommended method",
+    resultCta: "Read the details →",
+    scenariosH2: "Or browse by scenario",
+    scenariosP: "Which one describes you?",
+    scenario1Lead: '"I use <strong>Affilka / Cellxpert / Smartico / MyAffiliates / NetRefer</strong> and want to be live today."',
+    scenario1Arrow: "→ <strong>Partner Postback</strong> · same day · no engineering",
+    scenario2Lead: '"I built <strong>my own back-office</strong> and have engineers who can integrate an API."',
+    scenario2Arrow: "→ <strong>S2S Server Events</strong> · deepest control · full iGaming event catalog",
+    scenario3Lead: '"I run a <strong>native Android / iOS App</strong> on Play Store or App Store."',
+    scenario3Arrow: "→ <strong>AppsFlyer</strong> · industry-standard App MMP",
+    scenario4Lead: '"I only have a <strong>landing page + advertiser website</strong> — no App, no back-office API."',
+    scenario4Arrow: "→ <strong>Web Tracker</strong> · first-party JS snippet",
+    methodsH2: "The 4 methods",
+    lblBestFor: "Best for",
+    lblSkipIf: "Skip if",
+    lblDelivery: "Delivery",
+    lblEffort: "Effort",
+    ctaApiRef: "See API reference",
+    ctaHealthCheck: "Config health check",
+    ctaMacroMap: "Platform macro map",
+    mWebName: "Web Tracker",
+    mWebBadge: "Web",
+    mWebTagline: "First-party JS on your landing page & advertiser site.",
+    mWebBody: "Fires conversion events (registration, deposit, FTD) as users move through your web funnel. Persists <code>click_id</code> in a first-party cookie (1-year expiry) — a user who lands, bounces, and returns 3 days later still attributes.",
+    mWebBestFor: "Web-only funnels, no server integration available",
+    mWebSkipIf: "Your funnel lives inside a mobile App",
+    mWebDelivery: "JS snippet + GTM template (planned)",
+    mWebEffort: "~1 day · frontend only",
+    mWebCta: "Start with Web Tracker →",
+    mAfName: "AppsFlyer",
+    mAfBadge: "App MMP",
+    mAfTagline: "Third-party mobile measurement partner. Industry standard.",
+    mAfBody: "RevoSurge integrates as a media source. AppsFlyer forwards install and in-app event postbacks to us. You configure <code>androidAppsFlyerId</code> / <code>iOSAppsFlyerId</code> on your landing page when initializing the web-tracker; we appear as a partner tile in your AppsFlyer dashboard. Play Store / App Store distribution uses Install Referrer (deterministic); APK / H5 wrapper falls back to probabilistic attribution with lower match rates.",
+    mAfBestFor: "Any mobile App — Play Store, App Store, APK, or H5 wrapper",
+    mAfSkipIf: "You don't have a mobile App at all (web-only funnel)",
+    mAfDelivery: "Configured on your landing page when initializing web-tracker · partner tile in AppsFlyer",
+    mAfEffort: "~2 hours · landing-page config",
+    mAfCta: "Start with AppsFlyer →",
+    mS2sName: "S2S Server Events",
+    mS2sBadge: "S2S",
+    mS2sTagline: "Your back-office → our S2S API. Deepest control.",
+    mS2sBody: "Server-to-server, fully programmatic. <strong>Pick one of two tiers</strong> based on what you want to measure — both share the same authentication and event contract, so upgrading later is drop-in.",
+    mS2sBestFor: "Own back-office + engineering · Basic for acquisition, Full for LTV / dedup / revenue",
+    mS2sSkipIf: "No engineering capacity to integrate an HTTP API",
+    mS2sDelivery: "REST API (OpenAPI v3) · optional PHP / Node SDK · reconciliation file drop for Full",
+    mS2sEffort: "Basic ~3-5 days · Full ~1-2 weeks · backend engineering",
+    mS2sCta: "Start with S2S →",
+    mPbName: "Partner Postback",
+    mPbBadge: "🔥 Fastest start",
+    mPbTagline: "Paste 2 URLs into your affiliate platform. Live today.",
+    mPbBody: "Your SaaS affiliate / back-office platform fires postbacks to us on registration and FTD. No code, no engineering, no waiting. Works out-of-the-box with Affilka, Cellxpert, Smartico, MyAffiliates, NetRefer, and other iGaming-friendly platforms.",
+    mPbBestFor: "SaaS affiliate platform users · want same-day integration",
+    mPbSkipIf: "You need cross-channel dedup with AppsFlyer, or arbitrary in-app events (upgrade to S2S)",
+    mPbDelivery: "2 postback URLs (reg + FTD) · self-serve slug + key",
+    mPbEffort: "Same day · no engineering",
+    mPbCta: "Start with Partner Postback →",
+    warnApk: "<strong>APK / H5-wrapped App distribution:</strong> Supported via probabilistic attribution — match rates are materially lower than Play Store / App Store (no Install Referrer). Weigh whether the reduced accuracy fits your CPA target.",
+    mS2sBasicTitle: "S2S-Basic — reg + FTD only",
+    mS2sBasicDesc: "Core acquisition metrics through the S2S channel. REST API subset (2 endpoints). More control than Partner Postback; no revenue / repeat-deposit tracking yet.",
+    mS2sFullTitle: "S2S-Full — complete iGaming event catalog",
+    mS2sFullDesc: "Everything in Basic plus repeat deposits, revenue events, cross-channel dedup, reconciliation. Contract: never-4xx · dedup fallback chain · 30-day acceptance window · <code>is_claimable</code> operator FTD claims.",
+    faqH2: "FAQ",
+    faq1Q: "Which method is most accurate?",
+    faq1A: "Web Tracker + S2S give the highest fidelity because they don't depend on third-party matching. AppsFlyer is industry-standard for App attribution. Partner Postback is only as good as your affiliate platform's macro coverage.",
+    faq2Q: "What if I send the same FTD through AppsFlyer <em>and</em> my back-office?",
+    faq2A: "Both are stored. Your Integration Health Score surfaces conflicts. Cross-channel canonicalization policy is being finalized — until then, treat both signals as complementary and inspect divergences in the dashboard.",
+    faq3Q: "Do you accept postbacks in local currency (INR / MYR / USDT)?",
+    faq3A: "Yes — we auto-convert using our published exchange rates. You don't need to convert to USD first.",
+    faq4Q: "Seconds vs milliseconds timestamps?",
+    faq4A: "We normalize automatically, but you'll receive a loud integration warning if we detect ambiguity. Please stabilize on one format.",
+    faq5Q: "Is there a test mode / sandbox?",
+    faq5A: "Yes. Test keys route to a visible event stream so you can self-validate without touching production. <code>dryrun=1</code> on S2S and postback endpoints parses, validates, and echoes back exactly what we would record — without storing.",
+    faq6Q: "How do I know my integration is healthy?",
+    faq6A: "Each product page shows an <strong>Integration Health Score</strong> — <code>click_id</code> coverage, <code>event_id</code> presence, identity coverage, median event age at receipt, suggested-field completeness — with a ranked remediation list and the CPA delta attached.",
+    faq7Q: "APK / H5-wrapper Apps — is that supported?",
+    faq7A: "Yes, supported via probabilistic attribution. Match rates are materially lower than Play Store / App Store (no Install Referrer). Factor the reduced accuracy into your CPA target.",
+    ctaBottomH3: "Still not sure which method fits?",
+    ctaBottomP: "Ping your RevoSurge BD contact, or message us on Slack — we'll help you pick and get live.",
+    ctaBottomBtn: "Talk to us →",
+    prevLabel: "← Previous",
+    prevTitle: "Growth · Funding",
+    nextLabel: "Next →",
+    nextTitle: "Web Tracker",
+    tocTitle: "On this page",
+    toc1: "Which method?",
+    toc2: "Browse by scenario",
+    toc3: "The 4 methods",
+    toc5: "FAQ",
+    toc6: "Talk to us",
+    protoNote: "Prototype v2 · 2026-09-09 · Open in browser to interact"
+  },
+  cn: {
+    searchPlaceholder: "搜索文档...",
+    talkToUs: "联系我们",
+    navWelcome: "👋 欢迎",
+    navGrowth: "增长",
+    navGettingStarted: "快速开始",
+    navAccount: "账户",
+    navFunding: "充值",
+    navTracking: "追踪",
+    navOverview: "📡 概述 · 我该用哪个?",
+    navWebTracker: "1. Web 追踪器",
+    navAppsFlyer: "2. AppsFlyer(App MMP)",
+    navMoved: "已迁入",
+    navS2S: "3. S2S 服务器事件",
+    navPartnerPostback: "4. Partner Postback",
+    navProducts: "产品",
+    navAudience: "受众",
+    navSupply: "供给 / SSP",
+    navDeveloper: "开发者",
+    navReferenceData: "参考数据",
+    crumbDocs: "文档",
+    crumbTracking: "追踪",
+    crumbOverview: "概述",
+    h1: "追踪概述",
+    subtitle: "4 种方式把转化数据发给 RevoSurge · 60 秒选出适合你的。",
+    helperH2: "哪种方式适合你?",
+    helperLead: "回答 2 个问题 · 我们推荐最快路径。",
+    q1Label: "1. 你怎么运营后台?",
+    q1Own: '自建后台<span class="hint">(有工程团队)</span>',
+    q1Saas: 'SaaS 联盟平台<span class="hint">(Affilka / Cellxpert / Smartico ...)</span>',
+    q1None: '想最快上线<span class="hint">(不投入工程)</span>',
+    q2Label: "2. 用户在哪里转化?",
+    q2Web: "只有 Web",
+    q2App: "只有 App",
+    q2Both: "Web + App",
+    resultLabel: "推荐方式",
+    resultCta: "查看详情 →",
+    scenariosH2: "按场景选",
+    scenariosP: "哪个描述你?",
+    scenario1Lead: '"我用 <strong>Affilka / Cellxpert / Smartico / MyAffiliates / NetRefer</strong> · 想当天上线。"',
+    scenario1Arrow: "→ <strong>Partner Postback</strong> · 当天上线 · 无需工程",
+    scenario2Lead: '"我<strong>自建后台</strong> · 有工程可以集成 API。"',
+    scenario2Arrow: "→ <strong>S2S 服务器事件</strong> · 最深控制 · 完整 iGaming 事件目录",
+    scenario3Lead: '"我运营<strong>原生 Android / iOS App</strong>(Play Store 或 App Store)。"',
+    scenario3Arrow: "→ <strong>AppsFlyer</strong> · 行业标准 App MMP",
+    scenario4Lead: '"我只有<strong>落地页 + 广告主网站</strong> · 没有 App · 没有后台 API。"',
+    scenario4Arrow: "→ <strong>Web 追踪器</strong> · first-party JS 片段",
+    methodsH2: "四种方式",
+    lblBestFor: "什么时候用",
+    lblSkipIf: "什么时候别用",
+    lblDelivery: "交付形态",
+    lblEffort: "工作量",
+    ctaApiRef: "API 参考",
+    ctaHealthCheck: "配置健康度检查",
+    ctaMacroMap: "平台 macro 对照表",
+    mWebName: "Web 追踪器",
+    mWebBadge: "Web",
+    mWebTagline: "落地页和广告主站的 first-party JS 追踪。",
+    mWebBody: "追踪网页 funnel 里的转化事件(注册 / 存款 / FTD 首次存款)· <code>click_id</code> 存 first-party cookie(有效期 1 年) · 用户 3 天后回来仍能归因到那次点击。",
+    mWebBestFor: "网页 funnel · 无服务端集成能力",
+    mWebSkipIf: "funnel 在移动 App 里",
+    mWebDelivery: "JS 代码片段 + GTM 模板(规划中)",
+    mWebEffort: "约 1 天 · 只需前端",
+    mWebCta: "开始接入 Web 追踪器 →",
+    mAfName: "AppsFlyer",
+    mAfBadge: "App MMP",
+    mAfTagline: "第三方 App 移动归因平台 · 行业标准。",
+    mAfBody: "RevoSurge 作为一个 media source 接入 · AppsFlyer 把 install 和 App 内事件 postback 转发给我们。你在落地页初始化 web-tracker 时配置 <code>androidAppsFlyerId</code> / <code>iOSAppsFlyerId</code> · 我们会在你的 AppsFlyer 后台里作为 partner tile(合作方入口)出现。Play Store / App Store 分发用 Install Referrer(确定性归因);APK / H5 wrapper 走概率归因 · 匹配率较低。",
+    mAfBestFor: "任何移动 App —— Play Store / App Store / APK / H5 wrapper 都支持",
+    mAfSkipIf: "完全没有移动 App(纯 Web funnel)",
+    mAfDelivery: "在落地页初始化 web-tracker 时配置 · 作为 partner tile 出现",
+    mAfEffort: "约 2 小时 · 落地页配置",
+    mAfCta: "开始接入 AppsFlyer →",
+    mS2sName: "S2S 服务器事件",
+    mS2sBadge: "S2S",
+    mS2sTagline: "你的后台 → 我们的 S2S API · 最深控制。",
+    mS2sBody: "服务器到服务器 · 全程程式化。<strong>选二 tier 中的一个</strong> · 按你要衡量什么定 —— 两 tier 共享认证和事件契约 · 之后升级是 drop-in(直接扩展 · 无需重接)。",
+    mS2sBestFor: "自建后台 + 有工程 · Basic 做获客 · Full 做 LTV / 去重 / 收入",
+    mS2sSkipIf: "无工程侧对接 HTTP API 的能力",
+    mS2sDelivery: "REST API(OpenAPI v3)· 可选 PHP / Node SDK · Full 加 reconciliation(对账)文件",
+    mS2sEffort: "Basic 约 3-5 天 · Full 约 1-2 周 · 后端工程",
+    mS2sCta: "开始接入 S2S →",
+    mPbName: "Partner Postback",
+    mPbBadge: "🔥 最快上线",
+    mPbTagline: "粘贴 2 个 URL 到你的联盟平台 · 当天上线。",
+    mPbBody: "你的 SaaS 联盟 / 后台平台在用户注册和 FTD 时向我们 fire postback。无代码 · 无工程 · 无需等待。开箱即用支持 Affilka · Cellxpert · Smartico · MyAffiliates · NetRefer · 及其他 iGaming 友好平台。",
+    mPbBestFor: "SaaS 联盟平台用户 · 想当天上线",
+    mPbSkipIf: "需跨 AppsFlyer 去重 · 或要发任意 App 内事件(那升级到 S2S)",
+    mPbDelivery: "2 个 postback URL(注册 + FTD)· 自助 slug + key",
+    mPbEffort: "当天上线 · 无需工程",
+    mPbCta: "开始接入 Partner Postback →",
+    warnApk: "<strong>APK / H5 wrapper App 分发:</strong>我们通过概率归因支持 —— 匹配率明显低于 Play Store / App Store(无 Install Referrer · 即 Google Play 官方的安装来源标记)。请评估降低的精度是否符合你的 CPA 目标。",
+    mS2sBasicTitle: "S2S-Basic —— 只做注册 + FTD",
+    mS2sBasicDesc: "通过 S2S 通道跑核心获客指标。REST API 子集(2 个 endpoint)。比 Partner Postback 更可控;暂时不做 revenue / 复购追踪。",
+    mS2sFullTitle: "S2S-Full —— 完整 iGaming 事件目录",
+    mS2sFullDesc: "在 Basic 基础上加存款复购、revenue 事件、跨渠道去重、对账。契约:never-4xx · 去重 fallback chain · 30 天归因接受窗口 · 运营方 FTD 声明按 <code>is_claimable</code> 处理。",
+    faqH2: "常见问题",
+    faq1Q: "哪种方式最准?",
+    faq1A: "Web 追踪器 + S2S 保真度最高(不依赖第三方匹配)。AppsFlyer 是行业标准 App 归因。Partner Postback 准不准取决于你联盟平台的 macro(URL 变量占位符)覆盖度。",
+    faq2Q: "同一个 FTD 从 AppsFlyer <em>和</em>后台都打过来 · 怎么算?",
+    faq2A: "两边都存。你的 Integration Health Score(集成健康度评分)显示冲突。跨渠道 canonicalization(唯一权威版本判定)策略正在最终确定 —— 目前把两个信号当互补处理 · 出现分歧时看 Health Score 定位。",
+    faq3Q: "接本地币种(INR 印度卢比 / MYR 马来西亚林吉特 / USDT 泰达币)吗?",
+    faq3A: "接 · 用我们发布的汇率表自动转换。不用你先转成 USD。",
+    faq4Q: "时间戳用秒还是毫秒?",
+    faq4A: "自动归一化 · 但检测到有歧义会给你一个明显的 integration warning(集成警告)。请稳定用一种格式。",
+    faq5Q: "有测试模式 / 沙盒吗?",
+    faq5A: "有。测试 key 会路由到一个可见的事件流 · 你自己就能验证 · 不用碰生产流量。S2S 和 postback 接口都支持 <code>dryrun=1</code>(空跑)· 解析 + 校验 + 回显我们本应存储的字段 · 但不落库。",
+    faq6Q: "怎么知道我的集成健康?",
+    faq6A: "每个产品页面都有 <strong>Integration Health Score</strong>(集成健康度评分)· 显示:<code>click_id</code> 覆盖率 · <code>event_id</code> 完整度 · 身份覆盖 · 事件到达延迟中位数 · 建议字段完整度 · 带 CPA(单转化成本)影响的 remediation(修复建议)列表可一并看到。",
+    faq7Q: "APK / H5 wrapper App —— 支持吗?",
+    faq7A: "支持 · 通过概率归因。匹配率明显低于 Play Store / App Store(无 Install Referrer)。请把降低的精度纳入 CPA 目标考虑。",
+    ctaBottomH3: "还是不确定该用哪种?",
+    ctaBottomP: "联系你的 RevoSurge BD · 或在 Slack 上发消息给我们 —— 我们帮你选并上线。",
+    ctaBottomBtn: "联系我们 →",
+    prevLabel: "← 上一页",
+    prevTitle: "增长 · 充值",
+    nextLabel: "下一页 →",
+    nextTitle: "Web 追踪器",
+    tocTitle: "本页目录",
+    toc1: "该用哪种?",
+    toc2: "按场景选",
+    toc3: "四种方式",
+    toc5: "常见问题",
+    toc6: "联系我们",
+    protoNote: "原型 v2 · 2026-09-09 · 浏览器打开可交互"
+  }
+};
+// hk fallback to cn
+i18n.hk = i18n.cn;
+
+const rec = {
+  en: {
+    'own-web':   ['S2S + Web Tracker (both required)', 'Own back-office + web funnel — you need S2S for the events and Web Tracker for the click-side signal (snowwhite pattern).', '#s2s'],
+    'own-app':   ['S2S + AppsFlyer',   'S2S for the truth layer + AppsFlyer for App install attribution — the strongest combo.', '#s2s'],
+    'own-both':  ['S2S + Web Tracker + AppsFlyer (all three)', 'Web + App funnel — S2S is your canonical event stream, Web Tracker captures the click-side signal, AppsFlyer handles App installs. All three needed.', '#s2s'],
+    'saas-web':  ['Partner Postback', 'Paste 2 URLs into your affiliate platform (Affilka / Cellxpert / etc.) — same-day live.', '#partner-postback'],
+    'saas-app':  ['Partner Postback + AppsFlyer', 'Postback for the platform side · AppsFlyer for App installs.', '#partner-postback'],
+    'saas-both': ['Partner Postback + AppsFlyer (both required)', 'Web + App funnel — Partner Postback covers the platform side, AppsFlyer handles App installs. Both needed.', '#partner-postback'],
+    'none-web':  ['Partner Postback', 'Same day · no engineering. Best zero-friction start.', '#partner-postback'],
+    'none-app':  ['AppsFlyer only', 'Accept the App-side gap for now · upgrade later.', '#appsflyer'],
+    'none-both': ['Partner Postback + AppsFlyer (both required)', 'Web + App funnel — start with Postback for the web side and AppsFlyer for App installs. Both needed.', '#partner-postback']
+  },
+  cn: {
+    'own-web':   ['S2S + Web 追踪器(两个都要)', '自建后台 + 网页 funnel —— 你需要 S2S 发事件 + Web 追踪器抓点击侧信号(snowwhite 模式)。', '#s2s'],
+    'own-app':   ['S2S + AppsFlyer', 'S2S 作真相层 + AppsFlyer 做 App install 归因 —— 最强组合。', '#s2s'],
+    'own-both':  ['S2S + Web 追踪器 + AppsFlyer(三个都要)', 'Web + App funnel —— S2S 作权威事件流 · Web 追踪器抓点击侧信号 · AppsFlyer 做 App install 归因。三个都需要。', '#s2s'],
+    'saas-web':  ['Partner Postback', '粘 2 个 URL 到你的联盟平台(Affilka / Cellxpert 等)—— 当天上线。', '#partner-postback'],
+    'saas-app':  ['Partner Postback + AppsFlyer', 'Postback 覆盖平台侧 · AppsFlyer 做 App install。', '#partner-postback'],
+    'saas-both': ['Partner Postback + AppsFlyer(都要)', 'Web + App funnel —— Partner Postback 覆盖平台侧 · AppsFlyer 做 App install。两个都需要。', '#partner-postback'],
+    'none-web':  ['Partner Postback', '当天上线 · 无需工程。最零摩擦的开始。', '#partner-postback'],
+    'none-app':  ['只用 AppsFlyer', '暂时接受 App 侧的 gap · 之后再升级。', '#appsflyer'],
+    'none-both': ['Partner Postback + AppsFlyer(都要)', 'Web + App funnel —— Partner Postback 覆盖 web 侧 · AppsFlyer 做 App install。两个都需要。', '#partner-postback']
+  }
+};
+rec.hk = rec.cn;
+
+let currentLang = 'en';
+let answers = { 1: null, 2: null };
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('lang-current').textContent = lang.toUpperCase();
+  document.documentElement.lang = lang === 'cn' ? 'zh-CN' : lang === 'hk' ? 'zh-HK' : 'en';
+  // update all data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (i18n[lang] && i18n[lang][key] !== undefined) {
+      el.innerHTML = i18n[lang][key];
+    }
+  });
+  // update lang-menu current highlight
+  document.querySelectorAll('.lang-menu a').forEach(a => {
+    a.classList.toggle('current', a.dataset.lang === lang);
+  });
+  // reset decision helper when language changes
+  document.querySelectorAll('.helper-option').forEach(x => x.classList.remove('selected'));
+  document.getElementById('result').classList.remove('show');
+  answers = { 1: null, 2: null };
+  // close menu
+  document.getElementById('lang-menu').classList.remove('open');
+}
+
+// Language picker toggle
+document.getElementById('lang-btn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  document.getElementById('lang-menu').classList.toggle('open');
+});
+document.querySelectorAll('.lang-menu a').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setLang(a.dataset.lang);
+  });
+});
+document.addEventListener('click', () => {
+  document.getElementById('lang-menu').classList.remove('open');
+});
+
+// Decision helper
+document.querySelectorAll('.helper-option').forEach(el => {
+  el.addEventListener('click', () => {
+    const q = el.dataset.q, v = el.dataset.v;
+    answers[q] = v;
+    document.querySelectorAll(`.helper-option[data-q="${q}"]`).forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected');
+    if (answers[1] && answers[2]) {
+      const key = `${answers[1]}-${answers[2]}`;
+      const [method, why, cta] = rec[currentLang][key];
+      document.getElementById('result-method').textContent = method;
+      document.getElementById('result-why').textContent = why;
+      document.getElementById('result-cta').href = cta;
+      const resultEl = document.getElementById('result');
+      resultEl.classList.add('show');
+      setTimeout(() => resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    }
+  });
+});
+
+// Init to English (already default in HTML)
+setLang('en');
+</script>
+
+</body>
+</html>
