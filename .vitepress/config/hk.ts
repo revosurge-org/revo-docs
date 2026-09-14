@@ -29,18 +29,34 @@ export const hk: DefaultTheme.Config = {
       link: '/hk/tracking/overview',
       collapsed: false,
       items: [
-        { text: '概述', link: '/hk/tracking/overview' },
+        { text: '概述 · 我該用哪個？', link: '/hk/tracking/overview' },
         {
-          text: 'Web 追蹤器',
+          text: '1. Web 追蹤器',
           link: '/hk/tracking/web-tracker',
+          collapsed: true,
           items: [
             { text: '安裝', link: '/hk/tracking/web-tracker/install' },
             { text: 'Web 追蹤器 SDK 參考', link: '/hk/tracking/web-tracker/reference' }
           ]
         },
         {
-          text: '伺服器到伺服器 (S2S)',
+          text: '2. AppsFlyer（App MMP）',
+          link: '/hk/mmp/appsflyer/overview',
+          collapsed: true,
+          items: [
+            { text: '概述', link: '/hk/mmp/appsflyer/overview' },
+            { text: '設定 postback', link: '/hk/mmp/appsflyer/postbacks' },
+            { text: '點擊轉發', link: '/hk/mmp/appsflyer/click-forwarding' },
+            { text: '宏參數', link: '/hk/mmp/appsflyer/macros' },
+            { text: '合作夥伴權限', link: '/hk/mmp/appsflyer/permissions' },
+            { text: '整合驗證', link: '/hk/mmp/appsflyer/validation' },
+            { text: '交付與上線', link: '/hk/mmp/appsflyer/handoff' }
+          ]
+        },
+        {
+          text: '3. S2S 伺服器事件',
           link: '/hk/tracking/s2s/overview',
+          collapsed: true,
           items: [
             { text: '概述', link: '/hk/tracking/s2s/overview' },
             { text: '伺服器事件 API (v2)', link: '/hk/tracking/s2s/server-events-api' },
@@ -59,30 +75,11 @@ export const hk: DefaultTheme.Config = {
           ]
         },
         {
-          text: 'Postback 回傳',
+          text: '4. Partner Postback',
           link: '/hk/tracking/postback/partner-postback',
+          collapsed: true,
           items: [
             { text: '合作夥伴 Postback API', link: '/hk/tracking/postback/partner-postback' }
-          ]
-        },
-      ]
-    },
-    {
-      text: 'MMP 整合',
-      link: '/hk/mmp/appsflyer/overview',
-      collapsed: false,
-      items: [
-        {
-          text: 'AppsFlyer',
-          link: '/hk/mmp/appsflyer/overview',
-          items: [
-            { text: '概述', link: '/hk/mmp/appsflyer/overview' },
-            { text: '設定 postback', link: '/hk/mmp/appsflyer/postbacks' },
-            { text: '點擊轉發', link: '/hk/mmp/appsflyer/click-forwarding' },
-            { text: '宏參數', link: '/hk/mmp/appsflyer/macros' },
-            { text: '合作夥伴權限', link: '/hk/mmp/appsflyer/permissions' },
-            { text: '整合驗證', link: '/hk/mmp/appsflyer/validation' },
-            { text: '交付與上線', link: '/hk/mmp/appsflyer/handoff' }
           ]
         }
       ]

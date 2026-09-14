@@ -7,6 +7,7 @@ import './style.css'
 import HttpMethod from './components/HttpMethod.vue'
 import EventPayloadExplorer from './components/EventPayloadExplorer.vue'
 import CreativePreviews from './components/CreativePreviews.vue'
+import TrackingMethodPicker from './components/TrackingMethodPicker.vue'
 
 export default {
   extends: DefaultTheme,
@@ -20,5 +21,6 @@ export default {
     app.component('HttpMethod', HttpMethod)
     app.component('EventPayloadExplorer', EventPayloadExplorer)
     app.component('CreativePreviews', CreativePreviews)
+    app.component('TrackingMethodPicker', TrackingMethodPicker)
   }
 } satisfies Theme
