@@ -164,6 +164,53 @@
 }
 
 /**
+ * Language selector: show the current locale's code in the nav bar
+ *
+ * The default theme renders the switcher as a bare globe icon, which tells the
+ * reader neither which language they are on nor that others exist. VitePress
+ * keeps `html[lang]` in sync on every route change, so the code can come from
+ * CSS alone with no component override. Flex `order` seats the badge between
+ * the globe and the chevron.
+ *
+ * `content` is deliberately set only in the per-locale rules: a pseudo-element
+ * with no `content` is never generated, so an unrecognized lang renders nothing
+ * rather than an empty pill.
+ * -------------------------------------------------------------------------- */
+
+.VPNavBarTranslations .button .text::before {
+  order: 1;
+  margin: 0 2px 0 6px;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+.VPNavBarTranslations .button .text .option-icon {
+  order: 0;
+}
+
+.VPNavBarTranslations .button .text .text-icon {
+  order: 2;
+}
+
+html[lang="en"] .VPNavBarTranslations .button .text::before {
+  content: 'EN';
+}
+
+html[lang="zh-CN"] .VPNavBarTranslations .button .text::before {
+  content: 'CN';
+}
+
+html[lang="zh-HK"] .VPNavBarTranslations .button .text::before {
+  content: 'HK';
+}
+
+/**
  * Doc tables: tinted header for richer, more scannable reference tables
  * -------------------------------------------------------------------------- */
 .vp-doc thead th {
