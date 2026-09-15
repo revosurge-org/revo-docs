@@ -163,7 +163,9 @@ Yes — we convert using our published exchange rates. There's no need to conver
 :::
 
 ::: details Seconds vs milliseconds timestamps?
-We normalize automatically, but you will receive a loud integration warning if we detect ambiguity. Please stabilize on one format.
+**Send milliseconds.** That is the contract for both Partner Postback and the Server Events API.
+
+What differs is what happens if you don't. The Server Events API (v3) **rejects** a value that looks like seconds. Partner Postback corrects it and keeps the event, but treats the correction as a deviation from the contract — it raises an alert on our side and we will contact you. Neither is a second supported format, so stabilize on milliseconds.
 :::
 
 ::: details Do you support test mode?

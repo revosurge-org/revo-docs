@@ -97,12 +97,29 @@ Every endpoint accepts the same parameters. Map your back office's macros onto t
 | `amount` | Deposits & revenue | The monetary value, as a decimal. **Signed** — see [How values are interpreted](#how-values-are-interpreted) |
 | `ts` | Recommended | Event time as **unix milliseconds** |
 | `country` | Optional | Player country |
+| `attribution_share` | Optional | Your declared attribution share for this conversion — see [What your claim fields mean](#what-your-claim-fields-mean) |
+| `is_new_customer` | Optional | Your declaration that this player is new **to you**. Accepts `1`/`0`, `true`/`false`, `yes`/`no` |
+| `first_deposit_ts` | Optional | Your declared first-deposit time, as **unix milliseconds** — same unit and same parsing as `ts` |
 | `hash_id`, `hash_name` | Recommended | Your link/account taxonomy identifiers |
 | `source_id`, `source_name` | Recommended | Your traffic-source taxonomy identifiers |
 
 \* **At least one of `click_id` or `user_id` must be present.** A postback with neither cannot be addressed to anything and is dropped (with a `200` — see [Responses](#responses)).
 
 Parameters not listed here are **kept verbatim** on the stored event, so a macro you add later still reaches us without a change on our side.
+
+### What your claim fields mean
+
+`attribution_share`, `is_new_customer` and `first_deposit_ts` are **what you report**. RevoSurge records them next to what it computes itself, never in place of it.
+
+All three are **optional**, and **adding them does not require re-registering your URLs** — an existing registration keeps working exactly as it does today, and a parameter we never receive is simply recorded as unset. If you are registering for the first time, append them to the template now, so you do not pay for a re-registration later:
+
+```text
+&attribution_share={attribution_share}&is_new_customer={is_new_customer}&first_deposit_ts={first_deposit_ts}
+```
+
+- **`attribution_share` is stored exactly as sent.** The contract does not declare a scale — `0.5` and `50` both read as "half" — so RevoSurge neither rescales it nor multiplies any amount by it. Agree the scale with us explicitly before anyone relies on the number.
+- **`is_new_customer` is your view, not our first-deposit calculation.** We continue to determine first-time deposits independently; the gap between the two is a reconciliation signal, not an error. A value we cannot read is recorded as unset, never as `0` — "no" and "unreadable" must not collapse into the same answer.
+- **`first_deposit_ts` follows the `ts` rules exactly.** See [How values are interpreted](#how-values-are-interpreted).
 
 ### Why we ask for the taxonomy fields
 
@@ -202,7 +219,9 @@ The fallback is deliberately conservative: it collapses only a **byte-identical*
 |-------|------|
 | `amount` | Parsed as a signed decimal. **Negative values are valid** — under a revenue share, a losing period for the operator is a negative income event. The raw string is always preserved alongside the parsed value, so a parse failure never loses the number |
 | Currency | Settlement is in **USD**; no currency macro is expected. If you send a `currency` parameter with anything other than `USD`, it is recorded and raised as a contract change rather than silently converted |
-| `ts` | **Unix milliseconds.** We do not auto-detect seconds-vs-milliseconds: the contract says milliseconds, so a value in seconds is a signal that something drifted, and guessing would hide it. A time outside a plausible window is stored as unset, with the raw string kept |
+| `ts` | **Unix milliseconds**, and that has not changed. If a value arrives in seconds we correct it and keep the event time — but the correction is treated as a **deviation from the contract**: it raises an alert on our side and we will contact you. It is not a second supported format; do not rely on it. A value that is neither reading (outside a plausible range, negative, non-numeric) **cannot have its event time recovered**: the event is stored with no timestamp, with the raw string kept |
+| `first_deposit_ts` | Exactly the same rules as `ts` — same unit, same correction, same alert |
+| `attribution_share` | Recorded verbatim, never rescaled, and never multiplied into an amount — see [What your claim fields mean](#what-your-claim-fields-mean) |
 | Event age | Events older than **30 days** or more than **60 minutes** in the future are recorded and flagged, never rejected. Under a lifetime revenue share, revenue for an old player is exactly what the integration is for |
 | Unsubstituted macros | A value that arrives as a literal macro (e.g. `click_id={sub1}`) is treated as absent, not as a string. See below |
 
@@ -235,6 +254,6 @@ curl -s "https://mmp.revosurge.com/v1/pb/{partner}/registration?k=$KEY&click_id=
 
 Then send one real test conversion through your back office and ask us to confirm, field by field. Three things are worth checking explicitly, because each one produces clean-looking but wrong data if it is off:
 
-1. **The unit and timezone of `ts`** — a seconds-vs-milliseconds mix-up parses fine and lands decades away.
+1. **The unit and timezone of `ts`** (and of `first_deposit_ts`, if you send it) — send milliseconds. A value in seconds is corrected, but it counts as a contract deviation and you will hear from us; a value that is neither leaves the event with no time at all.
 2. **Whether `event_id` actually arrives** — we can measure how often the hash fallback is used, and that number should be zero.
 3. **The real values of `hash_id` and `source_id`** — the drift alert stays silent until we record your baseline.
