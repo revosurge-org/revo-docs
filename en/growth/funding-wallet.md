@@ -30,3 +30,13 @@ After payment:
 ## Recommended operational practice
 - Finance reviews wallet balance daily
 - If campaigns are planned, keep buffer balance to avoid delivery pauses due to insufficient funds
+
+## Troubleshooting
+
+::: details My deposit isn't showing in the balance
+Deposits post to the shared **account-level wallet**. Check **Billing → Transaction history** for a **Deposit** record; card, bank transfer, and crypto methods can take time to settle. If a payment succeeded but no record appears after the expected settlement window, contact support with your payment reference.
+:::
+
+::: details Campaigns paused for insufficient funds
+Delivery pauses when the wallet can't cover the day's spend. Top up the wallet and keep a buffer above your combined daily budgets so pilots don't stall mid-flight.
+:::

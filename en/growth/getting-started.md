@@ -42,14 +42,24 @@ What you should be able to see:
 - Campaign spend totals (in AdWave)
 
 ## 3) Product setup (high-level)
-A **Product** is the site/app you promote.  
-At minimum you need:
-- A product selected in AdWave
-- Tracking readiness (see [**Tracking → Overview**](/en/tracking/overview))
+A **Product** is the site/app you promote. After you sign up in AdWave, the technical
+integration for each Product — tracker, server events, and API credentials — is set up in
+**DataPulse** ([datapulse.revosurge.com](https://datapulse.revosurge.com), reachable via **Open
+DataPulse** from the AdWave dashboard).
+
+DataPulse walks you through a guided **Setup Wizard**:
+1. **Create Product** — set the Domain, Tracker ID, and Deposit FX.
+2. **Setup Web Tracker** — add the tracker to your site so events start flowing. See [**Install the Web Tracker**](/en/tracking/web-tracker/install).
+3. **S2S Postback** — **Generate API Key** and send server-to-server events (an initial **S2S Status: Pending** is normal until the first event arrives). See [**API Key**](/en/api/api-key).
+4. **Ad Sources** — connect AdWave so campaign delivery and outcomes line up.
+
+> A Product stays **Inactive** until its Web Tracker receives its first event; only **activated** Products can be selected when you create a campaign.
+
+![The DataPulse Setup Wizard — Create Product, Setup Web Tracker, S2S Postback, Ad Sources](/img/onboarding/datapulse-setup-wizard.png)
 
 ## 4) Launching your first pilot (recommended checklist)
 Before going live:
-- ✅ Product selected  
+- ✅ Product selected **and activated** — a Product stays **Inactive** until its Web Tracker receives its first event; only activated Products can be selected in the campaign flow. Check the **Tracker Status** column under **Product → Manage Product** in DataPulse (or the **Web Tracker active** indicator in the Setup Wizard).  
 - ✅ Target event selected (must be available/live depending on current rules)  
 - ✅ Creative uploaded & reviewed  
 - ✅ Geo targeting set  
@@ -68,3 +78,17 @@ Before going live:
 - Win rate, clearing eCPM distribution
 - Media cost vs client billed spend (markup realization)
 - Inventory quality signals (e.g., "high imps / no clicks" outliers)
+
+## Troubleshooting
+
+::: details My Product is stuck "Inactive"
+A Product only turns **Active** after its Web Tracker receives its first event. Confirm the tracker script is installed on the right pages, the `trackerId` matches your product, and no ad-blocker or CSP is blocking `web-tracker.js`. See [Install the Web Tracker](/en/tracking/web-tracker/install#troubleshooting). If it stays Inactive well after real traffic arrives, contact support.
+:::
+
+::: details Why is there no Web Tracker data?
+Open **DataPulse → Product** and check the **Web Tracker** event stream (Receiving / Errors / Not-yet-seen). No "Receiving" usually means the script isn't firing or the Tracker ID is wrong.
+:::
+
+::: details Why are S2S events not flowing?
+In the DataPulse **Setup Wizard → S2S Postback**, confirm you generated an API key and that your server is posting to the S2S endpoint. An initial **S2S Status: Pending** is normal until the first event is received. See [API Key](/en/api/api-key).
+:::

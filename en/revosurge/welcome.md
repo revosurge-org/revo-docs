@@ -25,7 +25,7 @@ This guide covers:
 
 ## What RevoSurge includes
 - **AdWave (DSP):** Create and run campaigns across multiple SSPs via RTB.  
-- **DataPulse (Analytics):** View downstream outcomes and reporting (availability depends on your current rollout).  
+- **DataPulse (Analytics & data setup):** Configure each Product's technical integration — Web Tracker, Server-to-Server (S2S) events, and API keys — through a guided **Setup Wizard**, and view downstream outcomes and reporting. Open it at [datapulse.revosurge.com](https://datapulse.revosurge.com) or via **Open DataPulse** in AdWave.  
 - **Tracking:** Web tracker and Server-to-Server (S2S) events to connect ad exposure to onsite/onsystem outcomes.  
 
 ## Key concepts
@@ -35,9 +35,9 @@ This guide covers:
 - **Event:** A tracked action you want to optimize/measure (e.g., Register, Deposit).  
 
 ## Typical workflow
-1) Create/activate an account and add teammates  
+1) Create/activate an account at [adwave.revosurge.com](https://adwave.revosurge.com) and add teammates  
 2) Create a product (site/app)  
-3) Ensure tracking is ready (Web tracker / S2S events)  
+3) Set up tracking in [DataPulse](https://datapulse.revosurge.com) — Web tracker / S2S events  
 4) Create a campaign in AdWave (guided setup)  
 5) Monitor pilot performance & traffic quality  
 6) Scale budgets, refine targeting, and apply kill rules where needed  

@@ -25,8 +25,10 @@ Prepare:
 
 ## Create or activate your account
 1. **Sign up or accept an invite**
-   - Use the sign-up link from your RevoSurge representative, or
-   - Accept the invitation email if your company account already exists.
+   - **New company?** Go to [**adwave.revosurge.com**](https://adwave.revosurge.com) and complete the public self-service sign-up: **email → verification code → password → company details**. No representative or invite link is required.
+   - **Company account already exists?** Accept the invitation email to join it.
+
+   ![AdWave public sign-up — a 4-step wizard: Email → Code → Password → Detail](/img/onboarding/adwave-signup.png)
 
 2. **Fill in company details**
    - Company legal name
@@ -42,7 +44,7 @@ Prepare:
 Built-in roles:
 - **Admin (Master)**: full access (including user/role management)
 - **Ad Executive**: manage products, campaigns, creatives, and reports (assigned scope)
-- **Data Analytic**: manage data assets and view campaigns/reports (assigned scope)
+- **Data Analyst**: manage data assets and view campaigns/reports (assigned scope)
 - **Finance**: view balances, invoices, and financial reporting
 
 How to invite:
@@ -54,3 +56,13 @@ How to invite:
 Notes:
 - You can change roles, disable users, or resend invites later.
 - Keep at least **one Admin/Master** in every account (the last Admin cannot be removed).
+
+## Troubleshooting
+
+::: details My email is already registered
+The public sign-up at [adwave.revosurge.com](https://adwave.revosurge.com) rejects an email that already belongs to an account. Ask an existing **Admin/Master** to invite you instead (**Account → Members → Invite member**), or use a different email for a separate company account.
+:::
+
+::: details My account won't turn "Ready"
+An account becomes **Ready** only when all mandatory company details are complete and the online agreement is accepted. Re-open the company profile and fill in any missing legal name, country of registration, business address, or primary contact.
+:::

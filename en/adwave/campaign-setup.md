@@ -39,6 +39,8 @@ Select the **Product** you want to promote. Each card shows the product name and
 
 > **Note:** "Unactivated products can only be put into use after being activated." If the product you need is not activated, activate it first, then return to this flow.
 
+![Step 1 — activated Products are selectable; unactivated ones are greyed out below the divider](/img/onboarding/campaign-step1-product.png)
+
 ## 2) Objective & Ad Format
 
 **Campaign name**
@@ -49,10 +51,12 @@ Enter a human-readable name used in reporting. AdWave suggests a naming format t
 
 **Target event**
 
-Select the conversion event this campaign should optimize for. This event is used to measure conversions and calculate **CPA** for the campaign.
+Select the conversion event this campaign should optimize for. This event is used to measure conversions and calculate **CPA** for the campaign. Choose one:
 
 - **Register**
-- **Deposit**
+- **FTD (First-Time Deposit)**
+- **Bet**
+- **LP Click**
 
 **Ad format**
 
@@ -63,33 +67,50 @@ Choose one format. Each has different creative requirements (see [Step 6](#_6-cr
 - **Display** — Banner-style ads placed in fixed positions (e.g. sidebar or header). Best for strong visibility and broad brand awareness.
 - **Native** — Ads that blend seamlessly into the content feed. Less intrusive and more engaging; ideal for higher click-through rates.
 
+![Step 2 — Campaign Name, Target Event (Register / FTD / Bet / LP Click), and Ad Format](/img/onboarding/campaign-step2-objective.png)
+
 ## 3) Target Geo
 
-Search for and select the countries or regions to target. You can add **up to 20** geos per campaign.
+Search for and select the countries or regions to target. Selected countries appear as chips and the header shows a live count (e.g. `1/20`). You can add **up to 20** geos per campaign.
+
+**Retargeting Audience (optional)**
+
+Below Target Geo you can attach a **Retargeting Audience** to re-reach users you already know. Click **Create Audience** to build one (you'll see *"No audience available"* until at least one exists). Leave it empty to target by geo alone.
 
 > **Tip:** Keep geo and creative language aligned. If you target multiple markets that need different languages, prepare a creative (or creative language) for each. See [Step 6: Creative](#_6-creative).
 
+![Step 3 — search and select countries (up to 20); attach a Retargeting Audience if you have one](/img/onboarding/campaign-step3-geo.png)
+
 ## 4) Bid & Daily Budget
+
+**Bid strategy** — choose one:
+
+- **oCPM** (Optimized CPM, *Suggested* — selected by default): you set your desired **cost per target event** and AdWave optimizes delivery toward it. Best for performance / CPA-driven campaigns.
+- **CPM**: you set a **Maximum CPM Bid** — the most you'll pay per 1,000 impressions. Best for reach and awareness.
 
 **Bid**
 
-- **Bid strategy:** **CPM** (cost per 1,000 impressions).
-- **Maximum CPM bid:** the most you're willing to pay per 1,000 impressions.
+Enter your bid amount. AdWave shows a **Suggested Bid** next to the field — a live recommendation that varies by ad format and market; you can bid above or below it.
 
-AdWave shows a **Suggested Max Bid** that varies by ad format (for example, Display ≈ \$0.04, Native ≈ \$0.03, Push ≈ \$0.11, Pop ≈ \$0.11 at time of writing).
-
-> **Note:** "This is the max bid we recommend for this campaign. Actual bids in the auction may be lower than this cap."
+> **Note:** "eCPM only changes how we bid. You're still billed by CPM, which can be higher or lower than your target bid." Actual auction bids may clear lower than your cap.
 
 **Daily budget**
 
-Set your daily spend limit in USD.
+Set your daily spend limit in USD. AdWave suggests a minimum so the algorithm has enough data to learn and optimize each day:
 
-> **Tip:** Set a minimum daily budget of **20× your target bid** to ensure stable delivery and meaningful results. This gives the algorithm enough data each day to learn and optimize performance effectively.
+- **oCPM:** set your daily budget to ≈ **100× your bid** for best learning (minimum ~**50×**).
+- **CPM:** minimum daily budget of **20× your target bid**.
+
+![Step 4 — oCPM (default) sets a cost per target event; the Suggested Bid updates live per ad format](/img/onboarding/campaign-step4-bid.png)
 
 ## 5) Schedule
 
-- **Start date:** defaults to now; you can schedule a future start.
-- **End date:** select an end date, or use **Quick Select Cycle** to set a duration of **7d / 14d / 30d / 60d / 90d** from the start date.
+- **Start date:** defaults to now (your account timezone, UTC+0); you can schedule a future start.
+- **End date:** pick a date, or use **Quick Select Cycle** for a fixed duration of **3D / 7D / 14D / 30D / 60D / 90D** from the start date — or **Custom Cycle** to enter your own number of days.
+
+> **Note:** The schedule panel shows two clocks — **Actual publish time** in your account timezone (UTC+0) and **Local time** in your browser's timezone — so cross-timezone advertisers can confirm exactly when delivery starts.
+
+![Step 5 — Quick Select Cycle (3D–90D) or Custom Cycle, with dual-timezone confirmation](/img/onboarding/campaign-step5-schedule.png)
 
 ## 6) Creative
 
@@ -107,24 +128,28 @@ Format-specific fields:
 | Format | Assets | Specs |
 | --- | --- | --- |
 | **Pop** | Destination URL only | No image — Pop renders your landing page directly |
-| **Push** | Icon + Main image + Title + Description | Icon: JPEG/PNG/JPG, 192×192, ≤ 200 KB. Main image: JPEG/PNG/JPG, ≤ 720 KB, sizes 492×328 / 360×240 / 720×480 |
+| **Push** | Icon + Main image + Title + Description | Icon: JPEG/PNG/JPG, 192×192, ≤ 200 KB. Main image: JPEG/PNG/JPG, ≤ 720 KB, sizes 492×328 / 360×240 / 720×480. Title ≤ 30 chars, Description ≤ 40 chars. |
 | **Display** | Main image + Destination URL | JPEG/PNG/JPG/GIF, ≤ 500 KB, sizes 300×250 / 320×50 / 728×90 / 468×60 / 160×600 / 300×100 |
 | **Native** | Main image + Title + Description + Destination URL | JPEG/PNG/JPG, ≤ 500 KB, sizes 300×250 / 300×100 / 320×50 / 728×90 / 468×60 / 160×600 |
 
 > **Tip:** For full asset guidance, offer/angle testing, and examples, see [Creative Requirements & Examples](/en/adwave/creative-requirements).
 
+![Step 6 — a Push creative: Icon + Main image to spec, Title/Desc, and a Destination URL chosen from your registered landing pages](/img/onboarding/campaign-step6-creative-push.png)
+
 ## Launch
 
-There is no separate review step. When every section is complete, click **Launch** (top-right) to activate or schedule the campaign.
+There is no separate **human** review step — but you do get a final self-review. **Launch** (top-right) stays disabled until every step is complete; when you click it, AdWave opens a **Campaign Summary** listing your Product, target event, ad format, geo, bid, budget, schedule, and creatives. The campaign is created only after you click **Confirm**.
+
+![Clicking Launch opens the Campaign Summary — the campaign is created only after you click Confirm](/img/onboarding/campaign-launch-summary.png)
 
 **Pre-launch checklist:**
 
 - ✅ Product selected (and activated)
 - ✅ Campaign name follows the suggested format
-- ✅ Target event set (Register / Deposit)
+- ✅ Target event set (Register / FTD / Bet / LP Click)
 - ✅ Ad format chosen
 - ✅ At least one Target Geo added (≤ 20)
-- ✅ Maximum CPM bid and daily budget set (budget ≈ 20× bid)
+- ✅ Bid strategy, bid, and daily budget set (oCPM ≈ 100× bid, or CPM ≥ 20× bid)
 - ✅ Start (and end/cycle) scheduled
 - ✅ Creatives added to spec, with language and destination URL
 
@@ -145,3 +170,17 @@ There is no separate review step. When every section is complete, click **Launch
 
 - Conversions (Register / Deposit)
 - CPA / ROAS (if connected)
+
+## Troubleshooting
+
+::: details My Product isn't selectable in Step 1
+Only **activated** Products appear as selectable. A Product stays **Inactive** until its Web Tracker receives its first event — install and verify the tracker first (see [Install the Web Tracker](/en/tracking/web-tracker/install)), then return to this flow.
+:::
+
+::: details The Launch button is greyed out
+**Launch** stays disabled until every step — Product, Objective & Ad Format, Target Geo, Bid & Daily Budget, Schedule, and Creative — is complete. The highlighted step number in the left nav shows where you are; finish the incomplete section to enable Launch.
+:::
+
+::: details What happens when I click Launch?
+Clicking **Launch** opens a **Campaign Summary** for you to review. The campaign is created only after you click **Confirm** — use the summary as a final check of targeting, bid, budget, and schedule.
+:::
