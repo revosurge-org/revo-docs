@@ -1,59 +1,35 @@
 ---
 title: Web 追踪器
-description: 追踪层连接 AdWave 与站内成效。归因、点击 ID、UTM、事件。
+description: 面向网页漏斗的第一方 JavaScript SDK —— 为 AdWave 与 DataPulse 捕获会话、点击 ID 与转化事件。
 ---
 
-# 追踪概述
+# Web 追踪器
 
-RevoSurge 追踪是数据收集与归因层，连接：
+**Web 追踪器**是 RevoSurge 的第一方 JavaScript SDK。把它加到你的落地页和广告主网站上，即可在用户
+沿网页漏斗前进时捕获会话并触发转化事件（注册、充值、FTD）。关键事件一旦显示为 **Live**，即成为 AdWave
+广告系列的优化目标，并驱动 DataPulse 报表。
 
-- **AdWave 投放**(曝光 / 点击 / 支出)
-- **您的站内成效**(注册、充值、首次充值等)
-- **DataPulse 报表**(效果和 ROI，在启用时)
+> **不确定这是否是你的方式？** 如果你运营移动 App，或拥有自己的后台，请先比较全部四种方式——参见
+> [**追踪概述**](/cn/tracking/overview)。
 
-本节说明：
-- 为何需要追踪
-- 归因基础(点击 ID / UTM)
-- 事件如何在系统间关联(Web 追踪器 + S2S)
+## 何时使用
+- 纯网页漏斗（落地页 + 网站）—— 没有 App，也没有后台 API
+- 或与 [S2S](/cn/tracking/s2s/overview) / [Partner Postback](/cn/tracking/postback/partner-postback) 搭配使用，以捕获**点击侧**信号
 
-## 为何追踪重要
+## 如何归因
+- 从落地页 URL 提取 **click_id** 和 **UTM** 参数
+- 将 `click_id` 存入第一方 cookie（有效期一年）—— 一位用户落地、跳出、几天后回来，仍能归因
+- 对于 AdWave 投放的流量，这些参数会自动捕获；对于非 AdWave 流量，请确保它们存在于你的目标 URL 中
 
-追踪使 RevoSurge 能够：
-- 将转化归因到广告系列、广告组、素材和来源
-- 向业务成效(如注册 / 充值 / FTD)优化出价
-- 在 AdWave 和 DataPulse 中生成一致的报表
+## 你将设置的内容
+1. DataPulse 中的一个**产品**—— 追踪 + 广告系列的容器（参见 [入门指南](/cn/growth/getting-started#_3-product-setup-high-level)）
+2. 追踪器脚本 + 你的关键事件 —— 参见 **[安装](/cn/tracking/web-tracker/install)**
+3. 验证事件显示为 **Live**，然后把广告系列指向它们
 
-没有追踪，您仍可购买流量，但**无法**可靠地衡量或优化成效。
+> Web 追踪器负责客户端。对于后端确认的 / 财务事件（付款结清、充值完成），请使用
+> [S2S 服务器事件](/cn/tracking/s2s/overview) —— 许多广告主两者并用：Web 追踪器提供归因上下文，
+> S2S 作为转化的真实来源。
 
-## 归因基础(点击 ID 与 UTM)
-
-RevoSurge 使用访问时捕获的标识符关联用户会话和转化。
-
-常见标识符：
-- **click_id**(如 `gclid`、`fbclid` 或平台点击 ID)
-- **UTM 参数**(如 `utm_source`、`utm_campaign` 等)
-
-对于 AdWave 投放的流量，所需参数会自动捕获。
-对于非 AdWave 流量，您可能需要在落地页 URL 中确保追踪参数存在。
-
-## 事件如何关联
-
-RevoSurge 支持两种互补的事件来源：
-
-### 1) Web 追踪器(客户端)
-适用于可在网站添加脚本并在浏览器中触发事件的 Web 产品。
-- 捕获会话和 Web 上下文(URL、来源等)
-- 可从落地页 URL 自动提取 click_id / UTM
-
-### 2) 服务器到服务器 (S2S)
-适用于后端确认的事件(如支付确认、充值结算)，或客户端追踪受限时。
-- 您直接从服务器向 RevoSurge 发送事件
-- 支持金额及(在可用时)加密货币到法币的转换逻辑
-
-> 建议：尽可能使用 Web 追踪器进行会话归因，S2S 作为「真实来源」的财务事件。
-
-## 您将设置的内容
-
-- RevoSurge 中的**产品**(追踪 + 广告系列的容器)
-- **追踪方式**(Web 追踪器和/或 S2S)
-- 一组**标准事件**(如 Register、Deposit、FirstTimeDeposit)
+## 下一步
+- **[安装 Web 追踪器](/cn/tracking/web-tracker/install)** —— 添加脚本、发送事件、上线 Live
+- **[Web 追踪器 SDK 参考](/cn/tracking/web-tracker/reference)** —— 每个方法与字段

@@ -66,3 +66,7 @@ The public sign-up at [adwave.revosurge.com](https://adwave.revosurge.com) rejec
 ::: details My account won't turn "Ready"
 An account becomes **Ready** only when all mandatory company details are complete and the online agreement is accepted. Re-open the company profile and fill in any missing legal name, country of registration, business address, or primary contact.
 :::
+
+## Next steps
+- **[Fund your wallet](/en/growth/funding-wallet)** — add balance before you launch.
+- **[Set up your product & tracking](/en/growth/getting-started#_3-product-setup-high-level)** — create your Product in DataPulse and connect tracking so it turns Active.

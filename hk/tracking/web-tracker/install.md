@@ -11,6 +11,13 @@ description: 安裝 RevoSurge Web 追蹤器——添加腳本、初始化、發�
 
 Web 追蹤器是一個輕量級 JavaScript SDK，將用戶事件從你的網站即時傳輸到 RevoSurge。關鍵事件一旦變為 **Live**，即可作為 AdWave 廣告系列的優化目標，並驅動 Source Intelligence、LTV、ROAS 與流失模型。
 
+::: info 這一步的位置
+本頁是 DataPulse Setup Wizard 的 **Step 2 · Setup Web Tracker**(在
+[datapulse.revosurge.com](https://datapulse.revosurge.com) 開啟,或從 AdWave 點擊 **Open DataPulse**)。
+不確定 Web Tracker 是否適合你?在 [追蹤概述](/hk/tracking/overview) 中比較全部四種方式。
+如果是同事把本頁發給你,那你就是對的人選——這是約 15 分鐘的追蹤器設定。
+:::
+
 ::: tip 摘要（TL;DR）
 1. 將[腳本](#step-2-add-the-tracker-script)添加到 `<head>`。
 2. 用你的追蹤器 ID [初始化](#step-3-initialize-the-tracker) `WebTracker`。
@@ -137,7 +144,7 @@ SDK 為目錄中的每個事件提供了帶類型的輔助方法（register、lo
 
 覆蓋的事件目錄越全，定向與優化就越精準。
 
-## 疑難排查
+## 疑難排查 {#troubleshooting}
 
 ::: details 事件沒有出現
 - 確認腳本標籤位於 `<head>` 中且已載入（在 Network 面板查找 `web-tracker.js`）。

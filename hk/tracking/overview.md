@@ -7,6 +7,10 @@ description: 把轉化數據發給 RevoSurge 的四種方式 —— Web 追蹤�
 
 把轉化數據發給 RevoSurge 的四種方式。60 秒選出適合你的。
 
+::: tip 在哪裡配置這些
+四種方式全部都在 **DataPulse**([datapulse.revosurge.com](https://datapulse.revosurge.com))中你的**產品**裡設定——透過 Setup Wizard 的 **Setup Web Tracker** 與 **S2S Postback** 步驟。剛接觸 RevoSurge?從 [**增長 → 入門指南**](/hk/growth/getting-started) 開始。
+:::
+
 ## 哪種方式適合你？ {#decide}
 
 回答兩個問題，我們推薦最快的落地路徑。

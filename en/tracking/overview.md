@@ -7,6 +7,10 @@ description: Four ways to send conversions to RevoSurge — Web Tracker, AppsFly
 
 Four ways to send conversions to RevoSurge. Pick yours in 60 seconds.
 
+::: tip Where you configure these
+All four methods are set up inside your **Product** in **DataPulse** ([datapulse.revosurge.com](https://datapulse.revosurge.com)) — via the Setup Wizard's **Setup Web Tracker** and **S2S Postback** steps. New to RevoSurge? Start from [**Growth → Getting started**](/en/growth/getting-started).
+:::
+
 ## Which method is right for you? {#decide}
 
 Answer two quick questions and we'll recommend the fastest path.

@@ -7,6 +7,10 @@ description: 把转化数据发给 RevoSurge 的四种方式 —— Web 追踪�
 
 把转化数据发给 RevoSurge 的四种方式。60 秒选出适合你的。
 
+::: tip 在哪里配置这些
+四种方式都在 **DataPulse**([datapulse.revosurge.com](https://datapulse.revosurge.com))里你的**产品**中设置——通过设置向导 (Setup Wizard) 的 **Setup Web Tracker** 与 **S2S Postback** 步骤完成。初次使用 RevoSurge？请从 [**增长 → 入门指南**](/cn/growth/getting-started) 开始。
+:::
+
 ## 哪种方式适合你？ {#decide}
 
 回答两个问题，我们推荐最快的落地路径。

@@ -11,6 +11,13 @@ description: 安装 RevoSurge Web 追踪器——添加脚本、初始化、发�
 
 Web 追踪器是一个轻量级 JavaScript SDK，将用户事件从你的网站实时传输到 RevoSurge。关键事件一旦变为 **Live**，即可作为 AdWave 广告系列的优化目标，并驱动 Source Intelligence、LTV、ROAS 与流失模型。
 
+::: info 这一步在整体中的位置
+本页是 DataPulse 设置向导 (Setup Wizard) 的 **Step 2 · Setup Web Tracker**(在
+[datapulse.revosurge.com](https://datapulse.revosurge.com) 打开，或从 AdWave 点击 **Open DataPulse**)。
+不确定 Web 追踪器是否适合你？在 [追踪概述](/cn/tracking/overview) 中比较四种方式。
+如果是同事把本页发给你——那你就是对的人：这是约 15 分钟的追踪器安装工作。
+:::
+
 ::: tip 摘要（TL;DR）
 1. 将[脚本](#step-2-add-the-tracker-script)添加到 `<head>`。
 2. 用你的追踪器 ID [初始化](#step-3-initialize-the-tracker) `WebTracker`。
@@ -137,7 +144,7 @@ SDK 为目录中的每个事件提供了带类型的辅助方法（register、lo
 
 覆盖的事件目录越全，定向与优化就越精准。
 
-## 疑难排查
+## 疑难排查 {#troubleshooting}
 
 ::: details 事件没有出现
 - 确认脚本标签位于 `<head>` 中且已加载（在 Network 面板查找 `web-tracker.js`）。

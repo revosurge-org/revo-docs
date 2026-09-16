@@ -1,59 +1,38 @@
 ---
 title: Web Tracker
-description: Tracking layer connecting AdWave to on-site outcomes. Attribution, click IDs, UTM, events.
+description: First-party JavaScript SDK for web funnels — captures sessions, click IDs, and conversion events for AdWave and DataPulse.
 ---
 
-# Tracking overview
+# Web Tracker
 
-RevoSurge Tracking is the data collection and attribution layer that connects:
+The **Web Tracker** is RevoSurge's first-party JavaScript SDK. Add it to your landing page and
+advertiser site to capture sessions and fire conversion events (register, deposit, FTD) as users
+move through your web funnel. Once your key events read **Live**, they become optimization targets
+for AdWave campaigns and power DataPulse reporting.
 
-- **AdWave delivery** (impressions / clicks / spend)
-- **Your on-site outcomes** (registrations, deposits, first-time deposits, etc.)
-- **DataPulse reporting** (performance and ROI, when enabled)
+> **Not sure this is your method?** If you run a mobile App or have your own back-office, compare
+> all four options first — see [**Tracking Overview**](/en/tracking/overview).
 
-This section explains:
-- Why tracking is required
-- How attribution works at a high level (click IDs / UTM)
-- How events are linked across systems (Web Tracker + S2S)
+## When to use it
+- Web-only funnels (landing page + site) — no App, no back-office API
+- Or alongside [S2S](/en/tracking/s2s/overview) / [Partner Postback](/en/tracking/postback/partner-postback) to capture the **click-side** signal
 
-## Why tracking matters
+## How it attributes
+- Extracts **click_id** and **UTM** parameters from the landing URL
+- Persists `click_id` in a first-party cookie (1-year expiry) — a user who lands, bounces, and
+  returns days later still attributes
+- For AdWave-delivered traffic these parameters are captured automatically; for non-AdWave traffic,
+  make sure they're present in your destination URLs
 
-Tracking enables RevoSurge to:
-- Attribute conversions back to campaigns, ad groups, creatives, and sources
-- Optimize bidding toward business outcomes (e.g., Register / Deposit / FTD)
-- Produce consistent reporting across AdWave and DataPulse
+## What you set up
+1. A **Product** in DataPulse — the container for tracking + campaigns (see [Getting started](/en/growth/getting-started#_3-product-setup-high-level))
+2. The tracker script + your key events — see **[Install](/en/tracking/web-tracker/install)**
+3. Verify events read **Live**, then point campaigns at them
 
-Without tracking, you can still buy traffic, but you **cannot** reliably measure or optimize toward outcomes.
+> The Web Tracker handles the client side. For backend-confirmed / financial events (payments
+> settled, deposits finalized), use [S2S Server Events](/en/tracking/s2s/overview) — many advertisers
+> use both: Web Tracker for attribution context, S2S as the source of truth for conversions.
 
-## Attribution basics (click IDs & UTM)
-
-RevoSurge associates user sessions and conversions using identifiers captured at the time of the visit.
-
-Common identifiers:
-- **click_id** (e.g., `gclid`, `fbclid`, or a platform click id)
-- **UTM parameters** (e.g., `utm_source`, `utm_campaign`, etc.)
-
-For AdWave-delivered traffic, required parameters are captured automatically.
-For non-AdWave traffic, you may need to ensure tracking parameters are present in destination URLs.
-
-## How events are linked
-
-RevoSurge supports two complementary event sources:
-
-### 1) Web Tracker (client-side)
-Best for web products where you can add a script to the website and fire events in the browser.
-- Captures sessions and web context (URL, referrer, etc.)
-- Can automatically extract click_id / UTM from landing page URLs
-
-### 2) Server-to-Server (S2S)
-Best for backend-confirmed events (e.g., payment confirmed, deposit settled), or when client-side tracking is limited.
-- You send events directly from your server to RevoSurge
-- Supports financial values and (when available) crypto-to-fiat conversion logic
-
-> Recommendation: Use Web Tracker for session attribution + S2S for "source of truth" financial events when possible.
-
-## What you will set up
-
-- A **Product** in RevoSurge (the container for tracking + campaigns)
-- A **Tracking method** (Web Tracker and/or S2S)
-- A set of **standard events** (e.g., Register, Deposit, FirstTimeDeposit)
+## Next
+- **[Install the Web Tracker](/en/tracking/web-tracker/install)** — add the script, send events, go Live
+- **[Web Tracker SDK Reference](/en/tracking/web-tracker/reference)** — every method and field

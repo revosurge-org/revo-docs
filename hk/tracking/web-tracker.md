@@ -1,59 +1,34 @@
 ---
-title: Web 追蹤器
-description: 追蹤層連接 AdWave 與站內成效。歸因、點擊 ID、UTM、事件。
+title: Web Tracker
+description: 面向網頁漏斗的第一方 JavaScript SDK——為 AdWave 與 DataPulse 擷取工作階段、click ID 與轉化事件。
 ---
 
-# 追蹤概述
+# Web Tracker
 
-RevoSurge 追蹤是數據收集與歸因層，連接：
+**Web Tracker** 是 RevoSurge 的第一方 JavaScript SDK。把它加到你的落地頁與廣告主網站,即可在用戶穿越你的網頁漏斗時擷取工作階段並觸發轉化事件(register、deposit、FTD)。關鍵事件一旦顯示為 **Live**,即成為 AdWave 廣告系列的優化目標,並驅動 DataPulse 報表。
 
-- **AdWave 投放**(曝光 / 點擊 / 支出)
-- **您的站內成效**(註冊、充值、首次充值等)
-- **DataPulse 報表**(效果及 ROI，在啟用時)
+> **不確定這是否適合你的方式?** 如果你經營流動 App 或擁有自己的後台,請先比較全部四種選項——參見 [**追蹤概述**](/hk/tracking/overview)。
 
-本節說明：
-- 為何需要追蹤
-- 歸因基礎(點擊 ID / UTM)
-- 事件如何在系統間連結(Web 追蹤器 + S2S)
+## 何時使用
 
-## 為何追蹤重要
+- 純網頁漏斗(落地頁 + 網站)——沒有 App、沒有後台 API
+- 或與 [S2S](/hk/tracking/s2s/overview) / [Partner Postback](/hk/tracking/postback/partner-postback) 並用,以擷取**點擊側**信號
 
-追蹤使 RevoSurge 能夠：
-- 將轉化歸因到廣告系列、廣告組、素材及來源
-- 向業務成效(如註冊 / 充值 / FTD)優化出價
-- 在 AdWave 及 DataPulse 中產生一致的報表
+## 如何歸因
 
-沒有追蹤，您仍可購買流量，但**無法**可靠地衡量或優化成效。
+- 從落地頁 URL 擷取 **click_id** 與 **UTM** 參數
+- 把 `click_id` 存在第一方 cookie(一年有效期)中——一個落地、跳出、數天後才回來的用戶,仍能歸因得上
+- 對於 AdWave 投放的流量,這些參數會自動擷取;對於非 AdWave 流量,請確保它們存在於你的目標 URL 中
 
-## 歸因基礎(點擊 ID 與 UTM)
+## 你需要設定甚麼
 
-RevoSurge 使用訪問時擷取的識別碼連結用戶工作階段及轉化。
+1. DataPulse 中的一個**產品**——追蹤 + 廣告系列的容器(參見 [入門指南](/hk/growth/getting-started#_3-product-setup-high-level))
+2. 追蹤器腳本 + 你的關鍵事件——參見 **[安裝](/hk/tracking/web-tracker/install)**
+3. 驗證事件顯示為 **Live**,然後把廣告系列指向它們
 
-常見識別碼：
-- **click_id**(如 `gclid`、`fbclid` 或平台點擊 ID)
-- **UTM 參數**(如 `utm_source`、`utm_campaign` 等)
+> Web Tracker 負責客戶端。對於後端確認的 / 財務類事件(付款結算、充值完成),請使用 [S2S 伺服器事件](/hk/tracking/s2s/overview)——許多廣告主兩者並用:Web Tracker 提供歸因上下文,S2S 作為轉化的真實來源。
 
-對於 AdWave 投放的流量，所需參數會自動擷取。
-對於非 AdWave 流量，您可能需要在落地頁 URL 中確保追蹤參數存在。
+## 下一步
 
-## 事件如何連結
-
-RevoSurge 支援兩種互補的事件來源：
-
-### 1) Web 追蹤器(客戶端)
-適用於可在網站加入腳本並在瀏覽器中觸發事件的 Web 產品。
-- 擷取工作階段及 Web 上下文(URL、來源等)
-- 可從落地頁 URL 自動擷取 click_id / UTM
-
-### 2) 伺服器到伺服器 (S2S)
-適用於後端確認的事件(如付款確認、充值結算)，或客戶端追蹤受限時。
-- 您直接從伺服器向 RevoSurge 發送事件
-- 支援金額及(在可用時)加密貨幣到法幣的轉換邏輯
-
-> 建議：盡可能使用 Web 追蹤器進行工作階段歸因，S2S 作為「真實來源」的財務事件。
-
-## 您將設定的內容
-
-- RevoSurge 中的**產品**(追蹤 + 廣告系列的容器)
-- **追蹤方式**(Web 追蹤器及/或 S2S)
-- 一組**標準事件**(如 Register、Deposit、FirstTimeDeposit)
+- **[安裝 Web Tracker](/hk/tracking/web-tracker/install)**——加入腳本、發送事件、變為 Live
+- **[Web Tracker SDK 參考](/hk/tracking/web-tracker/reference)**——每個方法與欄位

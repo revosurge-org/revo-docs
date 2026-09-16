@@ -40,3 +40,7 @@ Deposits post to the shared **account-level wallet**. Check **Billing → Transa
 ::: details Campaigns paused for insufficient funds
 Delivery pauses when the wallet can't cover the day's spend. Top up the wallet and keep a buffer above your combined daily budgets so pilots don't stall mid-flight.
 :::
+
+## Next steps
+- **[Set up your product & tracking](/en/growth/getting-started#_3-product-setup-high-level)** — create your Product in DataPulse and turn it Active.
+- **[Create your first campaign](/en/adwave/campaign-setup)** — once your Product is Active.

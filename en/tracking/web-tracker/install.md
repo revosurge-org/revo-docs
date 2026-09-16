@@ -13,6 +13,13 @@ The Web Tracker is a lightweight JavaScript SDK that streams user events from yo
 website to RevoSurge. Once your key events are **Live**, they become optimization
 targets for AdWave campaigns and power Source Intelligence, LTV, ROAS, and churn models.
 
+::: info Where this fits
+This page is **Step 2 · Setup Web Tracker** of the DataPulse Setup Wizard (open it at
+[datapulse.revosurge.com](https://datapulse.revosurge.com), or **Open DataPulse** from AdWave).
+Not sure the Web Tracker is your method? Compare all four in [Tracking Overview](/en/tracking/overview).
+If a colleague sent you this page, you're the right person — this is the ~15-minute tracker setup.
+:::
+
 ::: tip TL;DR
 1. Add the [script](#step-2-add-the-tracker-script) to `<head>`.
 2. [Initialize](#step-3-initialize-the-tracker) `WebTracker` with your Tracker ID.
