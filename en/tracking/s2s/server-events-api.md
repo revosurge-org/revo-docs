@@ -209,7 +209,7 @@ Every dry-run echo carries a `misspelledFields` list. It names the keys you sent
 
 `sent` is the key exactly as you sent it; `expected` is the field we would have matched it to. Change your payload to use `expected`.
 
-**An empty array is the answer you want.** A clean single-event dry run returns `"misspelledFields": []`. The key is always there, so `[]` means *we ran the check and found nothing* — not *this endpoint has no such check*.
+**An empty array is the answer you want.** A clean single-event dry run returns `"misspelledFields": []`. The key is always there, so `[]` means *we ran the check and found nothing* — not *this endpoint has no such check*. (Batch reports this differently — see below.)
 
 ##### We do not reject unknown fields
 
@@ -226,6 +226,38 @@ So this check is deliberately narrow: it reports only keys that look like **ours
 
 > [!IMPORTANT]
 > **Your own custom properties not showing up in this list is the correct outcome, not a sign that they were ignored.** They are recorded exactly as you sent them. Do not delete a custom property you rely on because a dry run stayed quiet about it.
+
+#### Batch dry run
+
+`POST /v2/s2s/batch?dryrun=1` answers synchronously with a per-item result:
+
+``` JSON
+{
+  "requestId": "s2s.batch-...",
+  "mode": "dryrun",
+  "total": 3,
+  "successCount": 2,
+  "failureCount": 1,
+  "successEvents": ["... the enriched events ..."],
+  "errors": [
+    {
+      "index": 2,
+      "violations": [
+        { "field": "eventName", "rule": "required", "event": "deposit" },
+        { "field": "clientUserId", "rule": "required", "event": "deposit" }
+      ]
+    }
+  ],
+  "misspelledFields": { "1": [{ "sent": "clickId", "expected": "click_id" }] }
+}
+```
+
+  * `errors[].index` is the position of the item in the array you sent, counting from `0`, and each `violations[]` entry points at the field at fault and the rule it broke — together they tell you *which item, which field, which rule*.
+  * **`misspelledFields` is a top-level object keyed by that same index.** It is not attached to the individual events inside `successEvents`. Above, item `1` — the second one you sent — spelled `click_id` as `clickId`.
+  * **When nothing is misspelled the key is absent entirely** — not an empty object, not an empty array. This differs from a single event, which always returns `misspelledFields: []`, so do not use the presence of the key as your signal.
+
+> [!NOTE]
+> `violations[].field` tells you *which* field is at fault, but it does not always spell that field the way your request does. Fix it under its request-side name — request fields are `snake_case` (`event_name`, `client_user_id`).
 
 ## Use Case Scenarios on Request Body Schema
 

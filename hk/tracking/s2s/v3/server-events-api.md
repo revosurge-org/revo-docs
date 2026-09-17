@@ -293,7 +293,7 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 
 `sent` 是你原樣傳來的鍵名，`expected` 是我方本來會匹配到的欄位。請把你的載荷改成 `expected` 的寫法。
 
-**空陣列就是你想要的答案。** 單一請求乾淨通過時回傳的是 `"misspelledFields": []`。這個鍵恆定存在，所以 `[]` 的意思是*我們檢查過了、沒發現問題*，而不是*這個端點還沒有這項檢查*。
+**空陣列就是你想要的答案。** 單一請求乾淨通過時回傳的是 `"misspelledFields": []`。這個鍵恆定存在，所以 `[]` 的意思是*我們檢查過了、沒發現問題*，而不是*這個端點還沒有這項檢查*。（批次的呈現方式不同，見下文。）
 
 #### v3 檢查哪些位置
 
@@ -319,6 +319,35 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 
 > [!IMPORTANT]
 > **你自己的自訂屬性沒有出現在這個清單裏，正是應有的結果，並不代表它被忽略了。** 不要因為 dry run 沒提到某個自訂欄位，就把你本來要用的這個欄位刪掉。
+
+### 批次 dry run
+
+`POST /v3/s2s/batch?dryrun=1` 會同步回傳逐條結果，而不是平時的 `202`：
+
+```json
+{
+  "requestId": "s2s.batch-...",
+  "mode": "dryrun",
+  "total": 3,
+  "successCount": 2,
+  "failureCount": 1,
+  "successEvents": ["... 豐富後的事件 ..."],
+  "errors": [
+    {
+      "index": 2,
+      "violations": [
+        { "field": "context.ip_address", "rule": "required", "event": "deposit" },
+        { "field": "context.amount", "rule": "required", "event": "deposit" }
+      ]
+    }
+  ],
+  "misspelledFields": { "1": [{ "sent": "clickId", "expected": "click_id" }] }
+}
+```
+
+- `errors[].index` 是該條目在你傳送的陣列中的索引，由 `0` 數起；每個 `violations[]` 條目給出欄位路徑與違反的規則 — 兩者合起來告訴你*第幾條、哪個欄位、違反哪條規則*。
+- **`misspelledFields` 是一個頂層物件，按同一套索引編排。** 它不掛在 `successEvents` 裏的各個事件上。上例是：第 `1` 條（也就是你傳的第二條）在 `identity` 裏把 `click_id` 拼成了 `clickId`。
+- **全部拼對時這個鍵整個不出現** — 不是空物件，也不是空陣列。這一點與單條不同：單條恆定回傳 `misspelledFields: []`。所以不要拿「鍵是否存在」當判斷依據。
 
 ## 限流
 

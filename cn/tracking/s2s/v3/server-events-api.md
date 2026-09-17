@@ -293,7 +293,7 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 
 `sent` 是你原样发来的键名，`expected` 是我方本来会匹配到的字段。请把你的载荷改成 `expected` 的写法。
 
-**空数组就是你想要的答案。** 单条请求干净通过时返回的是 `"misspelledFields": []`。这个键恒定存在，所以 `[]` 的含义是*我们检查过了、没发现问题*，而不是*这个端点还没有这项检查*。
+**空数组就是你想要的答案。** 单条请求干净通过时返回的是 `"misspelledFields": []`。这个键恒定存在，所以 `[]` 的含义是*我们检查过了、没发现问题*，而不是*这个端点还没有这项检查*。（批量的呈现方式不同，见下文。）
 
 #### v3 检查哪些位置
 
@@ -319,6 +319,35 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 
 > [!IMPORTANT]
 > **你自己的自定义属性没有出现在这个列表里，正是应有的结果，并不代表它被忽略了。** 不要因为 dry run 没提到某个自定义字段，就把你本来要用的这个字段删掉。
+
+### 批量 dry run
+
+`POST /v3/s2s/batch?dryrun=1` 会同步返回逐条结果，而不是平时的 `202`：
+
+```json
+{
+  "requestId": "s2s.batch-...",
+  "mode": "dryrun",
+  "total": 3,
+  "successCount": 2,
+  "failureCount": 1,
+  "successEvents": ["... 富化后的事件 ..."],
+  "errors": [
+    {
+      "index": 2,
+      "violations": [
+        { "field": "context.ip_address", "rule": "required", "event": "deposit" },
+        { "field": "context.amount", "rule": "required", "event": "deposit" }
+      ]
+    }
+  ],
+  "misspelledFields": { "1": [{ "sent": "clickId", "expected": "click_id" }] }
+}
+```
+
+- `errors[].index` 是该条目在你发送的数组中的下标，从 `0` 数起；每个 `violations[]` 条目给出字段路径与违反的规则——两者合起来告诉你*第几条、哪个字段、违反哪条规则*。
+- **`misspelledFields` 是一个顶层对象，按同一套下标索引。** 它不挂在 `successEvents` 里的各个事件上。上例是：第 `1` 条（也就是你发的第二条）在 `identity` 里把 `click_id` 拼成了 `clickId`。
+- **全部拼对时这个键整个不出现**——不是空对象，也不是空数组。这一点与单条不同：单条恒定返回 `misspelledFields: []`。所以不要拿"键是否存在"当判断依据。
 
 ## 限流
 
