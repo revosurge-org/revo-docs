@@ -89,7 +89,7 @@ v3 将一笔已结算的投注建模为一个**单独的 `bet` 事件**，其中
 3. 将载荷重构为信封（`event` / `timestamp` / `identity` / `context`）。
 4. 将 `timestamp` 从秒转换为**毫秒**。
 5. 将 PII 移到 `context.privacy.*`，作为 **SHA-256** 哈希。
-6. 使用[测试模式](/cn/tracking/s2s/v3/server-events-api)（`X-Test-Mode: true`）进行校验——修复任何 `violations[]`。
+6. 使用 [dry run](/cn/tracking/s2s/v3/server-events-api#dry-run)（`?dryrun=1`）进行校验——修复任何 `violations[]`。
 7. 一次切换一种事件类型；在 v3 验证通过之前保持 v2 运行。
 
 ## 参考

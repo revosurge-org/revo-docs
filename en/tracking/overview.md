@@ -172,11 +172,8 @@ Yes — we convert using our published exchange rates. There's no need to conver
 What differs is what happens if you don't. The Server Events API (v3) **rejects** a value that looks like seconds. Partner Postback corrects it and keeps the event, but treats the correction as a deviation from the contract — it raises an alert on our side and we will contact you. Neither is a second supported format, so stabilize on milliseconds.
 :::
 
-::: details Do you support test mode?
-Yes, two ways:
-
-- Test keys route to a visible event stream, so you can self-validate without touching production traffic.
-- `dryrun=1` on the S2S and postback endpoints parses, validates, and echoes back exactly what we would record — without storing.
+::: details Can I validate without creating real data?
+Yes. Add `?dryrun=1` to the [S2S](/en/tracking/s2s/v3/server-events-api#dry-run) or [Partner Postback](/en/tracking/postback/partner-postback#dry-run) endpoint. We parse, validate and enrich the request exactly as we would in production, echo back exactly what we would record — and store nothing.
 :::
 
 ::: details How do I know my integration is healthy?

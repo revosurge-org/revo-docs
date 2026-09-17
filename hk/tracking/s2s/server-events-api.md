@@ -105,6 +105,160 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
   * 超出限制將回傳 429 回應。 
   * 重試策略：建議在遇到 429 或 500 錯誤時實施指數退避策略。   
 
+## Dry run
+
+在任一接入端點上加 `?dryrun=1`，即可端到端檢查一條請求而不產生任何數據。我們會完全按生產路徑解析、鑑權、驗證並豐富它，把將要寫入的那條記錄原樣回顯，然後甚麼都不存。
+
+| 端點 | Dry run URL |
+|-------- |----------|
+| 單條 | `POST /v2/s2s/event?dryrun=1` |
+| 批次 | `POST /v2/s2s/batch?dryrun=1` |
+
+裸寫 `dryrun` 與 `dryrun=true` 意思相同。`dryrun=0`、`dryrun=false`、`dryrun=no` 表示不啟用。
+
+#### 如何把 dry run 與真實寫入分開
+
+| 調用 | 狀態碼 | 回應內容 | 回應標頭 |
+|-------------|----------|-------------|-------------|
+| 真實寫入 | 200 OK | `{ "status": "success" }` | — |
+| Dry run | 200 OK | 回顯的那條記錄 | `X-Ingest-Mode: dryrun` |
+
+> [!WARNING]
+> 兩者都回 `200`，所以單看狀態碼分不出你拿到的是哪一種 — 請看回應內容與 `X-Ingest-Mode: dryrun` 回應標頭。**dry run 通過不等於寫入成功。** 帶 `dryrun=1` 傳出的內容永遠不會被存下來。
+
+dry run **照常鑑權**，也**照常計入限流** — 一次批次請求算一次請求。它不是壓測入口。
+
+#### 回顯的那條記錄
+
+```bash
+curl -X POST "https://<<our-url>>/v2/s2s/event?dryrun=1" \
+    -H "Content-Type: application/json" \
+    -H "X-API-KEY: dp_test_key_123" \
+    -d '{
+        "client_user_id": "u-ua-1",
+        "click_id": "rs-ua-1",
+        "event_name": "register",
+        "timestamp": 1702963200,
+        "ip_address": "203.0.113.1",
+        "user_agent": "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36"
+        }'
+```
+
+回應就是我們本來會存下的那條記錄：
+
+``` JSON
+{
+  "requestId": "s2s.event-...",
+  "apiKey": "dp_test_key_...",
+  "clickId": "rs-ua-1",
+  "country": "USA",
+  "userAgentInfo": {
+    "device_class": "Mobile",
+    "device_name": "Samsung SM-G991B",
+    "operating_system_name": "Android",
+    "operating_system_version": "13",
+    "agent_name": "Android",
+    "agent_class": "Browser"
+  },
+  "eventData": {
+    "client_user_id": "u-ua-1",
+    "click_id": "rs-ua-1",
+    "event_name": "register",
+    "user_agent": "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36",
+    "recv_timestamp": 1789541015965,
+    "request_id": "..."
+  },
+  "misspelledFields": []
+}
+```
+
+#### 你傳的 vs. 我們記的
+
+你的載荷與回顯之間的差異，大部分是我方補上的豐富項：
+
+| 你傳的 | 我們記的 |
+|-------------|-------------|
+| `ip_address` | 由該 IP 解析出的國家與城市 |
+| `user_agent` | `userAgentInfo` — 裝置類別與型號、作業系統名稱與版本、用戶端名稱與類別 |
+| `amount` + `currency` | 按我方公布的匯率換算後的金額 |
+| `game_type` | 正規化後的遊戲類型 |
+| `transaction_id`（你未提供時） | 由我方產生的 `transaction_id` |
+| — | `recv_timestamp` — **我方**接收到該事件的時間，單位毫秒 |
+| — | `request_id` / `requestId` — 本次調用的追蹤 id。就這次調用向我們查詢時請帶上它 |
+
+接下來兩節是這張表的反面 — **哪些東西我們沒有按你以為的樣子記下來**。
+
+#### 兩種拼法
+
+> [!WARNING]
+> **絕對不要把回顯裏的欄位名抄回你的請求。** 你傳送的欄位是 `snake_case`（`client_user_id`、`click_id`、`ip_address`、`event_name`、`user_agent`）；**回顯的頂層欄位是 `camelCase`**（`requestId`、`clickId`、`userAgentInfo`），而嵌在其中的 `eventData` 又回到 `snake_case`。
+
+拼錯一個鍵的代價取決於該欄位是否必填 — 而且損害程度與響度剛好相反：
+
+  * **必填**欄位拼錯回傳 `400`。很響亮，幾分鐘就修好了。
+  * **可選**欄位拼錯回傳 `200`，事件照常落庫，而那個欄位靜默消失。把 `user_agent` 寫成 `userAgent`，`userAgentInfo` 整個為空 — 裝置與作業系統維度全失，而且哪裏都不會報錯。
+  * **`click_id` 屬於後一類。** 拼成 `clickId` 會得到 `200`、事件落庫、看來一切正常 — 只是這條轉換永遠歸因不上。
+
+#### misspelledFields
+
+每一份 dry run 回顯裏都帶有一個 `misspelledFields` 清單。它列出你傳來的、明顯是我方欄位但拼法不同的鍵 — 正是它令上面那種靜默失敗在上線前變得看得見：
+
+``` JSON
+"misspelledFields": [{ "sent": "userAgent", "expected": "user_agent" }]
+```
+
+`sent` 是你原樣傳來的鍵名，`expected` 是我方本來會匹配到的欄位。請把你的載荷改成 `expected` 的寫法。
+
+**空陣列就是你想要的答案。** 單條請求乾淨通過時回傳的是 `"misspelledFields": []`。這個鍵恆定存在，所以 `[]` 的意思是*我們檢查過了、沒發現問題*，而不是*這個端點還沒有這項檢查*。（批次的呈現方式不同，見下文。）
+
+##### 我們不拒絕未知欄位
+
+**自訂屬性是我方支援的能力，不是錯誤。** 我方不認識的鍵會被原樣收進事件屬性裏 — 1.1 節裏 `<<any_prop>>` 那一行正是為此而設。
+
+所以這項檢查刻意做得很窄：它只報那些看來**是我方欄位、只是拼法不同**的鍵。比對前會先把名字統一成小寫並去掉分隔符，只有這樣處理之後與我方已知欄位撞名的鍵才會被報出來。
+
+| 你傳的 | 是否報告 | 原因 |
+|-------------|-------------|-------------|
+| `userAgent`、`User-Agent` | 報告 | 與 `user_agent` 撞名 |
+| `CLIENTUSERID` | 報告 | 與 `client_user_id` 撞名 |
+| `user_agent` | 不報告 | 拼寫正確 |
+| `bonus_round_id`、`vip_tier`、`table_id` | 不報告 | 正當的自訂屬性 — 不與我方任何欄位撞名 |
+
+> [!IMPORTANT]
+> **你自己的自訂屬性沒有出現在這個清單裏，正是應有的結果，並不代表它被忽略了。** 它們會被原樣記錄下來。不要因為 dry run 沒提到某個自訂屬性，就把你本來要用的這個欄位刪掉。
+
+#### 批次 dry run
+
+`POST /v2/s2s/batch?dryrun=1` 會同步回傳逐條結果：
+
+``` JSON
+{
+  "requestId": "s2s.batch-...",
+  "mode": "dryrun",
+  "total": 3,
+  "successCount": 2,
+  "failureCount": 1,
+  "successEvents": ["... 豐富後的事件 ..."],
+  "errors": [
+    {
+      "index": 2,
+      "violations": [
+        { "field": "eventName", "rule": "required", "event": "deposit" },
+        { "field": "clientUserId", "rule": "required", "event": "deposit" }
+      ]
+    }
+  ],
+  "misspelledFields": { "1": [{ "sent": "clickId", "expected": "click_id" }] }
+}
+```
+
+  * `errors[].index` 是該條目在你傳送的陣列中的索引，由 `0` 數起；每個 `violations[]` 條目指出是哪個欄位出了問題、違反了哪條規則 — 兩者合起來告訴你*第幾條、哪個欄位、違反哪條規則*。
+  * **`misspelledFields` 是一個頂層物件，按同一套索引編排。** 它不掛在 `successEvents` 裏的各個事件上。上例是：第 `1` 條（也就是你傳的第二條）把 `click_id` 拼成了 `clickId`。
+  * **全部拼對時這個鍵整個不出現** — 不是空物件，也不是空陣列。這一點與單條不同：單條恆定回傳 `misspelledFields: []`。所以不要拿「鍵是否存在」當判斷依據。
+
+> [!NOTE]
+> `violations[].field` 告訴你的是*哪個*欄位出了問題，但它的寫法不一定與你請求裏的寫法一致。請按請求側的名字去修 — 請求欄位是 `snake_case`（`event_name`、`client_user_id`）。
+
 ## 請求體 Schema 使用場景
 
 #### 用戶註冊

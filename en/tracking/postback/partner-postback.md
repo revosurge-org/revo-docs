@@ -232,7 +232,79 @@ A URL pasted into an email or a ticket gets fetched by link scanners with the ma
 - A literal macro in `click_id` or `user_id` **drops the postback** (`200 ignored`).
 - A literal macro in any other parameter costs only that field; the rest of the event is recorded, and the literal value is kept verbatim for diagnosis.
 
+## Dry run
+
+Append `dryrun=1` to any of the four postback URLs to see the decision we would make, without recording anything. The request is authenticated, parsed, validated and enriched exactly as in production; we then return the verdict instead of storing it.
+
+```bash
+curl -sS -G "https://mmp.revosurge.com/v1/pb/{partner}/first-deposit" \
+  --data-urlencode "k=$REVOSURGE_POSTBACK_KEY" \
+  --data-urlencode "click_id=8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de" \
+  --data-urlencode "event=sale" \
+  --data-urlencode "amount=12.34" \
+  --data-urlencode "ts=1789540000" \
+  --data-urlencode "dryrun=1"
+```
+
+`dryrun` on its own and `dryrun=true` mean the same thing; `dryrun=0`, `dryrun=false` and `dryrun=no` turn it off. A dry run always answers `200` and carries the response header `X-Ingest-Mode: dryrun`. It is authenticated as usual — a bad key is still `403` — and counts against your rate limit as usual.
+
+> [!WARNING]
+> **Do not leave `dryrun` in the URL you register.** A registered dry-run URL answers `200` for every conversion and records none of them.
+
+### Why this exists
+
+The postback contract [never returns `4xx` for a payload problem](#responses). That is what keeps a malformed postback from getting your integration switched off — but it also means a dropped postback and a stored one look identical from the outside: all three ways of being dropped answer the same `200 {"status":"ignored"}`. A dry run returns the decision explicitly instead.
+
+### The verdict
+
+```json
+{
+  "mode": "dryrun",
+  "partner": "1win",
+  "route": "first_deposit",
+  "decision": "accepted",
+  "eventName": "deposit",
+  "eventDeclared": "sale",
+  "reportedFirst": 1,
+  "dedupKey": "h:14e576df...",
+  "dedupKeySource": "raw_hash",
+  "clickId": "8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de",
+  "userId": "8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de",
+  "userIdBackfilled": true,
+  "unreplacedMacros": [],
+  "eventUnixTs": 1789540000,
+  "eventTimeRaw": "1789540000",
+  "coercedTimeFields": ["ts", "first_deposit_ts"],
+  "amount": 12.34,
+  "currency": "USD",
+  "unexpectedCurrency": "INR",
+  "attributionShare": 0.5,
+  "isNewCustomer": 1,
+  "recorded": { "...": "every parameter we received, verbatim" }
+}
+```
+
+| Field | What it tells you |
+|-------|-------------------|
+| `decision` | `accepted`, or `ignored` when the postback would be dropped |
+| `reason` | Present when `decision` is `ignored`: `unreplaced_macro` (a macro reached us as a literal — usually a link scanner fetched the URL), `empty_request`, or `no_identity` (neither `click_id` nor `user_id`). In production all three answer the same `200 {"status":"ignored"}`; only a dry run separates them |
+| `eventName` | The event type we would record. It is decided by the **endpoint path** |
+| `eventDeclared` | The raw value of your `{event}` macro, kept for cross-checking. When the two disagree, the path wins |
+| `reportedFirst` | The first-deposit flag implied by the path — see [Endpoints](#endpoints) |
+| `dedupKey` / `dedupKeySource` | The key this postback reduces to, and where it came from: `event_id`, then `transaction_id` (your `txid`), then `raw_hash` as the fallback. **`raw_hash` means no `event_id` arrived** — that is worth knowing before you go live, not after a retry has been counted twice. See [Deduplication](#deduplication) |
+| `clickId` / `userId` | The identities we resolved |
+| `userIdBackfilled` | `true` means no `user_id` arrived and we filled it in from `click_id` |
+| `unreplacedMacros` | The parameters that arrived as literal macros. See [Unsubstituted macros](#unsubstituted-macros) |
+| `eventUnixTs` / `eventTimeRaw` | The event time we resolved, and the raw value it came from |
+| `coercedTimeFields` | Time fields you sent in seconds that we converted for you. **An empty list is the goal** — anything here is a deviation from the contract that raises an alert on our side |
+| `amount` / `currency` | The value we would book, in the settlement currency |
+| `unexpectedCurrency` | Present when you declared a currency other than `USD`. We book in `USD` and do **not** convert |
+| `attributionShare` / `isNewCustomer` | Your claim fields as we read them. See [What your claim fields mean](#what-your-claim-fields-mean) |
+| `recorded` | Every parameter we received, verbatim |
+
 ## Verifying an integration
+
+The quickest check on a real payload is a [dry run](#dry-run) — it returns the decision, the dedup key and the identities we resolved, without recording anything.
 
 Before switching real traffic on, confirm all four behaviours:
 

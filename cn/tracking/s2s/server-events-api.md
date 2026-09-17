@@ -105,6 +105,160 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
   * 超出限制将返回 429 响应。 
   * 重试策略：建议在遇到 429 或 500 错误时实施指数退避策略。   
 
+## Dry run
+
+在任一接入端点上加 `?dryrun=1`，即可端到端地检查一条请求而不产生任何数据。我们会完全按生产路径解析、鉴权、校验并富化它，把将要写入的那条记录原样回显，然后什么都不存。
+
+| 端点 | Dry run URL |
+|-------- |----------|
+| 单条 | `POST /v2/s2s/event?dryrun=1` |
+| 批量 | `POST /v2/s2s/batch?dryrun=1` |
+
+裸写 `dryrun` 与 `dryrun=true` 含义相同。`dryrun=0`、`dryrun=false`、`dryrun=no` 表示不启用。
+
+#### 如何把 dry run 与真实写入区分开
+
+| 调用 | 状态码 | 响应体 | 响应头 |
+|-------------|----------|-------------|-------------|
+| 真实写入 | 200 OK | `{ "status": "success" }` | — |
+| Dry run | 200 OK | 回显的那条记录 | `X-Ingest-Mode: dryrun` |
+
+> [!WARNING]
+> 两者都返回 `200`，所以单看状态码分不出你拿到的是哪一种——请看响应体和 `X-Ingest-Mode: dryrun` 响应头。**dry run 通过不等于写入成功。** 带 `dryrun=1` 发出的内容永远不会被存下来。
+
+dry run **照常鉴权**，也**照常计入限流**——一次批量请求算一次请求。它不是压测入口。
+
+#### 回显的那条记录
+
+```bash
+curl -X POST "https://<<our-url>>/v2/s2s/event?dryrun=1" \
+    -H "Content-Type: application/json" \
+    -H "X-API-KEY: dp_test_key_123" \
+    -d '{
+        "client_user_id": "u-ua-1",
+        "click_id": "rs-ua-1",
+        "event_name": "register",
+        "timestamp": 1702963200,
+        "ip_address": "203.0.113.1",
+        "user_agent": "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36"
+        }'
+```
+
+响应就是我们本来会存下的那条记录：
+
+``` JSON
+{
+  "requestId": "s2s.event-...",
+  "apiKey": "dp_test_key_...",
+  "clickId": "rs-ua-1",
+  "country": "USA",
+  "userAgentInfo": {
+    "device_class": "Mobile",
+    "device_name": "Samsung SM-G991B",
+    "operating_system_name": "Android",
+    "operating_system_version": "13",
+    "agent_name": "Android",
+    "agent_class": "Browser"
+  },
+  "eventData": {
+    "client_user_id": "u-ua-1",
+    "click_id": "rs-ua-1",
+    "event_name": "register",
+    "user_agent": "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36",
+    "recv_timestamp": 1789541015965,
+    "request_id": "..."
+  },
+  "misspelledFields": []
+}
+```
+
+#### 你发的 vs. 我们记的
+
+你的载荷与回显之间的差异，大部分是我方补充的富化项：
+
+| 你发的 | 我们记的 |
+|-------------|-------------|
+| `ip_address` | 由该 IP 解析出的国家与城市 |
+| `user_agent` | `userAgentInfo`——设备类别与型号、操作系统名称与版本、客户端名称与类别 |
+| `amount` + `currency` | 按我方公布的汇率换算后的金额 |
+| `game_type` | 归一化后的游戏类型 |
+| `transaction_id`（你未提供时） | 由我方生成的 `transaction_id` |
+| — | `recv_timestamp`——**我方**接收到该事件的时间，单位毫秒 |
+| — | `request_id` / `requestId`——本次调用的追踪 id。就此次调用询问我们时请带上它 |
+
+接下来两节是这张表的反面——**哪些东西我们没有按你以为的样子记下来**。
+
+#### 两种拼法
+
+> [!WARNING]
+> **绝对不要把回显里的字段名抄回你的请求里。** 你发送的字段是 `snake_case`（`client_user_id`、`click_id`、`ip_address`、`event_name`、`user_agent`）；**回显的顶层字段是 `camelCase`**（`requestId`、`clickId`、`userAgentInfo`），而嵌在其中的 `eventData` 又回到 `snake_case`。
+
+拼错一个键的代价取决于该字段是否必填——而且损害程度与响度正好相反：
+
+  * **必填**字段拼错返回 `400`。很响亮，几分钟就修好了。
+  * **可选**字段拼错返回 `200`，事件照常落库，而那个字段静默消失。把 `user_agent` 写成 `userAgent`，`userAgentInfo` 整个为空——设备与操作系统维度全丢，而且哪里都不会报错。
+  * **`click_id` 属于后一类。** 拼成 `clickId` 会得到 `200`、事件落库、看起来一切正常——只是这条转化永远归因不上。
+
+#### misspelledFields
+
+每一份 dry run 回显里都带有一个 `misspelledFields` 列表。它列出你发来的、明显是我方字段但拼法不同的键——正是它让上面那种静默失败在上线前变得可见：
+
+``` JSON
+"misspelledFields": [{ "sent": "userAgent", "expected": "user_agent" }]
+```
+
+`sent` 是你原样发来的键名，`expected` 是我方本来会匹配到的字段。请把你的载荷改成 `expected` 的写法。
+
+**空数组就是你想要的答案。** 单条请求干净通过时返回的是 `"misspelledFields": []`。这个键恒定存在，所以 `[]` 的含义是*我们检查过了、没发现问题*，而不是*这个端点还没有这项检查*。（批量的呈现方式不同，见下文。）
+
+##### 我们不拒绝未知字段
+
+**自定义属性是我方支持的能力，不是错误。** 我方不认识的键会被原样收进事件属性里——1.1 节里 `<<any_prop>>` 那一行正是为此而设。
+
+所以这项检查刻意做得很窄：它只报那些看起来**是我方字段、只是拼法不同**的键。比对前会先把名字统一成小写并去掉分隔符，只有这样处理之后与我方已知字段撞名的键才会被报出来。
+
+| 你发的 | 是否报告 | 原因 |
+|-------------|-------------|-------------|
+| `userAgent`、`User-Agent` | 报告 | 与 `user_agent` 撞名 |
+| `CLIENTUSERID` | 报告 | 与 `client_user_id` 撞名 |
+| `user_agent` | 不报告 | 拼写正确 |
+| `bonus_round_id`、`vip_tier`、`table_id` | 不报告 | 正当的自定义属性——不与我方任何字段撞名 |
+
+> [!IMPORTANT]
+> **你自己的自定义属性没有出现在这个列表里，正是应有的结果，并不代表它被忽略了。** 它们会被原样记录下来。不要因为 dry run 没提到某个自定义属性，就把你本来要用的这个字段删掉。
+
+#### 批量 dry run
+
+`POST /v2/s2s/batch?dryrun=1` 会同步返回逐条结果：
+
+``` JSON
+{
+  "requestId": "s2s.batch-...",
+  "mode": "dryrun",
+  "total": 3,
+  "successCount": 2,
+  "failureCount": 1,
+  "successEvents": ["... 富化后的事件 ..."],
+  "errors": [
+    {
+      "index": 2,
+      "violations": [
+        { "field": "eventName", "rule": "required", "event": "deposit" },
+        { "field": "clientUserId", "rule": "required", "event": "deposit" }
+      ]
+    }
+  ],
+  "misspelledFields": { "1": [{ "sent": "clickId", "expected": "click_id" }] }
+}
+```
+
+  * `errors[].index` 是该条目在你发送的数组中的下标，从 `0` 数起；每个 `violations[]` 条目指出是哪个字段出了问题、违反了哪条规则——两者合起来告诉你*第几条、哪个字段、违反哪条规则*。
+  * **`misspelledFields` 是一个顶层对象，按同一套下标索引。** 它不挂在 `successEvents` 里的各个事件上。上例是：第 `1` 条（也就是你发的第二条）把 `click_id` 拼成了 `clickId`。
+  * **全部拼对时这个键整个不出现**——不是空对象，也不是空数组。这一点与单条不同：单条恒定返回 `misspelledFields: []`。所以不要拿"键是否存在"当判断依据。
+
+> [!NOTE]
+> `violations[].field` 告诉你的是*哪个*字段出了问题，但它的写法不一定与你请求里的写法一致。请按请求侧的名字去修——请求字段是 `snake_case`（`event_name`、`client_user_id`）。
+
 ## 请求体 Schema 使用场景
 
 #### 用户注册

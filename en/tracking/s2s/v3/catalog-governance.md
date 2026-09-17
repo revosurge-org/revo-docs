@@ -59,7 +59,7 @@ Validation runs in two stages:
 All field violations are collected and returned together in `violations[]` (no fail-fast), so you can fix everything in one pass. See the [API reference](/en/tracking/s2s/v3/server-events-api#errors) for the response shape.
 
 > [!TIP]
-> Use [test mode](/en/tracking/s2s/v3/server-events-api#test-mode) (`X-Test-Mode: true`) during integration to see exactly which fields fail validation, without storing anything.
+> Use a [dry run](/en/tracking/s2s/v3/server-events-api#dry-run) (`?dryrun=1`) during integration to see exactly which fields fail validation, without storing anything.
 
 ## Catalog updates
 

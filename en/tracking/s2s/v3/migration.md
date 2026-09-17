@@ -89,7 +89,7 @@ v3 models a settled bet as a **single `bet` event** with embedded `bet_result` a
 3. Restructure payloads into the envelope (`event` / `timestamp` / `identity` / `context`).
 4. Convert `timestamp` from seconds to **milliseconds**.
 5. Move PII to `context.privacy.*` as **SHA-256** hashes.
-6. Validate with [test mode](/en/tracking/s2s/v3/server-events-api#test-mode) (`X-Test-Mode: true`) — fix any `violations[]`.
+6. Validate with a [dry run](/en/tracking/s2s/v3/server-events-api#dry-run) (`?dryrun=1`) — fix any `violations[]`.
 7. Cut over one event type at a time; keep v2 running until v3 is verified.
 
 ## Reference

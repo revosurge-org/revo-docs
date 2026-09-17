@@ -59,7 +59,7 @@ v3 由一個**型別化事件目錄**管治：事件及其欄位會預先登記�
 所有欄位違規都會被收集並一起在 `violations[]` 中回傳（不會 fail-fast），因此你可以一次過修正所有問題。回應結構請參閱 [API 參考](/hk/tracking/s2s/v3/server-events-api)。
 
 > [!TIP]
-> 在整合期間使用[測試模式](/hk/tracking/s2s/v3/server-events-api)（`X-Test-Mode: true`），以準確查看哪些欄位驗證失敗，而不會儲存任何內容。
+> 在整合期間使用 [dry run](/hk/tracking/s2s/v3/server-events-api#dry-run)（`?dryrun=1`），以準確查看哪些欄位驗證失敗，而不會儲存任何內容。
 
 ## 目錄更新
 
