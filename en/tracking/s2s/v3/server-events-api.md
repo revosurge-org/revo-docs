@@ -270,6 +270,8 @@ Most of the difference between your envelope and the echo is enrichment we add:
 | — | `catalog_version` — the event-catalog version this event was validated against |
 | — | `request_id` / `requestId` — the trace id for this call. Quote it when you ask us about it |
 
+The next two sections are the other side of that table — **what we did not record the way you meant it**.
+
 ### The two spellings
 
 > [!WARNING]
@@ -278,25 +280,45 @@ Most of the difference between your envelope and the echo is enrichment we add:
 What a misspelled key costs you depends on whether the field is required — and the damage runs opposite to the noise:
 
 - A misspelled **required** field returns `400 VALIDATION_ERROR`. Loud, and fixed in minutes.
-- A misspelled **optional** field returns `202`, the event is stored, and the field silently disappears. Send `userAgent` instead of `user_agent` and `userAgentInfo` comes back empty — the whole device and operating-system dimension is gone, with no error anywhere.
+- A misspelled **optional** field returns `202`, the event is stored, and the field silently disappears. Send `context.userAgent` instead of `context.user_agent` and `userAgentInfo` comes back empty — the whole device and operating-system dimension is gone, with no error anywhere.
 - **`identity.click_id` belongs to the second group.** `clickId` gets you a `202`, a stored event and something that looks entirely normal — except that conversion is never attributed.
 
 ### misspelledFields
 
-A dry run lists the keys that are recognizably ours but spelled wrong, which turns the silent failure above into a visible one before you go live:
+Every dry-run echo carries a `misspelledFields` list. It names the keys you sent that are recognizably ours but spelled differently — which is what makes the silent failure above visible, before you go live:
 
 ```json
-"misspelledFields": [{ "sent": "userAgent", "expected": "user_agent" }]
+"misspelledFields": [{ "sent": "clickId", "expected": "click_id" }]
 ```
 
-1. **It only flags keys that are obviously ours.** A key is normalized — lower-cased, underscores and hyphens removed — and reported only if it then matches a field name we know. `userAgent`, `User-Agent` and `CLIENTUSERID` are all flagged.
-2. **Your custom properties are never flagged.** `bonus_round_id`, `vip_tier` and the like are supported custom fields; they match nothing we know, so they never appear in this list.
-3. **For a single event the key is always present.** Clean means `"misspelledFields": []` — a positive signal that the check ran and found nothing.
+`sent` is the key exactly as you sent it; `expected` is the field we would have matched it to. Change your payload to use `expected`.
 
-v3 checks **two levels**: the top of the envelope and `identity`. Flattening `client_user_id` onto the top of the envelope instead of nesting it in `identity` is reported here too.
+**An empty array is the answer you want.** A clean single-event dry run returns `"misspelledFields": []`. The key is always there, so `[]` means *we ran the check and found nothing* — not *this endpoint has no such check*.
 
-> [!NOTE]
-> **`context` is not checked.** It is an open map defined by the event catalog, where a key we do not recognize is perfectly normal. The catalog reports the fields *it* requires through `violations[]` — see [Event catalog & validation](/en/tracking/s2s/v3/catalog-governance).
+#### What v3 checks
+
+The check runs on two levels: the **top of the envelope**, and the keys inside **`identity`**. Two cases are worth calling out:
+
+1. **A misspelled key inside `identity` is discarded at parse time.** `identity.clickId` never reaches the event at all — unlike an unrecognized key elsewhere, it is not even kept as a custom property, so nothing downstream records that you sent it. A dry run is the only place it is visible.
+2. **A field flattened onto the top of the envelope is reported too.** Send `clientUserId` at the top level and you get `{ "sent": "clientUserId", "expected": "client_user_id" }`. The fix is the spelling *and* the position — that field belongs inside the `identity` object.
+
+**`context` is not checked.** It is an open map defined by the event catalog, where a key we do not recognize is normal rather than suspect. Required `context` fields that are missing are reported by catalog validation as [`violations[]`](#errors) instead — which is also why a typo in an *optional* `context` field does not appear here. See [Event catalog & validation](/en/tracking/s2s/v3/catalog-governance).
+
+#### We do not reject unknown fields
+
+**Custom properties are a supported feature, not a mistake.** `context` is an open map defined by the catalog, so a key we do not recognize there is expected.
+
+So this check is deliberately narrow: it reports only keys that look like **ours, spelled differently**. Names are compared after folding to lower case and dropping separators, and a key is reported only if it then collides with a field we know.
+
+| You send | Reported? | Why |
+|----------|-----------|-----|
+| `identity.clickId`, `identity.Click-Id` | Yes | Collides with `click_id` |
+| `clientUserId` or `CLIENTUSERID` at the top level | Yes | Collides with `client_user_id` |
+| `identity.click_id` | No | Spelled correctly |
+| `context.bonus_round_id`, `context.vip_tier`, `context.table_id` | No | Legitimate custom fields in an open map |
+
+> [!IMPORTANT]
+> **Your own custom properties not showing up in this list is the correct outcome, not a sign that they were ignored.** Do not delete a custom field you rely on because a dry run stayed quiet about it.
 
 ## Rate limits
 

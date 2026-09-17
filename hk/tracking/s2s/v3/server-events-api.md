@@ -270,6 +270,8 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 | — | `catalog_version` — 本次驗證所依據的事件目錄版本 |
 | — | `request_id` / `requestId` — 本次調用的追蹤 id。就這次調用向我們查詢時請帶上它 |
 
+接下來兩節是這張表的反面 — **哪些東西我們沒有按你以為的樣子記下來**。
+
 ### 兩種拼法
 
 > [!WARNING]
@@ -278,25 +280,45 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 拼錯一個鍵的代價取決於該欄位是否必填 — 而且損害程度與響度剛好相反：
 
 - **必填**欄位拼錯回傳 `400 VALIDATION_ERROR`。很響亮，幾分鐘就修好了。
-- **可選**欄位拼錯回傳 `202`，事件照常落庫，而那個欄位靜默消失。把 `user_agent` 寫成 `userAgent`，`userAgentInfo` 整個為空 — 裝置與作業系統維度全失，而且哪裏都不會報錯。
+- **可選**欄位拼錯回傳 `202`，事件照常落庫，而那個欄位靜默消失。把 `context.user_agent` 寫成 `context.userAgent`，`userAgentInfo` 整個為空 — 裝置與作業系統維度全失，而且哪裏都不會報錯。
 - **`identity.click_id` 屬於後一類。** 拼成 `clickId` 會得到 `202`、事件落庫、看來一切正常 — 只是這條轉換永遠歸因不上。
 
 ### misspelledFields
 
-dry run 會列出那些明顯是我方欄位、只是拼錯了的鍵，把上面那種靜默失敗在上線前變成看得見的：
+每一份 dry run 回顯裏都帶有一個 `misspelledFields` 清單。它列出你傳來的、明顯是我方欄位但拼法不同的鍵 — 正是它令上面那種靜默失敗在上線前變得看得見：
 
 ```json
-"misspelledFields": [{ "sent": "userAgent", "expected": "user_agent" }]
+"misspelledFields": [{ "sent": "clickId", "expected": "click_id" }]
 ```
 
-1. **它只報明顯是我方的鍵。** 鍵會先被正規化 — 轉小寫、去掉底線與連字號 — 之後與我方已知欄位名相同才會被指出。`userAgent`、`User-Agent`、`CLIENTUSERID` 都會被指出來。
-2. **你的自訂屬性不會被誤報。** `bonus_round_id`、`vip_tier` 這類是我方支援的自訂欄位，不匹配任何已知名字，因此不會出現在這個清單裏。
-3. **單一請求裏這個鍵恆定存在。** 乾淨時就是 `"misspelledFields": []` — 這是一個「我檢查過了、沒發現問題」的正面信號。
+`sent` 是你原樣傳來的鍵名，`expected` 是我方本來會匹配到的欄位。請把你的載荷改成 `expected` 的寫法。
 
-v3 會檢查**兩層**：信封頂層與 `identity`。把 `client_user_id` 平鋪在信封頂層、而不是放進 `identity`，同樣會在這裏被指出來。
+**空陣列就是你想要的答案。** 單一請求乾淨通過時回傳的是 `"misspelledFields": []`。這個鍵恆定存在，所以 `[]` 的意思是*我們檢查過了、沒發現問題*，而不是*這個端點還沒有這項檢查*。
 
-> [!NOTE]
-> **`context` 不做這項檢查。** 它是由事件目錄定義的開放 map，出現我方不認識的鍵是完全正常的。目錄會透過 `violations[]` 報出*它*所要求的那些欄位 — 請參閱[事件目錄與驗證](/hk/tracking/s2s/v3/catalog-governance)。
+#### v3 檢查哪些位置
+
+這項檢查覆蓋兩層：**信封頂層**，以及 **`identity` 內部**的鍵。其中兩種情形值得單獨點出來：
+
+1. **`identity` 裏的鍵拼錯，會在解析時直接被丟棄。** `identity.clickId` 根本到不了事件裏 — 與別處不認識的鍵不同，它連自訂屬性都留不下，之後沒有任何地方能看出你曾經傳過它。dry run 是唯一看得見它的地方。
+2. **本該嵌在 `identity` 裏、卻被平鋪到頂層的欄位同樣會被報出來。** 在頂層寫 `clientUserId`，你會得到 `{ "sent": "clientUserId", "expected": "client_user_id" }`。要改的既是拼法*也是*位置 — 這個欄位應當嵌在 `identity` 物件內。
+
+**`context` 不做這項檢查。** 它是由事件目錄定義的開放 map，出現我方不認識的鍵是正常的，而不是可疑的。`context` 裏缺少的必填欄位改由目錄驗證以 [`violations[]`](#錯誤) 的形式報告 — 這也正是為甚麼 `context` 裏*可選*欄位拼錯不會出現在這裏。請參閱[事件目錄與驗證](/hk/tracking/s2s/v3/catalog-governance)。
+
+#### 我們不拒絕未知欄位
+
+**自訂屬性是我方支援的能力，不是錯誤。** `context` 是由目錄定義的開放 map，出現我方不認識的鍵本就在預期之內。
+
+所以這項檢查刻意做得很窄：它只報那些看來**是我方欄位、只是拼法不同**的鍵。比對前會先把名字統一成小寫並去掉分隔符，只有這樣處理之後與我方已知欄位撞名的鍵才會被報出來。
+
+| 你傳的 | 是否報告 | 原因 |
+|----------|-----------|-----|
+| `identity.clickId`、`identity.Click-Id` | 報告 | 與 `click_id` 撞名 |
+| 頂層的 `clientUserId` 或 `CLIENTUSERID` | 報告 | 與 `client_user_id` 撞名 |
+| `identity.click_id` | 不報告 | 拼寫正確 |
+| `context.bonus_round_id`、`context.vip_tier`、`context.table_id` | 不報告 | 開放 map 裏正當的自訂欄位 |
+
+> [!IMPORTANT]
+> **你自己的自訂屬性沒有出現在這個清單裏，正是應有的結果，並不代表它被忽略了。** 不要因為 dry run 沒提到某個自訂欄位，就把你本來要用的這個欄位刪掉。
 
 ## 限流
 

@@ -186,6 +186,8 @@ Most of the difference between your payload and the echo is enrichment we add:
 | — | `recv_timestamp` — the time **we** received the event, in milliseconds |
 | — | `request_id` / `requestId` — the trace id for this call. Quote it when you ask us about it |
 
+The next two sections are the other side of that table — **what we did not record the way you meant it**.
+
 #### The two spellings
 
 > [!WARNING]
@@ -199,15 +201,31 @@ What a misspelled key costs you depends on whether the field is required — and
 
 #### misspelledFields
 
-A dry run lists the keys that are recognizably ours but spelled wrong, which turns the silent failure above into a visible one before you go live:
+Every dry-run echo carries a `misspelledFields` list. It names the keys you sent that are recognizably ours but spelled differently — which is what makes the silent failure above visible, before you go live:
 
 ``` JSON
 "misspelledFields": [{ "sent": "userAgent", "expected": "user_agent" }]
 ```
 
-  1. **It only flags keys that are obviously ours.** A key is normalized — lower-cased, underscores and hyphens removed — and reported only if it then matches a field name we know. `userAgent`, `User-Agent` and `CLIENTUSERID` are all flagged.
-  2. **Your custom properties are never flagged.** `bonus_round_id`, `vip_tier` and the like are supported custom fields; they match nothing we know, so they never appear in this list.
-  3. **For a single event the key is always present.** Clean means `"misspelledFields": []` — a positive signal that the check ran and found nothing.
+`sent` is the key exactly as you sent it; `expected` is the field we would have matched it to. Change your payload to use `expected`.
+
+**An empty array is the answer you want.** A clean single-event dry run returns `"misspelledFields": []`. The key is always there, so `[]` means *we ran the check and found nothing* — not *this endpoint has no such check*.
+
+##### We do not reject unknown fields
+
+**Custom properties are a supported feature, not a mistake.** A key we do not recognize is kept verbatim in the event's properties — that is exactly what the `<<any_prop>>` row in section 1.1 is for.
+
+So this check is deliberately narrow: it reports only keys that look like **ours, spelled differently**. Names are compared after folding to lower case and dropping separators, and a key is reported only if it then collides with a field we know.
+
+| You send | Reported? | Why |
+|-------------|-------------|-------------|
+| `userAgent`, `User-Agent` | Yes | Collides with `user_agent` |
+| `CLIENTUSERID` | Yes | Collides with `client_user_id` |
+| `user_agent` | No | Spelled correctly |
+| `bonus_round_id`, `vip_tier`, `table_id` | No | Legitimate custom properties — they collide with nothing of ours |
+
+> [!IMPORTANT]
+> **Your own custom properties not showing up in this list is the correct outcome, not a sign that they were ignored.** They are recorded exactly as you sent them. Do not delete a custom property you rely on because a dry run stayed quiet about it.
 
 ## Use Case Scenarios on Request Body Schema
 

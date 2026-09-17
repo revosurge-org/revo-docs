@@ -270,6 +270,8 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 | — | `catalog_version`——本次校验所依据的事件目录版本 |
 | — | `request_id` / `requestId`——本次调用的追踪 id。就此次调用询问我们时请带上它 |
 
+接下来两节是这张表的反面——**哪些东西我们没有按你以为的样子记下来**。
+
 ### 两种拼法
 
 > [!WARNING]
@@ -278,25 +280,45 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 拼错一个键的代价取决于该字段是否必填——而且损害程度与响度正好相反：
 
 - **必填**字段拼错返回 `400 VALIDATION_ERROR`。很响亮，几分钟就修好了。
-- **可选**字段拼错返回 `202`，事件照常落库，而那个字段静默消失。把 `user_agent` 写成 `userAgent`，`userAgentInfo` 整个为空——设备与操作系统维度全丢，而且哪里都不会报错。
+- **可选**字段拼错返回 `202`，事件照常落库，而那个字段静默消失。把 `context.user_agent` 写成 `context.userAgent`，`userAgentInfo` 整个为空——设备与操作系统维度全丢，而且哪里都不会报错。
 - **`identity.click_id` 属于后一类。** 拼成 `clickId` 会得到 `202`、事件落库、看起来一切正常——只是这条转化永远归因不上。
 
 ### misspelledFields
 
-dry run 会列出那些明显是我方字段、只是拼错了的键，把上面那种静默失败在上线前变成可见的：
+每一份 dry run 回显里都带有一个 `misspelledFields` 列表。它列出你发来的、明显是我方字段但拼法不同的键——正是它让上面那种静默失败在上线前变得可见：
 
 ```json
-"misspelledFields": [{ "sent": "userAgent", "expected": "user_agent" }]
+"misspelledFields": [{ "sent": "clickId", "expected": "click_id" }]
 ```
 
-1. **它只报明显是我方的键。** 键会先被归一化——转小写、去掉下划线与连字符——之后与我方已知字段名相同才会被指出。`userAgent`、`User-Agent`、`CLIENTUSERID` 都会被指出来。
-2. **你的自定义属性不会被误报。** `bonus_round_id`、`vip_tier` 这类是我方支持的自定义字段，不匹配任何已知名字，因此不会出现在这个列表里。
-3. **单条请求里这个键恒定存在。** 干净时就是 `"misspelledFields": []`——这是一个"我检查过了、没发现问题"的正面信号。
+`sent` 是你原样发来的键名，`expected` 是我方本来会匹配到的字段。请把你的载荷改成 `expected` 的写法。
 
-v3 会检查**两层**：信封顶层与 `identity`。把 `client_user_id` 平铺在信封顶层、而不是放进 `identity`，同样会在这里被指出来。
+**空数组就是你想要的答案。** 单条请求干净通过时返回的是 `"misspelledFields": []`。这个键恒定存在，所以 `[]` 的含义是*我们检查过了、没发现问题*，而不是*这个端点还没有这项检查*。
 
-> [!NOTE]
-> **`context` 不做这项检查。** 它是由事件目录定义的开放 map，出现我方不认识的键是完全正常的。目录会通过 `violations[]` 报出*它*所要求的那些字段——参见[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
+#### v3 检查哪些位置
+
+这项检查覆盖两层：**信封顶层**，以及 **`identity` 内部**的键。其中两种情形值得单独点出来：
+
+1. **`identity` 里的键拼错，会在解析时直接被丢弃。** `identity.clickId` 根本到不了事件里——与别处不认识的键不同，它连自定义属性都留不下，后续没有任何地方能看出你曾经发过它。dry run 是唯一能看见它的地方。
+2. **本该嵌在 `identity` 里、却被平铺到顶层的字段同样会被报出来。** 在顶层写 `clientUserId`，你会得到 `{ "sent": "clientUserId", "expected": "client_user_id" }`。要改的既是拼法*也是*位置——这个字段应当嵌在 `identity` 对象内。
+
+**`context` 不做这项检查。** 它是由事件目录定义的开放 map，出现我方不认识的键是正常的，而不是可疑的。`context` 里缺少的必填字段改由目录校验以 [`violations[]`](#错误) 的形式报告——这也正是为什么 `context` 里*可选*字段拼错不会出现在这里。参见[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
+
+#### 我们不拒绝未知字段
+
+**自定义属性是我方支持的能力，不是错误。** `context` 是由目录定义的开放 map，出现我方不认识的键本就在预期之内。
+
+所以这项检查刻意做得很窄：它只报那些看起来**是我方字段、只是拼法不同**的键。比对前会先把名字统一成小写并去掉分隔符，只有这样处理之后与我方已知字段撞名的键才会被报出来。
+
+| 你发的 | 是否报告 | 原因 |
+|----------|-----------|-----|
+| `identity.clickId`、`identity.Click-Id` | 报告 | 与 `click_id` 撞名 |
+| 顶层的 `clientUserId` 或 `CLIENTUSERID` | 报告 | 与 `client_user_id` 撞名 |
+| `identity.click_id` | 不报告 | 拼写正确 |
+| `context.bonus_round_id`、`context.vip_tier`、`context.table_id` | 不报告 | 开放 map 里正当的自定义字段 |
+
+> [!IMPORTANT]
+> **你自己的自定义属性没有出现在这个列表里，正是应有的结果，并不代表它被忽略了。** 不要因为 dry run 没提到某个自定义字段，就把你本来要用的这个字段删掉。
 
 ## 限流
 
