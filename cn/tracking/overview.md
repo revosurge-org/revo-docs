@@ -172,11 +172,8 @@ Web 追踪器与 S2S 精度最高，因为它们不依赖第三方匹配。AppsF
 不同之处在于你没照做时会发生什么。Server Events API（v3）会**拒绝**看起来像秒的值。Partner Postback 会纠正它并保留事件，但把这次纠正视为一次契约偏离——它会触发我方告警，我们会与你联系。两者都不是第二种受支持的格式，所以请固定使用毫秒。
 :::
 
-::: details 有测试模式吗？
-有，两种：
-
-- 测试密钥会把数据路由到一条可见的事件流，你可以自助校验，不触碰生产流量。
-- 在 S2S 与 postback 端点上加 `dryrun=1`，我们会解析、校验并原样回显将要记录的内容 —— 但不落库。
+::: details 可以在不产生真实数据的前提下验证吗？
+可以。在 [S2S](/cn/tracking/s2s/v3/server-events-api#dry-run) 或 [Partner Postback](/cn/tracking/postback/partner-postback#dry-run) 端点上加 `?dryrun=1`，我们会完全按生产路径解析、校验并富化你的请求，把将要记录的内容原样回显 —— 但不落库。
 :::
 
 ::: details 怎么知道我的集成是健康的？

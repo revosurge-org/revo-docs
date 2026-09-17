@@ -232,7 +232,79 @@ URL 被貼進電郵或工單後，會被連結掃描器抓取，此時宏仍是�
 - `click_id` 或 `user_id` 出現字面宏，**整條 postback 會被丟棄**（`200 ignored`）。
 - 其他參數出現字面宏，只損失那一個欄位；事件其餘部分照常記錄，字面值原樣保留以便排查。
 
+## Dry run
+
+在這四條 postback URL 的任意一條後面加上 `dryrun=1`，就能看到我們會作出的判定，而不記錄任何內容。請求會完全按生產路徑鑑權、解析、驗證並豐富；我們隨後把判定結果回傳給你，而不是把它存下來。
+
+```bash
+curl -sS -G "https://mmp.revosurge.com/v1/pb/{partner}/first-deposit" \
+  --data-urlencode "k=$REVOSURGE_POSTBACK_KEY" \
+  --data-urlencode "click_id=8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de" \
+  --data-urlencode "event=sale" \
+  --data-urlencode "amount=12.34" \
+  --data-urlencode "ts=1789540000" \
+  --data-urlencode "dryrun=1"
+```
+
+裸寫 `dryrun` 與 `dryrun=true` 意思相同；`dryrun=0`、`dryrun=false`、`dryrun=no` 表示不啟用。dry run 恆回傳 `200`，並帶回應標頭 `X-Ingest-Mode: dryrun`。它照常鑑權 — 金鑰錯誤依然是 `403` — 也照常計入限流。
+
+> [!WARNING]
+> **不要把 `dryrun` 留在你註冊的 URL 裏。** 一條註冊了 dry run 的 URL 會對每一筆轉換都回 `200`，而一筆都不記錄。
+
+### 為甚麼需要它
+
+postback 的契約[絕不會因為負載問題而回 `4xx`](#回應)。正是這一點令格式有問題的 postback 不至於被整條停用 — 但它同時也意味著，被丟棄的 postback 與被存下的 postback 從外面看完全一樣：三種被丟棄的情形回傳的都是同一個 `200 {"status":"ignored"}`。dry run 則把判定結果顯式回傳。
+
+### 判定結果
+
+```json
+{
+  "mode": "dryrun",
+  "partner": "1win",
+  "route": "first_deposit",
+  "decision": "accepted",
+  "eventName": "deposit",
+  "eventDeclared": "sale",
+  "reportedFirst": 1,
+  "dedupKey": "h:14e576df...",
+  "dedupKeySource": "raw_hash",
+  "clickId": "8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de",
+  "userId": "8f1c2d5e-4a7b-4c31-9e0d-6b2f7a1c93de",
+  "userIdBackfilled": true,
+  "unreplacedMacros": [],
+  "eventUnixTs": 1789540000,
+  "eventTimeRaw": "1789540000",
+  "coercedTimeFields": ["ts", "first_deposit_ts"],
+  "amount": 12.34,
+  "currency": "USD",
+  "unexpectedCurrency": "INR",
+  "attributionShare": 0.5,
+  "isNewCustomer": 1,
+  "recorded": { "...": "原樣收下的全部參數" }
+}
+```
+
+| 欄位 | 它告訴你甚麼 |
+|-------|------|
+| `decision` | `accepted`；若這條 postback 會被丟棄，則為 `ignored` |
+| `reason` | 只在 `decision` 為 `ignored` 時出現：`unreplaced_macro`（宏以字面值形式到達我方 — 通常是連結被掃描器抓取了）、`empty_request`，或 `no_identity`（既沒有 `click_id` 也沒有 `user_id`）。在正式流量裏這三種回傳的都是同一個 `200 {"status":"ignored"}`，只有 dry run 能把它們分開 |
+| `eventName` | 我們會記錄的事件類型。它由**端點路徑**決定 |
+| `eventDeclared` | 你方 `{event}` 宏的原值，只作交叉核對之用。兩者不一致時以路徑為準 |
+| `reportedFirst` | 由路徑推出的首存標記 — 參閱[端點](#端點) |
+| `dedupKey` / `dedupKeySource` | 這條 postback 歸約出的去重鍵，以及它的來源：先 `event_id`，再 `transaction_id`（即你的 `txid`），最後後備用 `raw_hash`。**看到 `raw_hash` 代表沒有收到 `event_id`** — 這是應該在上線前就知道的事，而不是等一次重試被重複計數之後才發現。參閱[去重](#去重) |
+| `clickId` / `userId` | 我方解析出的身分識別 |
+| `userIdBackfilled` | `true` 表示沒有收到 `user_id`，我方用 `click_id` 頂上了 |
+| `unreplacedMacros` | 以字面宏形式到達的參數。參閱[未替換的宏](#未替換的宏) |
+| `eventUnixTs` / `eventTimeRaw` | 我方解析出的事件時間，以及它所依據的原始取值 |
+| `coercedTimeFields` | 你以秒為單位傳送、由我方替你換算過的時間欄位。**空清單才是目標** — 這裏出現任何欄位都是一次契約偏離，會觸發我方告警 |
+| `amount` / `currency` | 我們會按結算幣別記帳的數值 |
+| `unexpectedCurrency` | 當你聲明了 `USD` 以外的幣別時出現。我方按 `USD` 記帳，**不**做換算 |
+| `attributionShare` / `isNewCustomer` | 我方讀到的你方聲明欄位。參閱[你方聲明欄位的含義](#你方聲明欄位的含義) |
+| `recorded` | 原樣收下的全部參數 |
+
 ## 驗證整合
+
+檢查一條真實負載最快的辦法是 [dry run](#dry-run) — 它會回傳判定結果、去重鍵與我方解析出的身分識別，而不記錄任何內容。
 
 在切入真實流量之前，請確認以下四種行為：
 

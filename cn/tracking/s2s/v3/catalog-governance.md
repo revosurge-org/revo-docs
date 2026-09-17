@@ -59,7 +59,7 @@ v3 由一个**型别化事件目录**治理：事件及其字段均预先登记�
 所有字段违规都会被收集起来并在 `violations[]` 中一起返回（不会快速失败），因此你可以一次性修复所有问题。关于响应形态，参见 [API 参考](/cn/tracking/s2s/v3/server-events-api)。
 
 > [!TIP]
-> 在集成期间使用[测试模式](/cn/tracking/s2s/v3/server-events-api)（`X-Test-Mode: true`），可准确看到哪些字段未通过校验，而不存储任何内容。
+> 在集成期间使用 [dry run](/cn/tracking/s2s/v3/server-events-api#dry-run)（`?dryrun=1`），可准确看到哪些字段未通过校验，而不存储任何内容。
 
 ## 目录更新
 

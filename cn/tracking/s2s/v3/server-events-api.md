@@ -31,7 +31,6 @@ description: S2S Events v3 参考——信封、端点、认证、批量接入�
 |--------|----------|-------|
 | `X-API-KEY` | 是 | 你的 API 密钥 |
 | `Content-Type` | 是 | `application/json` |
-| `X-Test-Mode` | 否 | `true` 表示仅校验并回显而不存储（参见[测试模式](#测试模式)） |
 
 > 关于如何获取密钥，请参见 [API 密钥](/cn/api/api-key)。认证与 v2 保持不变。
 
@@ -185,9 +184,119 @@ requests.post(
 
 关于目录如何驱动这些检查，参见[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
 
-## 测试模式
+## Dry run
 
-发送 `X-Test-Mode: true` 可对事件进行校验和富化而**不**发布它。响应（HTTP `200`）会回显完全富化后的事件（地理信息、解析后的 user-agent、归一化后的金额），让你能够准确检查 DataPulse 将会存储什么。对于批量，响应会包含每项的 `successCount` / `failureCount`，以及一个带有失败索引和原因的 `errors[]` 列表。
+在任一接入端点上加 `?dryrun=1`，即可端到端地检查一条请求而不产生任何数据。我们会完全按生产路径解析、鉴权、按目录校验并富化它，把将要写入的那条记录原样回显，然后什么都不存。
+
+| 端点 | Dry run URL |
+|----------|-------|
+| 单条 | `POST /v3/s2s/event?dryrun=1` |
+| 批量 | `POST /v3/s2s/batch?dryrun=1` |
+
+裸写 `dryrun` 与 `dryrun=true` 含义相同。`dryrun=0`、`dryrun=false`、`dryrun=no` 表示不启用。
+
+### 如何把 dry run 与真实写入区分开
+
+| 调用 | 状态 | 响应体 | 响应头 |
+|----------|--------|------|------|
+| 真实写入 | `202 Accepted` | `{ "status": "accepted", ... }` | — |
+| Dry run | `200 OK` | 回显的那条记录 | `X-Ingest-Mode: dryrun` |
+
+> [!WARNING]
+> dry run 返回 `200`，绝不会返回 `202`。你拿到 `202`，那就是一次真实写入。**dry run 通过不等于写入成功**——带 `dryrun=1` 发出的内容永远不会被存下来。
+
+dry run **照常鉴权**，也**照常计入限流**——一次批量请求算一次请求。它不是压测入口。
+
+### 回显的那条记录
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
+  -H "Content-Type: application/json" \
+  -H "X-API-KEY: dp_test_key_123" \
+  -d '{
+    "event": "register",
+    "timestamp": 1718280000000,
+    "identity": { "client_user_id": "u-ua-1", "click_id": "rs-ua-1" },
+    "context": {
+      "ip_address": "203.0.113.1",
+      "user_agent": "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36"
+    }
+  }'
+```
+
+```json [响应（节选）]
+{
+  "requestId": "s2s.event-...",
+  "apiKey": "dp_test_key_...",
+  "clickId": "rs-ua-1",
+  "country": "USA",
+  "userAgentInfo": {
+    "device_class": "Mobile",
+    "device_name": "Samsung SM-G991B",
+    "operating_system_name": "Android",
+    "operating_system_version": "13",
+    "agent_name": "Android",
+    "agent_class": "Browser"
+  },
+  "eventData": {
+    "client_user_id": "u-ua-1",
+    "click_id": "rs-ua-1",
+    "event_name": "register",
+    "user_agent": "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36",
+    "recv_timestamp": 1789541015965,
+    "catalog_version": "...",
+    "request_id": "..."
+  },
+  "misspelledFields": []
+}
+```
+
+:::
+
+### 你发的 vs. 我们记的
+
+你的信封与回显之间的差异，大部分是我方补充的富化项：
+
+| 你发的 | 我们记的 |
+|----------|-------|
+| `context.ip_address` | 由该 IP 解析出的国家与城市 |
+| `context.user_agent` | `userAgentInfo`——设备类别与型号、操作系统名称与版本、客户端名称与类别 |
+| `context.amount` + `context.currency` | 按我方公布的汇率换算后的金额 |
+| `context.game_type` | 归一化后的游戏类型 |
+| `context.transaction_id`（你未提供时） | 由我方生成的 `transaction_id` |
+| — | `recv_timestamp`——**我方**接收到该事件的时间，单位毫秒 |
+| — | `catalog_version`——本次校验所依据的事件目录版本 |
+| — | `request_id` / `requestId`——本次调用的追踪 id。就此次调用询问我们时请带上它 |
+
+### 两种拼法
+
+> [!WARNING]
+> **绝对不要把回显里的字段名抄回你的请求里。** 你发送的字段是 `snake_case`（`client_user_id`、`click_id`、`ip_address`、`user_agent`）；**回显的顶层字段是 `camelCase`**（`requestId`、`clickId`、`userAgentInfo`），而嵌在其中的 `eventData` 又回到 `snake_case`。
+
+拼错一个键的代价取决于该字段是否必填——而且损害程度与响度正好相反：
+
+- **必填**字段拼错返回 `400 VALIDATION_ERROR`。很响亮，几分钟就修好了。
+- **可选**字段拼错返回 `202`，事件照常落库，而那个字段静默消失。把 `user_agent` 写成 `userAgent`，`userAgentInfo` 整个为空——设备与操作系统维度全丢，而且哪里都不会报错。
+- **`identity.click_id` 属于后一类。** 拼成 `clickId` 会得到 `202`、事件落库、看起来一切正常——只是这条转化永远归因不上。
+
+### misspelledFields
+
+dry run 会列出那些明显是我方字段、只是拼错了的键，把上面那种静默失败在上线前变成可见的：
+
+```json
+"misspelledFields": [{ "sent": "userAgent", "expected": "user_agent" }]
+```
+
+1. **它只报明显是我方的键。** 键会先被归一化——转小写、去掉下划线与连字符——之后与我方已知字段名相同才会被指出。`userAgent`、`User-Agent`、`CLIENTUSERID` 都会被指出来。
+2. **你的自定义属性不会被误报。** `bonus_round_id`、`vip_tier` 这类是我方支持的自定义字段，不匹配任何已知名字，因此不会出现在这个列表里。
+3. **单条请求里这个键恒定存在。** 干净时就是 `"misspelledFields": []`——这是一个"我检查过了、没发现问题"的正面信号。
+
+v3 会检查**两层**：信封顶层与 `identity`。把 `client_user_id` 平铺在信封顶层、而不是放进 `identity`，同样会在这里被指出来。
+
+> [!NOTE]
+> **`context` 不做这项检查。** 它是由事件目录定义的开放 map，出现我方不认识的键是完全正常的。目录会通过 `violations[]` 报出*它*所要求的那些字段——参见[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
 
 ## 限流
 
