@@ -41,7 +41,27 @@ description: OpenRTB 2.5 bid request and response field reference for RevoSurge 
 | `bidfloorcur` | string | No | Currency for bid floor. Defaults to `USD` |
 | `instl` | integer | No | Set to `1` for popunder (fullscreen/interstitial) |
 | `tagid` | string | No | SSP zone/tag ID for the impression |
-| `ext.type` | string | No | Format hint from SSP. Use `"pop"` to signal popunder |
+| `ext.type` | string | No | Format hint from SSP. Use `"pop"` for popunder or `"push"` for push. See [Signalling ad format](#signalling-ad-format) for the alternatives we also accept |
+
+### Signalling ad format
+
+`imp[].ext.type` is the key we recommend, and the one we normalise everything else to. If your platform already uses a different convention, send it as-is — we accept all of the following and you do not need to change your integration:
+
+| Key | Type | Example | Resolves to |
+|---|---|---|---|
+| `ext.type` | string | `"pop"`, `"push"`, `"banner"`, `"native"` | as given |
+| `ext.ad_format` | string | `"pop"`, `"push_notification"` | `pop`, `push` |
+| `ext.ad_type` | integer or numeric string | `40`, `"40"` / `30`, `"30"` | `pop` / `push` |
+| `ext.subage` | integer | `7` | `push` |
+| `ext.push`, `ext.notification` | any | key presence is the signal | `push` |
+| `ext.pop`, `ext.popunder`, `ext.popup`, `ext.pop_type` | any | key presence is the signal | `pop` |
+
+Notes:
+
+- **An explicit `ext` hint always wins over the impression object.** Pop and push inventory is commonly wrapped in a placeholder `banner` (often `w: 0, h: 0`) or in an `imp.native` shell. We read your `ext` hint first and will not mistake those wrappers for banner or native demand.
+- **If you send no hint at all**, we fall back to whichever of `banner`, `native`, `video` or `audio` is present on the impression.
+- Values are matched case-insensitively, and a substring match is enough — `"POPunder"` is read as `pop`.
+- **A request we cannot classify at all does not bid.** If there is no `ext` hint *and* no `banner`, `native`, `video` or `audio` object on the impression, we have nothing to match against campaign creatives and respond `204 No Content`. Sending a hint also makes your traffic appear correctly in the format breakdown of your reporting.
 
 ### Banner object (`imp[].banner`)
 
@@ -187,7 +207,7 @@ HTTP 204 No Content
 
 ## Popunder format
 
-To request popunder inventory, set `imp[].instl: 1` and `imp[].ext.type: "pop"`. The response `adm` will be a redirect URL (not HTML), and the bid will also include `ext.popurl` with the same value.
+To request popunder inventory, set `imp[].instl: 1` and `imp[].ext.type: "pop"` (or any of the equivalents in [Signalling ad format](#signalling-ad-format)). The response `adm` will be a redirect URL (not HTML), and the bid will also include `ext.popurl` with the same value.
 
 ### Request (popunder)
 
@@ -438,6 +458,7 @@ Notes:
 ### Push integration checklist
 
 - [ ] `imp[].native.request` is a JSON **string** (not a parsed object).
+- [ ] Send a push hint on `imp[].ext` — `type: "push"`, `ad_type: 30` or `subage` — so the request is not classified as plain native. See [Signalling ad format](#signalling-ad-format).
 - [ ] Asset IDs in your request are echoed back unchanged in the response — render assets by matching `id`.
 - [ ] On render, fire ALL entries in `adm.native.imptrackers[]` (typically 1).
 - [ ] Click on the creative navigates to `adm.native.link.url` (RevoSurge handles the redirect to the advertiser landing).
