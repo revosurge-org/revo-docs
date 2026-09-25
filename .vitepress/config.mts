@@ -7,6 +7,35 @@ import { hk } from './config/hk'
 
 const SITE_URL = process.env.SITE_URL ?? 'https://docs.revosurge.com'
 
+// markdown-it has no task-list support, so `- [ ] item` would render the brackets as text.
+// Turn those items into checkboxes and tag the list so style.css can draw it as a checklist.
+function taskLists(md) {
+  md.core.ruler.after('inline', 'task-lists', (state) => {
+    const tokens = state.tokens
+    for (let i = 2; i < tokens.length; i++) {
+      const inline = tokens[i]
+      if (inline.type !== 'inline' || tokens[i - 1].type !== 'paragraph_open' || tokens[i - 2].type !== 'list_item_open') continue
+      const first = inline.children?.[0]
+      const match = first?.type === 'text' && /^\[([ xX])\]\s+/.exec(first.content)
+      if (!match) continue
+
+      first.content = first.content.slice(match[0].length)
+      const checkbox = new state.Token('html_inline', '', 0)
+      checkbox.content = `<input type="checkbox" class="task-list-checkbox"${match[1] === ' ' ? '' : ' checked'}>`
+      inline.children.unshift(checkbox)
+
+      const item = tokens[i - 2]
+      item.attrJoin('class', 'task-list-item')
+      for (let j = i - 3; j >= 0; j--) {
+        if (tokens[j].type === 'bullet_list_open' && tokens[j].level === item.level - 1) {
+          if (!tokens[j].attrGet('class')?.includes('task-list')) tokens[j].attrJoin('class', 'task-list')
+          break
+        }
+      }
+    }
+  })
+}
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'RevoSurge Docs',
@@ -54,6 +83,7 @@ export default defineConfig({
   markdown: {
     config: (md) => {
       md.use(markdownItKatex)
+      md.use(taskLists)
     }
   },
   head: [

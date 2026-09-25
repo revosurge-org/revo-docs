@@ -30,6 +30,7 @@ export const cn: DefaultTheme.Config = {
       collapsed: false,
       items: [
         { text: '概述 · 我该用哪个？', link: '/cn/tracking/overview' },
+        { text: '核心概念', link: '/cn/tracking/core-concepts' },
         {
           text: '1. Web 追踪器',
           link: '/cn/tracking/web-tracker',
@@ -71,6 +72,8 @@ export const cn: DefaultTheme.Config = {
                 { text: '从 v2 迁移', link: '/cn/tracking/s2s/v3/migration' }
               ]
             },
+            { text: '集成校验', link: '/cn/tracking/s2s/validation' },
+            { text: '交付与上线', link: '/cn/tracking/s2s/handoff' },
             { text: '服务器事件 API (v2，已弃用)', link: '/cn/tracking/s2s/server-events-api' }
           ]
         },
@@ -79,7 +82,9 @@ export const cn: DefaultTheme.Config = {
           link: '/cn/tracking/postback/partner-postback',
           collapsed: true,
           items: [
-            { text: '合作方 Postback API', link: '/cn/tracking/postback/partner-postback' }
+            { text: '合作方 Postback API', link: '/cn/tracking/postback/partner-postback' },
+            { text: '集成校验', link: '/cn/tracking/postback/validation' },
+            { text: '交付与上线', link: '/cn/tracking/postback/handoff' }
           ]
         }
       ]

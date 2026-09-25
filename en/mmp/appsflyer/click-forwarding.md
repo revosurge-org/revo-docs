@@ -59,7 +59,7 @@ const tracker = new WebTracker({
 | `androidAppsFlyerId` | You promote an Android app |
 | `iOSAppsFlyerId` | You promote an iOS app |
 
-The two are independent — set whichever platforms you run and omit the other. Use the App ID exactly as it appears in your AppsFlyer dashboard under the app's settings; see the [field reference on the Install page](/en/tracking/web-tracker/install#step-3-initialize-the-tracker) for details.
+The two are independent — set whichever platforms you run and omit the other. Use the App ID exactly as it appears in your AppsFlyer dashboard under the app's settings; see the [field reference on the Install page](/en/tracking/web-tracker/install#step-3-initialise-the-tracker) for details.
 
 > [!WARNING]
 > Without the App ID, the web tracker still works and your RevoSurge events still arrive — but nothing is forwarded to AppsFlyer, so AppsFlyer never learns the click happened. This failure is silent on both dashboards: RevoSurge shows clicks, AppsFlyer shows the installs as organic. If your install volume looks right in RevoSurge and absent in AppsFlyer, check this field first.

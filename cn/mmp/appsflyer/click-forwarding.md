@@ -59,7 +59,7 @@ const tracker = new WebTracker({
 | `androidAppsFlyerId` | 你推广 Android 应用 |
 | `iOSAppsFlyerId` | 你推广 iOS 应用 |
 
-两者互相独立——填你实际在跑的平台，另一个省略即可。请使用 AppsFlyer 后台该应用设置中显示的 App ID 原样填写；字段细节见[安装页的初始化选项](/cn/tracking/web-tracker/install#step-3-initialize-the-tracker)。
+两者互相独立——填你实际在跑的平台，另一个省略即可。请使用 AppsFlyer 后台该应用设置中显示的 App ID 原样填写；字段细节见[安装页的初始化选项](/cn/tracking/web-tracker/install#step-3-initialise-the-tracker)。
 
 > [!WARNING]
 > 不填 App ID，web tracker 依然工作，你的 RevoSurge 事件也照旧到达——但不会有任何东西转发给 AppsFlyer，AppsFlyer 永远不知道这次点击发生过。这个故障在两个看板上都是静默的：RevoSurge 有点击，AppsFlyer 把安装记成自然量。如果你的安装量在 RevoSurge 看起来正常、在 AppsFlyer 却没有，先查这个字段。

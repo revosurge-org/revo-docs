@@ -30,6 +30,7 @@ export const en: DefaultTheme.Config = {
       collapsed: false,
       items: [
         { text: 'Overview · Which one to use?', link: '/en/tracking/overview' },
+        { text: 'Core concepts', link: '/en/tracking/core-concepts' },
         {
           text: '1. Web Tracker',
           link: '/en/tracking/web-tracker',
@@ -71,6 +72,8 @@ export const en: DefaultTheme.Config = {
                 { text: 'Migrating from v2', link: '/en/tracking/s2s/v3/migration' }
               ]
             },
+            { text: 'Integration validation', link: '/en/tracking/s2s/validation' },
+            { text: 'Handoff & go-live', link: '/en/tracking/s2s/handoff' },
             { text: 'Server Events API (v2, deprecated)', link: '/en/tracking/s2s/server-events-api' }
           ]
         },
@@ -79,7 +82,9 @@ export const en: DefaultTheme.Config = {
           link: '/en/tracking/postback/partner-postback',
           collapsed: true,
           items: [
-            { text: 'Partner Postback API', link: '/en/tracking/postback/partner-postback' }
+            { text: 'Partner Postback API', link: '/en/tracking/postback/partner-postback' },
+            { text: 'Integration validation', link: '/en/tracking/postback/validation' },
+            { text: 'Handoff & go-live', link: '/en/tracking/postback/handoff' }
           ]
         }
       ]
