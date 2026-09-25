@@ -1,10 +1,14 @@
 ---
 title: RevoSurge 服务器事件 API
 sidebar_label: 服务器事件 API
-description: 向 DataPulse 发送 S2S 事件。API 参考、认证、单条/批量接入。
+description: 将于 2026 年 10 月 18 日弃用——请使用 v3。向 DataPulse 发送 S2S 事件。API 参考、认证、单条/批量接入。
 ---
 
-# RevoSurge 服务器事件 API
+# RevoSurge 服务器事件 API <Badge type="danger" text="已弃用" />
+
+::: danger 将于 2026 年 10 月 18 日弃用
+服务器事件 API v2 将于 **2026 年 10 月 18 日**弃用。请使用[服务器事件 API (v3)](/cn/tracking/s2s/v3/server-events-api)，并参阅[从 v2 迁移](/cn/tracking/s2s/v3/migration)。
+:::
 
 **受众：** 工程师、技术集成方、管理员团队
 

@@ -1,10 +1,14 @@
 ---
 title: RevoSurge Server Events API
 sidebar_label: Server Events API
-description: S2S events to DataPulse. API reference, auth, single/batch ingest.
+description: Deprecated on 18 Oct 2026 — use v3. S2S events to DataPulse. API reference, auth, single/batch ingest.
 ---
 
-# RevoSurge Server Events API
+# RevoSurge Server Events API <Badge type="danger" text="Deprecated" />
+
+::: danger Deprecated on 18 October 2026
+Server Events API v2 will be deprecated on **18 October 2026**. Use [Server Events API (v3)](/en/tracking/s2s/v3/server-events-api) and see [Migrating from v2](/en/tracking/s2s/v3/migration).
+:::
 
 **Audience:** Engineers, technical integrators, Admin teams
 

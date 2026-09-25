@@ -59,7 +59,6 @@ export const cn: DefaultTheme.Config = {
           collapsed: true,
           items: [
             { text: '概述', link: '/cn/tracking/s2s/overview' },
-            { text: '服务器事件 API (v2)', link: '/cn/tracking/s2s/server-events-api' },
             {
               text: '服务器事件 API (v3)',
               link: '/cn/tracking/s2s/v3/server-events-api',
@@ -71,7 +70,8 @@ export const cn: DefaultTheme.Config = {
                 { text: 'iGaming 事件', link: '/cn/tracking/s2s/v3/events-igaming' },
                 { text: '从 v2 迁移', link: '/cn/tracking/s2s/v3/migration' }
               ]
-            }
+            },
+            { text: '服务器事件 API (v2，已弃用)', link: '/cn/tracking/s2s/server-events-api' }
           ]
         },
         {
