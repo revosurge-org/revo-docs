@@ -1,202 +1,325 @@
 ---
 title: 追踪概述
-description: 把转化数据发给 RevoSurge 的四种方式 —— Web 追踪器、AppsFlyer、S2S 服务器事件、Partner Postback。60 秒选出适合你的。
+description: 向 RevoSurge 发送转化的四种方式——Web 追踪器、S2S、Partner Postback 和 AppsFlyer——以及你的广告系列目标如何决定你需要哪几种。
 ---
 
 # 追踪概述
 
-把转化数据发给 RevoSurge 的四种方式。60 秒选出适合你的。
+**受众：** 广告主、媒介采买、UA 经理、开发者、联盟及合作伙伴经理
 
-::: tip 在哪里配置这些
-四种方式都在 **DataPulse**([datapulse.revosurge.com](https://datapulse.revosurge.com))里你的**产品**中设置——通过设置向导 (Setup Wizard) 的 **Setup Web Tracker** 与 **S2S Postback** 步骤完成。初次使用 RevoSurge？请从 [**增长 → 入门指南**](/cn/growth/getting-started) 开始。
+RevoSurge 依据你发送给我们的转化来优化你的广告系列。本页说明如何完成这项配置：创建产品，确定你要优化的目标，再接入能承载这些数据的方式。
+
+<nav class="article-toc" aria-label="本文内容">
+<p class="article-toc-title">本文内容</p>
+
+- [1. 创建你的产品](#_1-create-your-product)
+- [2. 选择你的配置方案](#_2-choose-your-setup)
+- [3. 四种方式](#_3-the-four-methods)
+- [4. 每种方式能解锁什么](#_4-what-each-method-unlocks)
+- [5. 常见问题](#_5-faq)
+- [6. 开始接入](#_6-getting-started)
+
+</nav>
+
+::: details 从 Meta 或 Google 转过来？从这里开始
+
+你已经熟悉的大部分概念都能一一对应。名字变了，模型没变。
+
+| 你已经熟悉的 | 在 RevoSurge 上 |
+| --- | --- |
+| Meta Pixel · Google `gtag.js` | **Web 追踪器**——同样的思路，一段脚本，六个事件 |
+| Conversions API · GA4 Measurement Protocol | **S2S 服务器事件 (v3)**——你的后端向我们发送 POST 请求 |
+| 标准事件（Purchase、CompleteRegistration） | **事件目录**——24 个事件：9 个标准事件、15 个 iGaming 事件 |
+| `fbclid` · `gclid` | `identity.click_id`——在落地时捕获，再回传给我们 |
+| Advanced Matching · Enhanced Conversions | `context.privacy.email_hash` / `phone_hash`——SHA-256，与它们的做法相同 |
+| Purchase `value` + `currency` | `context.amount` + `context.currency`——`deposit` 必填 |
+| Test Events · Tag Assistant | 在任意端点加 `?dryrun=1`——返回完整判定结果，不存储任何数据 |
+| `event_id` 去重 | **Partner Postback**：`event_id`，附有文档化的优先级阶梯。**S2S**：资金类事件使用 `context.transaction_id` |
+
+**有三点对你来说是新的：**
+
+- **iGaming 事件目录。** 充值、投注、KYC、奖金、VIP 等级和会话都是一等事件，而不是需要你自己定义的自定义转化。正因如此，才能按玩家价值出价。
+- **iGaming 事件按产品启用。** 与 Meta 标准事件不同，`deposit` 并不是一发送就生效——RevoSurge 需要先为你的产品启用 iGaming 预设。参见 [7. 事件目录](/cn/tracking/s2s/overview#_7-the-event-catalog)。
+- **Partner Postback 没有对应物。** 如果你的转化数据存放在联盟平台的后台，而不是你自己的后端，你无需写任何代码即可完成集成。参见 [2.2](#_2-2-which-system-holds-your-conversion-data)。
+
 :::
 
-## 哪种方式适合你？ {#decide}
+## 1. 创建你的产品 {#_1-create-your-product}
 
-回答两个问题，我们推荐最快的落地路径。
+在它存在之前，其他一切都无法工作。**产品**（Product）就是 RevoSurge 眼中的你的网站或 App。创建产品会登记你的域名，并签发每种方式都依赖的凭证：Web 追踪器用的 **Tracker ID**，以及 S2S 用的 **API 密钥**。
 
-<TrackingMethodPicker lang="cn" />
+在任一后台中前往 **Product → Manage Product**：
 
-## 或者按场景选 {#scenarios}
+| 后台 | URL |
+| --- | --- |
+| **AdWave** | [adwave.revosurge.com/product](https://adwave.revosurge.com/product) |
+| **DataPulse** | [datapulse.revosurge.com/product](https://datapulse.revosurge.com/product) |
 
-<div class="scenario-grid">
-  <a class="scenario-card" href="#partner-postback">
-    <div class="scenario-lead">「我用的是 <strong>Affilka / Cellxpert / Smartico / MyAffiliates / NetRefer</strong>，想今天就上线。」</div>
-    <div class="scenario-arrow">→ <strong>Partner Postback</strong> · 当天上线 · 无需工程</div>
-  </a>
-  <a class="scenario-card" href="#s2s">
-    <div class="scenario-lead">「我有<strong>自建后台</strong>，也有能对接 API 的工程团队。」</div>
-    <div class="scenario-arrow">→ <strong>S2S 服务器事件</strong> · 控制力最强 · 完整 iGaming 事件目录</div>
-  </a>
-  <a class="scenario-card" href="#appsflyer">
-    <div class="scenario-lead">「我在 Play Store 或 App Store 上有<strong>原生 Android / iOS App</strong>。」</div>
-    <div class="scenario-arrow">→ <strong>AppsFlyer</strong> · 业界标准的 App MMP</div>
-  </a>
-  <a class="scenario-card" href="#web-tracker">
-    <div class="scenario-lead">「我只有<strong>落地页 + 广告主网站</strong> —— 没有 App，也没有后台 API。」</div>
-    <div class="scenario-arrow">→ <strong>Web 追踪器</strong> · 第一方 JS 代码片段</div>
-  </a>
-</div>
-
-## 四种方式 {#methods}
-
-<div class="method">
-
-### 🌐 Web 追踪器 <Badge type="info" text="网页" /> {#web-tracker}
-
-<p class="method-tagline">装在落地页和广告主网站上的第一方 JS。</p>
-
-用户在网页漏斗中前进时，实时上报转化事件（注册、存款、FTD）。`click_id` 存在有效期一年的第一方 cookie 里 —— 一次点击落地、跳出、三天后回来，这条转化仍然归因得上。
-
-<div class="method-meta">
-  <div class="meta-item"><span class="meta-label">适用场景</span>纯网页漏斗，或希望在没有服务端对接的前提下归因网页侧转化</div>
-  <div class="meta-item"><span class="meta-label">不适用</span>你的漏斗在移动 App 内</div>
-  <div class="meta-item"><span class="meta-label">交付形式</span>JS 代码片段 + GTM 模板（规划中）</div>
-  <div class="meta-item"><span class="meta-label">关键机制</span>第一方 cookie，有效期一年，跳出后回访仍可归因</div>
-</div>
-
-<a class="method-cta" href="/cn/tracking/web-tracker/install">从 Web 追踪器开始 →</a>
-<a class="method-cta-secondary" href="/cn/tracking/web-tracker/reference">查看 SDK 参考</a>
-
-</div>
-
-<div class="method">
-
-### 📱 AppsFlyer <Badge type="tip" text="App MMP" /> {#appsflyer}
-
-<p class="method-tagline">第三方移动归因平台，业界标准。</p>
-
-RevoSurge 作为媒体渠道接入，AppsFlyer 把安装与应用内事件 postback 转发给我们。你在初始化 web 追踪器时于落地页配置 `androidAppsFlyerId` / `iOSAppsFlyerId`，我们会作为合作伙伴卡片出现在你的 AppsFlyer 后台。
-
-Play Store / App Store 分发走 Install Referrer，是确定性归因。APK 与 H5 套壳分发则回退到概率匹配，匹配率明显更低。
-
-<div class="method-meta">
-  <div class="meta-item"><span class="meta-label">适用场景</span>任何移动 App —— Play Store、App Store、APK 或 H5 套壳</div>
-  <div class="meta-item"><span class="meta-label">不适用</span>你完全没有移动 App（纯网页漏斗）</div>
-  <div class="meta-item"><span class="meta-label">交付形式</span>初始化 web 追踪器时在落地页配置 · AppsFlyer 后台的合作伙伴卡片</div>
-  <div class="meta-item"><span class="meta-label">归因精度</span>应用商店安装走 Install Referrer 为确定性 · 其余为概率匹配</div>
-</div>
-
-<a class="method-cta" href="/cn/mmp/appsflyer/overview">从 AppsFlyer 开始 →</a>
-<a class="method-cta-secondary" href="/cn/mmp/appsflyer/validation">集成校验</a>
-
-</div>
-
-<div class="method">
-
-### 🔧 S2S 服务器事件 <Badge type="info" text="S2S" /> {#s2s}
-
-<p class="method-tagline">你的后台直连我们的 S2S API，控制力最强。</p>
-
-服务器到服务器，完全程序化。**分两档，按你想衡量什么来选。** 两档共用同一套鉴权与事件契约，可以先上 Basic，之后增量扩到 Full。
-
-<div class="method-subtier">
-  <div class="method-subtier-title">S2S-Basic —— 仅注册 + FTD</div>
-  <div class="method-subtier-desc">通过 S2S 通道拿到核心获客指标。REST API 子集（2 个端点）。比 Partner Postback 控制力更强，但尚不含收入与复存追踪。</div>
-</div>
-
-<div class="method-subtier">
-  <div class="method-subtier-title">S2S-Full —— 完整 iGaming 事件目录</div>
-  <div class="method-subtier-desc">包含 Basic 的全部，另加复存、收入事件、跨通道去重与对账。契约要点：never-4xx 设计 · 去重回退链 · 30 天接收窗口 · 运营方的 FTD 主张按 is_claimable 主张收下，不自动裁定为权威。</div>
-</div>
-
-<div class="method-meta">
-  <div class="meta-item"><span class="meta-label">适用场景</span>自建后台且有工程团队 —— Basic 做获客，Full 做 LTV、去重与收入</div>
-  <div class="meta-item"><span class="meta-label">不适用</span>没有工程资源对接 HTTP API</div>
-  <div class="meta-item"><span class="meta-label">交付形式</span>REST API（OpenAPI v3 规范规划中）· 可选 PHP / Node SDK · Full 另有对账文件投递</div>
-  <div class="meta-item"><span class="meta-label">升级路径</span>Basic → Full 只需改代码：同一套鉴权、同一份契约、字段只增不改，无需重新接入</div>
-</div>
-
-<a class="method-cta" href="/cn/tracking/s2s/overview">从 S2S 开始 →</a>
-<a class="method-cta-secondary" href="/cn/tracking/s2s/v3/server-events-api">查看 API 参考</a>
-
-</div>
-
-<div class="method">
-
-### 🔗 Partner Postback <Badge type="warning" text="上线最快" /> {#partner-postback}
-
-<p class="method-tagline">把两个 URL 粘到你的联盟平台，今天就能上线。</p>
-
-一个粘贴到你的联盟 / 后台平台的 URL。该平台在注册与 FTD 发生时向我们发送 postback。无需写码、无需工程、无需等待。支持 Affilka、Cellxpert、Smartico、MyAffiliates、NetRefer 以及其他 iGaming 友好的平台。
-
-<div class="method-meta">
-  <div class="meta-item"><span class="meta-label">适用场景</span>使用 SaaS 联盟平台，希望零工程、当天完成接入</div>
-  <div class="meta-item"><span class="meta-label">不适用</span>需要与 AppsFlyer 做跨通道去重，或需要上报任意应用内事件 —— 请升级到 S2S</div>
-  <div class="meta-item"><span class="meta-label">交付形式</span>从我们后台复制两个 postback URL（注册 + FTD）· slug 与密钥自助获取</div>
-  <div class="meta-item"><span class="meta-label">归因精度</span>取决于你的联盟平台的宏参数覆盖度</div>
-</div>
-
-<a class="method-cta" href="/cn/tracking/postback/partner-postback">从 Partner Postback 开始 →</a>
-<a class="method-cta-secondary" href="/cn/tracking/postback/partner-postback#parameters">宏参数说明</a>
-
-</div>
-
-::: warning APK / H5 套壳分发
-支持，但走概率匹配 —— 因为没有 Install Referrer，匹配率明显低于 Play Store / App Store 分发。请评估这个匹配率是否满足你的 CPA 目标。
+::: info 一个产品，两个后台通用
+AdWave 和 DataPulse 共用同一份产品列表。在其中一个创建后，它会出现在另一个里——无需创建两次。右上角的 **Open DataPulse** / **Open AdWave** 按钮可在两者之间切换。
 :::
 
-## 完整路由表 {#matrix}
+页面顶部的 **Setup Wizard**（设置向导）会按顺序引导你完成整个集成，每一步都要在上一步完成后才能进行。在你的产品创建之前，第 2–4 步会显示 **Locked · Complete Step 1 first**。
 
-先找到你所在的行（你怎么运营后台），再找到你的列（用户在哪里转化）。
+![产品页面上的设置向导](/img/tracking/02-setup-wizard-4-steps.png)
 
-| 后台归属 | 只有网页 | 只有 App | 网页 + App |
-|---|---|---|---|
-| **自建后台**（有内部工程团队） | **S2S + Web 追踪器**（两个都要）—— S2S 负责发事件，Web 追踪器抓点击侧信号 | **S2S** 为主 · **AppsFlyer** 做安装归因 | **S2S + Web 追踪器 + AppsFlyer**（三个都要）—— S2S 作权威事件流，Web 追踪器抓点击侧，AppsFlyer 做 App 安装 |
-| **联盟 / SaaS 平台**（Affilka · Cellxpert · Smartico · MyAffiliates · NetRefer 等） | **Partner Postback** 为主 · **Web 追踪器**抓点击侧信号 | **Partner Postback** + **AppsFlyer** 做安装归因 | **Partner Postback + AppsFlyer**（两个都要）—— Postback 覆盖平台侧，AppsFlyer 处理 App 安装 |
-| **尽快上线 · 无需工程** | **Partner Postback**（当天上线） | 只用 **AppsFlyer**（接受 App 侧的缺口） | **Partner Postback + AppsFlyer**（两个都要）—— 先用 Postback 覆盖网页侧，AppsFlyer 做 App 安装 |
+### 1.1 填写表单 {#_1-1-fill-in-the-form}
 
-**跨方式说明**
+在设置向导中或 Manage Product 表格上方点击 **+ Create Product**。
 
-- APK / H5 套壳分发通过概率匹配支持 —— 匹配率低于带 Install Referrer 的 Play Store / App Store 分发。
-- 30 天归因窗口对所有方式一致生效。
-- 当 `click_id` 缺失时，`identifier`（SHA-256 邮箱或手机号）可提升为归因回退关联键。
+![创建产品表单](/img/tracking/03-create-product-form.png)
 
-## 常见问题 {#faq}
+| 字段 | 必填 | 填写内容 |
+| --- | --- | --- |
+| **Product Domain** | 是 | 你的主域名，包含协议——`https://yourbrand.com`。RevoSurge 会把流量归因到这个域名。 |
+| **Product Name** | 是 | 便于识别的名称。用于报表和产品切换器。 |
+| **Landing Page URL** | 否 | 你投放付费流量的任何其他域名或 URL。为每一个选择 **Funnel Type**。**+** 添加一行，垃圾桶图标删除一行。 |
+| **Deposit Currency** | 是 | 你的充值结算货币——**Fiat**（可搜索）或 **Crypto**。我们报告的每一笔金额都会换算成该货币。 |
 
-::: details 哪种方式最准？
-Web 追踪器与 S2S 精度最高，因为它们不依赖第三方匹配。AppsFlyer 是 App 归因的业界标准。Partner Postback 的上限取决于你的联盟平台的宏参数覆盖度。
+然后点击 **Submit**。向导进度变为 `1/4`，第 1 步显示 **Created**。
+
+::: warning 登记你投放的每一个域名
+> 所有已登记的域名都需要安装 Web 追踪器。广告系列的 Destination URL 必须与一个处于有效状态的域名匹配，才能投放。
+
+如果广告系列指向一个未在此登记的域名，**它将无法投放**。现在就把预落地页、镜像域名和跳转域名都加上。
 :::
 
-::: details 同一笔 FTD 我同时通过 AppsFlyer *和*自建后台上报了，会怎样？
-两条都会存下来。Integration Health Score 会把冲突暴露出来。跨通道权威源的裁定策略正在敲定 —— 在此之前，请把两个信号视为互补，并检查其中的分歧。
+::: tip 选择你后台实际结算所用的充值货币
+我们报告的每一笔金额都会换算成该货币。如果它与你的实际结算货币不一致，你的总额和我们的总额之间就会出现与汇率波动相当的差异。以加密货币结算的运营方应选择加密货币，而不是等值的法币。
 :::
 
-::: details 可以用本地货币（INR / MYR / USDT）发 postback 吗？
-可以 —— 我们按公布的汇率换算，你不需要先换成美元。
+### 1.2 选择正确的 Funnel Type {#_1-2-choose-the-right-funnel-type}
+
+每个 Landing Page URL 都需要一个 Funnel Type，这样 RevoSurge 才知道这个页面的用途。
+
+![Funnel Type 下拉菜单](/img/tracking/04-funnel-type-dropdown.png)
+
+| Funnel Type | 适用情形 |
+| --- | --- |
+| **Direct Register** | 访客直接在该落地页上注册。 |
+| **Redirect Register** | 该页面跳转到注册页。请把两个 URL 登记在同一个产品下。 |
+| **Direct Download** | 访客直接从该页面下载 App。 |
+| **Redirect Download** | 该页面跳转到 App 下载页。请把两个 URL 登记在同一个产品下。 |
+| **AI Companion Home Page** | AI Companion 产品的首页。 |
+| **AI Companion Survey Funnel** | 问卷式的 AI Companion 获客漏斗。 |
+
+::: info 跳转类型需要先有 Direct 页面
+在你至少添加一个 **Direct** 落地页 URL 之前，**Redirect Register** 和 **Redirect Download** 会一直显示为灰色不可选——后台会提示 *"Add a Direct landing page URL first."*（请先添加一个 Direct 落地页 URL）。先添加目标页面，再添加跳转页。
 :::
 
-::: details 时间戳用秒还是毫秒？
-**请发毫秒。** 这是 Partner Postback 与 Server Events API 共同的契约。
+### 1.3 你会得到什么 {#_1-3-what-you-get}
 
-不同之处在于你没照做时会发生什么。Server Events API（v3）会**拒绝**看起来像秒的值。Partner Postback 会纠正它并保留事件，但把这次纠正视为一次契约偏离——它会触发我方告警，我们会与你联系。两者都不是第二种受支持的格式，所以请固定使用毫秒。
+| 标识符 | 格式 | 用途 |
+| --- | --- | --- |
+| **Product ID** | `AWP-20260827-052659-007-3119` | 内部引用、支持工单 |
+| **Tracker ID** | `TRA-AWP-20260827-052659-007-3119` | 填入 Web 追踪器代码片段 |
+
+Tracker ID 就是 Product ID 加上 `TRA-` 前缀。
+
+## 2. 选择你的配置方案 {#_2-choose-your-setup}
+
+RevoSurge 支持**四种集成方式**——Web 追踪器、S2S 服务器事件、Partner Postback 和 AppsFlyer。你会用到不止一种，但几乎没有人四种全用。
+
+**那么哪种组合适合你？** 我们用三个问题来回答。
+
+| | 问题 | 你的答案决定什么 |
+| --- | --- | --- |
+| **2.1** | 你的玩家落在哪里？ | AppsFlyer 是否需要参与 |
+| **2.2** | 哪个系统掌握你的转化数据？ | Partner Postback **或** S2S——两者是二选一，而不是叠加 |
+| **2.3** | 你的广告系列优化什么目标？ | 接入要做多深，以及要发送哪些事件 |
+
+回答完这三个问题，[路由表](#the-routing-table)就会给出你的配置方案。如果你已经知道答案，可以直接跳过去。
+
+### 2.1 你的玩家落在哪里？ {#_2-1-where-do-your-players-land}
+
+| | |
+| --- | --- |
+| **网站** | Web 追踪器负责承载点击和浏览器事件 |
+| **移动 App** | 你还需要一个 MMP。RevoSurge 与 **AppsFlyer** 集成 |
+| **两者都有** | 以上两者都要——它们在同一个产品下并行运行 |
+
+没有 MMP 的 App 安装广告系列无法归因安装。应用商店横在点击和安装之间，我们所能控制的任何东西都看不到另一侧。
+
+### 2.2 哪个系统掌握你的转化数据？ {#_2-2-which-system-holds-your-conversion-data}
+
+这是多数配置出错的地方，因为它关乎**谁能发送这个事件**，而不是你更倾向于哪种。
+
+| 充值和注册记录在哪里 | 方式 | 需要你提供什么 |
+| --- | --- | --- |
+| **你自己的后端**——由你的平台确认付款 | **S2S** | 一名开发者，约 2–5 天 |
+| **联盟平台的后台**——Income Access、Affilka、MyAffiliates 或你自建的联盟系统 | **Partner Postback** | 一位能访问该平台 postback 设置的人。无需工程投入。 |
+| **你的 MMP**——应用内事件已经在流向 AppsFlyer | **AppsFlyer postback** | 在 AppsFlyer 中完成配置，并在 RevoSurge tile 上授予权限 |
+
+::: warning 每个事件只选一个权威来源
+S2S 和 Partner Postback 做的是同一件事。如果两者上报了同一笔充值，会按优先级处理——参见 [核心概念 → 去重](/cn/tracking/core-concepts#when-two-methods-report-the-same-conversion)——但你等于花了两份成本去构建同一样东西，对账也会更难，而不是更容易。
+
+只有当两者确实覆盖不同事件或不同品牌时，才同时运行。
 :::
 
-::: details 可以在不产生真实数据的前提下验证吗？
-可以。在 [S2S](/cn/tracking/s2s/v3/server-events-api#dry-run) 或 [Partner Postback](/cn/tracking/postback/partner-postback#dry-run) 端点上加 `?dryrun=1`，我们会完全按生产路径解析、校验并富化你的请求，把将要记录的内容原样回显 —— 但不落库。
+如果你既有工程资源**又**有联盟平台，请选择 S2S。它是唯一能承载金额和 `bet` 的方式，因此也是唯一一种在你的目标加深后仍然够用的方式。
+
+### 2.3 你的广告系列优化什么目标？ {#_2-3-what-do-your-campaigns-optimise-for}
+
+你选的不是追踪方式，而是**你的广告系列优化什么目标**，这决定了配置要做多深。
+
+- **App 安装**——新安装量
+- **注册**——新账户数量
+- **首充**——首次充值的玩家数
+- **充值价值**——按玩家充值金额出价
+- **玩家价值**——一段时间内的 GGR 和 LTV
+
+选出所有适用的目标。它们是累加的：优化玩家价值并不意味着你不再统计注册。往下找到你**最深**的目标——那一行设定了下限，比它浅的目标都会随之覆盖。
+
+### 路由表 {#the-routing-table}
+
+找到与你三个答案匹配的那一行。
+
+| 落在 | 最深目标 | 数据位于 | 你的配置方案 | 工作量 |
+| --- | --- | --- | --- | --- |
+| 网页 | 注册 | 浏览器 | Web 追踪器 | 当天 |
+| 网页 | 首充 | 联盟平台 | Web 追踪器 **+** Partner Postback | 当天 |
+| 网页 | 首充 | 你自己的后端 | Web 追踪器 **+** S2S（Basic） | 约 2–3 天 |
+| 网页 | 充值价值 | 你自己的后端 | Web 追踪器 **+** S2S（Basic，带金额） | 约 2–3 天 |
+| 网页 | 玩家价值——GGR、LTV | 你自己的后端 | Web 追踪器 **+** S2S（完整目录） | 约 3–5 天 |
+| App | 安装 | 你的 MMP | Web 追踪器（点击转发）**+** AppsFlyer | 约 3–5 天 |
+| App | 注册、应用内事件 | 你的 MMP | 上述配置 **+** AppsFlyer 应用内事件 postback | 约 3–5 天 |
+| App | 充值价值或玩家价值 | 你自己的后端 | 上述配置 **+** S2S | 在此基础上再加约 3–5 天 |
+| 网页**和** App | 任意 | 混合 | Web 追踪器 **+** AppsFlyer **+** S2S 或 Partner Postback 中与你后台匹配的那一种 | 以上各行之和 |
+
+::: warning 每种配置方案都必须包含 Web 追踪器
+广告点击最初就是由它捕获的。没有其他任何方式能看到是哪条广告带来了访客——而在 App 侧，也是它负责把你的点击转发给 AppsFlyer。
 :::
 
-::: details 怎么知道我的集成是健康的？
-每个产品页都有 **Integration Health Score** —— `click_id` 覆盖率、`event_id` 存在率、身份覆盖率、事件到达时的中位时延、建议字段完整度。同时给出一份整改清单，并附上对应的 CPA 差值。
+## 3. 四种方式 {#_3-the-four-methods}
+
+### 3.1 Web 追踪器——浏览器端 {#_3-1-web-tracker-—-browser-side}
+
+放在你网站上的一段 JavaScript 代码片段。它上报浏览器中发生的事情——页面浏览、注册、登录、充值、进入游戏、下载点击——并捕获**归因上下文**：哪条广告、哪个来源、哪个落地页。
+
+- **由谁实施：** 你的网页开发者
+- **凭证：** Tracker ID（`TRA-AWP-…`）
+- **指南：** [安装 Web 追踪器](/cn/tracking/web-tracker/install)
+
+### 3.2 S2S 服务器事件——后端 {#_3-2-s2s-server-events-—-backend-side}
+
+你的后端把事件 POST 到我们的 API。没有任何东西运行在浏览器中，因此不会因广告拦截器、防追踪功能或关闭标签页而丢失数据。
+
+**资金数据应该走这里。** 支付服务商确认过的充值，是你的服务器确切掌握的事实；浏览器可能根本没看到它。
+
+- **由谁实施：** 你的后端开发者
+- **凭证：** API 密钥，通过 `X-API-KEY` 请求头发送
+- **指南：** [服务器到服务器 (S2S) 概述](/cn/tracking/s2s/overview)
+
+### 3.3 Partner Postback——由你的平台调用我们 {#_3-3-partner-postback-—-your-platform-calls-us}
+
+一个在转化发生时由你的后台或联盟平台调用的 URL。你把它粘贴进去，由对方触发。**无需工程投入。**
+
+- **由谁实施：** 你本人，或你的联盟平台管理员
+- **凭证：** postback 密钥，通过 `k` 查询参数发送
+- **指南：** [合作方 Postback API](/cn/tracking/postback/partner-postback)
+
+### 3.4 AppsFlyer——App 安装与应用内事件 {#_3-4-appsflyer-—-app-installs-and-in-app-events}
+
+如果你推广的是移动 App，AppsFlyer 会把安装和应用内事件回报给我们，而 Web 追踪器会把你的广告点击转发给 AppsFlyer。大部分配置在 **AppsFlyer 自己的控制台**中完成，而不是在 RevoSurge 中。
+
+- **由谁实施：** 你的 UA 经理，在 AppsFlyer 中完成
+- **凭证：** 合作伙伴 tile 名称和 `pid`，由你的客户经理提供
+- **指南：** [AppsFlyer 概述](/cn/mmp/appsflyer/overview)
+
+::: info 向你的客户经理索取三样东西
+在 AppsFlyer Partner Marketplace 中搜索用的确切**合作伙伴 tile 名称**、用于映射你事件的**合作伙伴事件名**，以及你的 **`pid`**。没有第一项就无法开始。
 :::
 
-::: details 可以先上 S2S-Basic，之后再升级到 S2S-Full 吗？
-可以 —— 这正是设计好的路径。同一套鉴权、同一份事件契约、字段只增不改。升级只需改代码，无需重新接入。
+### 横向对比 {#side-by-side}
+
+| | Web 追踪器 | S2S | Partner Postback | AppsFlyer |
+| --- | --- | --- | --- | --- |
+| **运行位置** | 访客的浏览器 | 你的后端 | 合作方的系统 | AppsFlyer 的服务器 |
+| **由谁实施** | 网页开发者 | 后端开发者 | 你本人，无需工程投入 | UA 经理 |
+| **能否看到广告归因** | 能，原生支持 | 能，通过 `click_id` | 能，通过 `click_id` | 能，通过转发的点击 |
+| **会被广告拦截器拦截** | 有可能 | 否 | 否 | 否 |
+| **资金数据是否权威** | 否 | **是** | 是 | 是 |
+| **覆盖范围** | 网页 | 网页 + App | 网页 + App | **仅 App** |
+| **配置工作量** | 当天 | 约 3–5 天 | 当天 | 约 3–5 天 |
+
+::: info 不熟悉这些术语？
+**浏览器端 / 客户端**——运行在访客浏览器中的代码。能看到广告点击和用户旅程，但可能被拦截。
+**服务器到服务器（S2S）**——你的服务器直接与我们的服务器通信。无法被拦截，但看不到浏览器。
+**Postback**——由其他人调用、用来通知你某件事已发生的 URL。
+**MMP**——移动归因合作伙伴（mobile measurement partner）。像 AppsFlyer 这样的第三方，负责归因 App 安装并将其上报给广告平台。
 :::
 
-::: details APK / H5 套壳的 App 支持吗？
-支持，走概率匹配。因为没有 Install Referrer，匹配率明显低于 Play Store / App Store 分发。请把这部分精度损失计入你的 CPA 目标。
+## 4. 每种方式能解锁什么 {#_4-what-each-method-unlocks}
+
+随着你的事件覆盖范围扩大，功能会逐步开启。设置向导会实时显示这一点——每一步都列出了它能解锁的功能。
+
+| 你发送的内容 | 解锁 |
+| --- | --- |
+| 通过 Web 追踪器发送 `page_view` | Source Traffic |
+| `register`、`login` | Registration Funnel |
+| 通过 S2S 或 Postback 发送 `deposit`、`withdraw` | FTD 报表 |
+| 通过 S2S 发送带金额的 `deposit`、`withdraw`、`bet` | True LTV · ROAS |
+| 通过 S2S 发送完整的标准 + iGaming 事件目录 | Predicted LTV · Churn · Bonus Engine |
+| 通过 AppsFlyer 发送安装和应用内事件 | App 安装归因 · App 侧漏斗 |
+| 在 DataPulse 中接入的广告来源 | Source Intelligence |
+
+## 5. 常见问题 {#_5-faq}
+
+::: details 四种方式我都需要吗？
+不需要。大多数广告主使用的是 **Web 追踪器 + 一种转化方式**。只有在推广移动 App 时才需要加上 AppsFlyer。参见[路由表](#the-routing-table)。
 :::
 
-## 开始接入 {#getting-started}
+::: details 可以先用一种，之后再加吗？
+可以。新增方式不会丢失任何数据——多出来的事件只是开始陆续到达。常见路径是先用 Web 追踪器 + Partner Postback 上线，等工程团队有时间再接入 S2S。
+:::
 
-1. 回答本页顶部的两个问题，或在完整路由表中找到你所在的行。
-2. 打开对应的方式页面：[Web 追踪器](/cn/tracking/web-tracker) · [AppsFlyer](/cn/mmp/appsflyer/overview) · [S2S 服务器事件](/cn/tracking/s2s/overview) · [Partner Postback](/cn/tracking/postback/partner-postback)。
-3. 想最快上线，就从 **Partner Postback**（SaaS 后台）或 **S2S-Basic**（自建后台）起步 —— 等需要收入信号时再扩到 S2S-Full。
+::: details 我没有工程资源，能怎么做？
+**Partner Postback。** 只需把两个 URL 粘贴到你的后台或联盟平台，当天就能上线。它能覆盖首充，这已经足够用来优化。Web 追踪器代码片段本身仍需要开发者安装，但那只是一个 script 标签。
+:::
 
-<div class="bottom-cta" id="support">
-  <div>
-    <div class="bottom-cta-title">还是拿不准该用哪种？</div>
-    <div class="bottom-cta-text">联系你的 RevoSurge BD 对接人，我们会帮你选型并协助上线。</div>
-  </div>
-</div>
+::: details 收入数据应该信任哪种方式？
+**S2S。** 浏览器上报的充值会少算——广告拦截器、关闭的标签页和支付跳转都会导致事件丢失。如果你基于浏览器上报的收入来优化，就是在基于一个不完整的数字优化。
+:::
+
+::: details 各处都必须发送同一个用户 ID 吗？
+**是的，这也是最常见的集成错误。** 无论你的系统用什么 ID 标识一个账户，都要把这个完全相同的值在 Web 追踪器中作为 `user_id`、在 S2S 中作为 `client_user_id` 发送。如果两者不同，我们会把它看作两个不同的人，你的归因就会出错。
+
+**不要**使用会话 ID、cookie ID 或匿名访客 ID。
+:::
+
+::: details 如果两种方式上报了同一笔充值，会怎样？
+我们会把两条都存下来，但只计一次。离资金最近的来源胜出：你的后台知道一笔充值已经结算，而浏览器只知道一个按钮被点击了。实际上，对于 `deposit` 而言，优先级是 **S2S > Partner Postback > Web 追踪器**，且金额只采用 S2S 的数据。
+:::
+
+::: details 需要在每个后台各创建一次产品吗？
+不需要。AdWave 和 DataPulse 共用一份产品列表。
+:::
+
+::: details 我只推广 App，还需要 Web 追踪器吗？
+需要。当你在追踪器的初始化选项中设置了 AppsFlyer App ID 后，代码片段会**把每一次广告点击转发给 AppsFlyer**，这样安装才能归因到我们。没有安装代码片段的落地页不会转发任何点击，它带来的每一次安装都会被计为自然量。
+:::
+
+::: details 广告系列要多久才能优化到位？
+点击会立即开始投放。安装和注册优化通常在 1–2 周内趋于稳定；首充优化需要 2–4 周，因为 FTD 比较稀疏；基于价值的优化需要 4–8 周。在第三天就评判一个基于价值的广告系列，看到的只是噪声，而不是效果。
+:::
+
+::: details 我的广告系列没有投放，是追踪的问题吗？
+有可能。广告系列的 Destination URL 必须与该产品下一个**已登记且处于有效状态**的域名匹配。请把预落地页、镜像域名和跳转域名作为 Landing Page URL 添加，并为每一个设置 Funnel Type。参见 [1. 创建你的产品](#_1-create-your-product)。
+:::
+
+## 6. 开始接入 {#_6-getting-started}
+
+按从上到下的顺序进行。每一步都依赖于上一步。
+
+1. **创建你的产品**——域名、落地页、充值货币——[见上文第 1 节](#_1-create-your-product)
+2. **复制你的 Tracker ID**——[步骤 1](/cn/tracking/web-tracker/install#step-1-find-your-tracker-id)
+3. **安装 Web 追踪器**，并触发 `register`、`login`、`deposit`——
+   [步骤 2–4](/cn/tracking/web-tracker/install#step-2-add-the-tracker-script)
+4. **确认 Tracker Status 显示为 Active**——
+   [步骤 5](/cn/tracking/web-tracker/install#step-5-verify-in-the-portal)
+5. **接入你的转化方式**——[S2S](/cn/tracking/s2s/overview) 或
+   [Partner Postback](/cn/tracking/postback/partner-postback)
+6. 如果你推广 App，**接入 AppsFlyer**——[AppsFlyer 概述](/cn/mmp/appsflyer/overview)
+7. **上线你的第一个广告系列**——[AdWave 广告系列设置](/cn/adwave/campaign-setup)
+
+从这里开始：**[安装 Web 追踪器](/cn/tracking/web-tracker/install)**。

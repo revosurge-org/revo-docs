@@ -1,202 +1,386 @@
 ---
-title: Tracking Overview
-description: Four ways to send conversions to RevoSurge — Web Tracker, AppsFlyer, S2S Server Events, Partner Postback. Pick yours in 60 seconds.
+title: Tracking overview
+description: The four ways to send conversions to RevoSurge — Web Tracker, S2S, Partner Postback and AppsFlyer — and how your campaign goal decides which you need.
 ---
 
-# Tracking Overview
+# Tracking overview
 
-Four ways to send conversions to RevoSurge. Pick yours in 60 seconds.
+**For:** Advertisers, media buyers, UA managers, developers, affiliate and partner managers
 
-::: tip Where you configure these
-All four methods are set up inside your **Product** in **DataPulse** ([datapulse.revosurge.com](https://datapulse.revosurge.com)) — via the Setup Wizard's **Setup Web Tracker** and **S2S Postback** steps. New to RevoSurge? Start from [**Growth → Getting started**](/en/growth/getting-started).
+RevoSurge optimises your campaigns against the conversions you send us. This page explains
+how to set that up: create a Product, decide what you are optimising for, then connect the
+methods that carry it.
+
+<nav class="article-toc" aria-label="In this article">
+<p class="article-toc-title">In this article</p>
+
+- [1. Create your Product](#_1-create-your-product)
+- [2. Choose your setup](#_2-choose-your-setup)
+- [3. The four methods](#_3-the-four-methods)
+- [4. What each method unlocks](#_4-what-each-method-unlocks)
+- [5. FAQ](#_5-faq)
+- [6. Getting started](#_6-getting-started)
+
+</nav>
+
+::: details Coming from Meta or Google? Start here
+
+Most of what you already know maps one-to-one. The names change; the model does not.
+
+| You already know | On RevoSurge |
+| --- | --- |
+| Meta Pixel · Google `gtag.js` | **Web Tracker** — same idea, one script, six events |
+| Conversions API · GA4 Measurement Protocol | **S2S Server Events (v3)** — your backend POSTs to us |
+| Standard events (Purchase, CompleteRegistration) | **The event catalog** — 24 events: 9 Standard, 15 iGaming |
+| `fbclid` · `gclid` | `identity.click_id` — capture it on landing and pass it back |
+| Advanced Matching · Enhanced Conversions | `context.privacy.email_hash` / `phone_hash` — SHA-256, same as theirs |
+| Purchase `value` + `currency` | `context.amount` + `context.currency` — required on `deposit` |
+| Test Events · Tag Assistant | `?dryrun=1` on any endpoint — returns the full verdict, stores nothing |
+| `event_id` deduplication | **Partner Postback**: `event_id`, with a documented priority ladder. **S2S**: `context.transaction_id` on money events |
+
+**Three things that will be new to you:**
+
+- **The iGaming catalog.** Deposits, bets, KYC, bonuses, VIP tiers and sessions are first-class
+  events, not custom conversions you have to define yourself. This is what makes bidding on
+  player value possible.
+- **iGaming events are enabled per Product.** Unlike a Meta standard event, `deposit` does not
+  work the moment you send it — RevoSurge enables the iGaming preset for your Product first.
+  See [7. The event catalog](/en/tracking/s2s/overview#_7-the-event-catalog).
+- **Partner Postback has no equivalent.** If your conversions live in an affiliate platform's
+  back-office rather than your own backend, you can integrate without writing any code. See
+  [2.2](#_2-2-which-system-holds-your-conversion-data).
+
 :::
 
-## Which method is right for you? {#decide}
+## 1. Create your Product
 
-Answer two quick questions and we'll recommend the fastest path.
+Nothing else works until this exists. A **Product** is your website or app as RevoSurge sees
+it. Creating one registers your domain and issues the credentials every method depends on:
+a **Tracker ID** for the Web Tracker, and an **API key** for S2S.
 
-<TrackingMethodPicker lang="en" />
+Go to **Product → Manage Product** in either portal:
 
-## Or browse by scenario {#scenarios}
+| Portal | URL |
+| --- | --- |
+| **AdWave** | [adwave.revosurge.com/product](https://adwave.revosurge.com/product) |
+| **DataPulse** | [datapulse.revosurge.com/product](https://datapulse.revosurge.com/product) |
 
-<div class="scenario-grid">
-  <a class="scenario-card" href="#partner-postback">
-    <div class="scenario-lead">"I use <strong>Affilka / Cellxpert / Smartico / MyAffiliates / NetRefer</strong> and want to be live today."</div>
-    <div class="scenario-arrow">→ <strong>Partner Postback</strong> · same day · no engineering</div>
-  </a>
-  <a class="scenario-card" href="#s2s">
-    <div class="scenario-lead">"I built <strong>my own back-office</strong> and have engineers who can integrate an API."</div>
-    <div class="scenario-arrow">→ <strong>S2S Server Events</strong> · deepest control · full iGaming event catalog</div>
-  </a>
-  <a class="scenario-card" href="#appsflyer">
-    <div class="scenario-lead">"I run a <strong>native Android / iOS App</strong> on Play Store or App Store."</div>
-    <div class="scenario-arrow">→ <strong>AppsFlyer</strong> · industry-standard App MMP</div>
-  </a>
-  <a class="scenario-card" href="#web-tracker">
-    <div class="scenario-lead">"I only have a <strong>landing page + advertiser website</strong> — no App, no back-office API."</div>
-    <div class="scenario-arrow">→ <strong>Web Tracker</strong> · first-party JS snippet</div>
-  </a>
-</div>
-
-## The four methods {#methods}
-
-<div class="method">
-
-### 🌐 Web Tracker <Badge type="info" text="Web" /> {#web-tracker}
-
-<p class="method-tagline">First-party JS on your landing page and advertiser site.</p>
-
-Fires conversion events (registration, deposit, FTD) as users move through your web funnel. Persists `click_id` in a first-party cookie with a one-year expiry — a user who lands, bounces, and returns three days later still attributes.
-
-<div class="method-meta">
-  <div class="meta-item"><span class="meta-label">Best for</span>Web-only funnels, or attributing web-side conversions with no server integration</div>
-  <div class="meta-item"><span class="meta-label">Skip if</span>Your funnel lives inside a mobile App</div>
-  <div class="meta-item"><span class="meta-label">Delivery</span>JS snippet + a GTM template (planned)</div>
-  <div class="meta-item"><span class="meta-label">Key mechanic</span>First-party cookie, 1-year expiry, survives bounce-and-return</div>
-</div>
-
-<a class="method-cta" href="/en/tracking/web-tracker/install">Start with Web Tracker →</a>
-<a class="method-cta-secondary" href="/en/tracking/web-tracker/reference">See SDK reference</a>
-
-</div>
-
-<div class="method">
-
-### 📱 AppsFlyer <Badge type="tip" text="App MMP" /> {#appsflyer}
-
-<p class="method-tagline">Third-party mobile measurement partner. Industry standard.</p>
-
-RevoSurge integrates as a media source, and AppsFlyer forwards install and in-app event postbacks to us. You configure `androidAppsFlyerId` / `iOSAppsFlyerId` on your landing page when initializing the web tracker; we appear as a partner tile in your AppsFlyer dashboard.
-
-Play Store / App Store distribution uses Install Referrer, which is deterministic. APK and H5-wrapper distribution falls back to probabilistic attribution, where match rates are materially lower.
-
-<div class="method-meta">
-  <div class="meta-item"><span class="meta-label">Best for</span>Any mobile App — Play Store, App Store, APK, or H5 wrapper</div>
-  <div class="meta-item"><span class="meta-label">Skip if</span>You don't have a mobile App at all (web-only funnel)</div>
-  <div class="meta-item"><span class="meta-label">Delivery</span>Configured on your landing page when initializing the web tracker · partner tile in AppsFlyer</div>
-  <div class="meta-item"><span class="meta-label">Accuracy</span>Deterministic via Install Referrer on store installs · probabilistic otherwise</div>
-</div>
-
-<a class="method-cta" href="/en/mmp/appsflyer/overview">Start with AppsFlyer →</a>
-<a class="method-cta-secondary" href="/en/mmp/appsflyer/validation">Integration validation</a>
-
-</div>
-
-<div class="method">
-
-### 🔧 S2S Server Events <Badge type="info" text="S2S" /> {#s2s}
-
-<p class="method-tagline">Your back-office to our S2S API. Deepest control.</p>
-
-Server-to-server and fully programmatic. **Pick one of two tiers** based on what you want to measure. Both share the same authentication and event contract, so you can start with Basic and extend to Full incrementally.
-
-<div class="method-subtier">
-  <div class="method-subtier-title">S2S-Basic — registration + FTD only</div>
-  <div class="method-subtier-desc">Core acquisition metrics through the S2S channel. REST API subset (2 endpoints). More control than Partner Postback, without revenue or repeat-deposit tracking.</div>
-</div>
-
-<div class="method-subtier">
-  <div class="method-subtier-title">S2S-Full — complete iGaming event catalog</div>
-  <div class="method-subtier-desc">Everything in Basic plus repeat deposits, revenue events, cross-channel deduplication, and reconciliation. Contract highlights: never-4xx design · deduplication fallback chain · 30-day acceptance window · operator FTD claims accepted as is_claimable claims, not auto-canonicalized.</div>
-</div>
-
-<div class="method-meta">
-  <div class="meta-item"><span class="meta-label">Best for</span>Own back-office with engineering — Basic for acquisition, Full for LTV, dedup, and revenue</div>
-  <div class="meta-item"><span class="meta-label">Skip if</span>You have no engineering capacity to integrate an HTTP API</div>
-  <div class="meta-item"><span class="meta-label">Delivery</span>REST API (OpenAPI v3 spec planned) · optional PHP / Node SDK · reconciliation file drop for Full</div>
-  <div class="meta-item"><span class="meta-label">Upgrade path</span>Basic → Full is code-only: same auth, same contract, additive fields, no re-onboarding</div>
-</div>
-
-<a class="method-cta" href="/en/tracking/s2s/overview">Start with S2S →</a>
-<a class="method-cta-secondary" href="/en/tracking/s2s/v3/server-events-api">See API reference</a>
-
-</div>
-
-<div class="method">
-
-### 🔗 Partner Postback <Badge type="warning" text="Fastest start" /> {#partner-postback}
-
-<p class="method-tagline">Paste two URLs into your affiliate platform. Live today.</p>
-
-A URL you paste into your affiliate or back-office platform. That platform fires postbacks to us on registration and FTD. No code, no engineering, no waiting. Works with Affilka, Cellxpert, Smartico, MyAffiliates, NetRefer, and other iGaming-friendly platforms.
-
-<div class="method-meta">
-  <div class="meta-item"><span class="meta-label">Best for</span>SaaS affiliate platform users who want same-day integration with zero engineering</div>
-  <div class="meta-item"><span class="meta-label">Skip if</span>You need cross-channel deduplication with AppsFlyer, or want to send arbitrary in-app events — upgrade to S2S</div>
-  <div class="meta-item"><span class="meta-label">Delivery</span>Two postback URLs (registration + FTD) copied from our dashboard · self-serve slug and key</div>
-  <div class="meta-item"><span class="meta-label">Accuracy</span>Only as good as your affiliate platform's macro coverage</div>
-</div>
-
-<a class="method-cta" href="/en/tracking/postback/partner-postback">Start with Partner Postback →</a>
-<a class="method-cta-secondary" href="/en/tracking/postback/partner-postback#parameters">Macro parameters</a>
-
-</div>
-
-::: warning APK / H5-wrapped App distribution
-Supported via probabilistic attribution — match rates are materially lower than Play Store / App Store distribution, because there is no Install Referrer. Weigh whether the reduced match rate fits your CPA target.
+::: info One Product, both portals
+AdWave and DataPulse share the same Product list. Create it in one and it appears in the
+other — you do not create it twice. The **Open DataPulse** / **Open AdWave** button top-right
+switches between them.
 :::
 
-## Full routing matrix {#matrix}
+A **Setup Wizard** at the top of the page walks you through the whole integration in order
+and gates each step on the one before it. Steps 2–4 read **Locked · Complete Step 1 first**
+until your Product exists.
 
-Pick your row (how you run your back-office), then your column (where users convert).
+![The Setup Wizard on the Product page](/img/tracking/02-setup-wizard-4-steps.png)
 
-| Back-office ownership | Web only | App only | Web + App |
-|---|---|---|---|
-| **Your own back-office** (in-house engineering) | **S2S + Web Tracker** (both required) — S2S carries the events, Web Tracker captures the click-side signal | **S2S** primary · **AppsFlyer** for install attribution | **S2S + Web Tracker + AppsFlyer** (all three required) — S2S as canonical event stream, Web Tracker for click-side, AppsFlyer for App installs |
-| **Affiliate / SaaS platform** (Affilka · Cellxpert · Smartico · MyAffiliates · NetRefer, etc.) | **Partner Postback** primary · **Web Tracker** for click-side capture | **Partner Postback** + **AppsFlyer** for install attribution | **Partner Postback + AppsFlyer** (both required) — Postback covers the platform side, AppsFlyer handles App installs |
-| **Fastest start · no engineering** | **Partner Postback** (same day) | **AppsFlyer** only (accept the App-side gap) | **Partner Postback + AppsFlyer** (both required) — start with Postback for web and AppsFlyer for App installs |
+### 1.1 Fill in the form
 
-**Cross-method notes**
+Click **+ Create Product**, in the Setup Wizard or above the Manage Product table.
 
-- APK / H5-wrapped App distribution is supported via probabilistic attribution — match rates are lower than Play Store / App Store distribution, which has Install Referrer.
-- A 30-day attribution window applies across all methods.
-- `identifier` (SHA-256 email or phone) can be promoted to an attribution fallback join when `click_id` is missing.
+![The Create Product form](/img/tracking/03-create-product-form.png)
 
-## FAQ {#faq}
+| Field | Required | What to enter |
+| --- | --- | --- |
+| **Product Domain** | Yes | Your main domain including the scheme — `https://yourbrand.com`. This is what RevoSurge attributes traffic to. |
+| **Product Name** | Yes | A human-readable label. Used in reports and the product switcher. |
+| **Landing Page URL** | No | Any additional domain or URL you send paid traffic to. Pick a **Funnel Type** for each. **+** adds a row, the bin icon removes one. |
+| **Deposit Currency** | Yes | The currency your deposits settle in — **Fiat** (searchable) or **Crypto**. Every amount we report is converted into it. |
 
-::: details Which method is most accurate?
-Web Tracker and S2S give the highest fidelity because they don't depend on third-party matching. AppsFlyer is industry-standard for App attribution. Partner Postback is only as good as your affiliate platform's macro coverage.
+Then click **Submit**. The wizard advances to `1/4` and Step 1 reads **Created**.
+
+::: warning Register every domain you advertise to
+> All registered domains require an installed Web Tracker. A campaign's Destination URL must
+> match an active domain to be served.
+
+Point a campaign at a domain that isn't registered here and **it will not serve**. Add
+pre-landers, mirrors and redirect domains now.
 :::
 
-::: details What if I send the same FTD through AppsFlyer *and* my back-office?
-Both are stored. The Integration Health Score surfaces conflicts. Cross-channel canonicalization policy is being finalized — until then, treat both signals as complementary and inspect divergences.
+::: tip Pick the deposit currency your back office actually settles in
+Every amount we report is converted into it. If it doesn't match what you settle in, your
+totals and ours will differ by whatever the exchange rate moved. Crypto-settling operators
+should choose crypto, not the fiat equivalent.
 :::
 
-::: details Do you accept postbacks in local currency (INR / MYR / USDT)?
-Yes — we convert using our published exchange rates. There's no need to convert to USD first.
+### 1.2 Choose the right Funnel Type
+
+Each Landing Page URL needs a Funnel Type so RevoSurge knows what the page is for.
+
+![The Funnel Type dropdown](/img/tracking/04-funnel-type-dropdown.png)
+
+| Funnel Type | Use when |
+| --- | --- |
+| **Direct Register** | Visitors register directly on this landing page. |
+| **Redirect Register** | This page redirects to a register page. Register both URLs under the same Product. |
+| **Direct Download** | Visitors download the app directly from this page. |
+| **Redirect Download** | This page redirects to an app download page. Register both URLs under the same Product. |
+| **AI Companion Home Page** | The home page of an AI Companion product. |
+| **AI Companion Survey Funnel** | A survey-style AI Companion acquisition funnel. |
+
+::: info Redirect types need a Direct page first
+**Redirect Register** and **Redirect Download** stay greyed out until you have added at least
+one **Direct** landing page URL — the portal says *"Add a Direct landing page URL first."*
+Add the destination page, then the redirect.
 :::
 
-::: details Seconds vs milliseconds timestamps?
-**Send milliseconds.** That is the contract for both Partner Postback and the Server Events API.
+### 1.3 What you get
 
-What differs is what happens if you don't. The Server Events API (v3) **rejects** a value that looks like seconds. Partner Postback corrects it and keeps the event, but treats the correction as a deviation from the contract — it raises an alert on our side and we will contact you. Neither is a second supported format, so stabilize on milliseconds.
+| Identifier | Format | Used for |
+| --- | --- | --- |
+| **Product ID** | `AWP-20260827-052659-007-3119` | Internal reference, support tickets |
+| **Tracker ID** | `TRA-AWP-20260827-052659-007-3119` | Goes in the Web Tracker snippet |
+
+The Tracker ID is the Product ID with a `TRA-` prefix.
+
+## 2. Choose your setup
+
+RevoSurge supports **four integration methods** — Web Tracker, S2S Server Events, Partner
+Postback, and AppsFlyer. You will use more than one, and almost nobody uses all four.
+
+**So which combination suits you?** Let us answer that with three questions of our own.
+
+| | Question | What your answer decides |
+| --- | --- | --- |
+| **2.1** | Where do your players land? | Whether AppsFlyer is in the picture at all |
+| **2.2** | Which system holds your conversion data? | Partner Postback **or** S2S — these are alternatives, not additions |
+| **2.3** | What do your campaigns optimise for? | How deep you go, and which events you send |
+
+Answer all three and [the routing table](#the-routing-table) gives you your setup. Skip
+straight to it if you already know them.
+
+### 2.1 Where do your players land?
+
+| | |
+| --- | --- |
+| **A website** | Web Tracker carries the click and the browser events |
+| **A mobile app** | You also need an MMP. RevoSurge integrates with **AppsFlyer** |
+| **Both** | Both of the above — they run side by side, on the same Product |
+
+An app-install campaign without an MMP cannot attribute installs. The app store sits between
+the click and the install, and nothing we control can see across it.
+
+### 2.2 Which system holds your conversion data?
+
+This is the question most setups get wrong, because it is about **who can send the event**,
+not about what you would prefer.
+
+| Where deposits and registrations are recorded | Method | What it needs from you |
+| --- | --- | --- |
+| **Your own backend** — your platform confirms the payment | **S2S** | A developer, ~2–5 days |
+| **An affiliate platform's back-office** — Income Access, Affilka, MyAffiliates, or your own affiliate system | **Partner Postback** | Someone with access to that platform's postback settings. No engineering. |
+| **Your MMP** — in-app events already flowing to AppsFlyer | **AppsFlyer postbacks** | Configuration in AppsFlyer, plus permissions on the RevoSurge tile |
+
+::: warning Pick one source of truth per event
+S2S and Partner Postback do the same job. If both report the same deposit, precedence applies
+— see [Core concepts → Deduplication](/en/tracking/core-concepts#when-two-methods-report-the-same-conversion) — but you are paying twice to
+build the same thing, and reconciliation gets harder, not easier.
+
+Run both only when they genuinely cover different events or different brands.
 :::
 
-::: details Can I validate without creating real data?
-Yes. Add `?dryrun=1` to the [S2S](/en/tracking/s2s/v3/server-events-api#dry-run) or [Partner Postback](/en/tracking/postback/partner-postback#dry-run) endpoint. We parse, validate and enrich the request exactly as we would in production, echo back exactly what we would record — and store nothing.
+If you have engineering resource **and** an affiliate platform, choose S2S. It is the only
+method that carries amounts and `bet`, so it is the only one that will still be enough when
+your goals deepen.
+
+### 2.3 What do your campaigns optimise for?
+
+You do not pick a tracking method. You pick **what your campaigns optimise for**, and that
+decides how deep the setup has to go.
+
+- **App installs** — volume of new installs
+- **Registrations** — volume of new accounts
+- **First deposits** — number of first-time depositors
+- **Deposit value** — bid on how much they deposit
+- **Player value** — GGR and LTV over time
+
+Pick every goal that applies. They are cumulative: optimising for player value does not mean
+you stop counting registrations. Read down to your **deepest** goal — that row sets the floor,
+and everything shallower comes with it.
+
+### The routing table
+
+Find the row matching your three answers.
+
+| Lands on | Deepest goal | Data lives in | Your setup | Effort |
+| --- | --- | --- | --- | --- |
+| Web | Registrations | The browser | Web Tracker | Same day |
+| Web | First deposits | An affiliate platform | Web Tracker **+** Partner Postback | Same day |
+| Web | First deposits | Your own backend | Web Tracker **+** S2S (Basic) | ~2–3 days |
+| Web | Deposit value | Your own backend | Web Tracker **+** S2S (Basic, with amounts) | ~2–3 days |
+| Web | Player value — GGR, LTV | Your own backend | Web Tracker **+** S2S (Full catalog) | ~3–5 days |
+| App | Installs | Your MMP | Web Tracker (click forwarding) **+** AppsFlyer | ~3–5 days |
+| App | Registrations, in-app events | Your MMP | The above **+** AppsFlyer in-app event postbacks | ~3–5 days |
+| App | Deposit value or player value | Your own backend | The above **+** S2S | ~3–5 days on top |
+| Web **and** app | Any | Mixed | Web Tracker **+** AppsFlyer **+** whichever of S2S or Partner Postback matches your back office | Sum of the rows above |
+
+::: warning The Web Tracker is required in every setup
+It is what captures the ad click in the first place. No other method sees which ad brought the
+visitor — and on the app side, it is also what forwards your clicks to AppsFlyer.
 :::
 
-::: details How do I know my integration is healthy?
-Each product page shows an **Integration Health Score** — `click_id` coverage, `event_id` presence, identity coverage, median event age at receipt, and suggested-field completeness. A remediation list is surfaced with the CPA delta attached.
+## 3. The four methods
+
+### 3.1 Web Tracker — browser-side
+
+A JavaScript snippet on your site. It reports what happens in the browser — page views,
+registrations, logins, deposits, game entries, download clicks — and captures the
+**attribution context**: which ad, which source, which landing page.
+
+- **Implemented by:** your web developer
+- **Credential:** Tracker ID (`TRA-AWP-…`)
+- **Guide:** [Install the Web Tracker](/en/tracking/web-tracker/install)
+
+### 3.2 S2S Server Events — backend-side
+
+Your backend POSTs events to our API. Nothing runs in a browser, so nothing is lost to ad
+blockers, tracking prevention or a closed tab.
+
+**This is where money belongs.** A deposit your payment provider confirmed is a fact your
+server holds with certainty; the browser may never have seen it.
+
+- **Implemented by:** your backend developer
+- **Credential:** API key, sent as the `X-API-KEY` header
+- **Guide:** [Server-to-server (S2S) overview](/en/tracking/s2s/overview)
+
+### 3.3 Partner Postback — your platform calls us
+
+A URL your back office or affiliate platform calls when a conversion happens. You paste it
+in; they fire it. **No engineering.**
+
+- **Implemented by:** you, or your affiliate platform admin
+- **Credential:** postback key, sent as the `k` query parameter
+- **Guide:** [Partner Postback API](/en/tracking/postback/partner-postback)
+
+### 3.4 AppsFlyer — app installs and in-app events
+
+If you promote a mobile app, AppsFlyer reports installs and in-app events back to us, and the
+Web Tracker forwards your ad clicks to it. Most configuration happens in **AppsFlyer's own
+console**, not in RevoSurge.
+
+- **Implemented by:** your UA manager, in AppsFlyer
+- **Credential:** partner tile name and `pid`, from your account manager
+- **Guide:** [AppsFlyer overview](/en/mmp/appsflyer/overview)
+
+::: info Ask your account manager for three things
+The exact **partner tile name** to search in AppsFlyer's Partner Marketplace, the **partner
+event names** to map your events to, and your **`pid`**. You cannot start without the first.
 :::
 
-::: details Can I start with S2S-Basic and upgrade to S2S-Full later?
-Yes — that's the intended path. Same authentication, same event contract, additive fields. Upgrading is code-only, with no re-onboarding.
+### Side by side
+
+| | Web Tracker | S2S | Partner Postback | AppsFlyer |
+| --- | --- | --- | --- | --- |
+| **Runs where** | Visitor's browser | Your backend | Partner's system | AppsFlyer's servers |
+| **Who implements** | Web developer | Backend developer | You, no engineering | UA manager |
+| **Sees ad attribution** | Yes, natively | Yes, via `click_id` | Yes, via `click_id` | Yes, via forwarded clicks |
+| **Blocked by ad blockers** | Possible | No | No | No |
+| **Authoritative for money** | No | **Yes** | Yes | Yes |
+| **Covers** | Web | Web + app | Web + app | **App only** |
+| **Setup effort** | Same day | ~3–5 days | Same day | ~3–5 days |
+
+::: info New to these terms?
+**Browser-side / client-side** — code running in the visitor's browser. Sees the ad click and
+the journey, but can be blocked.
+**Server-to-server (S2S)** — your servers talking to ours directly. Cannot be blocked, but
+does not see the browser.
+**Postback** — a URL someone else calls to tell you something happened.
+**MMP** — mobile measurement partner. A third party like AppsFlyer that attributes app
+installs and reports them to advertising platforms.
 :::
 
-::: details APK / H5-wrapper Apps — are they supported?
-Yes, via probabilistic attribution. Match rates are materially lower than Play Store / App Store distribution because there is no Install Referrer. Factor the reduced accuracy into your CPA target.
+## 4. What each method unlocks
+
+Features switch on as your event coverage grows. The Setup Wizard shows this live — each step
+lists what it unlocks.
+
+| What you send | Unlocks |
+| --- | --- |
+| `page_view` via Web Tracker | Source Traffic |
+| `register`, `login` | Registration Funnel |
+| `deposit`, `withdraw` via S2S or Postback | FTD reporting |
+| `deposit`, `withdraw`, `bet` with amounts via S2S | True LTV · ROAS |
+| Full Standard + iGaming catalog via S2S | Predicted LTV · Churn · Bonus Engine |
+| Installs and in-app events via AppsFlyer | App install attribution · app-side funnel |
+| Ad sources connected in DataPulse | Source Intelligence |
+
+## 5. FAQ
+
+::: details Do I need all four methods?
+No. Most advertisers run **Web Tracker + one conversion method**. Add AppsFlyer only if you
+promote a mobile app. See [the routing table](#the-routing-table).
 :::
 
-## Getting started {#getting-started}
+::: details Can I start with one and add more later?
+Yes. Nothing is lost when you add a method — the extra events simply start arriving. A common
+path is Web Tracker + Partner Postback to launch, then S2S once engineering has time.
+:::
 
-1. Answer the two questions at the top of this page, or find your row in the full routing matrix.
-2. Open the corresponding method page: [Web Tracker](/en/tracking/web-tracker) · [AppsFlyer](/en/mmp/appsflyer/overview) · [S2S Server Events](/en/tracking/s2s/overview) · [Partner Postback](/en/tracking/postback/partner-postback).
-3. If you want the fastest live path, start with **Partner Postback** (SaaS back-office) or **S2S-Basic** (own back-office) — you can extend to S2S-Full when you need the revenue signal.
+::: details I have no engineering resource. What can I do?
+**Partner Postback.** It is two URLs pasted into your back office or affiliate platform, live
+the same day. It reaches first deposits, which is enough to optimise on. You still need a
+developer for the Web Tracker snippet itself, but that is a single script tag.
+:::
 
-<div class="bottom-cta" id="support">
-  <div>
-    <div class="bottom-cta-title">Still not sure which method fits?</div>
-    <div class="bottom-cta-text">Ask your RevoSurge BD contact — we'll help you pick and get live.</div>
-  </div>
-</div>
+::: details Which method should I trust for revenue?
+**S2S.** Browser-reported deposits under-count — ad blockers, closed tabs and payment
+redirects all drop events. If you optimise on browser-reported revenue you are optimising on
+an incomplete number.
+:::
+
+::: details Do I have to send the same user ID everywhere?
+**Yes, and this is the single most common integration mistake.** Whatever ID your system uses
+for an account, send that exact value as `user_id` in the Web Tracker and `client_user_id` in
+S2S. If they differ, we see two different people and your attribution breaks.
+
+Do **not** use a session ID, a cookie ID, or an anonymous visitor ID.
+:::
+
+::: details What happens if two methods report the same deposit?
+We store both and count one. The source closest to the money wins: your back office knows a
+deposit settled, a browser only knows a button was clicked. In practice that means
+**S2S > Partner Postback > Web Tracker** for `deposit`, and amounts are taken from S2S only.
+:::
+
+::: details Do I create the Product twice, once per portal?
+No. AdWave and DataPulse share one Product list.
+:::
+
+::: details I only promote an app. Do I still need the Web Tracker?
+Yes. When you set your AppsFlyer App ID in the tracker's init options, the snippet **forwards each
+ad click to AppsFlyer** so the install can be attributed to us. A landing page without the snippet
+forwards nothing, and every install it drives is counted as organic.
+:::
+
+::: details How long before my campaign optimises well?
+Clicks serve immediately. Install and registration optimisation typically stabilises in 1–2
+weeks; first-deposit optimisation in 2–4 weeks, because FTDs are sparse; value-based
+optimisation in 4–8 weeks. Judging a value-based campaign at day three shows noise, not
+performance.
+:::
+
+::: details My campaign is not serving. Is that a tracking problem?
+Possibly. A campaign's Destination URL must match a **registered, active** domain on the
+Product. Add pre-landers, mirrors and redirect domains as Landing Page URLs, each with its
+Funnel Type. See [1. Create your Product](#_1-create-your-product).
+:::
+
+## 6. Getting started
+
+Work top to bottom. Each step depends on the one above it.
+
+1. **Create your Product** — domain, landing pages, deposit currency — [section 1 above](#_1-create-your-product)
+2. **Copy your Tracker ID** — [Step 1](/en/tracking/web-tracker/install#step-1-find-your-tracker-id)
+3. **Install the Web Tracker** and fire `register`, `login`, `deposit` —
+   [Steps 2–4](/en/tracking/web-tracker/install#step-2-add-the-tracker-script)
+4. **Confirm Tracker Status reads Active** —
+   [Step 5](/en/tracking/web-tracker/install#step-5-verify-in-the-portal)
+5. **Connect your conversion method** — [S2S](/en/tracking/s2s/overview) or
+   [Partner Postback](/en/tracking/postback/partner-postback)
+6. **Connect AppsFlyer** if you promote an app — [AppsFlyer overview](/en/mmp/appsflyer/overview)
+7. **Launch your first campaign** — [AdWave Campaign Setup](/en/adwave/campaign-setup)
+
+Start here: **[Install the Web Tracker](/en/tracking/web-tracker/install)**.

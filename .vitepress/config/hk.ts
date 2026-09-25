@@ -30,6 +30,7 @@ export const hk: DefaultTheme.Config = {
       collapsed: false,
       items: [
         { text: '概述 · 我該用哪個？', link: '/hk/tracking/overview' },
+        { text: '核心概念', link: '/hk/tracking/core-concepts' },
         {
           text: '1. Web 追蹤器',
           link: '/hk/tracking/web-tracker',
@@ -71,6 +72,8 @@ export const hk: DefaultTheme.Config = {
                 { text: '從 v2 遷移', link: '/hk/tracking/s2s/v3/migration' }
               ]
             },
+            { text: '整合驗證', link: '/hk/tracking/s2s/validation' },
+            { text: '交付與上線', link: '/hk/tracking/s2s/handoff' },
             { text: '伺服器事件 API (v2，已棄用)', link: '/hk/tracking/s2s/server-events-api' }
           ]
         },
@@ -79,7 +82,9 @@ export const hk: DefaultTheme.Config = {
           link: '/hk/tracking/postback/partner-postback',
           collapsed: true,
           items: [
-            { text: '合作夥伴 Postback API', link: '/hk/tracking/postback/partner-postback' }
+            { text: '合作夥伴 Postback API', link: '/hk/tracking/postback/partner-postback' },
+            { text: '整合驗證', link: '/hk/tracking/postback/validation' },
+            { text: '交付與上線', link: '/hk/tracking/postback/handoff' }
           ]
         }
       ]
