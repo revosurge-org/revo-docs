@@ -59,7 +59,6 @@ export const hk: DefaultTheme.Config = {
           collapsed: true,
           items: [
             { text: '概述', link: '/hk/tracking/s2s/overview' },
-            { text: '伺服器事件 API (v2)', link: '/hk/tracking/s2s/server-events-api' },
             {
               text: '伺服器事件 API (v3)',
               link: '/hk/tracking/s2s/v3/server-events-api',
@@ -71,7 +70,8 @@ export const hk: DefaultTheme.Config = {
                 { text: 'iGaming 事件', link: '/hk/tracking/s2s/v3/events-igaming' },
                 { text: '從 v2 遷移', link: '/hk/tracking/s2s/v3/migration' }
               ]
-            }
+            },
+            { text: '伺服器事件 API (v2，已棄用)', link: '/hk/tracking/s2s/server-events-api' }
           ]
         },
         {

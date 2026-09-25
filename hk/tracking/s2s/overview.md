@@ -33,11 +33,11 @@ description: 從後端發送轉化事件。S2S vs Web 追蹤器、要求、認�
 
 ## 選擇 API 版本
 
-伺服器事件 API 有兩個版本，均受支持。
+伺服器事件 API 有兩個版本。v2 將於 **2026 年 10 月 18 日**棄用 — 請使用 v3。
 
 | | v2 | v3 |
 |---|----|----|
-| 狀態 | 穩定 | 全新 <Badge type="tip" text="新整合推薦" /> |
+| 狀態 | 將於 2026-10-18 棄用 | 目前版本 <Badge type="tip" text="推薦" /> |
 | 端點 | `/v2/s2s/event`、`/v2/s2s/batch` | `/v3/s2s/event`、`/v3/s2s/batch` |
 | 屬性模型 | 單一扁平欄位表 | 共享強制屬性 + 事件特有欄位 |
 | 文檔 | [伺服器事件 API (v2)](/hk/tracking/s2s/server-events-api) | [伺服器事件 API (v3)](/hk/tracking/s2s/v3/server-events-api) |

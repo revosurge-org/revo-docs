@@ -241,6 +241,12 @@ html[lang="zh-HK"] .VPNavBarTranslations .button .text::before {
   border-top: none;
 }
 
+/* VitePress top-aligns h1 badges; center them on the title text instead. */
+.vp-doc h1 > .VPBadge {
+  margin-top: 0;
+  vertical-align: middle;
+}
+
 
 /**
  * Page: Tracking Overview

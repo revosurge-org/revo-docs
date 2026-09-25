@@ -33,11 +33,11 @@ Use S2S when:
 
 ## Choosing an API version
 
-The Server Events API has two versions. Both are supported.
+The Server Events API has two versions. v2 will be deprecated on **18 October 2026** — use v3.
 
 | | v2 | v3 |
 |---|----|----|
-| Status | Stable | New <Badge type="tip" text="recommended for new integrations" /> |
+| Status | Deprecated on 18 Oct 2026 | Current <Badge type="tip" text="recommended" /> |
 | Endpoints | `/v2/s2s/event`, `/v2/s2s/batch` | `/v3/s2s/event`, `/v3/s2s/batch` |
 | Payload | Flat object, free `event_name` | Envelope (`event`/`identity`/`context`) + typed catalog |
 | `timestamp` | Unix seconds | Unix milliseconds |

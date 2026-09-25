@@ -8,7 +8,7 @@ description: What changed between S2S Events v2 and v3 — envelope, millisecond
 
 **Audience:** Engineers maintaining an existing v2 integration
 
-v2 and v3 are **independent endpoints** — v2 keeps working unchanged, so you can migrate at your own pace. There is no automatic conversion: callers send the v3 contract directly.
+v2 and v3 are **independent endpoints**. There is no automatic conversion: callers send the v3 contract directly. v2 will be deprecated on **18 October 2026**.
 
 ## What changed at a glance
 
