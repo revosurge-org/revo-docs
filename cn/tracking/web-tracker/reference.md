@@ -129,6 +129,8 @@ tracker.trackCustomEvent('custom_event_type', {
 
 返回 UTM 数据中存储的 `clickid`。若 URL 包含 `?clickid=...`，SDK 会自动提取并保存。
 
+点击 ID 保存在第一方 cookie 中，有效期 30 天，与[归因窗口](/cn/tracking/core-concepts#_3-the-attribution-window)一致。在 iOS / Safari 上，受 ITP 限制，它可能更早被清除。请在用户注册时调用此方法，并把返回值保存到该用户的记录上 —— 参见[在注册时保存点击 ID](/cn/tracking/web-tracker#how-it-attributes)。
+
 ```js
 const clickid = tracker.getClickid();
 if (clickid) {

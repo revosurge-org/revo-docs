@@ -129,6 +129,8 @@ tracker.trackCustomEvent('custom_event_type', {
 
 回傳 UTM 數據中儲存的 `clickid`。若 URL 包含 `?clickid=...`，SDK 會自動擷取並儲存。
 
+點擊 ID 保存在第一方 cookie 中，有效期 30 天，與[歸因窗口](/hk/tracking/core-concepts#_3-the-attribution-window)一致。在 iOS / Safari 上，受 ITP 限制，它可能更早被清除。請在用戶註冊時呼叫此方法，並把回傳值保存到該用戶的記錄上 —— 參閱[在註冊時保存點擊 ID](/hk/tracking/web-tracker#how-it-attributes)。
+
 ```js
 const clickid = tracker.getClickid();
 if (clickid) {

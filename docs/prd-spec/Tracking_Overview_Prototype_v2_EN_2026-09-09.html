@@ -269,7 +269,7 @@ aside.toc a.active { color: var(--primary); font-weight: 600; border-left-color:
         <div class="method-tagline" data-i18n="mWebTagline">First-party JS on your landing page & advertiser site.</div>
       </div>
     </div>
-    <p class="method-body" data-i18n="mWebBody">Fires conversion events (registration, deposit, FTD) as users move through your web funnel. Persists <code>click_id</code> in a first-party cookie (1-year expiry) — a user who lands, bounces, and returns 3 days later still attributes.</p>
+    <p class="method-body" data-i18n="mWebBody">Fires conversion events (registration, deposit, FTD) as users move through your web funnel. Persists <code>click_id</code> in a first-party cookie with a 30-day expiry, matching the attribution window — a user who lands, bounces, and returns 3 days later still attributes.</p>
     <div class="method-meta">
       <div class="meta-item"><span class="meta-label" data-i18n="lblBestFor">Best for</span><span data-i18n="mWebBestFor">Web-only funnels, no server integration available</span></div>
       <div class="meta-item"><span class="meta-label" data-i18n="lblSkipIf">Skip if</span><span data-i18n="mWebSkipIf">Your funnel lives inside a mobile App</span></div>
@@ -461,7 +461,7 @@ const i18n = {
     mWebName: "Web Tracker",
     mWebBadge: "Web",
     mWebTagline: "First-party JS on your landing page & advertiser site.",
-    mWebBody: "Fires conversion events (registration, deposit, FTD) as users move through your web funnel. Persists <code>click_id</code> in a first-party cookie (1-year expiry) — a user who lands, bounces, and returns 3 days later still attributes.",
+    mWebBody: "Fires conversion events (registration, deposit, FTD) as users move through your web funnel. Persists <code>click_id</code> in a first-party cookie with a 30-day expiry, matching the attribution window — a user who lands, bounces, and returns 3 days later still attributes.",
     mWebBestFor: "Web-only funnels, no server integration available",
     mWebSkipIf: "Your funnel lives inside a mobile App",
     mWebDelivery: "JS snippet + GTM template (planned)",
@@ -587,7 +587,7 @@ const i18n = {
     mWebName: "Web 追踪器",
     mWebBadge: "Web",
     mWebTagline: "落地页和广告主站的 first-party JS 追踪。",
-    mWebBody: "追踪网页 funnel 里的转化事件(注册 / 存款 / FTD 首次存款)· <code>click_id</code> 存 first-party cookie(有效期 1 年) · 用户 3 天后回来仍能归因到那次点击。",
+    mWebBody: "追踪网页 funnel 里的转化事件(注册 / 存款 / FTD 首次存款)· <code>click_id</code> 存 first-party cookie(有效期 30 天,与归因窗口一致) · 用户 3 天后回来仍能归因到那次点击。",
     mWebBestFor: "网页 funnel · 无服务端集成能力",
     mWebSkipIf: "funnel 在移动 App 里",
     mWebDelivery: "JS 代码片段 + GTM 模板(规划中)",

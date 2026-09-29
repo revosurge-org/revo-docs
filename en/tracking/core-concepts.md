@@ -129,19 +129,19 @@ So the two rules compound: a broken `click_id` costs you one conversion; a broke
 
 ::: warning The binding does not outlive the window
 Binding and attribution window are separate limits, and both apply. A deposit from a bound user
-that arrives more than 14 days after the ad interaction is still recorded, but not attributed —
+that arrives more than 30 days after the ad interaction is still recorded, but not attributed —
 see [3. The attribution window](#_3-the-attribution-window).
 
 For iGaming this is worth checking against your own data. If first deposits typically land more
-than two weeks after the click, being bound will not rescue them.
+than 30 days after the click, being bound will not rescue them.
 :::
 
 ## 3. The attribution window
 
-**A conversion is attributed to a RevoSurge campaign when it arrives within 14 days of the ad
+**A conversion is attributed to a RevoSurge campaign when it arrives within 30 days of the ad
 interaction.** Both a click and an impression open the window.
 
-The window is the same 14 days for registrations and for first deposits.
+The window is the same 30 days for registrations and for first deposits.
 
 ### When a user both clicked and saw an ad
 
