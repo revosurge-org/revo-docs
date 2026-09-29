@@ -16,10 +16,16 @@ description: 面向网页漏斗的第一方 JavaScript SDK —— 为 AdWave 与
 - 纯网页漏斗（落地页 + 网站）—— 没有 App，也没有后台 API
 - 或与 [S2S](/cn/tracking/s2s/overview) / [Partner Postback](/cn/tracking/postback/partner-postback) 搭配使用，以捕获**点击侧**信号
 
-## 如何归因
+## 如何归因 {#how-it-attributes}
 - 从落地页 URL 提取 **click_id** 和 **UTM** 参数
-- 将 `click_id` 存入第一方 cookie（有效期一年）—— 一位用户落地、跳出、几天后回来，仍能归因
+- 将 `click_id` 存入第一方 cookie（有效期 30 天，与[归因窗口](/cn/tracking/core-concepts#_3-the-attribution-window)一致）—— 一位用户落地、跳出、几天后回来，仍能归因
+- 在 iOS / Safari 上，由脚本写入的 cookie 受 ITP 限制，实际存活期可能短于 30 天
 - 对于 AdWave 投放的流量，这些参数会自动捕获；对于非 AdWave 流量，请确保它们存在于你的目标 URL 中
+
+> **在注册时保存点击 ID —— 不要依赖 cookie。** cookie 只存在于用户点击广告时所用的浏览器中。用户注册时，
+> 用 [`getClickid()`](/cn/tracking/web-tracker/reference#getclickid) 读取点击 ID，保存到你数据库中该用户的记录上，
+> 再由你的后端通过 [S2S](/cn/tracking/s2s/overview) 或 [Partner Postback](/cn/tracking/postback/partner-postback)
+> 回传。这是必填项，而非可选 —— 参见[转化如何关联回广告](/cn/tracking/core-concepts#_2-how-a-conversion-joins-back-to-an-ad)。
 
 ## 你将设置的内容
 1. DataPulse 中的一个**产品**—— 追踪 + 广告系列的容器（参见 [入门指南](/cn/growth/getting-started#_3-product-setup-high-level)）

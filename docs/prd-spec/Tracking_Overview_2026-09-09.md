@@ -14,7 +14,7 @@ A first-party JavaScript tracker installed on your landing page and advertiser w
 - **Use when:** You have a web-only funnel or want to attribute web-side conversions with no server integration.
 - **Skip when:** Your funnel is inside a mobile app.
 - **Delivery:** JS snippet + a GTM template (planned).
-- **Key mechanic:** `click_id` is persisted in a first-party cookie (1-year expiry) so a user who lands, bounces, and returns 3 days later still attributes.
+- **Key mechanic:** `click_id` is persisted in a first-party cookie with a 30-day expiry, matching the attribution window, so a user who lands, bounces, and returns 3 days later still attributes.
 
 ### 2. AppsFlyer (App MMP)
 Third-party mobile measurement partner. RevoSurge integrates as a media source; AppsFlyer forwards install and in-app postbacks to us.

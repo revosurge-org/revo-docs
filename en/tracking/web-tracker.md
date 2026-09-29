@@ -19,10 +19,20 @@ for AdWave campaigns and power DataPulse reporting.
 
 ## How it attributes
 - Extracts **click_id** and **UTM** parameters from the landing URL
-- Persists `click_id` in a first-party cookie (1-year expiry) — a user who lands, bounces, and
-  returns days later still attributes
+- Persists `click_id` in a first-party cookie with a 30-day expiry, matching the
+  [attribution window](/en/tracking/core-concepts#_3-the-attribution-window) — a user who lands,
+  bounces, and returns days later still attributes
+- On iOS / Safari, cookies set by script are limited by ITP, so the cookie may expire sooner than
+  30 days
 - For AdWave-delivered traffic these parameters are captured automatically; for non-AdWave traffic,
   make sure they're present in your destination URLs
+
+> **Store the click ID at registration — don't rely on the cookie.** The cookie only lives in the
+> browser the user clicked in. When the user registers, read the click ID with
+> [`getClickid()`](/en/tracking/web-tracker/reference#getclickid), save it on their record in your
+> database, and send it back from your backend via [S2S](/en/tracking/s2s/overview) or
+> [Partner Postback](/en/tracking/postback/partner-postback). This is required, not optional — see
+> [How a conversion joins back to an ad](/en/tracking/core-concepts#_2-how-a-conversion-joins-back-to-an-ad).
 
 ## What you set up
 1. A **Product** in DataPulse — the container for tracking + campaigns (see [Getting started](/en/growth/getting-started#_3-product-setup-high-level))

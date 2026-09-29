@@ -129,6 +129,8 @@ tracker.trackCustomEvent('custom_event_type', {
 
 Returns the stored `clickid` from UTM data. If the URL contains `?clickid=...`, the SDK extracts and saves it automatically.
 
+The click ID is kept in a first-party cookie for 30 days, matching the [attribution window](/en/tracking/core-concepts#_3-the-attribution-window). On iOS / Safari, ITP may clear it sooner. Call this at registration and store the value on the user's record — see [Store the click ID at registration](/en/tracking/web-tracker#how-it-attributes).
+
 ```js
 const clickid = tracker.getClickid();
 if (clickid) {
