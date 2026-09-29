@@ -1,59 +1,58 @@
 ---
-title: RevoSurge Overview
-sidebar_label: Overview
-description: RevoSurge platform — AdWave, DataPulse, account, wallet, advertiser workflow.
+title: Welcome to RevoSurge
+description: What RevoSurge is, where to find the docs for each product, and how one account works across them.
 ---
 
 # Welcome to RevoSurge
 
-**For:** Advertisers, Growth teams, UA managers, Operations, Finance, Developers
+**For:** Everyone new to RevoSurge: advertisers, media buyers, analysts, developers and publishers.
 
-RevoSurge helps advertisers run programmatic acquisition with **AdWave (DSP)** and understand outcomes with **DataPulse (Analytics)** — all under **one account**, **one wallet**, and **one set of products**.
+<nav class="article-toc" aria-label="In this article">
+<p class="article-toc-title">In this article</p>
 
-This guide covers:
-- How your RevoSurge account is structured  
-- How to fund and manage access  
-- How to launch campaigns in AdWave (guided setup)  
-- What metrics to monitor during a pilot  
-- API quickstart (high-level, non-technical)  
+- [1. What is RevoSurge](#_1-what-is-revosurge)
+- [2. Where to find the docs](#_2-where-to-find-the-docs)
+- [3. One account, shared across products](#_3-one-account-shared-across-products)
 
-## In this article
-- What RevoSurge includes
-- Key concepts (Account / Wallet / Product)
-- Typical workflow
-- Where to go next
+</nav>
 
-## What RevoSurge includes
-- **AdWave (DSP):** Create and run campaigns across multiple SSPs via RTB.  
-- **DataPulse (Analytics & data setup):** Configure each Product's technical integration — Web Tracker, Server-to-Server (S2S) events, and API keys — through a guided **Setup Wizard**, and view downstream outcomes and reporting. It's the **same account** as AdWave — open it at [datapulse.revosurge.com](https://datapulse.revosurge.com), or click **Open DataPulse** (top-right) in the AdWave dashboard.  
-- **Tracking:** Web tracker and Server-to-Server (S2S) events to connect ad exposure to onsite/onsystem outcomes.  
+::: info New advertiser?
+Go straight to the [AdWave Advertiser Handbook](/en/handbook/). It takes you from sign-up to a live campaign, step by step.
+:::
 
-## Key concepts
-- **Account:** Your company container in RevoSurge (users, billing, products, campaigns).  
-- **Wallet:** Shared balance used by AdWave and (when enabled) DataPulse-related services.  
-- **Product:** A website/app destination you promote. Campaigns run against a selected product.  
-- **Event:** A tracked action you want to optimize/measure (e.g., Register, Deposit).  
-- **Active / Inactive (Product):** A Product turns **Active** only after its Web Tracker receives its first event; only Active Products can run campaigns.  
-- **Tracker ID:** The ID DataPulse assigns to a Product; it links the tracker on your site to that Product.  
-- **Web Tracker:** A first-party JavaScript snippet on your site that sends events (needs a code change).  
-- **S2S (Server-to-Server):** Sending events from your backend via API — the "source of truth" for financial events (needs engineering).  
-- **MMP (AppsFlyer):** A mobile measurement partner for App installs and in-app events.  
-- **FTD (First-Time Deposit):** A user's first deposit — a common optimization event.  
-- **CPM / oCPM:** Bidding by cost per 1,000 impressions (CPM), or optimized toward a target cost per event (oCPM).  
-- **Deposit FX:** The exchange-rate setting on a Product, used to normalize deposit amounts.  
-- **click_id / UTM:** Identifiers captured from the landing URL that tie a conversion back to its campaign.  
+## 1. What is RevoSurge
 
-## Typical workflow
-1) Create/activate an account at [adwave.revosurge.com](https://adwave.revosurge.com) and add teammates  
-2) Create a product (site/app)  
-3) Set up tracking in [DataPulse](https://datapulse.revosurge.com) — Web tracker / S2S events  
-4) Create a campaign in AdWave (guided setup)  
-5) Monitor pilot performance & traffic quality  
-6) Scale budgets, refine targeting, and apply kill rules where needed  
+RevoSurge (RS) is an advertising platform for performance marketers, built with deep support for iGaming. It connects both sides of the ad market through three products:
 
-## Where to go next
-- If you're new: start in [**Growth → Getting started**](/en/growth/getting-started)
-- If you're integrating tracking: go to [**Tracking → Overview**](/en/tracking/overview)
-- If you're launching ads: go to [**AdWave → Campaign setup**](/en/adwave/campaign-setup)
-- If you need audience targeting: go to [**Audience**](/en/audience/segments)
-- If you're building integrations: go to [**API → API quickstart**](/en/api/quickstart)
+| Product | For | What it does |
+| --- | --- | --- |
+| **AdWave** | Advertisers | **Buy ads.** Launch campaigns across many websites and apps. AdWave bids for each ad impression in real time and learns from your conversions to find more players like your best ones |
+| **DataPulse** | Advertisers | **Measure results.** Track what happens after the click with your own first-party data, from registration to deposit to player value, and feed those conversions back to AdWave |
+| **AdFlow** | Publishers | **Monetise traffic.** Add ads to your website with one script, `adflow.js`, in formats such as banner, pop-under, push, in-page and native |
+
+AdWave and DataPulse work as a pair: DataPulse measures the conversions, and AdWave uses them to optimise. AdFlow brings publisher inventory that AdWave campaigns can buy.
+
+## 2. Where to find the docs
+
+| Product | What it does | Who uses it | Start here |
+| --- | --- | --- | --- |
+| **AdWave** | Create, run and optimise campaigns | Advertisers, media buyers | [Advertiser Handbook](/en/handbook/) · [Campaign Setup](/en/adwave/campaign-setup) |
+| **DataPulse** | Set up tracking for each Product and analyse outcomes: registrations, deposits, cohorts, player value | Advertisers, analysts | [Tracking → Overview](/en/tracking/overview) |
+| **Tracking** | Sends your conversions to RevoSurge through the Web Tracker (browser), S2S (your backend), Partner Postback (affiliate platforms) or AppsFlyer (apps) | Developers | [Handbook → Connect tracking](/en/tracking/overview) |
+| **Audience** | Build player segments for targeting and retargeting | Advertisers | [Audience → Segments](/en/audience/segments) |
+| **AdFlow** | A JavaScript SDK (`adflow.js`) that lets publishers place RevoSurge ads on their sites, with debuggers for each ad format | Publishers, publisher developers | [AdFlow → Integration Guide](/en/adflow/integration-guide) |
+| **Supply** | Connects SSPs (supply-side platforms) that sell ad inventory to RevoSurge through server-to-server bidding | SSPs, ad networks | [Supply → Overview](/en/supply/overview) |
+| **API** | Manage campaigns, reports and audiences from your own systems | Developers | [API → Quickstart](/en/api/quickstart) |
+
+## 3. One account, shared across products
+
+You use **one RevoSurge account** for everything. AdWave and DataPulse share it.
+
+| What is shared | How it works |
+| --- | --- |
+| **Login** | One login email per account, used for both [AdWave](https://adwave.revosurge.com) and [DataPulse](https://datapulse.revosurge.com). You cannot add team members yet, so use a shared work address if several people need access |
+| **Wallet** | One balance for all your campaigns and services. Your Account Manager handles deposits |
+| **Products** | Create a Product once, in either tool, and it appears in both |
+| **Tracking and data** | Events sent to a Product power both AdWave optimisation and DataPulse reporting |
+
+**Next:** [AdWave Advertiser Handbook](/en/handbook/)

@@ -35,7 +35,7 @@ for AdWave campaigns and power DataPulse reporting.
 > [How a conversion joins back to an ad](/en/tracking/core-concepts#_2-how-a-conversion-joins-back-to-an-ad).
 
 ## What you set up
-1. A **Product** in DataPulse — the container for tracking + campaigns (see [Getting started](/en/growth/getting-started#_3-product-setup-high-level))
+1. A **Product** in DataPulse — the container for tracking + campaigns (see [Tracking overview → Create your Product](/en/tracking/overview#_1-create-your-product))
 2. The tracker script + your key events — see **[Install](/en/tracking/web-tracker/install)**
 3. Verify events read **Live**, then point campaigns at them
 

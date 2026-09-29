@@ -28,7 +28,7 @@ description: 面向网页漏斗的第一方 JavaScript SDK —— 为 AdWave 与
 > 回传。这是必填项，而非可选 —— 参见[转化如何关联回广告](/cn/tracking/core-concepts#_2-how-a-conversion-joins-back-to-an-ad)。
 
 ## 你将设置的内容
-1. DataPulse 中的一个**产品**—— 追踪 + 广告系列的容器（参见 [入门指南](/cn/growth/getting-started#_3-product-setup-high-level)）
+1. DataPulse 中的一个**产品**—— 追踪 + 广告系列的容器（参见 [追踪概述 → 创建你的产品](/cn/tracking/overview#_1-create-your-product)）
 2. 追踪器脚本 + 你的关键事件 —— 参见 **[安装](/cn/tracking/web-tracker/install)**
 3. 验证事件显示为 **Live**，然后把广告系列指向它们
 

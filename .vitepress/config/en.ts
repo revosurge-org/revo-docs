@@ -6,87 +6,88 @@ export const en: DefaultTheme.Config = {
     { text: 'Reference', link: '/en/tracking/web-tracker/reference' }
   ],
   sidebar: [
+    // A single page at L1. The empty items array renders it as a top-level entry, not inside an unnamed group.
+    { text: 'Welcome to RevoSurge', link: '/en/revosurge/welcome', items: [] },
     {
-      text: 'RevoSurge',
-      link: '/en/revosurge/welcome',
+      text: 'AdWave Advertiser Handbook',
+      link: '/en/handbook/',
+      docFooterText: 'Start here: launch your first campaign',
       collapsed: false,
       items: [
-        { text: 'Welcome to RevoSurge', link: '/en/revosurge/welcome' },
-      ]
-    },
-    {
-      text: 'Growth',
-      link: '/en/growth/getting-started',
-      collapsed: false,
-      items: [
-        { text: 'Getting started', link: '/en/growth/getting-started' },
-        { text: 'Creating your account', link: '/en/growth/account' },
-        { text: 'Funding & wallet', link: '/en/growth/funding-wallet' }
-      ]
-    },
-    {
-      text: 'Tracking',
-      link: '/en/tracking/overview',
-      collapsed: false,
-      items: [
-        { text: 'Overview · Which one to use?', link: '/en/tracking/overview' },
-        { text: 'Core concepts', link: '/en/tracking/core-concepts' },
+        { text: 'Start here: launch your first campaign', link: '/en/handbook/' },
+        { text: '1. Account and wallet', link: '/en/handbook/account-and-wallet' },
+        // Step 2 is the Tracking section, nested here unchanged. Its pages keep their /tracking and /mmp URLs.
         {
-          text: '1. Web Tracker',
-          link: '/en/tracking/web-tracker',
+          text: '2. Connect tracking',
+          link: '/en/tracking/overview',
           collapsed: true,
           items: [
-            { text: 'Install', link: '/en/tracking/web-tracker/install' },
-            { text: 'Web Tracker SDK Reference', link: '/en/tracking/web-tracker/reference' }
-          ]
-        },
-        {
-          text: '2. AppsFlyer (App MMP)',
-          link: '/en/mmp/appsflyer/overview',
-          collapsed: true,
-          items: [
-            { text: 'Overview', link: '/en/mmp/appsflyer/overview' },
-            { text: 'Set up postbacks', link: '/en/mmp/appsflyer/postbacks' },
-            { text: 'Click forwarding', link: '/en/mmp/appsflyer/click-forwarding' },
-            { text: 'Macros', link: '/en/mmp/appsflyer/macros' },
-            { text: 'Partner permissions', link: '/en/mmp/appsflyer/permissions' },
-            { text: 'Integration validation', link: '/en/mmp/appsflyer/validation' },
-            { text: 'Handoff & go-live', link: '/en/mmp/appsflyer/handoff' }
-          ]
-        },
-        {
-          text: '3. S2S Server Events',
-          link: '/en/tracking/s2s/overview',
-          collapsed: true,
-          items: [
-            { text: 'Overview', link: '/en/tracking/s2s/overview' },
+            { text: 'Overview · Which one to use?', link: '/en/tracking/overview' },
+            { text: 'Core concepts', link: '/en/tracking/core-concepts' },
             {
-              text: 'Server Events API (v3)',
-              link: '/en/tracking/s2s/v3/server-events-api',
+              text: '1. Web Tracker',
+              link: '/en/tracking/web-tracker',
+              collapsed: true,
               items: [
-                { text: 'API Reference', link: '/en/tracking/s2s/v3/server-events-api' },
-                { text: 'Envelope & base properties', link: '/en/tracking/s2s/v3/mandatory-properties' },
-                { text: 'Catalog & validation', link: '/en/tracking/s2s/v3/catalog-governance' },
-                { text: 'Standard events', link: '/en/tracking/s2s/v3/events-standard' },
-                { text: 'iGaming events', link: '/en/tracking/s2s/v3/events-igaming' },
-                { text: 'Migrating from v2', link: '/en/tracking/s2s/v3/migration' }
+                { text: 'Install', link: '/en/tracking/web-tracker/install' },
+                { text: 'Web Tracker SDK Reference', link: '/en/tracking/web-tracker/reference' }
               ]
             },
-            { text: 'Integration validation', link: '/en/tracking/s2s/validation' },
-            { text: 'Handoff & go-live', link: '/en/tracking/s2s/handoff' },
-            { text: 'Server Events API (v2, deprecated)', link: '/en/tracking/s2s/server-events-api' }
+            {
+              text: '2. AppsFlyer (App MMP)',
+              link: '/en/mmp/appsflyer/overview',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/en/mmp/appsflyer/overview' },
+                { text: 'Set up postbacks', link: '/en/mmp/appsflyer/postbacks' },
+                { text: 'Click forwarding', link: '/en/mmp/appsflyer/click-forwarding' },
+                { text: 'Macros', link: '/en/mmp/appsflyer/macros' },
+                { text: 'Partner permissions', link: '/en/mmp/appsflyer/permissions' },
+                { text: 'Integration validation', link: '/en/mmp/appsflyer/validation' },
+                { text: 'Handoff & go-live', link: '/en/mmp/appsflyer/handoff' }
+              ]
+            },
+            {
+              text: '3. S2S Server Events',
+              link: '/en/tracking/s2s/overview',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/en/tracking/s2s/overview' },
+                {
+                  text: 'Server Events API (v3)',
+                  link: '/en/tracking/s2s/v3/server-events-api',
+                  items: [
+                    { text: 'API Reference', link: '/en/tracking/s2s/v3/server-events-api' },
+                    { text: 'Envelope & base properties', link: '/en/tracking/s2s/v3/mandatory-properties' },
+                    { text: 'Catalog & validation', link: '/en/tracking/s2s/v3/catalog-governance' },
+                    { text: 'Standard events', link: '/en/tracking/s2s/v3/events-standard' },
+                    { text: 'iGaming events', link: '/en/tracking/s2s/v3/events-igaming' },
+                    { text: 'Migrating from v2', link: '/en/tracking/s2s/v3/migration' }
+                  ]
+                },
+                { text: 'Integration validation', link: '/en/tracking/s2s/validation' },
+                { text: 'Handoff & go-live', link: '/en/tracking/s2s/handoff' },
+                { text: 'Server Events API (v2, deprecated)', link: '/en/tracking/s2s/server-events-api' }
+              ]
+            },
+            {
+              text: '4. Partner Postback',
+              link: '/en/tracking/postback/partner-postback',
+              collapsed: true,
+              items: [
+                { text: 'Partner Postback API', link: '/en/tracking/postback/partner-postback' },
+                { text: 'Integration validation', link: '/en/tracking/postback/validation' },
+                { text: 'Handoff & go-live', link: '/en/tracking/postback/handoff' }
+              ]
+            }
           ]
         },
-        {
-          text: '4. Partner Postback',
-          link: '/en/tracking/postback/partner-postback',
-          collapsed: true,
-          items: [
-            { text: 'Partner Postback API', link: '/en/tracking/postback/partner-postback' },
-            { text: 'Integration validation', link: '/en/tracking/postback/validation' },
-            { text: 'Handoff & go-live', link: '/en/tracking/postback/handoff' }
-          ]
-        }
+        { text: '3. Landing page & conversion path', link: '/en/handbook/landing-page' },
+        { text: '4. Creatives', link: '/en/handbook/creatives' },
+        { text: '5. Create your campaign', link: '/en/handbook/create-campaign' },
+        { text: '6. Your first week', link: '/en/handbook/first-week' },
+        { text: '7. Optimise and scale', link: '/en/handbook/optimise-and-scale' },
+        { text: 'FAQ', link: '/en/handbook/faq' }
       ]
     },
     {

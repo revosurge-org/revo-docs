@@ -28,7 +28,7 @@ Campaign creation is **gated by data setup**. On the AdWave onboarding page (**W
 - **Product created.** Create the **Product** (the app or site you promote) with its Domain, Tracker ID, and Deposit FX.
 - **Web Tracker active.** Your Product is **Inactive** until its Web Tracker receives its first event; only **activated** products can be selected in the campaign flow. See [Install the Web Tracker](/en/tracking/web-tracker/install).
 - **Conversion events tracked.** The target event you optimize for (e.g. Register, Deposit) must be flowing in via tracking. See [Tracking → Overview](/en/tracking/overview).
-- **Wallet funded.** Your **wallet** has sufficient balance. See [Funding & wallet](/en/growth/funding-wallet).
+- **Wallet funded.** Your **wallet** has sufficient balance. See [Account and wallet](/en/handbook/account-and-wallet#_2-fund-your-wallet).
 - **Creatives ready.** Assets are prepared to spec. See [Creative Requirements & Examples](/en/adwave/creative-requirements).
 
 > **Tip:** You can check a Product's status under **Manage Product** — the **Tracker Status** column shows Active / Inactive, and *Data Setup* shows how many events are active.

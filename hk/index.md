@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: 快速開始
-      link: /hk/growth/getting-started
+      link: /hk/handbook/
     - theme: alt
       text: 概述
       link: /hk/revosurge/welcome
@@ -19,7 +19,7 @@ features:
   - title: 第一方追蹤
     details: 安裝追蹤器、驗證事件，並使用 DataPulse 分析衡量成效。
   - title: 帳戶管理
-    details: 在一個地方管理您的帳戶、錢包、團隊成員和權限。
+    details: 一個登入帳號、一個錢包，AdWave 和 DataPulse 通用。充值由你的客戶經理處理。
   - title: API 整合
     details: 透過全面的 API 實現廣告系列管理、報表及受眾細分的自動化。
 ---
