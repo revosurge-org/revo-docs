@@ -83,20 +83,16 @@ export const hk: DefaultTheme.Config = {
           ]
         },
         { text: '3. 落地頁與轉化路徑', link: '/hk/handbook/landing-page' },
-        { text: '4. 素材', link: '/hk/handbook/creatives' },
+        {
+          text: '4. 素材',
+          link: '/hk/handbook/creatives',
+          collapsed: true,
+          items: [{ text: '素材要求與範例', link: '/hk/handbook/creative-requirements' }]
+        },
         { text: '5. 建立廣告系列', link: '/hk/handbook/create-campaign' },
         { text: '6. 投放第一週', link: '/hk/handbook/first-week' },
         { text: '7. 優化與放量', link: '/hk/handbook/optimise-and-scale' },
         { text: '常見問題', link: '/hk/handbook/faq' }
-      ]
-    },
-    {
-      text: 'AdWave',
-      link: '/hk/adwave/campaign-setup',
-      collapsed: false,
-      items: [
-        { text: '廣告系列設定', link: '/hk/adwave/campaign-setup' },
-        { text: '素材要求與範例', link: '/hk/adwave/creative-requirements' }
       ]
     },
     {

@@ -153,7 +153,7 @@ Destination URL 必須屬於該產品下已登記並啟用的網域，否則廣�
 
 所有部分都填好後，點擊右上角的 **Launch**。這裡不設額外的審核步驟，廣告系列會在排定的時間開始投放。
 
-<!-- TODO (Product): /en/adwave/campaign-setup says Launch opens a Campaign Summary that must be confirmed (screenshot: /img/onboarding/campaign-launch-summary.png). Confirm which is current and align both pages. -->
+<!-- TODO (Product): the retired AdWave → Campaign Setup page said Launch opens a Campaign Summary that must be confirmed (screenshot: /img/onboarding/campaign-launch-summary.png). Confirm whether that step still exists and update this section if so. -->
 
 **最後檢查：**
 

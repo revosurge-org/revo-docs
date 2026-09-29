@@ -255,7 +255,7 @@ When your key events are arriving and Tracker Status reads **Active**:
 
 - ✅ Set up [S2S](/en/tracking/s2s/overview) or [Partner Postback](/en/tracking/postback/partner-postback) so deposits are counted server-side
 - ✅ Connect [AppsFlyer](/en/mmp/appsflyer/overview) if you promote a mobile app
-- ✅ Launch your first [AdWave campaign](/en/adwave/campaign-setup)
+- ✅ Launch your first [AdWave campaign](/en/handbook/create-campaign)
 
 ::: warning Don't stop at the Web Tracker
 Browser-reported deposits under-count — ad blockers, closed tabs, and payment redirects all
@@ -311,4 +311,4 @@ organic. See [AppsFlyer overview](/en/mmp/appsflyer/overview).
 - [Web Tracker SDK Reference](/en/tracking/web-tracker/reference) — every method and field
 - [Server-to-server (S2S) overview](/en/tracking/s2s/overview) — send events from your backend
 - [AppsFlyer overview](/en/mmp/appsflyer/overview) — app installs and in-app events
-- [AdWave Campaign Setup](/en/adwave/campaign-setup)
+- [Create your campaign](/en/handbook/create-campaign)

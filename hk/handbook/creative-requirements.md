@@ -119,4 +119,4 @@ description: 如何準備 AdWave 素材——素材組、第一輪方案，以�
 
 ## 相關
 
-- [廣告系列設定](/hk/adwave/campaign-setup) — 在此將這些素材添加到廣告系列。
+- [建立廣告系列](/hk/handbook/create-campaign) — 在此將這些素材添加到廣告系列。

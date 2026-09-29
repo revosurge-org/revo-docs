@@ -381,6 +381,6 @@ Work top to bottom. Each step depends on the one above it.
 5. **Connect your conversion method** — [S2S](/en/tracking/s2s/overview) or
    [Partner Postback](/en/tracking/postback/partner-postback)
 6. **Connect AppsFlyer** if you promote an app — [AppsFlyer overview](/en/mmp/appsflyer/overview)
-7. **Launch your first campaign** — [AdWave Campaign Setup](/en/adwave/campaign-setup)
+7. **Launch your first campaign** — [Create your campaign](/en/handbook/create-campaign)
 
 Start here: **[Install the Web Tracker](/en/tracking/web-tracker/install)**.

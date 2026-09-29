@@ -36,7 +36,7 @@ AdWave 和 DataPulse 配合使用：DataPulse 衡量转化，AdWave 据此优化
 
 | 产品 | 作用 | 使用者 | 从这里开始 |
 | --- | --- | --- | --- |
-| **AdWave** | 创建、投放和优化广告系列 | 广告主、媒介采买 | [新手投放手册](/cn/handbook/) · [广告系列设置](/cn/adwave/campaign-setup) |
+| **AdWave** | 创建、投放和优化广告系列 | 广告主、媒介采买 | [新手投放手册](/cn/handbook/) · [创建广告系列](/cn/handbook/create-campaign) |
 | **DataPulse** | 为每个产品配置追踪，并分析注册、充值、同期群（cohort）和玩家价值等效果数据 | 广告主、分析师 | [追踪 → 概述](/cn/tracking/overview) |
 | **追踪** | 通过 Web 追踪器（浏览器端）、S2S（你的后端）、Partner Postback（联盟平台）或 AppsFlyer（App），把转化发送给 RevoSurge | 开发者 | [手册 → 接入追踪](/cn/tracking/overview) |
 | **受众** | 创建玩家分群，用于定向和再营销 | 广告主 | [受众 → 受众细分](/cn/audience/segments) |

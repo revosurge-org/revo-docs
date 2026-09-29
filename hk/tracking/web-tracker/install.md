@@ -253,7 +253,7 @@ Setup Wizard 徽章顯示的是 **Web Tracker active · n/8**，但後台針對�
 
 - ✅ 接入 [S2S](/hk/tracking/s2s/overview) 或 [Partner Postback](/hk/tracking/postback/partner-postback)，讓充值在伺服器端計算
 - ✅ 如果你推廣流動 App，接入 [AppsFlyer](/hk/mmp/appsflyer/overview)
-- ✅ 上線你的第一個 [AdWave 廣告系列](/hk/adwave/campaign-setup)
+- ✅ 上線你的第一個 [AdWave 廣告系列](/hk/handbook/create-campaign)
 
 ::: warning 不要止步於 Web 追蹤器
 瀏覽器上報的充值會少計——廣告攔截器、關閉的分頁和支付跳轉都會
@@ -309,4 +309,4 @@ Page URL** 並選擇正確的漏斗類型（[追蹤概述](/hk/tracking/overview
 - [Web 追蹤器 SDK 參考](/hk/tracking/web-tracker/reference) — 每個方法與欄位
 - [伺服器對伺服器（S2S）概述](/hk/tracking/s2s/overview) — 從後端發送事件
 - [AppsFlyer 概述](/hk/mmp/appsflyer/overview) — App 安裝與應用內事件
-- [AdWave 廣告系列設定](/hk/adwave/campaign-setup)
+- [建立廣告系列](/hk/handbook/create-campaign)

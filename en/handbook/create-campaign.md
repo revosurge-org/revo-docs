@@ -153,7 +153,7 @@ It must belong to a registered, active domain on your Product, or the campaign w
 
 When every section is complete, click **Launch** at the top right. There is no separate review step: the campaign starts at the scheduled time.
 
-<!-- TODO (Product): /en/adwave/campaign-setup says Launch opens a Campaign Summary that must be confirmed (screenshot: /img/onboarding/campaign-launch-summary.png). Confirm which is current and align both pages. -->
+<!-- TODO (Product): the retired AdWave → Campaign Setup page said Launch opens a Campaign Summary that must be confirmed (screenshot: /img/onboarding/campaign-launch-summary.png). Confirm whether that step still exists and update this section if so. -->
 
 **Final check:**
 

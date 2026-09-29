@@ -320,6 +320,6 @@ S2S 和 Partner Postback 做的是同一件事。如果两者上报了同一笔�
 5. **接入你的转化方式**——[S2S](/cn/tracking/s2s/overview) 或
    [Partner Postback](/cn/tracking/postback/partner-postback)
 6. 如果你推广 App，**接入 AppsFlyer**——[AppsFlyer 概述](/cn/mmp/appsflyer/overview)
-7. **上线你的第一个广告系列**——[AdWave 广告系列设置](/cn/adwave/campaign-setup)
+7. **上线你的第一个广告系列**——[创建广告系列](/cn/handbook/create-campaign)
 
 从这里开始：**[安装 Web 追踪器](/cn/tracking/web-tracker/install)**。

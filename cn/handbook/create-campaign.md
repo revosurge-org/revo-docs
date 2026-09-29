@@ -153,7 +153,7 @@ Destination URL 必须属于产品下已登记且处于激活状态的域名，�
 
 所有部分都填好后，点击右上角的 **Launch**。上线没有单独的审核环节，广告系列会在排期设定的时间开始投放。
 
-<!-- TODO (Product): /en/adwave/campaign-setup says Launch opens a Campaign Summary that must be confirmed (screenshot: /img/onboarding/campaign-launch-summary.png). Confirm which is current and align both pages. -->
+<!-- TODO (Product): the retired AdWave → Campaign Setup page said Launch opens a Campaign Summary that must be confirmed (screenshot: /img/onboarding/campaign-launch-summary.png). Confirm whether that step still exists and update this section if so. -->
 
 **最后检查：**
 
