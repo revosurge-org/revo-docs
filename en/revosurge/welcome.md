@@ -36,7 +36,7 @@ AdWave and DataPulse work as a pair: DataPulse measures the conversions, and AdW
 
 | Product | What it does | Who uses it | Start here |
 | --- | --- | --- | --- |
-| **AdWave** | Create, run and optimise campaigns | Advertisers, media buyers | [Advertiser Handbook](/en/handbook/) · [Campaign Setup](/en/adwave/campaign-setup) |
+| **AdWave** | Create, run and optimise campaigns | Advertisers, media buyers | [Advertiser Handbook](/en/handbook/) · [Create your campaign](/en/handbook/create-campaign) |
 | **DataPulse** | Set up tracking for each Product and analyse outcomes: registrations, deposits, cohorts, player value | Advertisers, analysts | [Tracking → Overview](/en/tracking/overview) |
 | **Tracking** | Sends your conversions to RevoSurge through the Web Tracker (browser), S2S (your backend), Partner Postback (affiliate platforms) or AppsFlyer (apps) | Developers | [Handbook → Connect tracking](/en/tracking/overview) |
 | **Audience** | Build player segments for targeting and retargeting | Advertisers | [Audience → Segments](/en/audience/segments) |

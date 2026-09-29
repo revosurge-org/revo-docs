@@ -320,6 +320,6 @@ S2S 和 Partner Postback 做的是同一件事。如果兩者上報了同一筆�
 5. **接入你的轉化方式**——[S2S](/hk/tracking/s2s/overview) 或
    [Partner Postback](/hk/tracking/postback/partner-postback)
 6. 如果你推廣 App，**接入 AppsFlyer**——[AppsFlyer 概述](/hk/mmp/appsflyer/overview)
-7. **上線你的第一個廣告系列**——[AdWave 廣告系列設定](/hk/adwave/campaign-setup)
+7. **上線你的第一個廣告系列**——[建立廣告系列](/hk/handbook/create-campaign)
 
 從這裡開始：**[安裝 Web 追蹤器](/hk/tracking/web-tracker/install)**。

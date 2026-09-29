@@ -119,4 +119,4 @@ Reference mockups for the Round 1 plan above, one section per placement.
 
 ## Related
 
-- [Campaign setup](/en/adwave/campaign-setup) — where you add these creatives to a campaign.
+- [Create your campaign](/en/handbook/create-campaign) — where you add these creatives to a campaign.

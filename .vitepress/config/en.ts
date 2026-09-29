@@ -83,20 +83,16 @@ export const en: DefaultTheme.Config = {
           ]
         },
         { text: '3. Landing page & conversion path', link: '/en/handbook/landing-page' },
-        { text: '4. Creatives', link: '/en/handbook/creatives' },
+        {
+          text: '4. Creatives',
+          link: '/en/handbook/creatives',
+          collapsed: true,
+          items: [{ text: 'Creative Requirements & Examples', link: '/en/handbook/creative-requirements' }]
+        },
         { text: '5. Create your campaign', link: '/en/handbook/create-campaign' },
         { text: '6. Your first week', link: '/en/handbook/first-week' },
         { text: '7. Optimise and scale', link: '/en/handbook/optimise-and-scale' },
         { text: 'FAQ', link: '/en/handbook/faq' }
-      ]
-    },
-    {
-      text: 'AdWave',
-      link: '/en/adwave/campaign-setup',
-      collapsed: false,
-      items: [
-        { text: 'Campaign Setup', link: '/en/adwave/campaign-setup' },
-        { text: 'Creative Requirements & Examples', link: '/en/adwave/creative-requirements' }
       ]
     },
     {

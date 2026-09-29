@@ -3,7 +3,7 @@ title: Creatives
 description: What to prepare for your first AdWave campaign — creative sets, specs by ad format, and how AdWave tests them.
 ---
 
-<!-- Beginner layer over AdWave → Creative Requirements & Examples (/en/adwave/creative-requirements) -->
+<!-- Beginner layer over AdWave → Creative Requirements & Examples (/en/handbook/creative-requirements) -->
 
 # Creatives
 
@@ -76,7 +76,7 @@ An example for the Malaysia market with 2 offers in 3 languages (EN / ZH / MY):
 | **Push** | 2 message angles (countdown, big win) | 2 |
 | **Total** | | **8 sets, about 28 files** |
 
-See [Creative Requirements & Examples](/en/adwave/creative-requirements) for visual previews of each format.
+See [Creative Requirements & Examples](/en/handbook/creative-requirements) for visual previews of each format.
 
 ## 5. Upload and manage creatives
 

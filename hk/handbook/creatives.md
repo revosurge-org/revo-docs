@@ -3,7 +3,7 @@ title: 素材
 description: 第一個 AdWave 廣告系列要準備甚麼：素材組、各廣告格式的規格，以及 AdWave 如何測試素材。
 ---
 
-<!-- Beginner layer over AdWave → Creative Requirements & Examples (/hk/adwave/creative-requirements) -->
+<!-- Beginner layer over AdWave → Creative Requirements & Examples (/hk/handbook/creative-requirements) -->
 
 # 素材
 
@@ -76,7 +76,7 @@ description: 第一個 AdWave 廣告系列要準備甚麼：素材組、各廣�
 | **Push** | 2 種文案切入點（倒數、大獎） | 2 |
 | **合共** | | **8 組，約 28 個檔案** |
 
-想看各格式的效果預覽，參見 [素材要求與範例](/hk/adwave/creative-requirements)。
+想看各格式的效果預覽，參見 [素材要求與範例](/hk/handbook/creative-requirements)。
 
 ## 5. 上載和管理素材 {#_5-upload-and-manage-creatives}
 

@@ -83,20 +83,16 @@ export const cn: DefaultTheme.Config = {
           ]
         },
         { text: '3. 落地页与转化路径', link: '/cn/handbook/landing-page' },
-        { text: '4. 素材', link: '/cn/handbook/creatives' },
+        {
+          text: '4. 素材',
+          link: '/cn/handbook/creatives',
+          collapsed: true,
+          items: [{ text: '素材要求与范例', link: '/cn/handbook/creative-requirements' }]
+        },
         { text: '5. 创建广告系列', link: '/cn/handbook/create-campaign' },
         { text: '6. 投放第一周', link: '/cn/handbook/first-week' },
         { text: '7. 优化与放量', link: '/cn/handbook/optimise-and-scale' },
         { text: '常见问题', link: '/cn/handbook/faq' }
-      ]
-    },
-    {
-      text: 'AdWave',
-      link: '/cn/adwave/campaign-setup',
-      collapsed: false,
-      items: [
-        { text: '广告系列设置', link: '/cn/adwave/campaign-setup' },
-        { text: '素材要求与范例', link: '/cn/adwave/creative-requirements' }
       ]
     },
     {

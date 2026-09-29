@@ -36,7 +36,7 @@ AdWave 和 DataPulse 配合使用：DataPulse 負責衡量轉化，AdWave 據此
 
 | 產品 | 作用 | 使用者 | 由這裡開始 |
 | --- | --- | --- | --- |
-| **AdWave** | 建立、投放和優化廣告系列 | 廣告主、媒體採購 | [新手投放手冊](/hk/handbook/) · [廣告系列設定](/hk/adwave/campaign-setup) |
+| **AdWave** | 建立、投放和優化廣告系列 | 廣告主、媒體採購 | [新手投放手冊](/hk/handbook/) · [建立廣告系列](/hk/handbook/create-campaign) |
 | **DataPulse** | 為每個產品設定追蹤，並分析註冊、充值、同期群（cohort）和玩家價值等成效 | 廣告主、分析師 | [追蹤 → 概述](/hk/tracking/overview) |
 | **追蹤** | 透過 Web 追蹤器（瀏覽器端）、S2S（你的後端）、Partner Postback（聯盟平台）或 AppsFlyer（App），把轉化發送給 RevoSurge | 開發者 | [手冊 → 接入追蹤](/hk/tracking/overview) |
 | **受眾** | 建立玩家分群，用於定向和再行銷 | 廣告主 | [受眾 → 受眾細分](/hk/audience/segments) |
