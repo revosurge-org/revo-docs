@@ -1,46 +1,23 @@
 ---
-title: 充值共享钱包
-sidebar_label: 充值与钱包
-description: 向共享钱包充值。支付方式、验证、交易记录。
+title: 充值与钱包
+description: "本页已移至 账户与钱包."
+layout: page
+search: false
+head:
+  - - meta
+    - name: robots
+      content: noindex
+  - - meta
+    - http-equiv: refresh
+      content: 0;url=/cn/handbook/account-and-wallet#_2-fund-your-wallet
 ---
 
-# 充值共享钱包
+<!-- Growth was replaced by the AdWave Advertiser Handbook. This stub keeps old links working. -->
 
-**受众：** 管理员/主账户、财务
+<script setup>
+if (typeof window !== 'undefined') {
+  window.location.replace('/cn/handbook/account-and-wallet#_2-fund-your-wallet')
+}
+</script>
 
-## 共享钱包概念
-AdWave 和 DataPulse 共用同一**账户级钱包**。  
-一次充值，所有服务共用同一余额。
-
-## 充值
-1. 进入 **计费 → 充值**
-2. 选择支付方式(取决于地区)，例如：
-   - 信用卡
-   - 银行转账
-   - 加密货币钱包
-3. 输入充值金额(遵守最低充值要求)
-4. 确认任何**不可退款**声明(如有)
-5. 完成支付流程
-
-## 验证充值成功
-支付后：
-- **账户余额**应更新
-- **交易历史**中应出现**充值**记录
-
-## 推荐运营实践
-- 财务每日查看钱包余额
-- 如有广告系列计划，保持缓冲余额，避免因资金不足导致投放暂停
-
-## 故障排查
-
-::: details 我的充值未显示在余额中
-充值会入账到共享的**账户级钱包**。请在 **计费 → 交易历史** 中查看是否有**充值**记录；信用卡、银行转账和加密货币方式可能需要一定时间结算。若付款已成功，但在预期结算时间窗后仍无记录，请携带你的付款凭证号联系支持。
-:::
-
-::: details 广告系列因资金不足被暂停
-当钱包无法覆盖当天花费时，投放会暂停。请为钱包充值，并保持高于各广告系列日预算合计的缓冲余额，以免试点中途停摆。
-:::
-
-## 下一步
-- **[设置产品与追踪](/cn/growth/getting-started#_3-product-setup-high-level)** —— 在 DataPulse 中创建产品并使其变为 Active。
-- **[创建首个广告系列](/cn/adwave/campaign-setup)** —— 待产品变为 Active 后。
+本页已移至 [账户与钱包](/cn/handbook/account-and-wallet#_2-fund-your-wallet).

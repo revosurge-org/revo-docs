@@ -1,46 +1,23 @@
 ---
-title: 充值共享錢包
-sidebar_label: 充值與錢包
-description: 向共享錢包充值。支付方式、驗證、交易記錄。
+title: 充值與錢包
+description: "本頁已移至 帳戶與錢包."
+layout: page
+search: false
+head:
+  - - meta
+    - name: robots
+      content: noindex
+  - - meta
+    - http-equiv: refresh
+      content: 0;url=/hk/handbook/account-and-wallet#_2-fund-your-wallet
 ---
 
-# 充值共享錢包
+<!-- Growth was replaced by the AdWave Advertiser Handbook. This stub keeps old links working. -->
 
-**對象：** 管理員/主帳戶、財務
+<script setup>
+if (typeof window !== 'undefined') {
+  window.location.replace('/hk/handbook/account-and-wallet#_2-fund-your-wallet')
+}
+</script>
 
-## 共享錢包概念
-AdWave 及 DataPulse 共用同一**帳戶級錢包**。  
-一次充值，所有服務共用同一餘額。
-
-## 充值
-1. 前往 **計費 → 充值**
-2. 選擇付款方式(視乎地區)，例如：
-   - 信用卡
-   - 銀行轉帳
-   - 加密貨幣錢包
-3. 輸入充值金額(遵守最低充值要求)
-4. 確認任何**不可退款**聲明(如有)
-5. 完成付款流程
-
-## 驗證充值成功
-付款後：
-- **帳戶餘額**應更新
-- **交易歷史**中應出現**充值**記錄
-
-## 建議營運實踐
-- 財務每日檢視錢包餘額
-- 如有廣告系列計劃，保持緩衝餘額，避免因資金不足導致投放暫停
-
-## 疑難排解
-
-::: details 我的充值未顯示在餘額中
-充值會入帳到共享的**帳戶級錢包**。請在 **Billing → Transaction history** 中查看 **Deposit** 記錄;信用卡、銀行轉帳與加密貨幣方式都可能需要時間結算。若付款已成功但在預期的結算時段後仍未出現記錄,請攜帶你的付款參考聯絡支援。
-:::
-
-::: details 廣告系列因資金不足而暫停
-當錢包無法覆蓋當日花費時,投放會暫停。請為錢包充值,並保持餘額高於你各項日預算的總和,讓試點不會中途停滯。
-:::
-
-## 下一步
-- **[設定產品與追蹤](/hk/growth/getting-started#_3-product-setup-high-level)**——在 DataPulse 中建立產品並使其變為 Active。
-- **[建立首個廣告系列](/hk/adwave/campaign-setup)**——待你的產品變為 Active 後。
+本頁已移至 [帳戶與錢包](/hk/handbook/account-and-wallet#_2-fund-your-wallet).

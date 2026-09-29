@@ -25,7 +25,7 @@ description: 面向網頁漏斗的第一方 JavaScript SDK——為 AdWave 與 D
 
 ## 你需要設定甚麼
 
-1. DataPulse 中的一個**產品**——追蹤 + 廣告系列的容器(參見 [入門指南](/hk/growth/getting-started#_3-product-setup-high-level))
+1. DataPulse 中的一個**產品**——追蹤 + 廣告系列的容器(參見 [追蹤概述 → 建立你的產品](/hk/tracking/overview#_1-create-your-product))
 2. 追蹤器腳本 + 你的關鍵事件——參見 **[安裝](/hk/tracking/web-tracker/install)**
 3. 驗證事件顯示為 **Live**,然後把廣告系列指向它們
 

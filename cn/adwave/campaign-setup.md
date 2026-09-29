@@ -28,7 +28,7 @@ description: 在 AdWave 中一站式创建广告系列与素材——前提条�
 - **已创建产品。** 创建**产品**（你要推广的应用或网站），并填写其域名、追踪器 ID 与充值汇率。
 - **Web 追踪器已激活。** 在 Web 追踪器收到首个事件之前，产品处于 **Inactive（未激活）** 状态；只有**已激活**的产品才能在广告系列流程中选择。参见 [安装 Web 追踪器](/cn/tracking/web-tracker/install)。
 - **转化事件已追踪。** 你用于优化的目标事件（如 Register、Deposit）必须已通过追踪流入。参见 [追踪 → 概述](/cn/tracking/overview)。
-- **钱包已充值。** 你的**钱包**余额充足。参见 [充值与钱包](/cn/growth/funding-wallet)。
+- **钱包已充值。** 你的**钱包**余额充足。参见 [账户与钱包](/cn/handbook/account-and-wallet#_2-fund-your-wallet)。
 - **素材已就绪。** 素材已按规格准备好。参见 [素材要求与范例](/cn/adwave/creative-requirements)。
 
 > **提示：** 你可在**管理产品**中查看产品状态——**Tracker Status（追踪器状态）** 列显示 Active / Inactive，*Data Setup（数据配置）* 显示有多少事件处于激活状态。

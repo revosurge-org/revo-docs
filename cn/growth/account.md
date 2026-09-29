@@ -1,72 +1,23 @@
 ---
-title: 创建 RevoSurge 账户
-sidebar_label: 创建账户
-description: 创建或激活账户。公司身份、计费、用户、产品。
+title: 创建账户
+description: "本页已移至 账户与钱包."
+layout: page
+search: false
+head:
+  - - meta
+    - name: robots
+      content: noindex
+  - - meta
+    - http-equiv: refresh
+      content: 0;url=/cn/handbook/account-and-wallet
 ---
 
-# 创建 RevoSurge 账户
+<!-- Growth was replaced by the AdWave Advertiser Handbook. This stub keeps old links working. -->
 
-**受众：** 管理员 / 主账户用户、账户所有者、运营
+<script setup>
+if (typeof window !== 'undefined') {
+  window.location.replace('/cn/handbook/account-and-wallet')
+}
+</script>
 
-## 什么是 RevoSurge 账户？
-RevoSurge 账户代表您在平台上的业务，是以下内容的容器：
-- 法定公司身份
-- 计费与充值(AdWave 和 DataPulse 共享钱包)
-- 用户、角色和权限
-- 您要推广的产品(网站/应用)
-- 广告系列、分析和财务余额
-
-## 前提条件
-准备：
-- 法定公司名称
-- 注册营业地址和国家
-- 主要联系人姓名和邮箱
-- 可选计费联系人(推荐)
-
-## 创建或激活账户
-1. **注册或接受邀请**
-   - **新公司？** 前往 [**adwave.revosurge.com**](https://adwave.revosurge.com) 完成公开的自助注册：**邮箱 → 验证码 → 密码 → 公司信息**。无需 RevoSurge 代表或邀请链接。
-   - **公司账户已存在？** 接受邀请邮件以加入该账户。
-
-   ![AdWave 公开自助注册 —— 四步向导：邮箱 → 验证码 → 密码 → 详情](/img/onboarding/adwave-signup.png)
-
-2. **填写公司信息**
-   - 法定公司名称
-   - 注册国家
-   - 营业地址
-   - 主要联系人(姓名 + 邮箱)
-
-3. **接受在线协议**
-   您的点击接受即视为数字签名。
-   接受后，如必填信息完整，账户状态可变为**就绪**。
-
-## 添加团队成员和角色
-内置角色：
-- **管理员(主账户)**：完全访问(包括用户/角色管理)
-- **广告主管**：管理产品、广告系列、素材和报表(分配范围)
-- **数据分析师**：管理数据资产并查看广告系列/报表(分配范围)
-- **财务**：查看余额、发票和财务报表
-
-邀请方式：
-1. 进入 **账户 → 成员**
-2. 点击 **邀请成员**
-3. 输入邮箱 + 角色 + 可选留言
-4. 点击 **发送邀请**
-
-注意：
-- 您可稍后更改角色、禁用用户或重新发送邀请。
-- 每个账户至少保留**一名管理员/主账户**(最后一名管理员不可移除)。
-
-## 故障排查
-
-::: details 我的邮箱已被注册
-[adwave.revosurge.com](https://adwave.revosurge.com) 上的公开注册会拒绝已归属于某个账户的邮箱。请让现有的 **管理员/主账户** 邀请你加入(**账户 → 成员 → 邀请成员**)，或使用另一个邮箱创建单独的公司账户。
-:::
-
-::: details 我的账户无法变为「就绪」
-只有在所有必填公司信息都完整且已接受在线协议后，账户才会变为**就绪**。请重新打开公司资料，补全任何缺失的法定名称、注册国家、营业地址或主要联系人。
-:::
-
-## 下一步
-- **[充值钱包](/cn/growth/funding-wallet)** —— 在启动前先充值余额。
-- **[设置产品与追踪](/cn/growth/getting-started#_3-product-setup-high-level)** —— 在 DataPulse 中创建产品并接入追踪，使其变为 Active。
+本页已移至 [账户与钱包](/cn/handbook/account-and-wallet).

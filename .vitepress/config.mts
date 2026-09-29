@@ -97,7 +97,7 @@ export default defineConfig({
     plugins: [
       llmstxtPlugin({
         hostname: 'https://docs.revosurge.com',
-        ignore: ['**/cn/**', '**/hk/**', '**/docs/**'],
+        ignore: ['**/cn/**', '**/hk/**', '**/docs/**', '**/growth/**'],
         llmsFile: { indexTOC: 'only-llms' },
         llmsFullFile: true,
         mdFiles: false,

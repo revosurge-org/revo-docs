@@ -28,7 +28,7 @@ description: 在 AdWave 中一站式建立廣告系列與素材——前提條�
 - **已建立產品。** 建立**產品**（你要推廣的應用或網站），並填寫其網域、追蹤器 ID 與充值匯率。
 - **Web 追蹤器已啟用。** 在 Web 追蹤器收到首個事件之前，產品處於 **Inactive（未啟用）** 狀態；只有**已啟用**的產品才能在廣告系列流程中選擇。參見 [安裝 Web 追蹤器](/hk/tracking/web-tracker/install)。
 - **轉化事件已追蹤。** 你用於優化的目標事件（如 Register、Deposit）必須已透過追蹤流入。參見 [追蹤 → 概述](/hk/tracking/overview)。
-- **錢包已充值。** 你的**錢包**餘額充足。參見 [充值與錢包](/hk/growth/funding-wallet)。
+- **錢包已充值。** 你的**錢包**餘額充足。參見 [帳戶與錢包](/hk/handbook/account-and-wallet#_2-fund-your-wallet)。
 - **素材已就緒。** 素材已按規格準備好。參見 [素材要求與範例](/hk/adwave/creative-requirements)。
 
 > **提示：** 你可在**管理產品**中查看產品狀態——**Tracker Status（追蹤器狀態）** 欄顯示 Active / Inactive，*Data Setup（數據配置）* 顯示有多少事件處於啟用狀態。

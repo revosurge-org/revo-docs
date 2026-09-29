@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: Get started
-      link: /en/growth/getting-started
+      link: /en/handbook/
     - theme: alt
       text: Overview
       link: /en/revosurge/welcome
@@ -19,7 +19,7 @@ features:
   - title: First-Party Tracking
     details: Install trackers, validate events, and measure outcomes using DataPulse analytics.
   - title: Account Management
-    details: Manage your account, wallet, team members, and permissions all in one place.
+    details: One login and one wallet, shared across AdWave and DataPulse. Your Account Manager handles deposits.
   - title: API Integration
     details: Automate campaign management, reporting, and audience segmentation with comprehensive APIs.
 ---

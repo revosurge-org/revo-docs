@@ -18,7 +18,7 @@ npm run dev
 
 ## Development guidelines (keep it simple)
 
-- **Docs live in Markdown**: add/edit pages under `en/`, `cn/`, `hk/` (example: `en/tracking/`, `en/growth/`, `en/api/`, `en/adwave/`).
+- **Docs live in Markdown**: add/edit pages under `en/`, `cn/`, `hk/` (example: `en/handbook/`, `en/tracking/`, `en/api/`, `en/adwave/`).
 - **English is the source of truth**: 简/繁 (`cn/`, `hk/`) are **AI-generated translations** and may need occasional tweaks.
 - **Navigation lives in VitePress config**: update nav/sidebar in `.vitepress/config/en.ts`, `.vitepress/config/cn.ts`, `.vitepress/config/hk.ts` when you add/move pages. (Ask Bobby)
 - **Prefer clean, stable paths**: avoid renaming/moving pages unless necessary; keep links relative.

@@ -1,59 +1,58 @@
 ---
-title: RevoSurge 概述
-sidebar_label: 概述
-description: RevoSurge 平台 — AdWave、DataPulse、帳戶、錢包、廣告主工作流程。
+title: 歡迎使用 RevoSurge
+description: RevoSurge 是甚麼、各產品的文檔在哪裡，以及一個帳戶如何在各產品間通用。
 ---
 
 # 歡迎使用 RevoSurge
 
-**對象：** 廣告主、增長團隊、UA 經理、營運、財務、開發者
+**對象：** 所有初次接觸 RevoSurge 的人，包括廣告主、媒體採購、分析師、開發者和發布商。
 
-RevoSurge 協助廣告主透過 **AdWave (DSP)** 執行程序化獲客，並透過 **DataPulse(分析)** 了解成效——**一個帳戶**、**一個錢包**、**一套產品**即可完成。
+<nav class="article-toc" aria-label="本文內容">
+<p class="article-toc-title">本文內容</p>
 
-本指南涵蓋：
-- RevoSurge 帳戶結構
-- 如何充值及管理存取權限
-- 如何在 AdWave 中啟動廣告系列(引導式設定)
-- 試點期間需監控的指標
-- API 快速入門(高層概覽，非技術向)
+- [1. RevoSurge 是甚麼](#_1-what-is-revosurge)
+- [2. 文檔導覽](#_2-where-to-find-the-docs)
+- [3. 一個帳戶，所有產品通用](#_3-one-account-shared-across-products)
 
-## 本文內容
-- RevoSurge 包含甚麼
-- 核心概念(帳戶 / 錢包 / 產品)
-- 典型工作流程
-- 下一步
+</nav>
 
-## RevoSurge 包含甚麼
-- **AdWave (DSP)：** 透過 RTB 在多個 SSP 上建立及執行廣告系列。
-- **DataPulse(分析與數據設定)：** 透過引導式的 **Setup Wizard** 配置每個產品的技術整合——Web Tracker、伺服器到伺服器 (S2S) 事件與 API 金鑰,並檢視下游成效及報表。它與 AdWave 是**同一個帳戶**——在 [datapulse.revosurge.com](https://datapulse.revosurge.com) 開啟,或在 AdWave 儀表板(右上角)點擊 **Open DataPulse**。
-- **追蹤：** Web 追蹤器及伺服器到伺服器 (S2S) 事件，將廣告曝光與站內/系統內成效連結。
+::: info 新廣告主？
+直接前往 [新手投放手冊](/hk/handbook/)，手冊會一步步帶你由註冊走到廣告系列上線。
+:::
 
-## 核心概念 {#key-concepts}
-- **帳戶：** RevoSurge 中代表您公司的容器(用戶、計費、產品、廣告系列)。
-- **錢包：** AdWave 及(啟用時)DataPulse 相關服務共用的餘額。
-- **產品：** 您推廣的網站/應用目的地。廣告系列針對所選產品執行。
-- **事件：** 您希望優化/衡量的追蹤動作(如 Register、Deposit)。
-- **Active / Inactive(產品)：** 產品只有在其 Web Tracker 收到首個事件後才會變為 **Active**;只有 Active 的產品才能執行廣告系列。
-- **Tracker ID：** DataPulse 分配給產品的 ID;它把你網站上的追蹤器連結到該產品。
-- **Web Tracker：** 你網站上的第一方 JavaScript 程式碼片段,用於發送事件(需要改動程式碼)。
-- **S2S(伺服器到伺服器)：** 透過 API 從你的後端發送事件——財務事件的「真實來源」(需要工程投入)。
-- **MMP(AppsFlyer)：** 用於 App 安裝與應用內事件的流動衡量合作夥伴。
-- **FTD(First-Time Deposit,首次充值)：** 用戶的首次充值——常見的優化事件。
-- **CPM / oCPM：** 按每千次曝光成本出價(CPM),或朝目標的每事件成本優化(oCPM)。
-- **Deposit FX：** 產品上的匯率設定,用於將充值金額標準化。
-- **click_id / UTM：** 從落地頁 URL 擷取的識別碼,把轉化連結回其廣告系列。
+## 1. RevoSurge 是甚麼 {#_1-what-is-revosurge}
 
-## 典型工作流程
-1) 在 [adwave.revosurge.com](https://adwave.revosurge.com) 建立/啟用帳戶並新增團隊成員  
-2) 建立產品(網站/應用)  
-3) 在 [DataPulse](https://datapulse.revosurge.com) 中設定追蹤——Web 追蹤器 / S2S 事件  
-4) 在 AdWave 中建立廣告系列(引導式設定)  
-5) 監控試點效果與流量質素  
-6) 擴大預算、優化定向，並在需要時套用終止規則  
+RevoSurge（RS）是為效果營銷人員而設的廣告平台，對 iGaming 的支援尤其深入。平台由三款產品組成，連接廣告市場的買賣兩端：
 
-## 下一步
-- 新手入門：前往 [**增長 → 入門指南**](/hk/growth/getting-started)
-- 整合追蹤：前往 [**追蹤 → 概述**](/hk/tracking/overview)
-- 投放廣告：前往 [**AdWave → 廣告系列設定**](/hk/adwave/campaign-setup)
-- 受眾定向：前往 [**受眾**](/hk/audience/segments)
-- 建立整合：前往 [**API → API 快速入門**](/hk/api/quickstart)
+| 產品 | 對象 | 作用 |
+| --- | --- | --- |
+| **AdWave** | 廣告主 | **買量。** 在大量網站和 App 上投放廣告系列。AdWave 會為每一次廣告展示實時出價，並從你的轉化數據中學習，找出更多與你最優質玩家相似的人 |
+| **DataPulse** | 廣告主 | **衡量成效。** 用你自己的第一方數據，追蹤玩家點擊之後的每一步，由註冊、充值到玩家價值，再把這些轉化回傳給 AdWave |
+| **AdFlow** | 發布商 | **流量變現。** 只需一段腳本 `adflow.js`，就能在網站上展示廣告，支援橫幅、彈出式（pop-under）、推送、頁內推送和原生等格式 |
+
+AdWave 和 DataPulse 配合使用：DataPulse 負責衡量轉化，AdWave 據此優化投放。AdFlow 則帶來發布商的廣告庫存，供 AdWave 廣告系列購買。
+
+## 2. 文檔導覽 {#_2-where-to-find-the-docs}
+
+| 產品 | 作用 | 使用者 | 由這裡開始 |
+| --- | --- | --- | --- |
+| **AdWave** | 建立、投放和優化廣告系列 | 廣告主、媒體採購 | [新手投放手冊](/hk/handbook/) · [廣告系列設定](/hk/adwave/campaign-setup) |
+| **DataPulse** | 為每個產品設定追蹤，並分析註冊、充值、同期群（cohort）和玩家價值等成效 | 廣告主、分析師 | [追蹤 → 概述](/hk/tracking/overview) |
+| **追蹤** | 透過 Web 追蹤器（瀏覽器端）、S2S（你的後端）、Partner Postback（聯盟平台）或 AppsFlyer（App），把轉化發送給 RevoSurge | 開發者 | [手冊 → 接入追蹤](/hk/tracking/overview) |
+| **受眾** | 建立玩家分群，用於定向和再行銷 | 廣告主 | [受眾 → 受眾細分](/hk/audience/segments) |
+| **AdFlow** | JavaScript SDK（`adflow.js`），讓發布商在自己的網站上展示 RevoSurge 廣告，並為每種廣告格式提供除錯工具 | 發布商、發布商開發者 | [AdFlow → 接入指南](/hk/adflow/integration-guide) |
+| **Supply** | 透過伺服器對伺服器競價，接入向 RevoSurge 出售廣告庫存的 SSP（供應方平台） | SSP、廣告網絡 | [Supply → 概述](/hk/supply/overview) |
+| **API** | 在你自己的系統中管理廣告系列、報表和受眾 | 開發者 | [API → 快速入門](/hk/api/quickstart) |
+
+## 3. 一個帳戶，所有產品通用 {#_3-one-account-shared-across-products}
+
+只需**一個 RevoSurge 帳戶**就能使用所有產品，AdWave 和 DataPulse 共用這個帳戶。
+
+| 共用內容 | 說明 |
+| --- | --- |
+| **登入** | 每個帳戶只有一個登入電郵，[AdWave](https://adwave.revosurge.com) 和 [DataPulse](https://datapulse.revosurge.com) 都用它登入。暫時未能新增團隊成員，如有多人需要使用，請用共用的工作電郵 |
+| **錢包** | 所有廣告系列和服務共用一個餘額，充值由你的客戶經理處理 |
+| **產品** | 產品（Product）只需在其中一個工具建立一次，兩邊都會顯示 |
+| **追蹤與數據** | 發送到產品的事件，會同時用於 AdWave 的投放優化和 DataPulse 的報表 |
+
+**下一步：** [新手投放手冊](/hk/handbook/)
