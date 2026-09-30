@@ -213,12 +213,6 @@ SDK 提供的方法不止這些，但後台的 **Event Stream** 針對每個已�
 **Receiving** / **Errors** / **Not yet seen** 的數量。每個網域還有一個開關——
 關閉的網域不會收集任何數據。
 
-::: info 以六個事件為準，而不是徽章
-Setup Wizard 徽章顯示的是 **Web Tracker active · n/8**，但後台針對每個已登記網域展示的是**六個**
-事件——即上表中的六個。六才是你需要接入和核對的數量。
-徽章的分母統計的是別的東西，並不是目標。
-:::
-
 ![Web Tracker event stream showing events received per domain](/img/tracking/12-dp-webtracker-eventstream.png)
 
 事件通常在一分鐘內出現。`page_view` 應當幾乎立刻變綠。

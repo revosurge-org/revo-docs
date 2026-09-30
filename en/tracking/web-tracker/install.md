@@ -215,12 +215,6 @@ Each block lists the six events with a status dot and a "last seen" timestamp, a
 summary of **Receiving** / **Errors** / **Not yet seen**. Each domain also has an on/off
 toggle — a domain switched off collects nothing.
 
-::: info Work to six, not to the badge
-The Setup Wizard badge reads **Web Tracker active · n/8**, but the portal surfaces **six**
-events per registered domain — the six in the table above. Six is the number to wire up and
-to check against. The badge's denominator counts something else and is not a target.
-:::
-
 ![Web Tracker event stream showing events received per domain](/img/tracking/12-dp-webtracker-eventstream.png)
 
 Events usually appear within a minute. `page_view` should turn green almost immediately.
