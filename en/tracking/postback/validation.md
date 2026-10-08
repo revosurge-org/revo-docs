@@ -34,7 +34,7 @@ Most of this page exists because of that one behaviour.
 | `PB-R-04` | No unsubstituted macros in `click_id` or `user_id` | A literal `{sub1}` drops the whole postback. In other fields only that field is lost. |
 | `PB-R-05` | First deposits go to `/first-deposit`, later ones to `/repeat-deposit` | FTD counts are wrong in both directions, and FTD is usually what the campaign is bidding on. |
 | `PB-R-06` | `ts` is unix **milliseconds**, not seconds | Seconds are auto-corrected and raised as a contract deviation. Nothing fails, but you are relying on our correction rather than sending what you mean — and the alert lands on your account manager, not you. |
-| `PB-R-07` | `amount` is sent on `/first-deposit`, `/repeat-deposit` and `/revenue`, with the correct sign | No revenue to report and nothing to compute ROAS from. |
+| `PB-R-07` | `amount` is sent on `/first-deposit`, `/repeat-deposit` and `/revenue`, with the correct sign (`/registration` and `/app-launch` carry none) | No revenue to report and nothing to compute ROAS from. |
 | `PB-R-08` | `event_id` is globally unique, stable, and repeated **verbatim** on retries | Without it dedup falls back to `txid`, then to a hash of the query string. A retry with any field reordered becomes a second conversion. |
 | `PB-R-09` | `503` is retried; `200` and `403` are not | `503` means the write was not confirmed — that conversion is lost unless you resend. Retrying a `200` risks duplicates if `event_id` is missing. |
 | `PB-R-10` | `dryrun` is **not** present on the registered production URL | Every postback returns a verdict and records nothing. |
@@ -73,8 +73,13 @@ never in anything a player's browser can see.
 | First deposit | `/v1/pb/{partner}/first-deposit` |
 | Subsequent deposit | `/v1/pb/{partner}/repeat-deposit` |
 | Revenue-share settlement | `/v1/pb/{partner}/revenue` |
+| App launched (every launch) | `/v1/pb/{partner}/app-launch` |
 
-There is no fifth path. Negative `amount` values are valid on `/revenue` — under a revenue
+There are no other paths. An app **install** is not a launch and has no postback path — installs
+reach RevoSurge through your MMP. A registration fired from the launch path, or a launch fired
+from the registration path, is misclassified permanently, just like a deposit on the wrong path.
+
+Negative `amount` values are valid on `/revenue` — under a revenue
 share, a losing period is a negative income event. If you need to report a **chargeback or
 clawback** specifically, agree the representation with your account manager rather than
 assuming a negative revenue line will be interpreted that way.
@@ -134,6 +139,8 @@ a negative income event.
 `event_id`. On any retry, send the identical value.
 
 Dedup priority is `event_id`, then `txid`, then a byte-identical hash of the query string.
+This matters most on `/app-launch`: the same player launches the app many times, and without an
+`event_id` and a `ts` two launches can produce the same URL and collapse into one.
 The hash fallback is not a safety net: change the parameter order, add a field, or re-encode a
 value and the same conversion is counted twice.
 
