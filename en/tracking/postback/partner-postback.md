@@ -1,14 +1,14 @@
 ---
 title: RevoSurge Partner Postback API
 sidebar_label: Partner Postback API
-description: Partner Postback reference — endpoints, key authentication, macro parameters, response contract, deduplication, and retry rules.
+description: Partner Postback reference — conversion and app-launch endpoints, key authentication, macro parameters, response contract, deduplication, and retry rules.
 ---
 
 # RevoSurge Partner Postback API
 
 **Audience:** Engineers, technical integrators, affiliate/partner managers
 
-The Partner Postback API lets an operator or affiliate platform report conversions **back to RevoSurge** from its own back office. Postbacks are plain HTTP `GET` callbacks with macros in the query string — the format affiliate back offices already speak — so the integration is a one-time URL registration rather than a code change on your side.
+The Partner Postback API lets an operator or affiliate platform report conversions — and app launches — **back to RevoSurge** from its own back office. Postbacks are plain HTTP `GET` callbacks with macros in the query string — the format affiliate back offices already speak — so the integration is a one-time URL registration rather than a code change on your side.
 
 - Sending events from your own servers instead? Use the [Server Events API (v3)](/en/tracking/s2s/v3/server-events-api).
 - New to RevoSurge tracking? Start with the [Tracking overview](/en/tracking/overview).
@@ -62,24 +62,39 @@ RevoSurge uses **local postbacks**: one URL per event type. The **path decides t
 
 <HttpMethod method="GET" path="/v1/pb/{partner}/revenue" />
 
+<HttpMethod method="GET" path="/v1/pb/{partner}/app-launch" />
+
 | Endpoint | Recorded as | `reported_first` | Fire it when |
 |----------|-------------|------------------|--------------|
 | `/registration` | `register` | — | A player account is created — the first event carrying a player id |
 | `/first-deposit` | `deposit` | `1` | A deposit your system considers the player's first |
 | `/repeat-deposit` | `deposit` | `0` | Any subsequent deposit |
 | `/revenue` | `partner_revenue` | — | A revenue-share settlement event |
+| `/app-launch` | `app_launch` | — | **Every** launch of your app — see [App launches](#app-launches) |
 
-All four take an **identical parameter set** — only the path differs — so you can register them from one template.
+All five take an **identical parameter set** — only the path differs — so you can register them from one template. Register only the endpoints for events you actually send.
 
-Two notes on how these are recorded:
+Three notes on how these are recorded:
 
 - **`first-deposit` and `repeat-deposit` both store `deposit`**, with your first-deposit claim kept as a flag rather than as truth. RevoSurge computes first-time deposits independently, and the difference between the two figures is free reconciliation.
 - **`revenue` is stored as `partner_revenue`, not as GGR.** It is the commission figure, which differs from operator GGR by the revenue-share rate; conflating them would be a units error.
+- **`app-launch` is stored as `app_launch`, never as an install.** It is an activity signal, not a conversion — see below.
 
 > [!WARNING]
 > **Do not register an "all deposits" postback** alongside `first-deposit` and `repeat-deposit` — every deposit would be counted twice.
 >
 > **Do not register a global postback** (one URL with the event type in a macro). The event type is already in the path. If we add an event type later, we will send you a new URL for it.
+
+### App launches
+
+`/app-launch` reports activity in your app rather than a conversion. Fire it on **every** launch — not only the first one after install, and not once per player.
+
+- **It is not an install.** App installs reach RevoSurge through your MMP (see [AppsFlyer](/en/mmp/appsflyer/overview)). A launch is recorded as `app_launch` and never counted as an install, so a launch postback cannot double-count installs your MMP already reports. Do not point an install postback at this URL.
+- **If your back office marks a first launch**, keep sending it to `/app-launch` and add your own flag as an extra parameter, and agree its name with your account manager. Unlisted parameters are [kept verbatim](#parameters), so the flag reaches us without a change on our side — but it does not turn a launch into an install.
+- **No `amount`.** A launch carries no monetary value; leave the macro empty or omit it.
+- **Identity rules still apply.** A launch with neither `click_id` nor `user_id` — for example one before the player has registered, if your platform has no click id for it — is dropped with `200 {"status":"ignored"}`. Run a [dry run](#dry-run) against your real template to see which identities your launches actually carry.
+- **Send a unique `event_id` per launch.** Launches repeat by nature: without `event_id` (or `txid`) and a `ts`, two launches by the same player can produce byte-identical URLs and collapse into one record. See [Deduplication](#deduplication).
+- **Same response contract.** `/app-launch` answers exactly like the conversion endpoints, `503` included — retry it the same way, so your back office needs only one retry rule.
 
 ## Parameters
 
@@ -133,7 +148,7 @@ All three are **optional**, and **adding them does not require re-registering yo
 
 ### URL template
 
-Register these four URLs, substituting your partner slug and key. The `{...}` values are **your back office's macro names** — the example below uses the common `sub1`/`sub2` convention.
+Register one URL per event you send, substituting your partner slug and key. The `{...}` values are **your back office's macro names** — the example below uses the common `sub1`/`sub2` convention.
 
 ```text
 https://mmp.revosurge.com/v1/pb/{partner}/registration?k=<KEY>&click_id={sub1}&ctx={sub2}&event={event}&user_id={user_id}&event_id={event_id}&txid={transaction_id}&amount={amount}&ts={date}&country={country}&hash_id={hash_id}&hash_name={hash_name}&source_id={source_id}&source_name={source_name}
@@ -143,6 +158,8 @@ https://mmp.revosurge.com/v1/pb/{partner}/first-deposit?k=<KEY>&…same query st
 https://mmp.revosurge.com/v1/pb/{partner}/repeat-deposit?k=<KEY>&…same query string…
 
 https://mmp.revosurge.com/v1/pb/{partner}/revenue?k=<KEY>&…same query string…
+
+https://mmp.revosurge.com/v1/pb/{partner}/app-launch?k=<KEY>&…same query string…
 ```
 
 ### A fired postback
@@ -234,7 +251,7 @@ A URL pasted into an email or a ticket gets fetched by link scanners with the ma
 
 ## Dry run
 
-Append `dryrun=1` to any of the four postback URLs to see the decision we would make, without recording anything. The request is authenticated, parsed, validated and enriched exactly as in production; we then return the verdict instead of storing it.
+Append `dryrun=1` to any of the postback URLs to see the decision we would make, without recording anything. The request is authenticated, parsed, validated and enriched exactly as in production; we then return the verdict instead of storing it.
 
 ```bash
 curl -sS -G "https://mmp.revosurge.com/v1/pb/{partner}/first-deposit" \
@@ -286,6 +303,7 @@ The postback contract [never returns `4xx` for a payload problem](#responses). T
 
 | Field | What it tells you |
 |-------|-------------------|
+| `route` | The endpoint that accepted the call: `registration`, `first_deposit`, `repeat_deposit`, `revenue` or `app_launch` |
 | `decision` | `accepted`, or `ignored` when the postback would be dropped |
 | `reason` | Present when `decision` is `ignored`: `unreplaced_macro` (a macro reached us as a literal — usually a link scanner fetched the URL), `empty_request`, or `no_identity` (neither `click_id` nor `user_id`). In production all three answer the same `200 {"status":"ignored"}`; only a dry run separates them |
 | `eventName` | The event type we would record. It is decided by the **endpoint path** |

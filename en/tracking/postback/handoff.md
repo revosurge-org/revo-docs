@@ -19,7 +19,7 @@ one that usually fails.
 - [ ] The postback is configured **server-side** in the affiliate platform, not as a pixel
 - [ ] The postback rule is **enabled** and scoped to the campaigns or links RevoSurge traffic
       lands on — not saved as a draft, and not scoped to a different brand
-- [ ] All four event paths are wired if you use all four, each to the correct URL
+- [ ] Every event path you use is wired, each to the correct URL (`/app-launch` only if you send app launches)
 - [ ] `dryrun` has been removed from the registered URLs (`PB-R-10`)
 - [ ] The `k` key is stored in the platform's postback config, not in any player-facing page
 
@@ -58,7 +58,7 @@ Dry runs count against your rate limit, so script the probes rather than looping
 
 | Deliverable | Why it is needed | Exceptions |
 | --- | --- | --- |
-| Which of the four endpoints you have wired | Decides what the campaign can optimise on. A campaign set to FTD with no `/first-deposit` postback will look broken from day one. | None |
+| Which of the five endpoints you have wired | Decides what the campaign can optimise on. A campaign set to FTD with no `/first-deposit` postback will look broken from day one. | None |
 | Your affiliate platform name and version | Macro syntax and server-side postback behaviour differ between platforms; we have seen the failure modes of most of them. | None |
 | The registered postback URLs, with `k` redacted | Lets us spot a wrong path or a missing parameter before launch rather than after. Send as **text**. | None |
 | A real `event_id` and `txid` from a successful test conversion, with the time — **fill this in after the go-live test** | One traceable example resolves an attribution question in minutes. | None |
@@ -95,6 +95,12 @@ Then make a **second** deposit on the same account and confirm it goes to `/repe
 and does not increment FTD. This catches `PB-R-05`, which otherwise surfaces a week later as
 an FTD count nobody can explain.
 
+If you send app launches, also close and reopen the app **twice** on the same account. Each
+launch should fire `/app-launch` and return `200 {"status":"ok"}` with its own `event_id` and
+the same `user_id` as the registration — two launches, two records. Then launch once on a fresh
+install **before** registering, and dry-run that payload: if it carries neither `click_id` nor
+`user_id`, it is `ignored`, and you should tell your account manager.
+
 ## If the test fails
 
 | Symptom | Check these rules |
@@ -104,6 +110,7 @@ an FTD count nobody can explain.
 | `503` | `PB-R-09` — retry it; the write was not confirmed |
 | Postback never fires at all | The rule is disabled, saved as a draft, or scoped to the wrong campaign — not a payload problem |
 | Deposit recorded as a registration | `PB-R-02` — wrong endpoint path |
+| Several app launches recorded as one | `PB-R-08` — no unique `event_id` per launch |
 | FTD count too high or too low | `PB-R-05` — first and repeat deposits on the same path |
 | Same conversion counted twice | `PB-R-08` — no stable `event_id`, so a retry became a new record |
 | Conversions arrive but are not attributed to the campaign | `PB-R-11`, `PB-O-01` — identifier mismatch, or no `ctx` fallback |
@@ -121,6 +128,7 @@ an FTD count nobody can explain.
 | Changing how player IDs are generated | Silently splits every profile | `PB-R-11` |
 | Changing payment provider or cashier | The deposit trigger may move, duplicate or stop | `PB-R-05`, `PB-R-07` |
 | Starting revenue-share settlement | A new endpoint, and negative amounts become live | `PB-R-02`, `PB-R-07` |
+| Starting app-launch postbacks | A new endpoint, often fired before the player has an id | `PB-R-02`, `PB-R-03`, `PB-R-08`, and re-run the probes |
 | Changing attribution or credit model | Our reporting and yours diverge without warning | `PB-O-07` |
 | Any change to the postback URL template | One character breaks it, and the failure is a `200` | Re-run all four probes |
 

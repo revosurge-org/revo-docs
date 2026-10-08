@@ -1,14 +1,14 @@
 ---
 title: RevoSurge 合作夥伴 Postback API
 sidebar_label: 合作夥伴 Postback API
-description: 合作夥伴 Postback 參考 — 端點、金鑰認證、宏參數、回應約定、去重及重試規則。
+description: 合作夥伴 Postback 參考 — 轉換與 App 啟動端點、金鑰認證、宏參數、回應約定、去重及重試規則。
 ---
 
 # RevoSurge 合作夥伴 Postback API
 
 **對象：** 工程師、技術整合人員、聯盟／合作夥伴經理
 
-合作夥伴 Postback API 讓營運方或聯盟平台可以從自己的後台，把轉換**回傳給 RevoSurge**。Postback 是帶查詢字串宏的普通 HTTP `GET` 回呼 — 聯盟後台本來就通用的格式 — 所以這次整合只是一次性的 URL 註冊，而不是你那邊的程式碼改動。
+合作夥伴 Postback API 讓營運方或聯盟平台可以從自己的後台，把轉換 — 以及 App 啟動 — **回傳給 RevoSurge**。Postback 是帶查詢字串宏的普通 HTTP `GET` 回呼 — 聯盟後台本來就通用的格式 — 所以這次整合只是一次性的 URL 註冊，而不是你那邊的程式碼改動。
 
 - 想從自己的伺服器傳送事件？請使用[伺服器事件 API (v3)](/hk/tracking/s2s/v3/server-events-api)。
 - 初次接觸 RevoSurge 追蹤？請從[追蹤概述](/hk/tracking/overview)開始。
@@ -62,24 +62,39 @@ RevoSurge 採用**本地 postback (local postback)**：每種事件類型一條 
 
 <HttpMethod method="GET" path="/v1/pb/{partner}/revenue" />
 
+<HttpMethod method="GET" path="/v1/pb/{partner}/app-launch" />
+
 | 端點 | 記錄為 | `reported_first` | 何時觸發 |
 |----------|-------------|------------------|--------------|
 | `/registration` | `register` | — | 玩家帳號建立 — 第一個帶有玩家 id 的事件 |
 | `/first-deposit` | `deposit` | `1` | 你的系統認定為該玩家首次存款的那一筆 |
 | `/repeat-deposit` | `deposit` | `0` | 之後的任何一筆存款 |
 | `/revenue` | `partner_revenue` | — | 一次收入分成結算事件 |
+| `/app-launch` | `app_launch` | — | App 的**每一次**啟動 — 參閱 [App 啟動](#app-啟動) |
 
-四條 URL 的**參數集完全一致** — 只有 path 不同 — 所以可以用同一份模板註冊。
+五條 URL 的**參數集完全一致** — 只有 path 不同 — 所以可以用同一份模板註冊。只需註冊你實際會傳送的事件所對應的端點。
 
-關於記錄方式，有兩點需要說明：
+關於記錄方式，有三點需要說明：
 
 - **`first-deposit` 與 `repeat-deposit` 都存為 `deposit`**，你對「首存」的判斷會保留為一個旗標，而不是當成事實。RevoSurge 會獨立計算首存，兩個口徑之間的差額就是零成本的對帳訊號。
 - **`revenue` 存為 `partner_revenue`，而不是 GGR。** 它是佣金金額，與營運方 GGR 相差一個分成比率；把兩者混為一談是單位錯誤，不是命名喜好。
+- **`app-launch` 存為 `app_launch`，絕不記為安裝（install）。** 它是活躍訊號，不是轉換 — 詳見下文。
 
 > [!WARNING]
 > **已註冊 `first-deposit` 與 `repeat-deposit` 之後，請不要再註冊 "all deposits"** — 否則每一筆存款都會被重複計算。
 >
 > **請不要註冊 global postback**（一條 URL、事件類型放在宏裏）。事件類型已經在 path 內。日後若新增事件類型，我們會另外發一條 URL 給你。
+
+### App 啟動
+
+`/app-launch` 回傳的是 App 內的活躍，而不是轉換。請在**每一次**啟動時觸發 — 不只是安裝後的首次啟動，也不是每位玩家只發一次。
+
+- **它不是安裝。** App 安裝經由你的 MMP 回傳給 RevoSurge（參閱 [AppsFlyer](/hk/mmp/appsflyer/overview)）。啟動一律記為 `app_launch`，絕不計入安裝，所以啟動 postback 不會與 MMP 已上報的安裝重複計算。請不要把安裝 postback 指向這條 URL。
+- **如果你的後台會標記首次啟動**，仍然發到 `/app-launch`，並把你自己的旗標作為額外參數帶上，參數名稱請與你的客戶經理議定。未列出的參數會[原樣保留](#參數)，所以這個旗標毋須我們改動即可送達 — 但它不會把一次啟動變成安裝。
+- **不帶 `amount`。** 啟動沒有金額；該宏留空或省略即可。
+- **身份規則同樣適用。** 既沒有 `click_id` 也沒有 `user_id` 的啟動 — 例如玩家註冊之前、而你的平台又拿不到 click id 的那次啟動 — 會被丟棄，並回傳 `200 {"status":"ignored"}`。請用你的真實模板做一次 [dry run](#dry-run)，確認你的啟動回傳實際帶了哪些身份。
+- **每次啟動傳送唯一的 `event_id`。** 啟動天生會重複：若沒有 `event_id`（或 `txid`）和 `ts`，同一玩家的兩次啟動可能產生完全相同的 URL，被合併成一條記錄。參閱[去重](#去重)。
+- **回應約定相同。** `/app-launch` 的回應與各轉換端點完全一致，包括 `503` — 按同樣方式重試，你的後台只需維護一條重試規則。
 
 ## 參數
 
@@ -133,7 +148,7 @@ RevoSurge 採用**本地 postback (local postback)**：每種事件類型一條 
 
 ### URL 模板
 
-註冊以下四條 URL，替換當中的夥伴代號與金鑰。`{...}` 內的值是**你後台的宏名稱** — 下例採用常見的 `sub1`／`sub2` 慣例。
+為你傳送的每個事件註冊一條 URL，替換當中的夥伴代號與金鑰。`{...}` 內的值是**你後台的宏名稱** — 下例採用常見的 `sub1`／`sub2` 慣例。
 
 ```text
 https://mmp.revosurge.com/v1/pb/{partner}/registration?k=<KEY>&click_id={sub1}&ctx={sub2}&event={event}&user_id={user_id}&event_id={event_id}&txid={transaction_id}&amount={amount}&ts={date}&country={country}&hash_id={hash_id}&hash_name={hash_name}&source_id={source_id}&source_name={source_name}
@@ -143,6 +158,8 @@ https://mmp.revosurge.com/v1/pb/{partner}/first-deposit?k=<KEY>&…相同的查�
 https://mmp.revosurge.com/v1/pb/{partner}/repeat-deposit?k=<KEY>&…相同的查詢字串…
 
 https://mmp.revosurge.com/v1/pb/{partner}/revenue?k=<KEY>&…相同的查詢字串…
+
+https://mmp.revosurge.com/v1/pb/{partner}/app-launch?k=<KEY>&…相同的查詢字串…
 ```
 
 ### 一次實際觸發
@@ -234,7 +251,7 @@ URL 被貼進電郵或工單後，會被連結掃描器抓取，此時宏仍是�
 
 ## Dry run
 
-在這四條 postback URL 的任意一條後面加上 `dryrun=1`，就能看到我們會作出的判定，而不記錄任何內容。請求會完全按生產路徑鑑權、解析、驗證並豐富；我們隨後把判定結果回傳給你，而不是把它存下來。
+在任意一條 postback URL 後面加上 `dryrun=1`，就能看到我們會作出的判定，而不記錄任何內容。請求會完全按生產路徑鑑權、解析、驗證並豐富；我們隨後把判定結果回傳給你，而不是把它存下來。
 
 ```bash
 curl -sS -G "https://mmp.revosurge.com/v1/pb/{partner}/first-deposit" \
@@ -286,6 +303,7 @@ postback 的契約[絕不會因為負載問題而回 `4xx`](#回應)。正是這
 
 | 欄位 | 它告訴你甚麼 |
 |-------|------|
+| `route` | 接收這次呼叫的端點：`registration`、`first_deposit`、`repeat_deposit`、`revenue` 或 `app_launch` |
 | `decision` | `accepted`；若這條 postback 會被丟棄，則為 `ignored` |
 | `reason` | 只在 `decision` 為 `ignored` 時出現：`unreplaced_macro`（宏以字面值形式到達我方 — 通常是連結被掃描器抓取了）、`empty_request`，或 `no_identity`（既沒有 `click_id` 也沒有 `user_id`）。在正式流量裏這三種回傳的都是同一個 `200 {"status":"ignored"}`，只有 dry run 能把它們分開 |
 | `eventName` | 我們會記錄的事件類型。它由**端點路徑**決定 |
