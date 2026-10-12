@@ -159,6 +159,8 @@ requests.post(
 | 单个 | `202 Accepted` | `{ "status": "accepted", "eventId": "..." }` |
 | 批量 | `202 Accepted` | `{ "status": "accepted", "requestId": "...", "count": 150 }` |
 
+带 `?dryrun=1` 或 `X-Test-Mode: true` 时，成功的调用返回 `200`——参见 [Dry run](#dry-run) 与 [测试模式](#test-mode)。
+
 ### 错误
 
 `/v3/s2s/*` 上的错误会返回一个结构化的响应体，包含一个 `code` 和一个 `violations[]` 数组：
@@ -207,7 +209,7 @@ requests.post(
 
 dry run **照常鉴权**，也**照常计入限流**——一次批量请求算一次请求。它不是压测入口。
 
-### 回显的那条记录
+### 回显的那条记录 {#the-echoed-record}
 
 ::: code-group
 
@@ -320,7 +322,7 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 > [!IMPORTANT]
 > **你自己的自定义属性没有出现在这个列表里，正是应有的结果，并不代表它被忽略了。** 不要因为 dry run 没提到某个自定义字段，就把你本来要用的这个字段删掉。
 
-### 批量 dry run
+### 批量 dry run {#batch-dry-run}
 
 `POST /v3/s2s/batch?dryrun=1` 会同步返回逐条结果，而不是平时的 `202`：
 
@@ -348,6 +350,120 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 - `errors[].index` 是该条目在你发送的数组中的下标，从 `0` 数起；每个 `violations[]` 条目给出字段路径与违反的规则——两者合起来告诉你*第几条、哪个字段、违反哪条规则*。
 - **`misspelledFields` 是一个顶层对象，按同一套下标索引。** 它不挂在 `successEvents` 里的各个事件上。上例是：第 `1` 条（也就是你发的第二条）在 `identity` 里把 `click_id` 拼成了 `clickId`。
 - **全部拼对时这个键整个不出现**——不是空对象，也不是空数组。这一点与单条不同：单条恒定返回 `misspelledFields: []`。所以不要拿"键是否存在"当判断依据。
+
+## 测试模式 {#test-mode}
+
+dry run 回答的是"这一条对不对"，什么都不留。测试模式回答的是"**我的接入这段时间都发了什么**"：加上请求头 `X-Test-Mode: true`，我们会完全按生产路径处理这条请求，然后把事件存成一条**测试事件**，你可以在 14 天内回头查看。测试事件永远不会进入生产。
+
+| 请求头 | 值 |
+|--------|-----|
+| `X-Test-Mode` | `true` |
+
+两个接入端点都支持，单条和批量都可以。线上流量不要带这个请求头。
+
+### dry run 还是测试模式？ {#dry-run-or-test-mode}
+
+| | Dry run —— `?dryrun=1` | 测试模式 —— `X-Test-Mode: true` |
+|---|---|---|
+| 回答的问题 | *这一条请求对不对？* | *我的接入这段时间都发了什么？* |
+| 存了什么 | 什么都不存 | 每一条被接受的事件，以测试事件的形式保留 14 天 |
+| 事后还能回看吗 | 不能——你只有当时的响应 | 能——参见[查看测试事件](#viewing-your-test-events) |
+| 进入报表、归因或计费 | 否 | 否 |
+| 适合用来 | 构造和检查请求体、CI 断言 | 预发环境；在[上线测试](/cn/tracking/s2s/handoff#the-go-live-test)之前确认你真实的处理逻辑确实会发事件 |
+
+**同一条请求两个都带时，以 dry run 为准。** 什么都不会存下来，响应头为 `X-Ingest-Mode: dryrun`。
+
+### 发送测试事件 {#sending-a-test-event}
+
+```bash
+curl -i -X POST "https://datapulse-api.revosurge.com/v3/s2s/event" \
+  -H "Content-Type: application/json" \
+  -H "X-API-KEY: dp_test_key_123" \
+  -H "X-Test-Mode: true" \
+  -d '{
+    "event": "register",
+    "timestamp": 1718280000000,
+    "identity": { "client_user_id": "u-test-1", "click_id": "rs-test-1" },
+    "context": { "ip_address": "203.0.113.1" }
+  }'
+```
+
+测试模式的响应和 dry run 一样，而不是和真实写入一样：
+
+| 调用 | 状态 | 响应体 | `X-Ingest-Mode` | 是否存储 |
+|------|------|--------|-----------------|----------|
+| 真实写入 | `202 Accepted` | `{ "status": "accepted", ... }` | — | 是，进入生产 |
+| 测试模式 | `200 OK` | [回显的那条记录](#the-echoed-record)，或带 `"mode": "test"` 的[批量逐条结果](#batch-dry-run) | `test` | 以测试事件形式保留 14 天 |
+| Dry run | `200 OK` | 回显的那条记录，或带 `"mode": "dryrun"` 的批量逐条结果 | `dryrun` | 否 |
+
+回显内容与 dry run 完全相同，`misspelledFields` 也在其中。
+
+> [!WARNING]
+> **在 v3 上，接入端点返回 `200` 一律表示这条事件没有进入生产。** 看 `X-Ingest-Mode` 才能知道你命中的是哪种模式。如果你的生产代码收到的是 `X-Ingest-Mode: test`，说明请求头还没去掉，这些事件一条都不算数——参见 [`S2S-R-12`](/cn/tracking/s2s/validation#s2s-r-12-—-still-in-dry-run)。
+
+测试事件的校验与线上事件完全一致。校验不通过时，你会收到与生产相同的 `400` 或 `422`，**这条事件不会被存下来**。批量请求中，通过校验的条目会被存下，没通过的列在 `errors[]` 里，不会被存。
+
+测试模式的请求**照常鉴权**，也**照常计入限流**。
+
+### 测试事件去了哪里 {#where-test-events-go}
+
+- **不进任何报表**、看板或转化计数。
+- **不参与归因、优化和计费。** 测试事件永远不会匹配到点击，不会被用于出价，也不会产生费用。
+- **保留 14 天**，之后删除。
+
+### 查看测试事件 {#viewing-your-test-events}
+
+在 DataPulse 中打开你的 Product，进入 **最近测试事件**。事件按时间倒序排列，默认显示最近 1 小时，最多可往前查 14 天。每一行显示事件名、我们收到的时间、`click_id`、`client_user_id`、交易字段、国家、事件所用的 API Key（昵称与前 8 位）以及 request ID。
+
+同样的列表也可以通过 API 获取：
+
+<HttpMethod method="GET" path="/api/v1/datapulse/adwave-products/{productId}/test-events" />
+
+这个端点属于 RevoSurge 后台 API，使用你的 **RevoSurge 账号登录态**鉴权，与后台一致——而不是你发送事件时用的 `X-API-KEY`。
+
+| 参数 | 说明 |
+|------|------|
+| `from`、`to` | ISO-8601 时间点，例如 `2026-10-05T08:00:00Z`。默认最近 1 小时，时间窗口最长 14 天。 |
+| `since` | ISO-8601 时间点。只返回在此之后收到的事件，按时间正序——测试时可以用它轮询新事件。 |
+| `eventName`、`clickId`、`clientUserId`、`requestId` | 只返回该字段等于此值的事件。 |
+| `limit` | 每页条数，`1`–`100`，默认 `20`。 |
+| `cursor` | 上一页返回的 `nextCursor`。 |
+
+传入其他任何参数都会返回 `400`。
+
+```json
+{
+  "events": [
+    {
+      "eventKey": "...",
+      "source": "s2s",
+      "receivedAt": "2026-10-05T08:00:12.345Z",
+      "eventName": "deposit",
+      "eventTimeDeclared": 1791158400,
+      "clickId": "rs-test-1",
+      "clientUserId": "u-test-1",
+      "transactionId": "txn_1",
+      "amount": 12.5,
+      "currency": "USD",
+      "sourceAmount": 1000,
+      "sourceCurrency": "INR",
+      "country": "IND",
+      "apiKey": { "nickname": "staging", "prefix": "rs-RhVlT" },
+      "requestId": "s2s.event-..."
+    }
+  ],
+  "nextCursor": "...",
+  "meta": { "retentionDays": 14, "freshnessSeconds": 10, "rejectedVisible": false }
+}
+```
+
+`GET /api/v1/datapulse/adwave-products/{productId}/test-events/{eventKey}` 返回单条事件，以及我们为它存下的完整请求体。
+
+### 限制 {#test-mode-limits}
+
+- **被拒收的测试事件不会出现在列表里。** 被我们拒收的测试事件——返回 `400` 或 `422` 的，或批量中失败的条目——从未被存下，所以不会出现在列表中。拒收原因以你发送时收到的 HTTP 响应为准，测试期间请把这些响应记到日志里。（`meta.rejectedVisible: false` 说的就是这件事。）
+- **列表大约有 10 秒延迟。** 测试事件发出后，大约要 10 秒才会出现在列表中（`meta.freshnessSeconds`）。
+- **14 天是上限**——既是测试事件的保留时长，也是单次查询时间窗口的最大跨度。
 
 ## 限流
 

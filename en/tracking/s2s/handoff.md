@@ -23,7 +23,9 @@ optimising on it.
       confirmation callback, not from the page the player sees afterwards
 - [ ] Your `client_user_id` matches the `user_id` sent by the Web Tracker on the same site
       (`S2S-R-08`)
-- [ ] The API key lives in a secret manager, and staging is on a separate key or `dryrun`
+- [ ] The API key lives in a secret manager, and staging is on a separate key or sends
+      `X-Test-Mode: true` (`S2S-O-06`)
+- [ ] Production code sends neither `?dryrun=1` nor `X-Test-Mode` (`S2S-R-12`)
 
 ## What to send your account manager
 
@@ -68,7 +70,7 @@ does not test the thing that usually breaks — your own code path.
 | Symptom | Check these rules |
 | --- | --- |
 | No `202` — request rejected outright | `S2S-R-01`, `S2S-R-02`, `S2S-R-03` |
-| `200` instead of `202` | `S2S-R-12` — you are still in dry run |
+| `200` instead of `202` | `S2S-R-12` — you are still in dry run or test mode. The `X-Ingest-Mode` response header says which |
 | `422 EVENT_DISABLED` on `deposit` or any iGaming event | `S2S-R-14` — the preset is not enabled for your Product. Check this before anything else |
 | `422 UNKNOWN_EVENT_TYPE` | `S2S-R-04` — that name is not in the catalog |
 | `400` with `violations` | `S2S-R-05`, `S2S-R-06`, `S2S-R-07`, `S2S-R-13`, `S2S-R-15` — read the `field` and `rule` in the response |

@@ -31,7 +31,7 @@ instead of re-describing the problem.
 | `S2S-R-09` | `context.ip_address` is present | No geo enrichment. Country-level reporting and geo targeting degrade. |
 | `S2S-R-10` | Both Basic events are live: `register` and `deposit` | Below this, S2S buys you nothing the Web Tracker does not already do. FTD reporting stays empty. |
 | `S2S-R-11` | A dry run reports no misspelled fields and no `violations` | A near-miss name on an **optional** field (`context.payment_metod`) is dropped silently. The request still returns success, so nothing looks wrong. |
-| `S2S-R-12` | Production traffic returns `202`, not `200` | A `200` with `X-Ingest-Mode: dryrun` means you are still in dry run. Nothing is being stored. |
+| `S2S-R-12` | Production traffic returns `202`, not `200` | A `200` means the event never reached production. `X-Ingest-Mode: dryrun` means nothing is being stored; `X-Ingest-Mode: test` means every event is being stored as a test event that no report, attribution or bid ever sees. |
 | `S2S-R-13` | Email and phone are sent hashed, never raw | Rejected with `rule: "pii_format"`, and sending raw PII at all is a compliance problem you own. |
 | `S2S-R-14` | The **iGaming preset is enabled** for your Product | `422 EVENT_DISABLED`. Every iGaming event — including `deposit` — is rejected until RevoSurge enables it. This is not something you can fix in code. |
 | `S2S-R-15` | Every event carries the context fields **that event** requires | `400 VALIDATION_ERROR` with `rule: "required"`. `deposit` needs `context.transaction_id`, `context.amount` and `context.currency` — all three, on every deposit. |
@@ -47,7 +47,7 @@ instead of re-describing the problem.
 | `S2S-O-03` | Send `context.user_agent` | Weaker device intelligence and a weaker fraud signal. |
 | `S2S-O-04` | Use `/v3/s2s/batch` for backfills | Sending one at a time burns the per-key rate limit and makes a backfill take hours instead of minutes. |
 | `S2S-O-05` | Retry `429` with exponential backoff and jitter | Events dropped during traffic spikes — exactly when they matter most. |
-| `S2S-O-06` | Use separate API keys for staging and production | Test events pollute live reporting and live bidding. |
+| `S2S-O-06` | Use separate API keys for staging and production, or send staging traffic in test mode | Test events pollute live reporting and live bidding. |
 
 ## Required resolutions
 
@@ -148,11 +148,19 @@ is being dropped, not corrected.
 This check matters for **optional** fields. A misspelled required field fails loudly with a
 `400`; a misspelled `context.payment_method` returns `202` and is simply gone.
 
-### `S2S-R-12` — Still in dry run
+### `S2S-R-12` — Still in dry run or test mode {#s2s-r-12-—-still-in-dry-run}
 
-**Fix:** Remove `?dryrun=1` from the production URL. Real traffic returns `202` with
-`{"status":"accepted","eventId":"…"}`. If you are seeing `200` and the header
-`X-Ingest-Mode: dryrun`, nothing you have sent has been stored.
+**Fix:** Remove `?dryrun=1` from the production URL, and stop sending the `X-Test-Mode` header
+from production code. Real traffic returns `202` with `{"status":"accepted","eventId":"…"}` and
+no `X-Ingest-Mode` header.
+
+If you are seeing `200`, read `X-Ingest-Mode`:
+
+- `dryrun` — nothing you have sent has been stored.
+- `test` — your events are being stored, but only as
+  [test events](/en/tracking/s2s/v3/server-events-api#test-mode): they are kept for 14 days and
+  never reach reporting, attribution or billing. They do not become live events when you turn
+  test mode off — send them again.
 
 ### `S2S-R-13` — Unhashed PII
 
@@ -248,8 +256,14 @@ will fail identically forever.
 
 ### `S2S-O-06` — One key for all environments
 
-**Fix:** Generate a second key and point staging at it, or keep staging on `?dryrun=1`
-permanently. Note that dry runs still count against the rate limit.
+**Fix:** Generate a second key and point staging at it, or send all staging traffic with the
+`X-Test-Mode: true` header. Test-mode events are stored for 14 days so you can
+[review them](/en/tracking/s2s/v3/server-events-api#viewing-your-test-events), and never reach
+reporting or bidding. `?dryrun=1` keeps staging out of production too, but stores nothing to look
+back at.
+
+Test-mode and dry-run requests still count against the rate limit. On a key shared with
+production, staging traffic eats into production's limit — another reason to use a second key.
 
 ## Two things this page cannot check
 

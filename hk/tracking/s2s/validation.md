@@ -29,7 +29,7 @@ description: S2S 整合在投放廣告系列前必須通過的規則、每條規
 | `S2S-R-09` | 帶有 `context.ip_address` | 沒有地理位置擴充。國家層級報表與地域定向效果下降。 |
 | `S2S-R-10` | 兩個基礎事件都已上線：`register` 和 `deposit` | 達不到這一條，S2S 帶給你的不會比 Web 追蹤器更多。FTD 報表一直為空。 |
 | `S2S-R-11` | dry run 沒有報告任何拼錯的欄位，也沒有 `violations` | **選填**欄位上一個差一點就對的名稱（`context.payment_metod`）會被靜默丟棄。請求照樣回傳成功，所以看起來一切正常。 |
-| `S2S-R-12` | 正式流量回傳 `202`，而不是 `200` | 回傳 `200` 且帶 `X-Ingest-Mode: dryrun` 表示你仍處於 dry run，什麼都沒有被儲存。 |
+| `S2S-R-12` | 正式流量回傳 `202`，而不是 `200` | 回傳 `200` 表示事件沒有進入正式環境。`X-Ingest-Mode: dryrun` 表示什麼都沒有被儲存；`X-Ingest-Mode: test` 表示每條事件都只被存成了測試事件，任何報表、歸因或出價都看不到。 |
 | `S2S-R-13` | 電郵和電話號碼以雜湊形式傳送，絕不傳送明文 | 被拒絕，回傳 `rule: "pii_format"`；而且只要傳送過明文 PII，就是你要承擔的合規問題。 |
 | `S2S-R-14` | 你的產品已**啟用 iGaming 預設集** | `422 EVENT_DISABLED`。在 RevoSurge 啟用之前，所有 iGaming 事件 — 包括 `deposit` — 都會被拒絕。這不是你能在程式碼裡修復的。 |
 | `S2S-R-15` | 每個事件都帶有**該事件**要求的 context 欄位 | `400 VALIDATION_ERROR`，`rule: "required"`。`deposit` 需要 `context.transaction_id`、`context.amount` 和 `context.currency` — 三個都要，每筆充值都要。 |
@@ -45,7 +45,7 @@ description: S2S 整合在投放廣告系列前必須通過的規則、每條規
 | `S2S-O-03` | 傳送 `context.user_agent` | 裝置識別能力變弱，反欺詐訊號也變弱。 |
 | `S2S-O-04` | 回填時使用 `/v3/s2s/batch` | 逐條傳送會耗盡單一金鑰的限流額度，回填要花幾個小時而不是幾分鐘。 |
 | `S2S-O-05` | 對 `429` 做指數退避加抖動的重試 | 流量高峰時事件被丟棄 — 而那恰恰是它們最重要的時候。 |
-| `S2S-O-06` | 測試環境與正式環境使用不同的 API Key | 測試事件污染線上報表和線上出價。 |
+| `S2S-O-06` | 測試環境與正式環境使用不同的 API Key，或測試環境流量使用測試模式傳送 | 測試事件污染線上報表和線上出價。 |
 
 ## 必要項修復方式 {#required-resolutions}
 
@@ -120,11 +120,16 @@ v2 的任何問題都不會大聲報錯，這正是很多整合停留在 v2 上�
 
 這項檢查對**選填**欄位才有意義。拼錯的必填欄位會以 `400` 明確報錯；拼錯的 `context.payment_method` 則回傳 `202`，然後就這麼消失了。
 
-### `S2S-R-12` — 仍處於 dry run {#s2s-r-12-—-still-in-dry-run}
+### `S2S-R-12` — 仍處於 dry run 或測試模式 {#s2s-r-12-—-still-in-dry-run}
 
-**修復：** 從正式 URL 中移除 `?dryrun=1`。真實流量回傳 `202` 和
-`{"status":"accepted","eventId":"…"}`。如果你看到的是 `200` 且帶標頭
-`X-Ingest-Mode: dryrun`，你傳送的任何內容都沒有被儲存。
+**修復：** 從正式 URL 中移除 `?dryrun=1`，並且正式程式碼不要再傳送 `X-Test-Mode` 標頭。
+真實流量回傳 `202` 和 `{"status":"accepted","eventId":"…"}`，且不帶 `X-Ingest-Mode` 標頭。
+
+如果你看到的是 `200`，看 `X-Ingest-Mode`：
+
+- `dryrun` — 你傳送的任何內容都沒有被儲存。
+- `test` — 你的事件被儲存了，但只是[測試事件](/hk/tracking/s2s/v3/server-events-api#test-mode)：
+  保留 14 天，永遠不會進入報表、歸因或計費。關閉測試模式後，它們也不會變成正式事件 — 需要重新傳送。
 
 ### `S2S-R-13` — PII 未雜湊 {#s2s-r-13-—-unhashed-pii}
 
@@ -198,7 +203,11 @@ v2 的任何問題都不會大聲報錯，這正是很多整合停留在 v2 上�
 
 ### `S2S-O-06` — 所有環境共用一個金鑰 {#s2s-o-06-—-one-key-for-all-environments}
 
-**修復：** 產生第二個金鑰並讓測試環境使用它，或者讓測試環境永久使用 `?dryrun=1`。注意 dry run 同樣計入限流。
+**修復：** 產生第二個金鑰並讓測試環境使用它，或者讓測試環境的所有流量都帶上 `X-Test-Mode: true`
+標頭。測試模式的事件會保留 14 天供你[回看](/hk/tracking/s2s/v3/server-events-api#viewing-your-test-events)，
+且永遠不會進入報表或出價。`?dryrun=1` 同樣能讓測試環境流量不進正式環境，但甚麼都不存，事後無從回看。
+
+測試模式和 dry run 的請求同樣計入限流。如果和正式環境共用一個金鑰，測試環境流量會佔用正式環境的限流額度 — 這也是建議使用第二個金鑰的原因之一。
 
 ## 本頁無法檢查的兩件事 {#two-things-this-page-cannot-check}
 
