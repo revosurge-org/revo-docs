@@ -132,7 +132,7 @@ curl -X POST "https://<<our-url>>/v2/s2s/event"
 
 dry run **照常鉴权**，也**照常计入限流**——一次批量请求算一次请求。它不是压测入口。
 
-#### 回显的那条记录
+#### 回显的那条记录 {#the-echoed-record}
 
 ```bash
 curl -X POST "https://<<our-url>>/v2/s2s/event?dryrun=1" \
@@ -231,7 +231,7 @@ curl -X POST "https://<<our-url>>/v2/s2s/event?dryrun=1" \
 > [!IMPORTANT]
 > **你自己的自定义属性没有出现在这个列表里，正是应有的结果，并不代表它被忽略了。** 它们会被原样记录下来。不要因为 dry run 没提到某个自定义属性，就把你本来要用的这个字段删掉。
 
-#### 批量 dry run
+#### 批量 dry run {#batch-dry-run}
 
 `POST /v2/s2s/batch?dryrun=1` 会同步返回逐条结果：
 
@@ -262,6 +262,37 @@ curl -X POST "https://<<our-url>>/v2/s2s/event?dryrun=1" \
 
 > [!NOTE]
 > `violations[].field` 告诉你的是*哪个*字段出了问题，但它的写法不一定与你请求里的写法一致。请按请求侧的名字去修——请求字段是 `snake_case`（`event_name`、`client_user_id`）。
+
+## 测试模式 {#test-mode}
+
+dry run 回答的是"这一条对不对"，什么都不留。测试模式回答的是"**我的接入这段时间都发了什么**"：在任一接入端点上加请求头 `X-Test-Mode: true`，我们会完全按生产路径处理这条请求，然后把事件存成一条**测试事件**，你可以在 14 天内回头查看。
+
+```bash
+curl -i -X POST "https://<<our-url>>/v2/s2s/event" \
+    -H "Content-Type: application/json" \
+    -H "X-API-KEY: dp_test_key_123" \
+    -H "X-Test-Mode: true" \
+    -d '{
+        "client_user_id": "u-test-1",
+        "click_id": "rs-test-1",
+        "event_name": "register",
+        "timestamp": 1702963200,
+        "ip_address": "203.0.113.1"
+        }'
+```
+
+| 调用 | 状态码 | 响应体 | 响应头 | 是否存储 |
+|-------------|----------|-------------|-------------|-------------|
+| 真实写入 | 200 OK | `{ "status": "success" }` | — | 是，进入生产 |
+| 测试模式 | 200 OK | [回显的那条记录](#the-echoed-record)，或带 `"mode": "test"` 的[批量逐条结果](#batch-dry-run) | `X-Ingest-Mode: test` | 以测试事件形式保留 14 天 |
+| Dry run | 200 OK | 回显的那条记录 | `X-Ingest-Mode: dryrun` | 否 |
+
+  * **测试事件永远不会进入生产。** 不进任何报表，不会被归因到点击，不会被用于出价，也不会产生费用。14 天后删除。
+  * **同一条请求同时带 `?dryrun=1` 和 `X-Test-Mode: true` 时，以 dry run 为准**——什么都不会存下来。
+  * 校验不通过的测试事件会收到与生产相同的错误，**不会被存下**。批量请求中，只有通过校验的条目会被存下。
+  * 测试模式的请求照常计入限流。
+
+如何查看测试事件以及相关限制，参见 [v3 的测试模式](/cn/tracking/s2s/v3/server-events-api#test-mode)——通过 v2 和 v3 发送的测试事件会列在一起。
 
 ## 请求体 Schema 使用场景
 

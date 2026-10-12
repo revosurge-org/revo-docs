@@ -35,7 +35,7 @@ Most of what you already know maps one-to-one. The names change; the model does 
 | `fbclid` · `gclid` | `identity.click_id` — capture it on landing and pass it back |
 | Advanced Matching · Enhanced Conversions | `context.privacy.email_hash` / `phone_hash` — SHA-256, same as theirs |
 | Purchase `value` + `currency` | `context.amount` + `context.currency` — required on `deposit` |
-| Test Events · Tag Assistant | `?dryrun=1` on any endpoint — returns the full verdict, stores nothing |
+| Test Events · Tag Assistant | **S2S test mode** — send `X-Test-Mode: true` and review what you sent for 14 days, outside reporting. `?dryrun=1` on any endpoint returns the full verdict and stores nothing |
 | `event_id` deduplication | **Partner Postback**: `event_id`, with a documented priority ladder. **S2S**: `context.transaction_id` on money events |
 
 **Three things that will be new to you:**

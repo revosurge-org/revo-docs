@@ -263,6 +263,37 @@ So this check is deliberately narrow: it reports only keys that look like **ours
 > [!NOTE]
 > `violations[].field` tells you *which* field is at fault, but it does not always spell that field the way your request does. Fix it under its request-side name — request fields are `snake_case` (`event_name`, `client_user_id`).
 
+## Test mode
+
+A dry run tells you whether one request is right, and keeps nothing. Test mode tells you **what your integration has been sending**: add the `X-Test-Mode: true` header to either ingestion endpoint and we process the request exactly as we would in production, then store the event as a **test event** that you can review for 14 days.
+
+```bash
+curl -i -X POST "https://<<our-url>>/v2/s2s/event" \
+    -H "Content-Type: application/json" \
+    -H "X-API-KEY: dp_test_key_123" \
+    -H "X-Test-Mode: true" \
+    -d '{
+        "client_user_id": "u-test-1",
+        "click_id": "rs-test-1",
+        "event_name": "register",
+        "timestamp": 1702963200,
+        "ip_address": "203.0.113.1"
+        }'
+```
+
+| Call | Status Code | Body | Response Header | Stored |
+|-------------|----------|-------------|-------------|-------------|
+| Real write | 200 OK | `{ "status": "success" }` | — | Yes, in production |
+| Test mode | 200 OK | The [echoed record](#the-echoed-record), or the [per-item batch result](#batch-dry-run) with `"mode": "test"` | `X-Ingest-Mode: test` | As a test event, for 14 days |
+| Dry run | 200 OK | The echoed record | `X-Ingest-Mode: dryrun` | No |
+
+  * **Test events never reach production.** They are not in any report, never attributed to a click, never bid on and never billed. They are deleted after 14 days.
+  * **If a request carries both `?dryrun=1` and `X-Test-Mode: true`, dry run wins** — nothing is stored.
+  * A test event that fails validation gets the same error as in production and **is not stored**. In a batch, only the items that pass are stored.
+  * Test-mode requests count against your rate limit as usual.
+
+To view your test events, and for the limits that apply, see [Test mode in v3](/en/tracking/s2s/v3/server-events-api#test-mode) — test events sent through v2 and v3 are listed together.
+
 ## Use Case Scenarios on Request Body Schema
 
 #### User Register

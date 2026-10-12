@@ -33,7 +33,7 @@ RevoSurge 依据你发送给我们的转化来优化你的广告系列。本页�
 | `fbclid` · `gclid` | `identity.click_id`——在落地时捕获，再回传给我们 |
 | Advanced Matching · Enhanced Conversions | `context.privacy.email_hash` / `phone_hash`——SHA-256，与它们的做法相同 |
 | Purchase `value` + `currency` | `context.amount` + `context.currency`——`deposit` 必填 |
-| Test Events · Tag Assistant | 在任意端点加 `?dryrun=1`——返回完整判定结果，不存储任何数据 |
+| Test Events · Tag Assistant | **S2S 测试模式**——带上 `X-Test-Mode: true`，发出的事件可在 14 天内回看，且不进报表。在任意端点加 `?dryrun=1` 则返回完整判定结果，不存储任何数据 |
 | `event_id` 去重 | **Partner Postback**：`event_id`，附有文档化的优先级阶梯。**S2S**：资金类事件使用 `context.transaction_id` |
 
 **有三点对你来说是新的：**

@@ -17,7 +17,8 @@ description: 要交給客戶經理什麼、證明 S2S 已接入你產品的端�
 - [ ] `register` 與 `deposit` 由**生產環境**程式碼觸發，而不是測試環境
 - [ ] 事件由你真實的處理邏輯觸發 — 充值事件來自支付確認回呼，而不是玩家之後看到的那個頁面
 - [ ] 你的 `client_user_id` 與同一站點上 Web 追蹤器發送的 `user_id` 一致（`S2S-R-08`）
-- [ ] API key 存放在密鑰管理服務中，測試環境使用獨立的 key 或 `dryrun`
+- [ ] API key 存放在密鑰管理服務中，測試環境使用獨立的 key，或傳送時帶 `X-Test-Mode: true`（`S2S-O-06`）
+- [ ] 正式程式碼既不帶 `?dryrun=1`，也不帶 `X-Test-Mode`（`S2S-R-12`）
 
 ## 要交給客戶經理什麼 {#what-to-send-your-account-manager}
 
@@ -60,7 +61,7 @@ description: 要交給客戶經理什麼、證明 S2S 已接入你產品的端�
 | 症狀 | 檢查這些規則 |
 | --- | --- |
 | 沒有 `202` — 請求被直接拒絕 | `S2S-R-01`、`S2S-R-02`、`S2S-R-03` |
-| 回傳 `200` 而不是 `202` | `S2S-R-12` — 你仍處於 dry run |
+| 回傳 `200` 而不是 `202` | `S2S-R-12` — 你仍處於 dry run 或測試模式。回應標頭 `X-Ingest-Mode` 會告訴你是哪一種 |
 | `deposit` 或任何 iGaming 事件回傳 `422 EVENT_DISABLED` | `S2S-R-14` — 你的產品未開通該預設集。請最先檢查這一項 |
 | `422 UNKNOWN_EVENT_TYPE` | `S2S-R-04` — 該事件名不在目錄中 |
 | `400` 並帶有 `violations` | `S2S-R-05`、`S2S-R-06`、`S2S-R-07`、`S2S-R-13`、`S2S-R-15` — 查看回應中的 `field` 與 `rule` |
