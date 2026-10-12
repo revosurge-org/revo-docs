@@ -90,6 +90,7 @@ tracker.trackDownloadClick('user_123', {
 | --- | --- | --- | --- |
 | user_id | string | No | Unique user ID. |
 | store_type | string | No | Channel of the download, e.g., App Store or Play Store. |
+| target | string | No | Where the tap sends the user, e.g. `af` (an AppsFlyer click link) or `fallback` (your own store/offer link), so download clicks can be reconciled against your MMP's click count. Omitted from the event when not set. Requires SDK 1.4.5+. |
 
 ### trackDownloadClickRegister
 
@@ -107,6 +108,7 @@ tracker.trackDownloadClickRegister('user_123', {
 | user_id | string | No | Unique user ID. |
 | store_type | string | No | Channel of the download, e.g., App Store or Play Store. |
 | identifier | string | No | Hashed email or phone number. |
+| target | string | No | Where the tap sends the user, e.g. `af` (an AppsFlyer click link) or `fallback` (your own store/offer link), so download clicks can be reconciled against your MMP's click count. Omitted from the event when not set. Requires SDK 1.4.5+. |
 
 ### trackCustomEvent
 

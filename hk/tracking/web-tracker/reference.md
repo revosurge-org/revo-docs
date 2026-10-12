@@ -90,6 +90,7 @@ tracker.trackDownloadClick('user_123', {
 | --- | --- | --- | --- |
 | user_id | string | 否 | 唯一用戶 ID。 |
 | store_type | string | 否 | 下載渠道，如 App Store 或 Play Store。 |
+| target | string | 否 | 本次點擊把用戶帶去哪裡，如 `af`（AppsFlyer 點擊連結）或 `fallback`（你自己的商店/落地連結），便於與 MMP 的點擊數對賬。未傳則事件中不含該欄位。需 SDK 1.4.5 或以上。 |
 
 ### trackDownloadClickRegister
 
@@ -107,6 +108,7 @@ tracker.trackDownloadClickRegister('user_123', {
 | user_id | string | 否 | 唯一用戶 ID。 |
 | store_type | string | 否 | 下載渠道，如 App Store 或 Play Store。 |
 | identifier | string | 否 | 雜湊後的電郵或電話號碼。 |
+| target | string | 否 | 本次點擊把用戶帶去哪裡，如 `af`（AppsFlyer 點擊連結）或 `fallback`（你自己的商店/落地連結），便於與 MMP 的點擊數對賬。未傳則事件中不含該欄位。需 SDK 1.4.5 或以上。 |
 
 ### trackCustomEvent
 
