@@ -35,14 +35,11 @@ In-page Push 不使用浏览器通知，无需 HTTPS 或通知权限。中标后
 
 ## 代码预览
 
-根据上方配置自动生成的接入代码。页内推送广告位与普通广告位的唯一区别就是 `data-ad-type="inpage-push"`；`width` / `height` 可选，定义请求的图片尺寸（默认 492×328）：
+按以下两步接入，代码随上方配置更新。两段代码请分别复制。
 
 <ClientOnly>
 <div class="ipush-dbg">
-  <div class="card" style="margin-bottom: 24px;">
-    <h3>生成的 HTML 代码</h3>
-    <div id="ipush-codePreview" class="code-block"></div>
-  </div>
+  <AdFlowCodePreview locale="cn" format="inpage-push" :script-html="scriptPreview" :placement-html="placementPreview" />
 </div>
 </ClientOnly>
 
@@ -106,7 +103,11 @@ In-page Push 不使用浏览器通知，无需 HTTPS 或通知权限。中标后
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick } from 'vue'
+import { onMounted, nextTick, ref } from 'vue'
+import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
+
+const scriptPreview = ref('')
+const placementPreview = ref('')
 
 onMounted(async () => {
   await nextTick()
@@ -150,15 +151,15 @@ onMounted(async () => {
     html += '    <span class="hl-attr">data-server-url</span>=<span class="hl-val">"' + escapeHtml(serverUrl) + '"</span>\n';
     html += '    <span class="hl-attr">data-account-id</span>=<span class="hl-val">"' + escapeHtml(accountId) + '"</span>\n';
     html += '    <span class="hl-attr">data-debug</span><span class="hl-tag">&gt;&lt;/script&gt;</span>\n';
-    html += '\n';
+    scriptPreview.value = html;
+    html = '';
     html += '<span class="hl-comment">&lt;!-- In-page Push 广告位（width/height 可选，默认 492×328） --&gt;</span>\n';
     html += '<span class="hl-tag">&lt;iframe</span> <span class="hl-attr">data-adflow-ad</span>\n';
     html += '    <span class="hl-attr">data-placement-id</span>=<span class="hl-val">"' + escapeHtml(pid) + '"</span>\n';
     html += '    <span class="hl-attr">data-ad-type</span>=<span class="hl-val">"inpage-push"</span>\n';
     html += '    <span class="hl-attr">width</span>=<span class="hl-val">"492"</span> <span class="hl-attr">height</span>=<span class="hl-val">"328"</span><span class="hl-tag">&gt;&lt;/iframe&gt;</span>';
 
-    var preview = document.getElementById('ipush-codePreview');
-    if (preview) preview.innerHTML = html;
+    placementPreview.value = html;
   }
 
   function trackStatus(msg) {

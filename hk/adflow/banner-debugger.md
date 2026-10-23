@@ -31,14 +31,11 @@ description: 在瀏覽器測試 adflow.js。配置 URL、帳戶 ID、廣告位�
 
 ## 代碼預覽
 
-根據上方配置參數自動生成的接入代碼，客戶只需複製以下代碼即可接入：
+按以下兩步接入，代碼會隨上方設定更新。兩段代碼請分別複製。
 
 <ClientOnly>
 <div class="adflowjs-dbg">
-  <div class="card" style="margin-bottom: 24px;">
-    <h3>生成的 HTML 代碼</h3>
-    <div id="af-codePreview" class="code-block"></div>
-  </div>
+  <AdFlowCodePreview locale="hk" format="banner" :script-html="scriptPreview" :placement-html="placementPreview" />
 </div>
 </ClientOnly>
 
@@ -95,7 +92,11 @@ description: 在瀏覽器測試 adflow.js。配置 URL、帳戶 ID、廣告位�
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick } from 'vue'
+import { onMounted, nextTick, ref } from 'vue'
+import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
+
+const scriptPreview = ref('')
+const placementPreview = ref('')
 
 onMounted(async () => {
   await nextTick()
@@ -138,14 +139,14 @@ onMounted(async () => {
     html += '    <span class="hl-attr">data-server-url</span>=<span class="hl-val">"' + escapeHtml(serverUrl) + '"</span>\n';
     html += '    <span class="hl-attr">data-account-id</span>=<span class="hl-val">"' + escapeHtml(accountId) + '"</span>\n';
     html += '    <span class="hl-attr">data-debug</span><span class="hl-tag">&gt;&lt;/script&gt;</span>\n';
-    html += '\n';
+    scriptPreview.value = html;
+    html = '';
     html += '<span class="hl-comment">&lt;!-- Ad Slot: 300x250 --&gt;</span>\n';
     html += '<span class="hl-tag">&lt;iframe</span> <span class="hl-attr">data-adflow-ad</span>\n';
     html += '    <span class="hl-attr">data-placement-id</span>=<span class="hl-val">"' + escapeHtml(pid1) + '"</span>\n';
     html += '    <span class="hl-attr">width</span>=<span class="hl-val">"300"</span> <span class="hl-attr">height</span>=<span class="hl-val">"250"</span><span class="hl-tag">&gt;&lt;/iframe&gt;</span>';
 
-    var preview = document.getElementById('af-codePreview');
-    if (preview) preview.innerHTML = html;
+    placementPreview.value = html;
   }
 
   function trackStatus(msg) {

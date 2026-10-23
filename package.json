@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "test": "node --test tests/*.test.mjs",
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview",
@@ -12,6 +13,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "gray-matter": "^4.0.3",
     "markdown-it-katex": "^2.0.3",
+    "playwright": "^1.64.1",
     "react": "^19.2.4",
     "satori": "^0.19.2",
     "tsx": "^4.21.0",
