@@ -35,14 +35,11 @@ description: 在浏览器中测试 adflow.js Push（推送通知）广告。配�
 
 ## 代码预览
 
-根据上方配置自动生成的接入代码。Push 广告位与普通广告位的唯一区别就是 `data-ad-type="push"`，且无需 `width` / `height`：
+按以下两步接入，代码随上方配置更新。两段代码请分别复制。
 
 <ClientOnly>
 <div class="push-dbg">
-  <div class="card" style="margin-bottom: 24px;">
-    <h3>生成的 HTML 代码</h3>
-    <div id="push-codePreview" class="code-block"></div>
-  </div>
+  <AdFlowCodePreview locale="cn" format="push" :script-html="scriptPreview" :placement-html="placementPreview" />
 </div>
 </ClientOnly>
 
@@ -106,7 +103,11 @@ description: 在浏览器中测试 adflow.js Push（推送通知）广告。配�
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick } from 'vue'
+import { onMounted, nextTick, ref } from 'vue'
+import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
+
+const scriptPreview = ref('')
+const placementPreview = ref('')
 
 onMounted(async () => {
   await nextTick()
@@ -150,14 +151,14 @@ onMounted(async () => {
     html += '    <span class="hl-attr">data-server-url</span>=<span class="hl-val">"' + escapeHtml(serverUrl) + '"</span>\n';
     html += '    <span class="hl-attr">data-account-id</span>=<span class="hl-val">"' + escapeHtml(accountId) + '"</span>\n';
     html += '    <span class="hl-attr">data-debug</span><span class="hl-tag">&gt;&lt;/script&gt;</span>\n';
-    html += '\n';
+    scriptPreview.value = html;
+    html = '';
     html += '<span class="hl-comment">&lt;!-- Push 广告位（无需 width/height） --&gt;</span>\n';
     html += '<span class="hl-tag">&lt;iframe</span> <span class="hl-attr">data-adflow-ad</span>\n';
     html += '    <span class="hl-attr">data-placement-id</span>=<span class="hl-val">"' + escapeHtml(pid) + '"</span>\n';
     html += '    <span class="hl-attr">data-ad-type</span>=<span class="hl-val">"push"</span><span class="hl-tag">&gt;&lt;/iframe&gt;</span>';
 
-    var preview = document.getElementById('push-codePreview');
-    if (preview) preview.innerHTML = html;
+    placementPreview.value = html;
   }
 
   function trackStatus(msg) {

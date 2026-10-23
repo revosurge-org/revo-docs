@@ -35,14 +35,11 @@ In-page Push does not use browser notifications, so no HTTPS or notification per
 
 ## Code Preview
 
-Integration code generated from the settings above. An In-page Push slot differs from a regular slot only by `data-ad-type="inpage-push"`; `width` / `height` are optional and set the requested image size (default 492×328):
+Follow these two steps using the current settings. Copy each code block separately.
 
 <ClientOnly>
 <div class="ipush-dbg">
-  <div class="card" style="margin-bottom: 24px;">
-    <h3>Generated HTML Code</h3>
-    <div id="ipush-codePreview" class="code-block"></div>
-  </div>
+  <AdFlowCodePreview locale="en" format="inpage-push" :script-html="scriptPreview" :placement-html="placementPreview" />
 </div>
 </ClientOnly>
 
@@ -107,7 +104,11 @@ Integration code generated from the settings above. An In-page Push slot differs
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick } from 'vue'
+import { onMounted, nextTick, ref } from 'vue'
+import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
+
+const scriptPreview = ref('')
+const placementPreview = ref('')
 
 onMounted(async () => {
   await nextTick()
@@ -151,15 +152,15 @@ onMounted(async () => {
     html += '    <span class="hl-attr">data-server-url</span>=<span class="hl-val">"' + escapeHtml(serverUrl) + '"</span>\n';
     html += '    <span class="hl-attr">data-account-id</span>=<span class="hl-val">"' + escapeHtml(accountId) + '"</span>\n';
     html += '    <span class="hl-attr">data-debug</span><span class="hl-tag">&gt;&lt;/script&gt;</span>\n';
-    html += '\n';
+    scriptPreview.value = html;
+    html = '';
     html += '<span class="hl-comment">&lt;!-- In-page Push ad slot (width/height optional, default 492×328) --&gt;</span>\n';
     html += '<span class="hl-tag">&lt;iframe</span> <span class="hl-attr">data-adflow-ad</span>\n';
     html += '    <span class="hl-attr">data-placement-id</span>=<span class="hl-val">"' + escapeHtml(pid) + '"</span>\n';
     html += '    <span class="hl-attr">data-ad-type</span>=<span class="hl-val">"inpage-push"</span>\n';
     html += '    <span class="hl-attr">width</span>=<span class="hl-val">"492"</span> <span class="hl-attr">height</span>=<span class="hl-val">"328"</span><span class="hl-tag">&gt;&lt;/iframe&gt;</span>';
 
-    var preview = document.getElementById('ipush-codePreview');
-    if (preview) preview.innerHTML = html;
+    placementPreview.value = html;
   }
 
   function trackStatus(msg) {
