@@ -281,7 +281,7 @@ S2S 事件一起发送。参见
 
 ## 7. 事件目录 {#_7-the-event-catalog}
 
-两个预设共 24 个事件。每个事件在后台中显示为 *Receiving*、*Errors* 或
+下方的标准和 iGaming 目录涵盖 24 个事件。每个事件在后台中显示为 *Receiving*、*Errors* 或
 *Not yet seen*。
 
 ::: warning 必须为你的产品启用 iGaming 预设
@@ -332,8 +332,12 @@ S2S 事件一起发送。参见
 Bonus Engine 更精准，但起步阶段没有任何功能依赖它们。
 :::
 
+### Crypto 预设
+
+加密货币交易所和钱包可订阅 `crypto` 预设：`vip_tier_changed`、`kyc_completed`、`kyc_rejected`、`deposit`、`withdraw`、`trade`、`trade_daily_summary` 和 `reward_claimed`。即使事件名称与 iGaming 相同，仍需启用 Crypto 订阅。欄位和互動範例请参见 [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)。
+
 每个事件的字段级定义：
-[标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming)
+[标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)
 
 ## 8. API 版本 {#_8-api-versions}
 
@@ -356,7 +360,7 @@ S2S 卡片中的 **Event Stream** 栏和各事件的 *last seen* 时间戳读取
 - [服务器事件 API (v3)](/cn/tracking/s2s/v3/server-events-api)——端点、结构、示例
 - [信封与基础属性](/cn/tracking/s2s/v3/mandatory-properties)——每个事件都带有的字段
 - [目录与校验](/cn/tracking/s2s/v3/catalog-governance)——事件如何被校验
-- [标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming)
+- [标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)
 - [从 v2 迁移](/cn/tracking/s2s/v3/migration)
 
 ## 相关内容 {#related}

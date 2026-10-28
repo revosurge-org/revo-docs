@@ -1,7 +1,7 @@
 ---
 title: 事件目录与校验（v3）
 sidebar_label: 目录与校验
-description: 型别化事件目录如何运作——已登记事件、字段型别化、标准与 iGaming，以及校验行为。
+description: 型别化事件目录如何运作——已登记事件、字段型别化、标准与行业预设，以及校验行为。
 ---
 
 # 事件目录与校验
@@ -20,7 +20,7 @@ v3 由一个**型别化事件目录**治理：事件及其字段均预先登记�
 
 这使下游的分析、归因和 AI 功能能够基于干净、可信赖的数据持续运行。
 
-## 标准与 iGaming
+## 标准与行业预设
 
 事件被组织为**预设（preset）**。你的产品的有效目录是标准预设加上它所订阅的任何行业预设。
 
@@ -28,10 +28,12 @@ v3 由一个**型别化事件目录**治理：事件及其字段均预先登记�
 |--------|-------|--------------|------------|
 | **标准**（`general.core`） | 通用 | 对每个产品**自动启用** | 用户生命周期 · 验证与授权 · 应用生命周期 |
 | **iGaming**（`igaming`） | 行业 | **按订阅**——由 RevoSurge 团队为你的产品启用 | 用户生命周期 · 验证与授权 · 资金 · 游戏 · 奖金生命周期 |
+| **Crypto**（`crypto`） | 行业 | **按订阅**——由 RevoSurge 团队为你的产品启用 | 用户生命周期 · 验证与授权 · 资金 · 交易 · 奖励 |
 | 旧版（`legacy`） | 通用 | 兼容性（宽松） | `page_view`、`purchase`、`download_click` |
 
 - **标准**事件（[浏览](/cn/tracking/s2s/v3/events-standard)）开箱即用，适用于所有广告主。
 - **iGaming** 事件（[浏览](/cn/tracking/s2s/v3/events-igaming)）要求你的产品订阅 iGaming 预设。如果你在没有订阅的情况下发送 iGaming 事件，它会被拒绝为 `EVENT_DISABLED`——请联系你的 RevoSurge 代表以启用。
+- **Crypto** 事件（[Crypto 事件](/cn/tracking/s2s/v3/events-crypto)）要求产品已订阅 `crypto` 预设。未订阅时会返回 `422 EVENT_DISABLED`；请联系 RevoSurge 代表启用。
 
 ## 字段要求级别
 

@@ -8,7 +8,7 @@ description: The S2S Events v3 envelope structure and the base properties every 
 
 **Audience:** Engineers, technical integrators
 
-Every v3 event is a JSON **envelope** with four parts. A handful of **base properties** are inherited by every event, regardless of type; event-specific fields are documented in [Standard events](/en/tracking/s2s/v3/events-standard) and [iGaming events](/en/tracking/s2s/v3/events-igaming).
+Every v3 event is a JSON **envelope** with four parts. A handful of **base properties** are inherited by every event, regardless of type; event-specific fields are documented in [Standard events](/en/tracking/s2s/v3/events-standard), [iGaming events](/en/tracking/s2s/v3/events-igaming), and [Crypto events](/en/tracking/s2s/v3/events-crypto).
 
 ## Envelope structure
 

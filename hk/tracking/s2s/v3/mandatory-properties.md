@@ -8,7 +8,7 @@ description: S2S 事件 v3 信封結構，以及每個事件都必須攜帶的�
 
 **對象：** 工程師、技術整合人員
 
-每個 v3 事件都是一個包含四個部分的 JSON **信封**。少數**基礎屬性**會被每個事件繼承，無論其類型為何；事件特定欄位記錄於[標準事件](/hk/tracking/s2s/v3/events-standard)及 [iGaming 事件](/hk/tracking/s2s/v3/events-igaming)。
+每個 v3 事件都是一個包含四個部分的 JSON **信封**。少數**基礎屬性**會被每個事件繼承，無論其類型為何；事件特定欄位記錄於[標準事件](/hk/tracking/s2s/v3/events-standard)及 [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) · [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)。
 
 ## 信封結構
 

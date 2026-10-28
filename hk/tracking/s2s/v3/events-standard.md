@@ -10,6 +10,8 @@ description: S2S 事件 v3 Standard 目錄 — 適用於每個產品的跨行業
 
 標準事件（`general.core` 預設集）**為每個產品自動啟用** — 無需訂閱。它們涵蓋用戶生命週期、驗證與授權，以及應用生命週期。遊戲特定事件請參閱 [iGaming 事件](/hk/tracking/s2s/v3/events-igaming)。
 
+加密貨幣交易所和錢包請參見 [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)。
+
 每個事件也會攜帶[基礎屬性](/hk/tracking/s2s/v3/mandatory-properties)（`event`、`timestamp`、`identity.client_user_id`、`context.ip_address`）。下方表格**只列出每個事件特定的欄位**。
 
 <script setup>

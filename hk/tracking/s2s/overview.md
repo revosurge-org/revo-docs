@@ -281,7 +281,7 @@ S2S 事件一併發送。參閱
 
 ## 7. 事件目錄 {#_7-the-event-catalog}
 
-兩個預設集共 24 個事件。每個事件在後台中顯示為 *Receiving*、*Errors* 或
+下方的標準和 iGaming 目錄涵蓋 24 個事件。每個事件在後台中顯示為 *Receiving*、*Errors* 或
 *Not yet seen*。
 
 ::: warning 必須為你的產品啟用 iGaming 預設集
@@ -332,8 +332,12 @@ S2S 事件一併發送。參閱
 Bonus Engine 更精準，但起步階段沒有任何功能依賴它們。
 :::
 
+### Crypto 預設
+
+加密貨幣交易所和錢包可訂閱 `crypto` 預設：`vip_tier_changed`、`kyc_completed`、`kyc_rejected`、`deposit`、`withdraw`、`trade`、`trade_daily_summary` 和 `reward_claimed`。即使事件名稱與 iGaming 相同，仍需啓用 Crypto 訂閱。欄位和互動範例請參見 [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)。
+
 每個事件的欄位層級定義：
-[標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming)
+[標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) · [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)
 
 ## 8. API 版本 {#_8-api-versions}
 
@@ -356,7 +360,7 @@ S2S 卡片中的 **Event Stream** 欄和各事件的 *last seen* 時間戳記讀
 - [伺服器事件 API (v3)](/hk/tracking/s2s/v3/server-events-api) — 端點、結構、範例
 - [信封與基礎屬性](/hk/tracking/s2s/v3/mandatory-properties) — 每個事件都帶有的欄位
 - [目錄與驗證](/hk/tracking/s2s/v3/catalog-governance) — 事件如何被驗證
-- [標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming)
+- [標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) · [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)
 - [從 v2 遷移](/hk/tracking/s2s/v3/migration)
 
 ## 相關內容 {#related}

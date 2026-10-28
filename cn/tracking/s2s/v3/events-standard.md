@@ -10,6 +10,8 @@ description: S2S Events v3 标准目录——面向每个产品的跨行业事�
 
 标准事件（`general.core` 预设）对**每个产品自动启用**——无需订阅。它们涵盖用户生命周期、验证与授权，以及应用生命周期。游戏特定事件参见 [iGaming 事件](/cn/tracking/s2s/v3/events-igaming)。
 
+加密货币交易所和钱包请参见 [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)。
+
 每个事件还携带[基础属性](/cn/tracking/s2s/v3/mandatory-properties)（`event`、`timestamp`、`identity.client_user_id`、`context.ip_address`）。下面的表格**只列出每个事件特有的字段**。
 
 <script setup>
