@@ -334,7 +334,7 @@ Bonus Engine 更精准，但起步阶段没有任何功能依赖它们。
 
 ### Crypto 预设
 
-加密货币交易所和钱包可订阅 `crypto` 预设：`vip_tier_changed`、`kyc_completed`、`kyc_rejected`、`deposit`、`withdraw`、`trade`、`trade_daily_summary` 和 `reward_claimed`。即使事件名称与 iGaming 相同，仍需启用 Crypto 订阅。欄位和互動範例请参见 [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)。
+加密货币交易所和钱包可订阅 `crypto` 预设：`vip_tier_changed`、`kyc_completed`、`kyc_rejected`、`deposit`、`withdraw`、`trade`、`trade_daily_summary` 和 `reward_claimed`。即使事件名称与 iGaming 相同，仍需启用 Crypto 订阅。字段和交互示例请参见 [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)。
 
 每个事件的字段级定义：
 [标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)
