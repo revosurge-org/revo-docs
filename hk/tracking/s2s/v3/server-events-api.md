@@ -13,11 +13,8 @@ description: S2S 事件 v3 參考 — 信封、端點、認證、批次匯入、
 - 初次使用？請從[請求信封與基礎屬性](/hk/tracking/s2s/v3/mandatory-properties)開始。
 - 瀏覽事件：[標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) · [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)。
 - 驗證如何運作：[事件目錄與驗證](/hk/tracking/s2s/v3/catalog-governance)。
-- 目前使用 v2？請參閱[從 v2 遷移](/hk/tracking/s2s/v3/migration)。
 
 ## 基礎 URL
-
-基礎 URL 與 v2 相同，沒有變更。
 
 | 環境 | 基礎 URL |
 |-------------|----------|
@@ -32,7 +29,7 @@ description: S2S 事件 v3 參考 — 信封、端點、認證、批次匯入、
 | `X-API-KEY` | 是 | 你的 API 金鑰 |
 | `Content-Type` | 是 | `application/json` |
 
-> 請參閱 [API 金鑰](/hk/api/api-key)了解如何取得金鑰。認證與 v2 相同，沒有變更。
+> 請參閱 [API 金鑰](/hk/api/api-key)了解如何取得金鑰。
 
 ## 請求信封
 

@@ -19,7 +19,7 @@ description: S2S 整合在投放廣告系列前必須通過的規則、每條規
 | ID | 規則 | 失敗會導致什麼 |
 | --- | --- | --- |
 | `S2S-R-01` | 已產生 API Key，且 **S2S Status** 顯示 Active | 每個請求都被拒絕，什麼都不會被儲存。 |
-| `S2S-R-02` | 請求發往 **v3** 端點（`/v3/s2s/event`、`/v3/s2s/batch`） | v2 將於 **2026 年 10 月 18 日**棄用。v3 之後加入目錄的任何事件都無法透過 v2 存取，而且沒有任何地方會告訴你它缺失了。 |
+| `S2S-R-02` | 請求發往 **v3** 端點（`/v3/s2s/event`、`/v3/s2s/batch`） | 不受支援的端點不符合文件中的 v3 協定。 |
 | `S2S-R-03` | 每個請求都帶 `X-API-KEY` 標頭，且只從你的後端傳送 | 缺少標頭會被直接拒絕。金鑰一旦出現在前端或 App 程式碼裡就是憑證外洩 — 任何人都能往你的帳戶裡寫入事件。 |
 | `S2S-R-04` | `event` 是目錄中的準確名稱 | `422 UNKNOWN_EVENT_TYPE`。事件永遠不會入庫，報表裡也不會有任何提示告訴你它缺失了。 |
 | `S2S-R-05` | `timestamp` 是 UTC epoch **毫秒**（13 位） | 被拒絕，回傳 `rule: "not_milliseconds"`。用秒是最常見的整合 bug，沒有之一。 |
@@ -56,13 +56,9 @@ Manage Product → 你的產品 → **S2S** 卡片。金鑰只以遮罩形式顯
 
 產生新金鑰不會撤銷舊金鑰。請有計劃地輪替，並在停用舊金鑰之前先把它從你的後端移除。
 
-### `S2S-R-02` — 仍在呼叫 v2 {#s2s-r-02-—-still-calling-v2}
+### `S2S-R-02` — 端點不正確 {#s2s-r-02-incorrect-endpoint}
 
-**修復：** 把基礎路徑從 `/v2/s2s/…` 改為 `/v3/s2s/…`，並把 `timestamp` 從秒改為毫秒傳送。驗證標頭與信封結構不變。見[從 v2 遷移](/hk/tracking/s2s/v3/migration)。
-
-v2 將於 **2026 年 10 月 18 日**棄用。
-
-v2 的任何問題都不會大聲報錯，這正是很多整合停留在 v2 上好幾個月都沒人察覺的原因。
+**修復：** 向 `/v3/s2s/event` 或 `/v3/s2s/batch` 傳送請求，使用[請求信封](/hk/tracking/s2s/v3/mandatory-properties)和 Unix 毫秒時間戳記。請參閱[伺服器事件 API](/hk/tracking/s2s/v3/server-events-api)。
 
 ### `S2S-R-03` — API Key 缺失或已外洩 {#s2s-r-03-—-missing-or-exposed-api-key}
 

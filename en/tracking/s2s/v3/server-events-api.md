@@ -13,11 +13,8 @@ The Server Events API lets partners securely send user events directly from thei
 - New here? Start with the [request envelope & base properties](/en/tracking/s2s/v3/mandatory-properties).
 - Browse events: [Standard events](/en/tracking/s2s/v3/events-standard) · [iGaming events](/en/tracking/s2s/v3/events-igaming) · [Crypto events](/en/tracking/s2s/v3/events-crypto).
 - How validation works: [Event catalog & validation](/en/tracking/s2s/v3/catalog-governance).
-- On v2 today? See [Migrating from v2](/en/tracking/s2s/v3/migration).
 
 ## Base URL
-
-The base URL is unchanged from v2.
 
 | Environment | Base URL |
 |-------------|----------|
@@ -32,7 +29,7 @@ Every request must include your API key in the `X-API-KEY` header.
 | `X-API-KEY` | Yes | Your API key |
 | `Content-Type` | Yes | `application/json` |
 
-> See [API Key](/en/api/api-key) for how to obtain a key. Authentication is unchanged from v2.
+> See [API Key](/en/api/api-key) for how to obtain a key.
 
 ## The request envelope
 

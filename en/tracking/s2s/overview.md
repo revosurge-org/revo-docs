@@ -275,10 +275,10 @@ checks against the last 24 hours of your traffic.
 
 | Check | What it verifies | If it fails |
 | --- | --- | --- |
-| **X-API-Key Authenticated** | Share of `X-API-Key` requests that authenticate (200) vs 401 | Wrong or revoked key, or the header isn't named exactly `X-API-Key` |
-| **Recent POST Activity** | Whether any POST reached `/v2/s2s/event` or `/v2/s2s/batch` | Your backend isn't calling the endpoint — check egress firewall rules and the URL |
-| **Schema Errors (400)** | Share of requests rejected for a bad schema — top missing field named | Add the missing field. Most often `client_user_id`, `click_id`, `event_name`, `timestamp`, or `ip_address` |
-| **Rate Limit Hits (429)** | Share of 429s — limit is 60 RPM per API key | Batch your events via `/v2/s2s/batch` and add retry with backoff |
+| **X-API-Key Authenticated** | Share of `X-API-Key` requests that authenticate successfully vs 401; live ingestion returns 202, while dry run/test returns 200 | Wrong or revoked key, or the header isn't named exactly `X-API-Key` |
+| **Recent POST Activity** | Whether any POST reached `/v3/s2s/event` or `/v3/s2s/batch` | Your backend isn't calling the endpoint — check egress firewall rules and the URL |
+| **Schema Errors (400)** | Share of requests rejected for a bad schema — top missing field named | Add the missing field. Most often `identity.client_user_id`, `event`, `timestamp`, or `context.ip_address` |
+| **Rate Limit Hits (429)** | Share of 429s — limit is 60 RPM per API key | Batch your events via `/v3/s2s/batch` and add retry with backoff |
 | **Server Errors (5xx)** | Share of requests that failed with a 5xx | Transient on our side — retry with exponential backoff. Persistent 5xx: contact support |
 | **Event Status Not Active** | Whether the AdWave event status for this Product is active | A warning, not a blocker — events are arriving but the Product is not yet marked active for campaign use |
 
@@ -344,18 +344,12 @@ Field-level definitions for every event:
 
 ## 8. API versions
 
-| Version | Status | Timestamp format |
-| --- | --- | --- |
-| **v3** | Current — use for all integrations | Unix **milliseconds** |
-| **v2** | Deprecated on 18 October 2026 | Unix **seconds** |
-
-Start new integrations on **v3**. If you're on v2, see
-[Migrating from v2](/en/tracking/s2s/v3/migration).
+Use **v3** for all integrations and send timestamps in Unix **milliseconds**.
 
 ::: tip Confirming you are live
 The **Event Stream** bar and the per-event *last seen* timestamps in the S2S card are read
 from events we have actually stored. They are the authoritative check that your integration
-is working, on either version.
+is working.
 :::
 
 ## Next steps
@@ -364,7 +358,6 @@ is working, on either version.
 - [Envelope & base properties](/en/tracking/s2s/v3/mandatory-properties) — the fields on every event
 - [Catalog & validation](/en/tracking/s2s/v3/catalog-governance) — how events are validated
 - [Standard events](/en/tracking/s2s/v3/events-standard) · [iGaming events](/en/tracking/s2s/v3/events-igaming) · [Crypto events](/en/tracking/s2s/v3/events-crypto)
-- [Migrating from v2](/en/tracking/s2s/v3/migration)
 
 ## Related
 

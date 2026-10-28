@@ -272,10 +272,10 @@ S2S 事件一起发送。参见
 
 | 检查项 | 检查内容 | 未通过时 |
 | --- | --- | --- |
-| **X-API-Key Authenticated** | 认证成功（200）与返回 401 的 `X-API-Key` 请求占比 | 密钥错误或已被吊销，或请求头名称不完全是 `X-API-Key` |
-| **Recent POST Activity** | 是否有 POST 请求到达 `/v2/s2s/event` 或 `/v2/s2s/batch` | 你的后端没有调用该端点——检查出站防火墙规则和 URL |
-| **Schema Errors (400)** | 因结构错误被拒绝的请求占比——并列出最常缺失的字段 | 补上缺失字段。最常见的是 `client_user_id`、`click_id`、`event_name`、`timestamp` 或 `ip_address` |
-| **Rate Limit Hits (429)** | 429 的占比——上限为每个 API Key 60 RPM | 通过 `/v2/s2s/batch` 批量发送事件，并加入带退避的重试 |
+| **X-API-Key Authenticated** | 认证成功与返回 401 的 `X-API-Key` 请求占比；正式接入返回 202，dry run/测试返回 200 | 密钥错误或已被吊销，或请求头名称不完全是 `X-API-Key` |
+| **Recent POST Activity** | 是否有 POST 请求到达 `/v3/s2s/event` 或 `/v3/s2s/batch` | 你的后端没有调用该端点——检查出站防火墙规则和 URL |
+| **Schema Errors (400)** | 因结构错误被拒绝的请求占比——并列出最常缺失的字段 | 补上缺失字段。最常见的是 `identity.client_user_id`、`event`、`timestamp` 或 `context.ip_address` |
+| **Rate Limit Hits (429)** | 429 的占比——上限为每个 API Key 60 RPM | 通过 `/v3/s2s/batch` 批量发送事件，并加入带退避的重试 |
 | **Server Errors (5xx)** | 以 5xx 失败的请求占比 | 我方的临时问题——使用指数退避重试。持续出现 5xx：请联系支持团队 |
 | **Event Status Not Active** | 该产品在 AdWave 中的事件状态是否为激活 | 这是警告而非阻断——事件正在送达，但该产品尚未被标记为可用于广告系列 |
 
@@ -341,17 +341,11 @@ Bonus Engine 更精准，但起步阶段没有任何功能依赖它们。
 
 ## 8. API 版本 {#_8-api-versions}
 
-| 版本 | 状态 | 时间戳格式 |
-| --- | --- | --- |
-| **v3** | 当前版本——所有集成均使用此版本 | Unix **毫秒** |
-| **v2** | 将于 2026 年 10 月 18 日弃用 | Unix **秒** |
-
-新集成请从 **v3** 开始。如果你正在使用 v2，请参阅
-[从 v2 迁移](/cn/tracking/s2s/v3/migration)。
+所有集成均使用 **v3**，时间戳采用 Unix **毫秒**。
 
 ::: tip 确认你已上线
 S2S 卡片中的 **Event Stream** 栏和各事件的 *last seen* 时间戳读取的是
-我们实际存储的事件。无论使用哪个版本，它们都是确认你的集成
+我们实际存储的事件。它们是确认你的集成
 正常工作的权威依据。
 :::
 
@@ -361,7 +355,6 @@ S2S 卡片中的 **Event Stream** 栏和各事件的 *last seen* 时间戳读取
 - [信封与基础属性](/cn/tracking/s2s/v3/mandatory-properties)——每个事件都带有的字段
 - [目录与校验](/cn/tracking/s2s/v3/catalog-governance)——事件如何被校验
 - [标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)
-- [从 v2 迁移](/cn/tracking/s2s/v3/migration)
 
 ## 相关内容 {#related}
 

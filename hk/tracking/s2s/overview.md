@@ -272,10 +272,10 @@ S2S 事件一併發送。參閱
 
 | 檢查項 | 檢查內容 | 未通過時 |
 | --- | --- | --- |
-| **X-API-Key Authenticated** | 認證成功（200）與回傳 401 的 `X-API-Key` 請求佔比 | 金鑰錯誤或已被撤銷，或標頭名稱不完全是 `X-API-Key` |
-| **Recent POST Activity** | 是否有 POST 請求到達 `/v2/s2s/event` 或 `/v2/s2s/batch` | 你的後端沒有呼叫該端點 — 檢查對外防火牆規則和 URL |
-| **Schema Errors (400)** | 因結構錯誤被拒絕的請求佔比 — 並列出最常缺少的欄位 | 補上缺少的欄位。最常見的是 `client_user_id`、`click_id`、`event_name`、`timestamp` 或 `ip_address` |
-| **Rate Limit Hits (429)** | 429 的佔比 — 上限為每個 API Key 60 RPM | 透過 `/v2/s2s/batch` 批次發送事件，並加入帶退避的重試 |
+| **X-API-Key Authenticated** | 認證成功與回傳 401 的 `X-API-Key` 請求佔比；正式接入回傳 202，dry run/測試回傳 200 | 金鑰錯誤或已被撤銷，或標頭名稱不完全是 `X-API-Key` |
+| **Recent POST Activity** | 是否有 POST 請求到達 `/v3/s2s/event` 或 `/v3/s2s/batch` | 你的後端沒有呼叫該端點 — 檢查對外防火牆規則和 URL |
+| **Schema Errors (400)** | 因結構錯誤被拒絕的請求佔比 — 並列出最常缺少的欄位 | 補上缺少的欄位。最常見的是 `identity.client_user_id`、`event`、`timestamp` 或 `context.ip_address` |
+| **Rate Limit Hits (429)** | 429 的佔比 — 上限為每個 API Key 60 RPM | 透過 `/v3/s2s/batch` 批次發送事件，並加入帶退避的重試 |
 | **Server Errors (5xx)** | 以 5xx 失敗的請求佔比 | 我方的暫時性問題 — 使用指數退避重試。持續出現 5xx：請聯絡支援團隊 |
 | **Event Status Not Active** | 該產品在 AdWave 中的事件狀態是否為啟用 | 這是警告而非阻斷 — 事件正在送達，但該產品尚未被標記為可用於廣告系列 |
 
@@ -341,17 +341,11 @@ Bonus Engine 更精準，但起步階段沒有任何功能依賴它們。
 
 ## 8. API 版本 {#_8-api-versions}
 
-| 版本 | 狀態 | 時間戳記格式 |
-| --- | --- | --- |
-| **v3** | 目前版本 — 所有整合均使用此版本 | Unix **毫秒** |
-| **v2** | 將於 2026 年 10 月 18 日棄用 | Unix **秒** |
-
-新整合請從 **v3** 開始。如果你正在使用 v2，請參閱
-[從 v2 遷移](/hk/tracking/s2s/v3/migration)。
+所有整合均使用 **v3**，時間戳記採用 Unix **毫秒**。
 
 ::: tip 確認你已上線
 S2S 卡片中的 **Event Stream** 欄和各事件的 *last seen* 時間戳記讀取的是
-我們實際儲存的事件。無論使用哪個版本，它們都是確認你的整合
+我們實際儲存的事件。它們是確認你的整合
 正常運作的權威依據。
 :::
 
@@ -361,7 +355,6 @@ S2S 卡片中的 **Event Stream** 欄和各事件的 *last seen* 時間戳記讀
 - [信封與基礎屬性](/hk/tracking/s2s/v3/mandatory-properties) — 每個事件都帶有的欄位
 - [目錄與驗證](/hk/tracking/s2s/v3/catalog-governance) — 事件如何被驗證
 - [標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) · [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)
-- [從 v2 遷移](/hk/tracking/s2s/v3/migration)
 
 ## 相關內容 {#related}
 

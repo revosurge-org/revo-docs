@@ -62,13 +62,11 @@ export const hk: DefaultTheme.Config = {
                     { text: '目錄與驗證', link: '/hk/tracking/s2s/v3/catalog-governance' },
                     { text: '標準事件', link: '/hk/tracking/s2s/v3/events-standard' },
                     { text: 'iGaming 事件', link: '/hk/tracking/s2s/v3/events-igaming' },
-                    { text: 'Crypto 事件', link: '/hk/tracking/s2s/v3/events-crypto' },
-                    { text: '從 v2 遷移', link: '/hk/tracking/s2s/v3/migration' }
+                    { text: 'Crypto 事件', link: '/hk/tracking/s2s/v3/events-crypto' }
                   ]
                 },
                 { text: '整合驗證', link: '/hk/tracking/s2s/validation' },
-                { text: '交付與上線', link: '/hk/tracking/s2s/handoff' },
-                { text: '伺服器事件 API (v2，已棄用)', link: '/hk/tracking/s2s/server-events-api' }
+                { text: '交付與上線', link: '/hk/tracking/s2s/handoff' }
               ]
             },
             {
