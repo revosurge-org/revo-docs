@@ -1,7 +1,7 @@
 ---
 title: 事件目錄與驗證 (v3)
 sidebar_label: 目錄與驗證
-description: 型別化事件目錄如何運作 — 已登記事件、欄位型別、Standard 與 iGaming，以及驗證行為。
+description: 型別化事件目錄如何運作 — 已登記事件、欄位型別、Standard 與行業預設集，以及驗證行為。
 ---
 
 # 事件目錄與驗證
@@ -20,7 +20,7 @@ v3 由一個**型別化事件目錄**管治：事件及其欄位會預先登記�
 
 這讓下游的分析、歸因及 AI 功能持續在乾淨、可信賴的資料上運作。
 
-## Standard 與 iGaming
+## Standard 與行業預設集
 
 事件被組織成**預設集（preset）**。你產品的有效目錄是 Standard 預設集，加上其所訂閱的任何行業預設集。
 
@@ -28,10 +28,12 @@ v3 由一個**型別化事件目錄**管治：事件及其欄位會預先登記�
 |--------|-------|--------------|------------|
 | **Standard** (`general.core`) | 通用 | **自動啟用**於每個產品 | 用戶生命週期 · 驗證與授權 · 應用生命週期 |
 | **iGaming** (`igaming`) | 行業 | **按訂閱** — 由 RevoSurge 團隊為你的產品啟用 | 用戶生命週期 · 驗證與授權 · 資金 · 遊戲 · 獎金生命週期 |
+| **Crypto**（`crypto`） | 行業 | **按訂閱**——由 RevoSurge 團隊為你的產品啓用 | 用戶生命週期 · 驗證與授權 · 資金 · 交易 · 獎勵 |
 | Legacy (`legacy`) | 通用 | 相容性（寬鬆） | `page_view`、`purchase`、`download_click` |
 
 - **標準**事件（[瀏覽](/hk/tracking/s2s/v3/events-standard)）開箱即用，適用於所有廣告主。
 - **iGaming** 事件（[瀏覽](/hk/tracking/s2s/v3/events-igaming)）要求你的產品已訂閱 iGaming 預設集。如果你在未訂閱的情況下傳送 iGaming 事件，它會被拒絕為 `EVENT_DISABLED` — 請聯絡你的 RevoSurge 代表以啟用。
+- **Crypto** 事件（[Crypto 事件](/hk/tracking/s2s/v3/events-crypto)）要求產品已訂閱 `crypto` 預設。未訂閱時會返回 `422 EVENT_DISABLED`；請聯繫 RevoSurge 代表啓用。
 
 ## 欄位要求等級
 

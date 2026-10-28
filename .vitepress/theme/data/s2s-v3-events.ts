@@ -1,3 +1,5 @@
+import { cryptoEvents } from './s2s-v3-crypto-events'
+
 // Shared dataset for the S2S Events v3 interactive payload explorer.
 //
 // Source of truth: the control-plane event catalog seeder
@@ -10,7 +12,7 @@ export type Lang = 'en' | 'cn' | 'hk'
 export type Req = 'required' | 'suggested' | 'optional'
 export type Slot = 'envelope' | 'identity' | 'context'
 export type FieldType = 'String' | 'Number' | 'Boolean'
-export type Scope = 'standard' | 'igaming'
+export type Scope = 'standard' | 'igaming' | 'crypto'
 
 export interface I18n {
   en: string
@@ -306,4 +308,6 @@ export const s2sV3Events: EventDef[] = [
     f('time_to_cashout_minutes', 'context', 'Number', 'required', 300, tri('Minutes from bonus_claimed.', '从 bonus_claimed 起的分钟数。', '從 bonus_claimed 起的分鐘數。')),
     f('is_crypto', 'context', 'Boolean', 'suggested', false, D_CRYPTO),
   ]),
+  // Crypto event names may overlap iGaming; preserve their preset-specific fields.
+  ...cryptoEvents.map(event => ({ ...event, fields: [...base(event.name), ...event.fields] })),
 ]

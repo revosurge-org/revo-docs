@@ -10,6 +10,8 @@ description: The S2S Events v3 Standard catalog — cross-industry events availa
 
 Standard events (the `general.core` preset) are **auto-enabled for every product** — no subscription needed. They cover user lifecycle, verification & consent, and app lifecycle. For gaming-specific events see [iGaming events](/en/tracking/s2s/v3/events-igaming).
 
+For crypto exchanges and wallets, see [Crypto events](/en/tracking/s2s/v3/events-crypto).
+
 Every event also carries the [base properties](/en/tracking/s2s/v3/mandatory-properties) (`event`, `timestamp`, `identity.client_user_id`, `context.ip_address`). The tables below list **only the fields specific to each event**.
 
 <script setup>

@@ -1,7 +1,7 @@
 ---
 title: Event catalog & validation (v3)
 sidebar_label: Catalog & validation
-description: How the typed event catalog works — registered events, field typing, Standard vs iGaming, and validation behavior.
+description: How the typed event catalog works — registered events, field typing, Standard and industry presets, and validation behavior.
 ---
 
 # Event catalog & validation
@@ -20,7 +20,7 @@ In v2, `event_name` was a free string and events could carry arbitrary propertie
 
 This keeps downstream analytics, attribution, and AI features working on clean, trustworthy data.
 
-## Standard vs iGaming
+## Standard and industry presets
 
 Events are organized into **presets**. Your product's effective catalog is the Standard preset plus any industry presets it is subscribed to.
 
@@ -28,10 +28,12 @@ Events are organized into **presets**. Your product's effective catalog is the S
 |--------|-------|--------------|------------|
 | **Standard** (`general.core`) | General | **Auto-enabled** for every product | User Lifecycle · Verification & Consent · App Lifecycle |
 | **iGaming** (`igaming`) | Industry | **By subscription** — enabled for your product by the RevoSurge team | User Lifecycle · Verification & Consent · Financial · Gaming · Bonus Lifecycle |
+| **Crypto** (`crypto`) | Industry | **By subscription** — enabled for your product by the RevoSurge team | User Lifecycle · Verification & Consent · Financial · Trading · Rewards |
 | Legacy (`legacy`) | General | Compatibility (lenient) | `page_view`, `purchase`, `download_click` |
 
 - **Standard** events ([browse](/en/tracking/s2s/v3/events-standard)) work for all advertisers out of the box.
 - **iGaming** events ([browse](/en/tracking/s2s/v3/events-igaming)) require your product to be subscribed to the iGaming preset. If you send an iGaming event without the subscription, it is rejected as `EVENT_DISABLED` — contact your RevoSurge representative to enable it.
+- **Crypto** events ([Crypto events](/en/tracking/s2s/v3/events-crypto)) require the `crypto` preset subscription. Without it, these events are rejected as `422 EVENT_DISABLED`; contact your RevoSurge representative to enable it.
 
 ## Field requirement levels
 

@@ -11,7 +11,7 @@ description: S2S Events v3 参考——信封、端点、认证、批量接入�
 服务器事件 API 让合作伙伴能够直接从其服务器安全地向 DataPulse 平台发送用户事件。**v3** 引入了**型别化事件目录**——事件与字段均预先登记并在接入时校验——以及结构化的请求**信封**。
 
 - 第一次接触？从[请求信封与基础属性](/cn/tracking/s2s/v3/mandatory-properties)开始。
-- 浏览事件：[标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming)。
+- 浏览事件：[标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)。
 - 校验如何运作：[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
 - 目前在用 v2？参见[从 v2 迁移](/cn/tracking/s2s/v3/migration)。
 

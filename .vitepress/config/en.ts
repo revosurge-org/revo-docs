@@ -62,6 +62,7 @@ export const en: DefaultTheme.Config = {
                     { text: 'Catalog & validation', link: '/en/tracking/s2s/v3/catalog-governance' },
                     { text: 'Standard events', link: '/en/tracking/s2s/v3/events-standard' },
                     { text: 'iGaming events', link: '/en/tracking/s2s/v3/events-igaming' },
+                    { text: 'Crypto events', link: '/en/tracking/s2s/v3/events-crypto' },
                     { text: 'Migrating from v2', link: '/en/tracking/s2s/v3/migration' }
                   ]
                 },

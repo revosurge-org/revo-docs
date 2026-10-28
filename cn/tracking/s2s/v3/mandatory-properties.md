@@ -8,7 +8,7 @@ description: S2S Events v3 的信封结构以及每个事件都必须携带的�
 
 **受众：** 工程师、技术集成方
 
-每个 v3 事件都是一个包含四个部分的 JSON **信封**。少数几个**基础属性**会被每个事件继承，无论类型如何；事件特定字段记录在[标准事件](/cn/tracking/s2s/v3/events-standard)和 [iGaming 事件](/cn/tracking/s2s/v3/events-igaming)中。
+每个 v3 事件都是一个包含四个部分的 JSON **信封**。少数几个**基础属性**会被每个事件继承，无论类型如何；事件特定字段记录在[标准事件](/cn/tracking/s2s/v3/events-standard)和 [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)中。
 
 ## 信封结构
 

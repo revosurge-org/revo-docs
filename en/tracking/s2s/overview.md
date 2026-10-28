@@ -284,7 +284,7 @@ checks against the last 24 hours of your traffic.
 
 ## 7. The event catalog
 
-There are 24 events across two presets. Each shows in the portal as *Receiving*, *Errors*, or
+The Standard and iGaming catalogs below cover 24 events. Each shows in the portal as *Receiving*, *Errors*, or
 *Not yet seen*.
 
 ::: warning The iGaming preset has to be enabled for your Product
@@ -335,8 +335,12 @@ true player value. Verification and bonus events last; they sharpen Predicted LT
 the Bonus Engine but nothing depends on them to start.
 :::
 
+### Crypto preset
+
+Crypto exchanges and wallets can subscribe to the `crypto` preset: `vip_tier_changed`, `kyc_completed`, `kyc_rejected`, `deposit`, `withdraw`, `trade`, `trade_daily_summary`, and `reward_claimed`. These events require the Crypto subscription even where names overlap with iGaming. See [Crypto events](/en/tracking/s2s/v3/events-crypto) for the fields and interactive examples.
+
 Field-level definitions for every event:
-[Standard events](/en/tracking/s2s/v3/events-standard) · [iGaming events](/en/tracking/s2s/v3/events-igaming)
+[Standard events](/en/tracking/s2s/v3/events-standard) · [iGaming events](/en/tracking/s2s/v3/events-igaming) · [Crypto events](/en/tracking/s2s/v3/events-crypto)
 
 ## 8. API versions
 
@@ -359,7 +363,7 @@ is working, on either version.
 - [Server Events API (v3)](/en/tracking/s2s/v3/server-events-api) — endpoints, schemas, examples
 - [Envelope & base properties](/en/tracking/s2s/v3/mandatory-properties) — the fields on every event
 - [Catalog & validation](/en/tracking/s2s/v3/catalog-governance) — how events are validated
-- [Standard events](/en/tracking/s2s/v3/events-standard) · [iGaming events](/en/tracking/s2s/v3/events-igaming)
+- [Standard events](/en/tracking/s2s/v3/events-standard) · [iGaming events](/en/tracking/s2s/v3/events-igaming) · [Crypto events](/en/tracking/s2s/v3/events-crypto)
 - [Migrating from v2](/en/tracking/s2s/v3/migration)
 
 ## Related

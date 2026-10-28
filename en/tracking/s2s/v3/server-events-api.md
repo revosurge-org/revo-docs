@@ -11,7 +11,7 @@ description: S2S Events v3 reference — envelope, endpoints, authentication, ba
 The Server Events API lets partners securely send user events directly from their servers to the DataPulse platform. **v3** introduces a **typed event catalog** — events and fields are pre-registered and validated on ingest — and a structured request **envelope**.
 
 - New here? Start with the [request envelope & base properties](/en/tracking/s2s/v3/mandatory-properties).
-- Browse events: [Standard events](/en/tracking/s2s/v3/events-standard) · [iGaming events](/en/tracking/s2s/v3/events-igaming).
+- Browse events: [Standard events](/en/tracking/s2s/v3/events-standard) · [iGaming events](/en/tracking/s2s/v3/events-igaming) · [Crypto events](/en/tracking/s2s/v3/events-crypto).
 - How validation works: [Event catalog & validation](/en/tracking/s2s/v3/catalog-governance).
 - On v2 today? See [Migrating from v2](/en/tracking/s2s/v3/migration).
 

@@ -62,6 +62,7 @@ export const cn: DefaultTheme.Config = {
                     { text: '目录与校验', link: '/cn/tracking/s2s/v3/catalog-governance' },
                     { text: '标准事件', link: '/cn/tracking/s2s/v3/events-standard' },
                     { text: 'iGaming 事件', link: '/cn/tracking/s2s/v3/events-igaming' },
+                    { text: 'Crypto 事件', link: '/cn/tracking/s2s/v3/events-crypto' },
                     { text: '从 v2 迁移', link: '/cn/tracking/s2s/v3/migration' }
                   ]
                 },
