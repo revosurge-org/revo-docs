@@ -275,7 +275,7 @@ checks against the last 24 hours of your traffic.
 
 | Check | What it verifies | If it fails |
 | --- | --- | --- |
-| **X-API-Key Authenticated** | Share of `X-API-Key` requests that authenticate (200) vs 401 | Wrong or revoked key, or the header isn't named exactly `X-API-Key` |
+| **X-API-Key Authenticated** | Share of `X-API-Key` requests that authenticate successfully vs 401; live ingestion returns 202, while dry run/test returns 200 | Wrong or revoked key, or the header isn't named exactly `X-API-Key` |
 | **Recent POST Activity** | Whether any POST reached `/v3/s2s/event` or `/v3/s2s/batch` | Your backend isn't calling the endpoint — check egress firewall rules and the URL |
 | **Schema Errors (400)** | Share of requests rejected for a bad schema — top missing field named | Add the missing field. Most often `identity.client_user_id`, `event`, `timestamp`, or `context.ip_address` |
 | **Rate Limit Hits (429)** | Share of 429s — limit is 60 RPM per API key | Batch your events via `/v3/s2s/batch` and add retry with backoff |

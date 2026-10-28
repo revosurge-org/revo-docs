@@ -272,7 +272,7 @@ S2S 事件一起发送。参见
 
 | 检查项 | 检查内容 | 未通过时 |
 | --- | --- | --- |
-| **X-API-Key Authenticated** | 认证成功（200）与返回 401 的 `X-API-Key` 请求占比 | 密钥错误或已被吊销，或请求头名称不完全是 `X-API-Key` |
+| **X-API-Key Authenticated** | 认证成功与返回 401 的 `X-API-Key` 请求占比；正式接入返回 202，dry run/测试返回 200 | 密钥错误或已被吊销，或请求头名称不完全是 `X-API-Key` |
 | **Recent POST Activity** | 是否有 POST 请求到达 `/v3/s2s/event` 或 `/v3/s2s/batch` | 你的后端没有调用该端点——检查出站防火墙规则和 URL |
 | **Schema Errors (400)** | 因结构错误被拒绝的请求占比——并列出最常缺失的字段 | 补上缺失字段。最常见的是 `identity.client_user_id`、`event`、`timestamp` 或 `context.ip_address` |
 | **Rate Limit Hits (429)** | 429 的占比——上限为每个 API Key 60 RPM | 通过 `/v3/s2s/batch` 批量发送事件，并加入带退避的重试 |

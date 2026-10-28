@@ -272,7 +272,7 @@ S2S 事件一併發送。參閱
 
 | 檢查項 | 檢查內容 | 未通過時 |
 | --- | --- | --- |
-| **X-API-Key Authenticated** | 認證成功（200）與回傳 401 的 `X-API-Key` 請求佔比 | 金鑰錯誤或已被撤銷，或標頭名稱不完全是 `X-API-Key` |
+| **X-API-Key Authenticated** | 認證成功與回傳 401 的 `X-API-Key` 請求佔比；正式接入回傳 202，dry run/測試回傳 200 | 金鑰錯誤或已被撤銷，或標頭名稱不完全是 `X-API-Key` |
 | **Recent POST Activity** | 是否有 POST 請求到達 `/v3/s2s/event` 或 `/v3/s2s/batch` | 你的後端沒有呼叫該端點 — 檢查對外防火牆規則和 URL |
 | **Schema Errors (400)** | 因結構錯誤被拒絕的請求佔比 — 並列出最常缺少的欄位 | 補上缺少的欄位。最常見的是 `identity.client_user_id`、`event`、`timestamp` 或 `context.ip_address` |
 | **Rate Limit Hits (429)** | 429 的佔比 — 上限為每個 API Key 60 RPM | 透過 `/v3/s2s/batch` 批次發送事件，並加入帶退避的重試 |
