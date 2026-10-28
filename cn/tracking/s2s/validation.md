@@ -19,7 +19,7 @@ description: S2S 集成在投放广告系列前必须通过的规则、每条规
 | ID | 规则 | 失败会导致什么 |
 | --- | --- | --- |
 | `S2S-R-01` | 已生成 API Key，且 **S2S Status** 显示 Active | 每个请求都被拒绝，什么都不会被存下。 |
-| `S2S-R-02` | 请求发往 **v3** 端点（`/v3/s2s/event`、`/v3/s2s/batch`） | v2 将于 **2026 年 10 月 18 日**弃用。v3 之后加入目录的任何事件都无法通过 v2 访问，而且没有任何地方会告诉你它缺失了。 |
+| `S2S-R-02` | 请求发往 **v3** 端点（`/v3/s2s/event`、`/v3/s2s/batch`） | 不受支持的端点不符合文档中的 v3 协议。 |
 | `S2S-R-03` | 每个请求都带 `X-API-KEY` 请求头，且只从你的后端发送 | 缺少请求头会被直接拒绝。密钥一旦出现在前端或 App 代码里就是凭证泄露——任何人都能往你的账户里写事件。 |
 | `S2S-R-04` | `event` 是目录中的准确名称 | `422 UNKNOWN_EVENT_TYPE`。事件永远不会落库，报表里也不会有任何提示告诉你它缺失了。 |
 | `S2S-R-05` | `timestamp` 是 UTC epoch **毫秒**（13 位） | 被拒绝，返回 `rule: "not_milliseconds"`。用秒是最常见的集成 bug，没有之一。 |
@@ -56,13 +56,9 @@ Manage Product → 你的产品 → **S2S** 卡片。密钥只以掩码形式显
 
 生成新密钥不会吊销旧密钥。请有计划地轮换，并在停用旧密钥之前先把它从你的后端移除。
 
-### `S2S-R-02` —— 仍在调用 v2 {#s2s-r-02-—-still-calling-v2}
+### `S2S-R-02` — 端点不正确 {#s2s-r-02-incorrect-endpoint}
 
-**修复：** 把基础路径从 `/v2/s2s/…` 改为 `/v3/s2s/…`，并把 `timestamp` 从秒改为毫秒发送。认证请求头与信封结构不变。见[从 v2 迁移](/cn/tracking/s2s/v3/migration)。
-
-v2 将于 **2026 年 10 月 18 日**弃用。
-
-v2 的任何问题都不会大声报错，这正是很多集成停留在 v2 上好几个月都没人察觉的原因。
+**修复：** 向 `/v3/s2s/event` 或 `/v3/s2s/batch` 发送请求，使用[请求信封](/cn/tracking/s2s/v3/mandatory-properties)和 Unix 毫秒时间戳。参见[服务器事件 API](/cn/tracking/s2s/v3/server-events-api)。
 
 ### `S2S-R-03` —— API Key 缺失或已暴露 {#s2s-r-03-—-missing-or-exposed-api-key}
 

@@ -12,7 +12,7 @@ v3 is governed by a **typed event catalog**: events and their fields are pre-reg
 
 ## Why typed?
 
-In v2, `event_name` was a free string and events could carry arbitrary properties of any type — so `deposit`, `Deposit`, and `depo` all landed, and `amount` could arrive as the string `"50"`. v3 fixes this:
+The typed catalog enforces consistent event names and field types:
 
 1. **Registered events** — only catalog events are accepted; unknown names are rejected.
 2. **Typed fields** — each field has a fixed type (`String` / `Number` / `Boolean`) and, where relevant, an allowed-values list.

@@ -21,7 +21,7 @@ instead of re-describing the problem.
 | ID | Rule | What breaks if it fails |
 | --- | --- | --- |
 | `S2S-R-01` | API Key is generated and **S2S Status** reads Active | Every request is rejected. Nothing is stored. |
-| `S2S-R-02` | Requests go to the **v3** endpoints (`/v3/s2s/event`, `/v3/s2s/batch`) | v2 will be deprecated on **18 October 2026**. Anything added to the catalog after v3 is not reachable from v2, and nothing tells you it is missing. |
+| `S2S-R-02` | Requests go to the **v3** endpoints (`/v3/s2s/event`, `/v3/s2s/batch`) | Unsupported endpoints do not follow the documented v3 contract. |
 | `S2S-R-03` | `X-API-KEY` header is sent on every request, from your backend only | Missing header is rejected outright. A key shipped in frontend or app code is a credential leak — anyone can write events into your account. |
 | `S2S-R-04` | `event` is an exact catalog name | `422 UNKNOWN_EVENT_TYPE`. The event never lands, and nothing in reporting tells you it is missing. |
 | `S2S-R-05` | `timestamp` is UTC epoch **milliseconds** (13 digits) | Rejected with `rule: "not_milliseconds"`. Seconds are the single most common integration bug. |
@@ -60,16 +60,9 @@ secret manager immediately.
 Generating a new key does not revoke the old one. Rotate deliberately, and remove the old key
 from your backend before you disable it.
 
-### `S2S-R-02` — Still calling v2
+### `S2S-R-02` — Incorrect endpoint {#s2s-r-02-incorrect-endpoint}
 
-**Fix:** Change the base path from `/v2/s2s/…` to `/v3/s2s/…`, and send `timestamp` in
-milliseconds rather than seconds. The auth header and envelope are unchanged. See
-[Migration](/en/tracking/s2s/v3/migration).
-
-v2 will be deprecated on **18 October 2026**.
-
-Nothing about v2 fails loudly, which is why integrations sit on it for months without anyone
-noticing.
+**Fix:** Send requests to `/v3/s2s/event` or `/v3/s2s/batch`, using the [request envelope](/en/tracking/s2s/v3/mandatory-properties) and Unix millisecond timestamps. See the [Server Events API](/en/tracking/s2s/v3/server-events-api).
 
 ### `S2S-R-03` — Missing or exposed API key
 

@@ -13,11 +13,8 @@ description: S2S Events v3 参考——信封、端点、认证、批量接入�
 - 第一次接触？从[请求信封与基础属性](/cn/tracking/s2s/v3/mandatory-properties)开始。
 - 浏览事件：[标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)。
 - 校验如何运作：[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
-- 目前在用 v2？参见[从 v2 迁移](/cn/tracking/s2s/v3/migration)。
 
 ## 基础 URL
-
-基础 URL 与 v2 保持不变。
 
 | 环境 | 基础 URL |
 |-------------|----------|
@@ -32,7 +29,7 @@ description: S2S Events v3 参考——信封、端点、认证、批量接入�
 | `X-API-KEY` | 是 | 你的 API 密钥 |
 | `Content-Type` | 是 | `application/json` |
 
-> 关于如何获取密钥，请参见 [API 密钥](/cn/api/api-key)。认证与 v2 保持不变。
+> 关于如何获取密钥，请参见 [API 密钥](/cn/api/api-key)。
 
 ## 请求信封
 
