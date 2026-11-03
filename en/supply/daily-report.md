@@ -14,6 +14,7 @@ numbers come from the same data RevoSurge uses for its own reporting.
 ## In this article
 - Endpoint and auth
 - Parameters
+- Example call
 - Response format
 - Rate limit + caching
 - Errors
@@ -28,9 +29,8 @@ GET https://rtb.revosurge.com/api/v2/ssp/{sspId}/report?from=YYYY-MM-DD&to=YYYY-
 Authorization: Bearer <jwt>
 ```
 
-The `{sspId}` path variable **must** equal the `sub` claim in your token.
-A leaked token still requires knowing the exact `sspId` to read data, and a
-token can only ever return data for one SSP.
+The `{sspId}` path variable **must** equal the `sub` claim in your token, so
+a token can only ever return data for the SSP id it was issued for.
 
 ::: tip Report URL ≠ bid URL
 This is not your bid endpoint (`/api/v1/openrtb2/...`). The bid endpoint
@@ -79,6 +79,19 @@ Window constraints:
 - `to` cannot be before `from`, and cannot be after today UTC
 - `to` may equal today (partial day, returns up-to-the-minute counts)
 
+## Example call
+
+```bash
+curl "https://rtb.revosurge.com/api/v2/ssp/example-ssp/report?from=2026-10-25&to=2026-10-27" \
+  -H "Authorization: Bearer <your-token>"
+```
+
+Same call with the token in the query string:
+
+```bash
+curl "https://rtb.revosurge.com/api/v2/ssp/example-ssp/report?from=2026-10-25&to=2026-10-27&access_token=<your-token>"
+```
+
 ## Response format
 
 `200 OK` — JSON body:
@@ -107,7 +120,7 @@ Window constraints:
       "billCount": null,
       "impCount": 8721,
       "revenue":    { "byImp": 18.3141 },
-      "averageCpm": { "byImp": 2.0999999999999996 }
+      "averageCpm": { "byImp": 2.1 }
     },
     {
       "date": "2026-10-27T00:00:00Z",
@@ -169,27 +182,11 @@ Revenue and CPM are reported on two independent bases:
 Reconcile on the basis that matches how you bill: `byBill` if you send
 billing notifications, otherwise `byImp`.
 
-`averageCpm` values are not rounded (e.g. `2.0999999999999996`); round on
-your side if needed.
-
-## Example call
-
-```bash
-curl "https://rtb.revosurge.com/api/v2/ssp/example-ssp/report?from=2026-10-25&to=2026-10-27" \
-  -H "Authorization: Bearer <your-token>"
-```
-
-Same call with the token in the query string:
-
-```bash
-curl "https://rtb.revosurge.com/api/v2/ssp/example-ssp/report?from=2026-10-25&to=2026-10-27&access_token=<your-token>"
-```
-
 ## Rate limit + caching
 
 - **10 requests/minute** per token. Exceeding returns `429`.
 - Identical `(sspId, from, to)` queries are **cached for 5 minutes** server-side.
-  Repeated queries inside that window do not hit the warehouse.
+  Repeated queries inside that window return the cached result.
 - Recommended polling cadence: **once per hour or less**. Daily totals
   don't change after the day closes.
 
