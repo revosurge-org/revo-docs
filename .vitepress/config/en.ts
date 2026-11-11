@@ -106,6 +106,7 @@ export const en: DefaultTheme.Config = {
         { text: 'In-page Push Debugger', link: '/en/adflow/inpage-push-debugger' },
         { text: 'Native Debugger', link: '/en/adflow/native-debugger' },
         { text: 'S2S Debugger', link: '/en/adflow/s2s-debugger' },
+        { text: 'Installation Check Troubleshooting', link: '/en/adflow/install-check-qa' },
       ]
     },
     {

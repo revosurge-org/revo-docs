@@ -255,6 +255,8 @@ Below is a minimal complete page example that you can copy and use directly.
 Add the `data-debug` attribute to the `<script>` tag to view detailed `[AdFlow]` prefixed logs in the browser console. You can also inspect runtime configuration and slot info via the `window.__adflow` object.
 :::
 
+Installation check did not find your request? Follow the [Installation Check Troubleshooting](./install-check-qa) steps.
+
 ### Diagnostic Script {#adflow-diagnostic}
 
 If you encounter issues with adflow.js, run the following diagnostic script in your browser's developer console (DevTools → Console) to quickly identify common problems:

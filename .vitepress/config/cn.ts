@@ -106,6 +106,7 @@ export const cn: DefaultTheme.Config = {
         { text: 'In-page Push 调试器', link: '/cn/adflow/inpage-push-debugger' },
         { text: 'Native 调试器', link: '/cn/adflow/native-debugger' },
         { text: 'S2S 调试器', link: '/cn/adflow/s2s-debugger' },
+        { text: '安装代码失败 QA', link: '/cn/adflow/install-check-qa' },
       ]
     },
     {

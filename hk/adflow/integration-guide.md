@@ -255,6 +255,8 @@ Push 廣告默認會彈出瀏覽器通知。如只想接收競價而不彈通知
 在 `<script>` 标签上添加 `data-debug` 属性可以在浏览器控制台查看 `[AdFlow]` 前缀的详细日志。也可以通过 `window.__adflow` 对象在控制台查看运行时配置和廣告位信息。
 :::
 
+安裝檢查未收到匹配請求？請按[安裝代碼失敗 QA](./install-check-qa) 中的步驟排查。
+
 ### 診斷腳本 {#adflow-diagnostic}
 
 如果你在使用 adflow.js 時遇到問題，可以在瀏覽器開發者控制台（DevTools → Console）中運行以下診斷腳本，快速定位常見問題：

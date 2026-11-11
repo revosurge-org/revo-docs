@@ -106,6 +106,7 @@ export const hk: DefaultTheme.Config = {
         { text: 'In-page Push 調試器', link: '/hk/adflow/inpage-push-debugger' },
         { text: 'Native 調試器', link: '/hk/adflow/native-debugger' },
         { text: 'S2S 調試器', link: '/hk/adflow/s2s-debugger' },
+        { text: '安裝代碼失敗 QA', link: '/hk/adflow/install-check-qa' },
       ]
     },
     {
