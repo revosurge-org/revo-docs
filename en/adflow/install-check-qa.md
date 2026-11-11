@@ -48,7 +48,23 @@ The [Integration Guide's debugging tools](./integration-guide#adflow-diagnostic)
 
 Request records may have a short processing delay. Try again later and confirm that the website and placement selected in AdFlow match the page you just visited.
 
+A newly created placement may not have synced its external ID to the data the check uses yet; wait 1-2 minutes after creation before triggering the check. There is also a minute-level delay between a request being sent and it becoming queryable, so a just-triggered request may not appear immediately.
+
+If the page is installed correctly but the check still fails, confirm in your browser's **Network** panel that a request to Prebid Server was actually sent, and that it carried the correct publisher ID and placement ID.
+
 No matching request found in this check does not mean that no request has ever existed. It also does not identify a single cause. If the check itself fails, retry later rather than assuming the installation is broken.
+
+::: tip When the check result shows "unknown"
+When the reporting channel is temporarily unavailable, the check returns "unknown" instead of "not found". This is not an installation problem but a temporary inability to verify. Try again later; if it keeps happening, contact support through the options below.
+:::
+
+## 6. Confirm account, website, and placement status {#states}
+
+The installation check only queries real requests on objects that are in a valid state. The following statuses cause this check to find no matching request:
+
+- **The placement status is not `active`.** A newly created placement defaults to `pending` and only becomes `active` after the code is installed successfully and verification is triggered; if it is `disabled`, enable it in AdFlow or contact an administrator.
+- **The website status is not `active`.** The check requires the Website to be `active` and not deleted; if the website is disabled, checks for all placements under it fail. Confirm in AdFlow site management that the website is enabled.
+- **The account is disabled.** Once an account is disabled, check requests for all placements are not queried. Confirm the AdFlow account is `active`; if it shows disabled, contact an administrator to restore it.
 
 ## Still need help? {#help}
 
@@ -58,5 +74,8 @@ Contact support through the existing chat in the bottom-right corner of AdFlow. 
 - Placement ID.
 - When you published the code and last ran the check, including the time zone.
 - Relevant Network and Console screenshots.
+- The current placement and website status (`pending` / `active` / `disabled`).
+- The check result type (real Bid Request received / not found / unknown).
+- The `data-account-id` and `data-placement-id` values in your page code, and whether they match what AdFlow shows.
 
 Do not send passwords, keys, or private visitor data.
