@@ -107,7 +107,6 @@ export const en: DefaultTheme.Config = {
         { text: 'Native Debugger', link: '/en/adflow/native-debugger' },
         { text: 'S2S Debugger', link: '/en/adflow/s2s-debugger' },
         { text: 'Installation Check Troubleshooting', link: '/en/adflow/install-check-qa' },
-        { text: 'AdFlow Installation Check Failure - Self-Troubleshooting & Docs Entry', link: '/en/adflow/installation-check-self-repairing' },
       ]
     },
     {
