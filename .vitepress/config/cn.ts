@@ -107,6 +107,7 @@ export const cn: DefaultTheme.Config = {
         { text: 'Native 调试器', link: '/cn/adflow/native-debugger' },
         { text: 'S2S 调试器', link: '/cn/adflow/s2s-debugger' },
         { text: '安装代码失败 QA', link: '/cn/adflow/install-check-qa' },
+        { text: 'AdFlow 安装检查失败自助排查与文档入口', link: '/cn/adflow/installation-check-self-repairing' },
       ]
     },
     {

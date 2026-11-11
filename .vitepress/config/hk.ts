@@ -107,6 +107,7 @@ export const hk: DefaultTheme.Config = {
         { text: 'Native 調試器', link: '/hk/adflow/native-debugger' },
         { text: 'S2S 調試器', link: '/hk/adflow/s2s-debugger' },
         { text: '安裝代碼失敗 QA', link: '/hk/adflow/install-check-qa' },
+        { text: 'AdFlow 安裝檢查失敗自助排查與文檔入口', link: '/hk/adflow/installation-check-self-repairing' },
       ]
     },
     {
