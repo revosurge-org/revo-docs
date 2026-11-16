@@ -1,15 +1,67 @@
 ---
 title: 合作方 Postback 交付与上线
-description: dry run 探测、用真实转化完成的端到端测试、要交给客户经理什么，以及上线后需要重新检查的事项。
+description: Partner Postback 版本选择、字段映射、dryrun/test/live 验证、迁移与交付。
 ---
 
 # 合作方 Postback 交付与上线
 
-**受众：** 负责上线的人，需能访问配置 postback 的联盟后台。
+先选择 API 版本。[v2 集成校验](/cn/tracking/postback/validation#v2-validation)检查 canonical 请求，本页确认实际平台会触发请求，并按约定的交付阶段验收。下方 [v1 流程](#v1-handoff)保留原锚点，供已有接入使用。
 
-[集成校验](/cn/tracking/postback/validation)证明你的 postback URL 是正确的。本页要证明的是你的**后台真的会在真实转化时触发它**——这是另一回事，也往往是出问题的那一环。
+## v2 交付与上线 {#v2-handoff}
 
-## 交付之前 {#before-you-hand-off}
+### 就绪条件与字段责任 {#v2-readiness}
+
+- [ ] RevoSurge 已确认目标 origin、部署版本、`/v2/pb/**` 路由、接收器启用、有效目录加载和 Connection 配置。其他环境的技术测试不能证明生产就绪。
+- [ ] Connection 已启用且只关联目标产品；密钥及轮换到期时间明确。显式组装 v2 URL，当前 Connection 生成器返回 v1 地址。
+- [ ] 约定的事件清单具有精确 canonical 名和已启用的产品契约。共享入口不保证第三方只有一条模板，也不保证所有产品支持同一组事件。
+- [ ] 字段核对表记录来源字段 → canonical 路径 → 类型／枚举／单位／精度 → 必填级别 → 提供方 → 已验证／缺失／未实测。包含基础字段、稳定用户身份、真实业务时间、来源事件／交易 ID、RevoSurge click ID 及独立金额字段。
+- [ ] 已取得真实展开的服务端请求。只有 click ID 和 event ID 无法满足 v2 身份／时间要求。平台无法提供时，记录阻塞并约定补充来源数据或单独验证 S2S 路径，不伪造用户 ID、时间或金额。
+- [ ] `PB2-R-*` 全部通过；跳过的建议项有责任人和原因。平台规则已启用，且作用于正确的产品／Campaign。
+
+### 三阶段验证 {#v2-stages}
+
+| 阶段 | 操作 | 必需证据 |
+| --- | --- | --- |
+| Dryrun | 真实展开模板加 `dryrun=1`，包含负例探测 | 实际接收器返回 `200 validated`、`stored=false`、`not_attempted`；核对 typed 值和 violations；技术侧确认无业务发布 |
+| 隔离 test | 移除 dryrun，使用 `testmode=1` 和独立合成来源 ID | `200 accepted`、`stored=true`、`confirmed`；读回匹配的隔离消息，逐字段核对 |
+| 受控 live | 目标就绪确认后，移除两个模式参数，触发约定的来源事件 | 同样的确认结果和匹配的 live 消息；若上线范围包含下游可查询及归因，另行核验 |
+
+使用 [API 示例](/cn/tracking/postback/partner-postback#v2-examples)和[负例探测](/cn/tracking/postback/validation#v2-probes)。覆盖 `register`、约定的原币 `deposit` 或 `trade`、`false`、真实零值，以及目录允许的独立手续费。核对含 `+`、`&`、`%` 和 Unicode 的解码值。检查平台实际出站请求，不能只看 relay 提前返回的 `200`。
+
+每条通过的测试保留：来源 case/run 及合成／真实业务标记、脱敏展开 URL、响应、来源事件／交易 ID、`requestId`、`catalogVersion`、实际目的流和消息读回引用。技术负责人记录 Kafka topic/partition/offset 及业务／审计关联字段，使用支持精确十进制的工具核对金额。共享证据中不包含 `k`。
+
+审计记录、去重键或上游平台的成功标记，均不能单独证明业务送达或最终统计。Kafka 确认和读回建立传输送达证据；ClickHouse 可查询、消费者兼容、报表、FTD 和 Campaign 归因分别提供证据。合成 click ID 不能证明归因成功。各阶段记录已验证、缺失或未实测及责任人。
+
+### 从 v1 迁移 {#v2-migration}
+
+| v1 输入 | v2 输入／处理 |
+| --- | --- |
+| legacy `{partner}` | 使用通过鉴权的单产品 `{connectionId}` 及其密钥 |
+| 路径决定事件；可选 `event` | 必填精确 canonical `event`，先约定业务事件映射 |
+| `user_id` | 真实稳定用户 ID 对应 `identity.client_user_id`；没有 click→user 回填 |
+| `click_id` | 目录允许时使用 `identity.click_id`；这是归因依据，不是用户身份 |
+| `ts` | `timestamp`，真实 UTC 整数毫秒；不纠正秒值 |
+| `txid` | 该事件授权时使用 `context.transaction_id` |
+| `amount`、`currency` | 目录定义的 `context.amount` / `context.currency`；保留原币，不自动换算 USD |
+| `ctx`、声明、分类、别名及额外字段 | 逐项核对有效目录，不存在通用别名或透传迁移 |
+
+首充／复充路径都描述存款；仅通过目标事件实际定义的字段保留首充声明，并在下游验证 FTD。不要把 KYC 或安装映射到 v1 `app_launch`，也不要假设 v1 启动／收入事件名就是 v2 别名。没有约定一致的业务定义时，不能用 `payout` 补缺失的存款／交易额／手续费。
+
+约定来源 ID／时间切换边界，重试保留原 ID。跨 v1/v2 双发不保证自动去重；如需新的 Connection，键的作用域也会改变，应安排对账。回退时在约定边界恢复上次已验证的来源配置，并核对结果不确定的发送，不盲目重放重叠历史。
+
+### 交付清单 {#v2-deliverables}
+
+交付所选版本／环境、产品／Connection ID、平台／版本及事件／模板数量、字段核对表与剩余缺口、脱敏模板、各阶段验证记录、重试／模式设置、切换／回退边界，以及下游和真实客户验收责任人。合成 fixture 的技术验收不代表真实客户业务验收完成。
+
+密钥轮换、产品关联／目录变化、平台升级或模板修改后重跑探测。新增事件即使复用接收路径，也须启用契约并验证来源模板。故障排查遵循 [v2 响应矩阵](/cn/tracking/postback/partner-postback#v2-responses)。
+
+## v1 交付与上线 {#v1-handoff}
+
+以下步骤仅适用于已有 v1 接入。canonical 事件使用上方 v2 阶段；不能用 v1 的 `decision` verdict 和宽容身份行为判断 v2 请求。
+
+v1 需要先确认业务目的流和同步 ACK 行为启用，再把 `200 ok` 作为确认发布。v1 testmode 异步提交，`stored` 不是 v2 ACK 回执。业务记录、审计和报表分别核对。live 流量移除 `dryrun` 和 `testmode`。
+
+### 交付之前 {#before-you-hand-off}
 
 - [ ] [集成校验](/cn/tracking/postback/validation)中每一条必需规则都通过（`PB-R-01` … `PB-R-12`）
 - [ ] 建议规则也通过，或已书面记下跳过了哪些、原因是什么
@@ -19,7 +71,7 @@ description: dry run 探测、用真实转化完成的端到端测试、要交�
 - [ ] 已注册的 URL 中已移除 `dryrun`（`PB-R-10`）
 - [ ] `k` 密钥保存在平台的 postback 配置中，不出现在任何面向玩家的页面上
 
-## 四项 dry run 探测 {#the-four-dry-run-probes}
+### 四项 dry run 探测 {#the-four-dry-run-probes}
 
 请在真实测试之前先跑这几项。在 URL 后追加 `dryrun=1`——不会记录任何内容，响应会展示判定结果、去重键、解析出的身份标识以及解析后的取值。
 
@@ -29,8 +81,8 @@ dry run 响应是一份判定，而不是写入回执：它带有响应头 `X-In
 | --- | --- | --- |
 | 1 | 正常路径，带有效密钥与身份标识 | `200`，`"decision": "accepted"`，并回显解析出的身份标识与取值 |
 | 2 | 故意填错 `k` | `403` |
-| 3 | 既无 `click_id` 也无 `user_id` | `200`，`"decision": "ignored"` |
-| 4 | `click_id` 保持为字面宏，例如 `{sub1}` | `200`，`"decision": "ignored"` |
+| 3 | 既无 `click_id` 也无 `user_id` | `200`，`"decision": "dropped"` |
+| 4 | `click_id` 保持为字面宏，例如 `{sub1}` | `200`，`"decision": "dropped"` |
 
 请逐字段阅读探测 1 的回显——只有在这里，你才能确认 `ts` 是按毫秒解析的、`event_id` 确实送达而没有退回到查询串哈希，以及 `amount` 的正负号解析正确。
 
@@ -42,7 +94,7 @@ dry run 响应是一份判定，而不是写入回执：它带有响应头 `X-In
 dry run 会计入你的限流额度，因此请用脚本执行这些探测，而不要循环反复发送。
 :::
 
-## 要交给客户经理什么 {#what-to-send-your-account-manager}
+### 要交给客户经理什么 {#what-to-send-your-account-manager}
 
 | 交付物 | 为什么需要 | 例外 |
 | --- | --- | --- |
@@ -50,7 +102,7 @@ dry run 会计入你的限流额度，因此请用脚本执行这些探测，而
 | 你的联盟平台名称与版本 | 不同平台的宏语法与服务器端 postback 行为各不相同；大多数平台的故障模式我们都见过。 | 无 |
 | 已注册的 postback URL，`k` 已脱敏 | 让我们在上线前、而不是上线后，发现错误的路径或缺失的参数。请以**文本**形式发送。 | 无 |
 | 一次成功测试转化的真实 `event_id` 与 `txid`，并注明时间——**在上线测试后补填** | 一个可追溯的样例能在几分钟内解决一个归因问题。 | 无 |
-| `amount` 是否以 USD 发送 | 我们不做任何币种换算。如果你以其他币种结算，我们需要在对账前知道。 | 无 |
+| 原 `amount` 和声明 `currency` | 约定来源币种，另行核对 USD 换算状态／目标值；旧金额／USD 组合不能证明换算成功。 | 无 |
 | 你的归因模型（如果功劳是分摊的） | 否则我们会把每一次转化都按全额功劳处理。 | 若采用末次点击全额归因，可省略 |
 | 哪些事件你**尚未**发送 | 避免我们提出你无法支持的目标。 | 无 |
 
@@ -58,7 +110,7 @@ dry run 会计入你的限流额度，因此请用脚本执行这些探测，而
 后台配置的截图无法逐字符核对，而错误的路径或打错的宏，肉眼是看不出来的。
 :::
 
-## 上线测试 {#the-go-live-test}
+### 上线测试 {#the-go-live-test}
 
 请在线上广告上真实点击一次，并走正常的玩家流程完成一次真实转化。手动触发 postback URL 测的是我们的端点，而不是你的平台。
 
@@ -69,7 +121,7 @@ dry run 会计入你的限流额度，因此请用脚本执行这些探测，而
 
 | 步骤 | 预期结果 | 在哪里查看 |
 | --- | --- | --- |
-| 3. 注册 | 后台触发 `/registration`，返回 `200 {"status":"ok"}`——这是已确认的持久化写入，而不只是收到 | 你平台的 postback 日志 |
+| 3. 注册 | 后台触发 `/registration`，返回 `200 {"status":"ok"}`；核对实际确认配置及匹配业务记录 | 你平台的 postback 日志 |
 | 3. 注册 | `click_id` 以真实值到达，而不是字面宏 | dry run 回显，或存储的值 |
 | 4. 充值 | 后台触发 `/first-deposit`，返回 `200 {"status":"ok"}` | 你平台的 postback 日志 |
 | 4. 充值 | `amount` 与实际充值金额一致，`ts` 为 13 位 | 你平台的 postback 日志 |
@@ -79,13 +131,14 @@ dry run 会计入你的限流额度，因此请用脚本执行这些探测，而
 
 然后在同一账号上再做**第二笔**充值，确认它走到 `/repeat-deposit`，且不会增加 FTD。这一步能抓出 `PB-R-05`——否则它会在一周后，以一个谁也解释不了的 FTD 数字冒出来。
 
-如果你会发送 App 启动，还要在同一账号上把 App 关闭再打开**两次**。每次启动都应触发 `/app-launch` 并返回 `200 {"status":"ok"}`，各自带有独立的 `event_id`，`user_id` 与注册时相同——两次启动，两条记录。然后在全新安装、**尚未注册**时启动一次，并对这条负载做 dry run：如果它既没有 `click_id` 也没有 `user_id`，就会被 `ignored`，请告知你的客户经理。
+如果你会发送 App 启动，还要在同一账号上把 App 关闭再打开**两次**。每次启动都应触发 `/app-launch` 并返回 `200 {"status":"ok"}`，各自带有独立的 `event_id`，`user_id` 与注册时相同——两次启动，两条记录。然后在全新安装、**尚未注册**时启动一次，并对这条负载做 dry run：如果它既没有 `click_id` 也没有 `user_id`，判定为 `decision=dropped`，请告知你的客户经理。
 
-## 测试失败怎么办 {#if-the-test-fails}
+### 测试失败怎么办 {#if-the-test-fails}
 
 | 症状 | 检查这些规则 |
 | --- | --- |
-| `403` | `PB-R-01`——密钥错误，或来源 IP 不在白名单内 |
+| `403` | `PB-R-01`——key／Connection 状态错误，或 legacy 来源 IP 不允许 |
+| `429` | 遵循 `Retry-After` |
 | `200 {"status":"ignored"}` | `PB-R-03`、`PB-R-04`——没有身份标识，或某个宏没有被替换 |
 | `503` | `PB-R-09`——请重试；写入未被确认 |
 | postback 根本没有触发 | 规则被停用、存为草稿，或作用范围指向了错误的广告系列——不是负载问题 |
@@ -94,11 +147,11 @@ dry run 会计入你的限流额度，因此请用脚本执行这些探测，而
 | FTD 数偏高或偏低 | `PB-R-05`——首充与复充走了同一条路径 |
 | 同一次转化被计了两次 | `PB-R-08`——没有稳定的 `event_id`，一次重试变成了一条新记录 |
 | 转化到了，但没有归因到广告系列 | `PB-R-11`、`PB-O-01`——标识不匹配，或没有 `ctx` 兜底 |
-| 收入数字差了几个数量级 | `PB-R-07`——正负号问题，或金额不是 USD |
+| 收入数字差了几个数量级 | `PB-R-07`——来源币种、正负号、换算状态和目标金额 |
 | 时间线看起来不对，但没有任何报错 | `PB-R-06`——`ts` 用了秒 |
 | 什么都没记录，却一律返回 `200` | `PB-R-10`——已注册的 URL 上仍带着 `dryrun` |
 
-## 上线之后：哪些改动需要重新检查 {#after-go-live-changes-that-require-a-re-check}
+### 上线之后：哪些改动需要重新检查 {#after-go-live-changes-that-require-a-re-check}
 
 | 改动 | 影响 | 重新校验 |
 | --- | --- | --- |
@@ -116,13 +169,13 @@ dry run 会计入你的限流额度，因此请用脚本执行这些探测，而
 只需两分钟，而且是发现静默 `ignored` 唯一的低成本办法。
 :::
 
-## 代理商 {#agencies}
+### 代理商 {#agencies}
 
 - **运营方**持有 `k` 密钥与后台配置。代理商如果没有该平台的访问权限，就无法代运营方配置 postback。
 - 如果由代理商投放广告系列，请把已接好的端点清单发给他们——优化目标由他们选择，他们需要知道可以设成什么。
 - 标识不匹配（`PB-R-11`）无法从广告系列一侧修复，必须在生成这些 ID 的地方修复。
 
-## 下一步 {#next-steps}
+### 下一步 {#next-steps}
 
 - [合作方 Postback API](/cn/tracking/postback/partner-postback)——完整参数列表与响应语义
 - [集成校验](/cn/tracking/postback/validation)——完整规则列表

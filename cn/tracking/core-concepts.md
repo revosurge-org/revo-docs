@@ -30,7 +30,7 @@ description: 决定你的转化能否被计入、能否归到正确的广告系�
 | Web 追踪器 | `user_id` | 你，在登录或注册时 |
 | S2S | `identity.client_user_id` | 你，在每个事件上 |
 | AppsFlyer | Customer User ID | 你，在 SDK 中 |
-| Partner Postback | `user_id` | 你的联盟平台 |
+| Partner Postback | v1：`user_id`；v2：`identity.client_user_id` 或 `identity.anonymous_id`，并满足目录要求 | 你的联盟平台 |
 
 同一个字符串。同样的大小写。不能一处加前缀而其他处不加。在我们看来，`player_88213` 和 `88213` 是两个不同的人。
 
@@ -136,19 +136,21 @@ Web 追踪器会替你捕获点击。**S2S 不会** —— 你的后台只知道
 
 | 方式 | 去重键 | 同一事件重发时 |
 | --- | --- | --- |
-| Partner Postback | `event_id`，其次 `txid`，再次查询字符串的哈希 | 合并到原事件 |
+| Partner Postback | v1：`event_id` → `txid` → 排序 raw 哈希；v2：`event_id` → `context.transaction_id` → 排序 raw JSON 哈希；带 Connection 作用域 | 为下游去重保留键；发布本身不证明已合并 |
 | S2S —— 资金类事件 | `context.transaction_id` | 合并到原事件 |
 | S2S —— 其他事件 | 无 | **产生第二个事件** |
 | Web 追踪器 | 无 | 产生第二个事件 |
 
 ### 实际意味着什么 {#what-this-means-in-practice}
 
-- **使用 Partner Postback 时**，请发送全局唯一且稳定的 `event_id`，并在每次重试时原样重复。查询字符串哈希只是最后的回退手段，不是安全网 —— 参数顺序一变，同一个转化就会被计两次。
+- **使用 Partner Postback 时**，发送全局唯一且稳定的来源 `event_id`，重试复用。参数顺序不改变排序 raw 的兜底哈希，业务值变化可能改变；v1/v2 哈希 framing 不同，双发须在下游对账。参见[分版本 API 参考](/cn/tracking/postback/partner-postback#v2-deduplication)。
 - **使用 S2S 时**，`deposit`、`withdraw` 和 `bet` 可以安全重试，因为 `context.transaction_id` 能识别它们。其他事件**不具备幂等性** —— 只在请求确实失败时才重试，绝不要预防性地重试。
 
 ### 两种方式上报同一个转化时 {#when-two-methods-report-the-same-conversion}
 
 按优先级处理：**S2S → Partner Postback → Web 追踪器**，金额只取自 S2S。
+
+这些报表规则依赖下游链路。v2 发布只建立传输结果；消费者兼容、跨来源／协议去重和最终金额须分别验证。
 
 但优先级是安全网，不是设计。用两种方式上报同一事件，意味着同样的东西要建两遍，并且永远要对账两个来源。请为每个事件选定一个系统作为唯一可信来源 —— 参见[选择你的方案](/cn/tracking/overview#_2-2-which-system-holds-your-conversion-data)。
 
@@ -156,7 +158,7 @@ Web 追踪器会替你捕获点击。**S2S 不会** —— 你的后台只知道
 
 **S2S 中没有首充事件，也没有首充标记。** 每笔充值都以 `deposit` 发送，首充由此推导为**我们为该用户收到的最早一笔 `deposit`**。
 
-Partner Postback 是例外：它有独立的 `/first-deposit` 和 `/repeat-deposit` 端点，你向哪个路径发送就决定了分类。
+**Partner Postback v1** 有独立的 `/first-deposit` 和 `/repeat-deposit` 路径，两者都记录 `deposit`，路径保留来源的首充／复充声明。**v2** 按有效目录使用 canonical `event=deposit`，不通过路径判定首充；派生 FTD 在下游报表链路验证。
 
 `deposit_initiated` 永远不是首充。它记录的是一次进入收银台的尝试，而不是一笔已结算的支付。
 

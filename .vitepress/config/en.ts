@@ -74,9 +74,10 @@ export const en: DefaultTheme.Config = {
               link: '/en/tracking/postback/partner-postback',
               collapsed: true,
               items: [
-                { text: 'Partner Postback API', link: '/en/tracking/postback/partner-postback' },
+                { text: 'v2 canonical API', link: '/en/tracking/postback/partner-postback#v2-api' },
+                { text: 'v1 compatibility reference', link: '/en/tracking/postback/partner-postback#v1-compatibility' },
                 { text: 'Integration validation', link: '/en/tracking/postback/validation' },
-                { text: 'Handoff & go-live', link: '/en/tracking/postback/handoff' }
+                { text: 'Migration, handoff & go-live', link: '/en/tracking/postback/handoff' }
               ]
             }
           ]

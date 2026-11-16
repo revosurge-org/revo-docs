@@ -40,7 +40,7 @@ RevoSurge 依據你發送給我們的轉化來優化你的廣告系列。本頁�
 
 - **iGaming 事件目錄。** 充值、投注、KYC、獎金、VIP 等級和工作階段都是一等事件，而不是需要你自己定義的自訂轉化。正因如此，才能按玩家價值出價。
 - **iGaming 事件按產品啟用。** 與 Meta 標準事件不同，`deposit` 並不是一發送就生效——RevoSurge 需要先為你的產品啟用 iGaming 預設。參見 [7. 事件目錄](/hk/tracking/s2s/overview#_7-the-event-catalog)。
-- **Partner Postback 沒有對應物。** 如果你的轉化數據存放在聯盟平台的後台，而不是你自己的後端，你無需編寫任何程式碼即可完成整合。參見 [2.2](#_2-2-which-system-holds-your-conversion-data)。
+- **Partner Postback 沒有對應物。** 如果你的轉化數據存放在聯盟平台的後台，而不是你自己的後端，必填來源欄位已具備時，可以透過設定完成接入。參見 [2.2](#_2-2-which-system-holds-your-conversion-data)。
 
 :::
 
@@ -147,7 +147,7 @@ RevoSurge 支援**四種整合方式**——Web 追蹤器、S2S 伺服器事件�
 | 充值和註冊記錄在哪裡 | 方式 | 需要你提供什麼 |
 | --- | --- | --- |
 | **你自己的後端**——由你的平台確認付款 | **S2S** | 一名開發者，約 2–5 天 |
-| **聯盟平台的後台**——Income Access、Affilka、MyAffiliates 或你自建的聯盟系統 | **Partner Postback** | 一位能存取該平台 postback 設定的人。無需工程投入。 |
+| **聯盟平台的後台**——Income Access、Affilka、MyAffiliates 或你自建的聯盟系統 | **Partner Postback** | 平台設定管理員；缺失必填欄位時由來源開發者補齊。 |
 | **你的 MMP**——應用內事件已經在流向 AppsFlyer | **AppsFlyer postback** | 在 AppsFlyer 中完成設定，並在 RevoSurge tile 上授予權限 |
 
 ::: warning 每個事件只選一個權威來源
@@ -212,7 +212,9 @@ S2S 和 Partner Postback 做的是同一件事。如果兩者上報了同一筆�
 
 ### 3.3 Partner Postback——由你的平台呼叫我們 {#_3-3-partner-postback-—-your-platform-calls-us}
 
-一個在轉化發生時由你的後台或聯盟平台呼叫的 URL。你把它貼上進去，由對方觸發。**無需工程投入。**
+後台或聯盟平台在事件發生時傳送伺服器端 GET。v2 使用統一 canonical 事件入口，v1 保留五條由路徑決定事件的入口。平台已能提供所有必填欄位時可以透過設定接入；缺少穩定使用者 ID、業務發生時間或金額時，可能需要來源系統開發。
+
+先[選擇版本](/hk/tracking/postback/partner-postback#choose-version)，再確認產品目錄、Connection 及目標環境。一個 v2 接收 URL 在第三方平台仍可能需要多條事件模板。
 
 - **由誰實施：** 你本人，或你的聯盟平台管理員
 - **憑證：** postback 金鑰，透過 `k` 查詢參數發送
@@ -235,7 +237,7 @@ S2S 和 Partner Postback 做的是同一件事。如果兩者上報了同一筆�
 | | Web 追蹤器 | S2S | Partner Postback | AppsFlyer |
 | --- | --- | --- | --- | --- |
 | **運行位置** | 訪客的瀏覽器 | 你的後端 | 合作夥伴的系統 | AppsFlyer 的伺服器 |
-| **由誰實施** | 網頁開發者 | 後端開發者 | 你本人，無需工程投入 | UA 經理 |
+| **由誰實施** | 網頁開發者 | 後端開發者 | 平台管理員；必要時來源開發者 | UA 經理 |
 | **能否看到廣告歸因** | 能，原生支援 | 能，透過 `click_id` | 能，透過 `click_id` | 能，透過轉發的點擊 |
 | **會被廣告攔截器攔截** | 有可能 | 否 | 否 | 否 |
 | **資金數據是否權威** | 否 | **是** | 是 | 是 |
@@ -274,7 +276,7 @@ S2S 和 Partner Postback 做的是同一件事。如果兩者上報了同一筆�
 :::
 
 ::: details 我沒有工程資源，能怎麼做？
-**Partner Postback。** 只需把兩個 URL 貼到你的後台或聯盟平台，當天就能上線。它能涵蓋首存，這已經足夠用來優化。Web 追蹤器程式碼片段本身仍需要開發者安裝，但那只是一個 script 標籤。
+**Partner Postback** 在後台已提供所選版本必填欄位時可透過設定接入。v2 需要穩定使用者身分、真實毫秒業務時間及已啟用的產品契約，只有 click ID 及 event ID 不夠。模板數量及上線時間取決於平台與驗證結果，Web 追蹤器腳本仍需要開發者。
 :::
 
 ::: details 收入數據應該信任哪種方式？
@@ -288,7 +290,7 @@ S2S 和 Partner Postback 做的是同一件事。如果兩者上報了同一筆�
 :::
 
 ::: details 如果兩種方式上報了同一筆充值，會怎樣？
-我們會把兩條都存下來，但只計一次。離資金最近的來源勝出：你的後台知道一筆充值已經結算，而瀏覽器只知道一個按鈕被點擊了。實際上，對於 `deposit` 而言，優先順序是 **S2S > Partner Postback > Web 追蹤器**，且金額只採用 S2S 的數據。
+現有轉化報表對 `deposit` 使用 **S2S > Partner Postback > Web 追蹤器** 的來源優先次序及 S2S 金額優先規則。請確認實際消費／報表鏈路支援所選協定及去重。v2 HTTP／Kafka 發布不能證明跨來源或跨 v1/v2 已去重，應約定唯一權威來源並對重疊事件對帳。
 :::
 
 ::: details 需要在每個後台各建立一次產品嗎？
