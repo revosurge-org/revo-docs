@@ -90,9 +90,7 @@ user**.
 So you do not need to classify deposits yourself — but see the warning below if you have
 existing players.
 
-The `/first-deposit` and `/repeat-deposit` split belongs to
-[Partner Postback](/en/tracking/postback/partner-postback), which is a different API. If you run both,
-tell your account manager, so the two are not counted as separate first deposits.
+The `/first-deposit` and `/repeat-deposit` split belongs to [Partner Postback v1](/en/tracking/postback/partner-postback#v1-compatibility). [Postback v2](/en/tracking/postback/partner-postback#v2-api) instead uses the effective catalog's canonical `deposit` event. If sources or protocols overlap, agree a cutover/reconciliation plan with your account manager; HTTP/Kafka confirmation alone does not prove downstream FTD or deduplication.
 :::
 
 ::: warning If you already have players, your first week of FTD will be inflated

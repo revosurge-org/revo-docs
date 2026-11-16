@@ -33,7 +33,7 @@ expensive failure mode in tracking, because nothing alerts you to it.
 | Web Tracker | `user_id` | You, on login or registration |
 | S2S | `identity.client_user_id` | You, on every event |
 | AppsFlyer | Customer User ID | You, in the SDK |
-| Partner Postback | `user_id` | Your affiliate platform |
+| Partner Postback | v1: `user_id`; v2: `identity.client_user_id` or `identity.anonymous_id`, subject to catalog requirements | Your affiliate platform |
 
 Same string. Same casing. No prefix on one and not the others. `player_88213` and `88213` are
 two different people as far as we are concerned.
@@ -173,16 +173,14 @@ build a retry.
 
 | Method | Dedup key | A resend of the same event |
 | --- | --- | --- |
-| Partner Postback | `event_id`, then `txid`, then a hash of the query string | Collapses onto the original |
+| Partner Postback | v1: `event_id` → `txid` → sorted raw hash; v2: `event_id` → `context.transaction_id` → sorted raw JSON hash; Connection-scoped | Key retained for downstream deduplication; publication alone does not prove a collapse |
 | S2S — money events | `context.transaction_id` | Collapses onto the original |
 | S2S — other events | None | **Creates a second event** |
 | Web Tracker | None | Creates a second event |
 
 ### What this means in practice
 
-- **On Partner Postback**, send a globally unique, stable `event_id` and repeat it verbatim on
-  every retry. The query-string hash is a last-resort fallback, not a safety net — reorder a
-  parameter and the same conversion is counted twice.
+- **On Partner Postback**, use globally unique, stable source `event_id` values and preserve them on retries. Parameter ordering does not change the sorted raw fallback hash; changed business values can. v1/v2 hashes use different framing, so dual sending needs downstream reconciliation. See the [versioned API reference](/en/tracking/postback/partner-postback#v2-deduplication).
 - **On S2S**, `deposit`, `withdraw` and `bet` are safe to retry because `context.transaction_id`
   identifies them. Other events are **not idempotent** — retry them only when the request
   genuinely failed, never speculatively.
@@ -191,6 +189,8 @@ build a retry.
 
 Precedence applies: **S2S → Partner Postback → Web Tracker**, and amounts are taken from S2S
 only.
+
+These reporting rules depend on the downstream pipeline. v2 publication only establishes its transport outcome; verify consumer compatibility, cross-source/protocol deduplication and final amounts separately.
 
 But precedence is a safety net, not a design. Running two methods for the same event means
 building the same thing twice and reconciling two sources forever. Pick one system as the source
@@ -203,8 +203,7 @@ of truth per event — see
 `deposit`, and the first deposit is derived as **the earliest `deposit` we have received for
 that user**.
 
-Partner Postback is the exception: it has separate `/first-deposit` and `/repeat-deposit`
-endpoints, and the path you post to decides the classification.
+**Partner Postback v1** has separate `/first-deposit` and `/repeat-deposit` paths. Both record `deposit`; the path retains the source's first/repeat declaration. **v2** uses canonical `event=deposit` under its effective catalog, with no path-selected first-deposit classification. Verify derived FTD in the downstream reporting pipeline.
 
 `deposit_initiated` is never a first deposit. It records an attempt entering the cashier, not a
 settled payment.

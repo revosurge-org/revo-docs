@@ -74,9 +74,10 @@ export const hk: DefaultTheme.Config = {
               link: '/hk/tracking/postback/partner-postback',
               collapsed: true,
               items: [
-                { text: '合作夥伴 Postback API', link: '/hk/tracking/postback/partner-postback' },
+                { text: 'v2 canonical API', link: '/hk/tracking/postback/partner-postback#v2-api' },
+                { text: 'v1 相容參考', link: '/hk/tracking/postback/partner-postback#v1-compatibility' },
                 { text: '整合驗證', link: '/hk/tracking/postback/validation' },
-                { text: '交付與上線', link: '/hk/tracking/postback/handoff' }
+                { text: '遷移、交付與上線', link: '/hk/tracking/postback/handoff' }
               ]
             }
           ]

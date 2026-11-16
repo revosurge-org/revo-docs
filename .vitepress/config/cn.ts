@@ -74,9 +74,10 @@ export const cn: DefaultTheme.Config = {
               link: '/cn/tracking/postback/partner-postback',
               collapsed: true,
               items: [
-                { text: '合作方 Postback API', link: '/cn/tracking/postback/partner-postback' },
+                { text: 'v2 canonical API', link: '/cn/tracking/postback/partner-postback#v2-api' },
+                { text: 'v1 兼容参考', link: '/cn/tracking/postback/partner-postback#v1-compatibility' },
                 { text: '集成校验', link: '/cn/tracking/postback/validation' },
-                { text: '交付与上线', link: '/cn/tracking/postback/handoff' }
+                { text: '迁移、交付与上线', link: '/cn/tracking/postback/handoff' }
               ]
             }
           ]

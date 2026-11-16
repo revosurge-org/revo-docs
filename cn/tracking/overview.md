@@ -40,7 +40,7 @@ RevoSurge 依据你发送给我们的转化来优化你的广告系列。本页�
 
 - **iGaming 事件目录。** 充值、投注、KYC、奖金、VIP 等级和会话都是一等事件，而不是需要你自己定义的自定义转化。正因如此，才能按玩家价值出价。
 - **iGaming 事件按产品启用。** 与 Meta 标准事件不同，`deposit` 并不是一发送就生效——RevoSurge 需要先为你的产品启用 iGaming 预设。参见 [7. 事件目录](/cn/tracking/s2s/overview#_7-the-event-catalog)。
-- **Partner Postback 没有对应物。** 如果你的转化数据存放在联盟平台的后台，而不是你自己的后端，你无需写任何代码即可完成集成。参见 [2.2](#_2-2-which-system-holds-your-conversion-data)。
+- **Partner Postback 没有对应物。** 如果你的转化数据存放在联盟平台的后台，而不是你自己的后端，必填来源字段已具备时，可以通过配置完成接入。参见 [2.2](#_2-2-which-system-holds-your-conversion-data)。
 
 :::
 
@@ -147,7 +147,7 @@ RevoSurge 支持**四种集成方式**——Web 追踪器、S2S 服务器事件�
 | 充值和注册记录在哪里 | 方式 | 需要你提供什么 |
 | --- | --- | --- |
 | **你自己的后端**——由你的平台确认付款 | **S2S** | 一名开发者，约 2–5 天 |
-| **联盟平台的后台**——Income Access、Affilka、MyAffiliates 或你自建的联盟系统 | **Partner Postback** | 一位能访问该平台 postback 设置的人。无需工程投入。 |
+| **联盟平台的后台**——Income Access、Affilka、MyAffiliates 或你自建的联盟系统 | **Partner Postback** | 平台配置管理员；缺失必填字段时由来源开发者补齐。 |
 | **你的 MMP**——应用内事件已经在流向 AppsFlyer | **AppsFlyer postback** | 在 AppsFlyer 中完成配置，并在 RevoSurge tile 上授予权限 |
 
 ::: warning 每个事件只选一个权威来源
@@ -212,7 +212,9 @@ S2S 和 Partner Postback 做的是同一件事。如果两者上报了同一笔�
 
 ### 3.3 Partner Postback——由你的平台调用我们 {#_3-3-partner-postback-—-your-platform-calls-us}
 
-一个在转化发生时由你的后台或联盟平台调用的 URL。你把它粘贴进去，由对方触发。**无需工程投入。**
+后台或联盟平台在事件发生时发送服务端 GET。v2 使用统一 canonical 事件入口，v1 保留五条由路径决定事件的入口。平台已能提供所有必填字段时可以通过配置接入；缺少稳定用户 ID、业务发生时间或金额时，可能需要来源系统开发。
+
+先[选择版本](/cn/tracking/postback/partner-postback#choose-version)，再确认产品目录、Connection 和目标环境。一个 v2 接收 URL 在第三方平台仍可能需要多条事件模板。
 
 - **由谁实施：** 你本人，或你的联盟平台管理员
 - **凭证：** postback 密钥，通过 `k` 查询参数发送
@@ -235,7 +237,7 @@ S2S 和 Partner Postback 做的是同一件事。如果两者上报了同一笔�
 | | Web 追踪器 | S2S | Partner Postback | AppsFlyer |
 | --- | --- | --- | --- | --- |
 | **运行位置** | 访客的浏览器 | 你的后端 | 合作方的系统 | AppsFlyer 的服务器 |
-| **由谁实施** | 网页开发者 | 后端开发者 | 你本人，无需工程投入 | UA 经理 |
+| **由谁实施** | 网页开发者 | 后端开发者 | 平台管理员；必要时来源开发者 | UA 经理 |
 | **能否看到广告归因** | 能，原生支持 | 能，通过 `click_id` | 能，通过 `click_id` | 能，通过转发的点击 |
 | **会被广告拦截器拦截** | 有可能 | 否 | 否 | 否 |
 | **资金数据是否权威** | 否 | **是** | 是 | 是 |
@@ -274,7 +276,7 @@ S2S 和 Partner Postback 做的是同一件事。如果两者上报了同一笔�
 :::
 
 ::: details 我没有工程资源，能怎么做？
-**Partner Postback。** 只需把两个 URL 粘贴到你的后台或联盟平台，当天就能上线。它能覆盖首充，这已经足够用来优化。Web 追踪器代码片段本身仍需要开发者安装，但那只是一个 script 标签。
+**Partner Postback** 在后台已提供所选版本必填字段时可通过配置接入。v2 需要稳定用户身份、真实毫秒业务时间和已启用的产品契约，只有 click ID 和 event ID 不够。模板数量及上线时间取决于平台和验证结果，Web 追踪器脚本仍需要开发者。
 :::
 
 ::: details 收入数据应该信任哪种方式？
@@ -288,7 +290,7 @@ S2S 和 Partner Postback 做的是同一件事。如果两者上报了同一笔�
 :::
 
 ::: details 如果两种方式上报了同一笔充值，会怎样？
-我们会把两条都存下来，但只计一次。离资金最近的来源胜出：你的后台知道一笔充值已经结算，而浏览器只知道一个按钮被点击了。实际上，对于 `deposit` 而言，优先级是 **S2S > Partner Postback > Web 追踪器**，且金额只采用 S2S 的数据。
+现有转化报表对 `deposit` 使用 **S2S > Partner Postback > Web 追踪器** 的来源优先级和 S2S 金额优先规则。请确认实际消费／报表链路支持所选协议及去重。v2 HTTP／Kafka 发布不能证明跨来源或跨 v1/v2 已去重，应约定唯一权威来源并对重叠事件对账。
 :::
 
 ::: details 需要在每个后台各创建一次产品吗？

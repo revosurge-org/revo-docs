@@ -1,15 +1,67 @@
 ---
 title: 合作夥伴 Postback 交付與上線
-description: dry run 探測、以真實轉換完成的端到端測試、要交給客戶經理什麼，以及上線後需要重新檢查的事項。
+description: Partner Postback 版本選擇、欄位對應、dryrun/test/live 驗證、遷移及交付。
 ---
 
 # 合作夥伴 Postback 交付與上線
 
-**對象：** 負責上線的人，需能存取設定 postback 的聯盟後台。
+先選擇 API 版本。[v2 整合驗證](/hk/tracking/postback/validation#v2-validation)檢查 canonical 請求，本頁確認實際平台會觸發請求，並按約定的交付階段驗收。下方 [v1 流程](#v1-handoff)保留原錨點，供現有接入使用。
 
-[整合驗證](/hk/tracking/postback/validation)證明你的 postback URL 是正確的。本頁要證明的是你的**後台真的會在真實轉換時觸發它** — 這是另一回事，也往往是出問題的那一環。
+## v2 交付與上線 {#v2-handoff}
 
-## 交付之前 {#before-you-hand-off}
+### 就緒條件與欄位責任 {#v2-readiness}
+
+- [ ] RevoSurge 已確認目標 origin、部署版本、`/v2/pb/**` 路由、接收器啟用、有效目錄載入及 Connection 設定。其他環境的技術測試不能證明生產就緒。
+- [ ] Connection 已啟用且只關聯目標產品；金鑰及輪換到期時間明確。明確組合 v2 URL，目前 Connection 產生器回傳 v1 位址。
+- [ ] 約定的事件清單具有精確 canonical 名稱及已啟用的產品契約。共用入口不保證第三方只有一條模板，也不保證所有產品支援同一組事件。
+- [ ] 欄位核對表記錄來源欄位 → canonical 路徑 → 型別／列舉／單位／精度 → 必填級別 → 提供方 → 已驗證／缺失／未實測。包含基礎欄位、穩定使用者身分、真實業務時間、來源事件／交易 ID、RevoSurge click ID 及獨立金額欄位。
+- [ ] 已取得真實展開的伺服器端請求。只有 click ID 及 event ID 無法符合 v2 身分／時間要求。平台無法提供時，記錄阻塞並約定補充來源資料或單獨驗證 S2S 路徑，不偽造使用者 ID、時間或金額。
+- [ ] `PB2-R-*` 全部通過；跳過的建議項有負責人及原因。平台規則已啟用，且作用於正確的產品／Campaign。
+
+### 三階段驗證 {#v2-stages}
+
+| 階段 | 操作 | 必要證據 |
+| --- | --- | --- |
+| Dryrun | 真實展開模板加 `dryrun=1`，包含反例探測 | 實際接收器回傳 `200 validated`、`stored=false`、`not_attempted`；核對 typed 值及 violations；技術側確認無業務發布 |
+| 隔離 test | 移除 dryrun，使用 `testmode=1` 及獨立合成來源 ID | `200 accepted`、`stored=true`、`confirmed`；讀回匹配的隔離訊息，逐欄位核對 |
+| 受控 live | 目標就緒確認後，移除兩個模式參數，觸發約定的來源事件 | 同樣的確認結果及匹配的 live 訊息；若上線範圍包含下游可查詢及歸因，另行核驗 |
+
+使用 [API 範例](/hk/tracking/postback/partner-postback#v2-examples)及[反例探測](/hk/tracking/postback/validation#v2-probes)。涵蓋 `register`、約定的原幣 `deposit` 或 `trade`、`false`、真實零值，以及目錄允許的獨立手續費。核對含 `+`、`&`、`%` 及 Unicode 的解碼值。檢查平台實際出站請求，不能只看 relay 提前回傳的 `200`。
+
+每條通過的測試保留：來源 case/run 及合成／真實業務標記、遮罩展開 URL、回應、來源事件／交易 ID、`requestId`、`catalogVersion`、實際目的串流及訊息讀回參照。技術負責人記錄 Kafka topic/partition/offset 及業務／稽核關聯欄位，使用支援精確十進位的工具核對金額。共用證據中不包含 `k`。
+
+稽核記錄、去重鍵或上游平台的成功標記，均不能單獨證明業務送達或最終統計。Kafka 確認及讀回建立傳輸送達證據；ClickHouse 可查詢、消費者相容、報表、FTD 及 Campaign 歸因分別提供證據。合成 click ID 不能證明歸因成功。各階段記錄已驗證、缺失或未實測及負責人。
+
+### 從 v1 遷移 {#v2-migration}
+
+| v1 輸入 | v2 輸入／處理 |
+| --- | --- |
+| legacy `{partner}` | 使用通過鑑權的單產品 `{connectionId}` 及其金鑰 |
+| 路徑決定事件；可選 `event` | 必填精確 canonical `event`，先約定業務事件對應 |
+| `user_id` | 真實穩定使用者 ID 對應 `identity.client_user_id`；沒有 click→user 回填 |
+| `click_id` | 目錄允許時使用 `identity.click_id`；這是歸因依據，不是使用者身分 |
+| `ts` | `timestamp`，真實 UTC 整數毫秒；不修正秒值 |
+| `txid` | 該事件授權時使用 `context.transaction_id` |
+| `amount`、`currency` | 目錄定義的 `context.amount` / `context.currency`；保留原幣，不自動換算 USD |
+| `ctx`、聲明、分類、別名及額外欄位 | 逐項核對有效目錄，不存在通用別名或透傳遷移 |
+
+首充／復充路徑都描述存款；僅透過目標事件實際定義的欄位保留首充聲明，並在下游驗證 FTD。不要把 KYC 或安裝對應至 v1 `app_launch`，也不要假設 v1 啟動／收入事件名稱就是 v2 別名。沒有約定一致的業務定義時，不能用 `payout` 補缺失的存款／交易額／手續費。
+
+約定來源 ID／時間切換邊界，重試保留原 ID。跨 v1/v2 雙發不保證自動去重；如需新的 Connection，鍵的作用域也會改變，應安排對帳。回退時在約定邊界恢復上次已驗證的來源設定，並核對結果不確定的傳送，不盲目重播重疊歷史。
+
+### 交付清單 {#v2-deliverables}
+
+交付所選版本／環境、產品／Connection ID、平台／版本及事件／模板數量、欄位核對表與剩餘缺口、遮罩模板、各階段驗證記錄、重試／模式設定、切換／回退邊界，以及下游及真實客戶驗收負責人。合成 fixture 的技術驗收不代表真實客戶業務驗收完成。
+
+金鑰輪換、產品關聯／目錄變更、平台升級或模板修改後重跑探測。新增事件即使重用接收路徑，也須啟用契約並驗證來源模板。故障排查遵循 [v2 回應矩陣](/hk/tracking/postback/partner-postback#v2-responses)。
+
+## v1 交付與上線 {#v1-handoff}
+
+以下步驟僅適用於現有 v1 接入。canonical 事件使用上方 v2 階段；不能用 v1 的 `decision` verdict 及寬容身分行為判斷 v2 請求。
+
+v1 需要先確認業務目的串流及同步 ACK 行為啟用，再把 `200 ok` 作為確認發布。v1 testmode 非同步提交，`stored` 不是 v2 ACK 回執。業務記錄、稽核及報表分別核對。live 流量移除 `dryrun` 及 `testmode`。
+
+### 交付之前 {#before-you-hand-off}
 
 - [ ] [整合驗證](/hk/tracking/postback/validation)中每一條必要規則都通過（`PB-R-01` … `PB-R-12`）
 - [ ] 建議規則也通過，或已書面記下略過了哪些、原因是什麼
@@ -19,7 +71,7 @@ description: dry run 探測、以真實轉換完成的端到端測試、要交�
 - [ ] 已註冊的 URL 中已移除 `dryrun`（`PB-R-10`）
 - [ ] `k` 金鑰保存在平台的 postback 設定中，不出現在任何面向玩家的頁面上
 
-## 四項 dry run 探測 {#the-four-dry-run-probes}
+### 四項 dry run 探測 {#the-four-dry-run-probes}
 
 請在真實測試之前先跑這幾項。在 URL 後附加 `dryrun=1` — 不會記錄任何內容，回應會展示判定結果、去重鍵、解析出的身分識別以及解析後的取值。
 
@@ -29,8 +81,8 @@ dry run 回應是一份判定，而不是寫入回執：它帶有回應標頭 `X
 | --- | --- | --- |
 | 1 | 正常路徑，帶有效金鑰與身分識別 | `200`，`"decision": "accepted"`，並回顯解析出的身分識別與取值 |
 | 2 | 故意填錯 `k` | `403` |
-| 3 | 既無 `click_id` 也無 `user_id` | `200`，`"decision": "ignored"` |
-| 4 | `click_id` 保持為字面宏，例如 `{sub1}` | `200`，`"decision": "ignored"` |
+| 3 | 既無 `click_id` 也無 `user_id` | `200`，`"decision": "dropped"` |
+| 4 | `click_id` 保持為字面宏，例如 `{sub1}` | `200`，`"decision": "dropped"` |
 
 請逐欄位閱讀探測 1 的回顯 — 只有在這裏，你才能確認 `ts` 是按毫秒解析的、`event_id` 確實送達而沒有退回到查詢字串雜湊，以及 `amount` 的正負號解析正確。
 
@@ -42,7 +94,7 @@ dry run 回應是一份判定，而不是寫入回執：它帶有回應標頭 `X
 dry run 會計入你的限流額度，所以請用腳本執行這些探測，而不要循環反覆發送。
 :::
 
-## 要交給客戶經理什麼 {#what-to-send-your-account-manager}
+### 要交給客戶經理什麼 {#what-to-send-your-account-manager}
 
 | 交付物 | 為什麼需要 | 例外 |
 | --- | --- | --- |
@@ -50,7 +102,7 @@ dry run 會計入你的限流額度，所以請用腳本執行這些探測，而
 | 你的聯盟平台名稱與版本 | 不同平台的宏語法與伺服器端 postback 行為各不相同；大多數平台的故障模式我們都見過。 | 無 |
 | 已註冊的 postback URL，`k` 已遮蔽 | 讓我們在上線前、而不是上線後，發現錯誤的路徑或缺失的參數。請以**文字**形式發送。 | 無 |
 | 一次成功測試轉換的真實 `event_id` 與 `txid`，並註明時間 — **在上線測試後補填** | 一個可追溯的樣例能在幾分鐘內解決一個歸因問題。 | 無 |
-| `amount` 是否以 USD 發送 | 我們不做任何幣別換算。如果你以其他幣別結算，我們需要在對帳前知道。 | 無 |
+| 原 `amount` 及聲明 `currency` | 約定來源幣別，另行核對 USD 換算狀態／目標值；舊金額／USD 組合不能證明換算成功。 | 無 |
 | 你的歸因模型（如果功勞是分攤的） | 否則我們會把每一次轉換都按全額功勞處理。 | 若採用最終點擊全額歸因，可省略 |
 | 哪些事件你**尚未**發送 | 避免我們提出你無法支援的目標。 | 無 |
 
@@ -58,7 +110,7 @@ dry run 會計入你的限流額度，所以請用腳本執行這些探測，而
 後台設定的截圖無法逐字元核對，而錯誤的路徑或打錯的宏，肉眼是看不出來的。
 :::
 
-## 上線測試 {#the-go-live-test}
+### 上線測試 {#the-go-live-test}
 
 請在線上廣告上真實點擊一次，並走正常的玩家流程完成一次真實轉換。手動觸發 postback URL 測的是我們的端點，而不是你的平台。
 
@@ -69,7 +121,7 @@ dry run 會計入你的限流額度，所以請用腳本執行這些探測，而
 
 | 步驟 | 預期結果 | 在哪裡查看 |
 | --- | --- | --- |
-| 3. 註冊 | 後台觸發 `/registration`，回傳 `200 {"status":"ok"}` — 這是已確認的持久化寫入，而不只是收到 | 你平台的 postback 日誌 |
+| 3. 註冊 | 後台觸發 `/registration`，回傳 `200 {"status":"ok"}` ；核對實際確認設定及匹配業務記錄 | 你平台的 postback 日誌 |
 | 3. 註冊 | `click_id` 以真實值到達，而不是字面宏 | dry run 回顯，或已儲存的值 |
 | 4. 充值 | 後台觸發 `/first-deposit`，回傳 `200 {"status":"ok"}` | 你平台的 postback 日誌 |
 | 4. 充值 | `amount` 與實際充值金額一致，`ts` 為 13 位 | 你平台的 postback 日誌 |
@@ -79,13 +131,14 @@ dry run 會計入你的限流額度，所以請用腳本執行這些探測，而
 
 然後在同一帳戶上再做**第二筆**充值，確認它走到 `/repeat-deposit`，且不會增加 FTD。這一步能抓出 `PB-R-05` — 否則它會在一週後，以一個誰也解釋不了的 FTD 數字冒出來。
 
-如果你會傳送 App 啟動，還要在同一帳戶上把 App 關閉再開啟**兩次**。每次啟動都應觸發 `/app-launch` 並回傳 `200 {"status":"ok"}`，各自帶有獨立的 `event_id`，`user_id` 與註冊時相同 — 兩次啟動，兩條記錄。然後在全新安裝、**尚未註冊**時啟動一次，並對這條負載做 dry run：如果它既沒有 `click_id` 也沒有 `user_id`，就會被 `ignored`，請告知你的客戶經理。
+如果你會傳送 App 啟動，還要在同一帳戶上把 App 關閉再開啟**兩次**。每次啟動都應觸發 `/app-launch` 並回傳 `200 {"status":"ok"}`，各自帶有獨立的 `event_id`，`user_id` 與註冊時相同 — 兩次啟動，兩條記錄。然後在全新安裝、**尚未註冊**時啟動一次，並對這條負載做 dry run：如果它既沒有 `click_id` 也沒有 `user_id`，判定為 `decision=dropped`，請告知你的客戶經理。
 
-## 測試失敗怎麼辦 {#if-the-test-fails}
+### 測試失敗怎麼辦 {#if-the-test-fails}
 
 | 症狀 | 檢查這些規則 |
 | --- | --- |
-| `403` | `PB-R-01` — 金鑰錯誤，或來源 IP 不在白名單內 |
+| `403` | `PB-R-01` — key／Connection 狀態錯誤，或 legacy 來源 IP 不允許 |
+| `429` | 遵循 `Retry-After` |
 | `200 {"status":"ignored"}` | `PB-R-03`、`PB-R-04` — 沒有身分識別，或某個宏沒有被替換 |
 | `503` | `PB-R-09` — 請重試；寫入未被確認 |
 | postback 根本沒有觸發 | 規則被停用、存為草稿，或作用範圍指向了錯誤的廣告系列 — 不是負載問題 |
@@ -94,11 +147,11 @@ dry run 會計入你的限流額度，所以請用腳本執行這些探測，而
 | FTD 數偏高或偏低 | `PB-R-05` — 首存與複存走了同一條路徑 |
 | 同一次轉換被計了兩次 | `PB-R-08` — 沒有穩定的 `event_id`，一次重試變成了一筆新記錄 |
 | 轉換到了，但沒有歸因到廣告系列 | `PB-R-11`、`PB-O-01` — 識別碼不匹配，或沒有 `ctx` 後備 |
-| 收入數字差了幾個數量級 | `PB-R-07` — 正負號問題，或金額不是 USD |
+| 收入數字差了幾個數量級 | `PB-R-07` — 來源幣別、正負號、換算狀態及目標金額 |
 | 時間線看起來不對，但沒有任何報錯 | `PB-R-06` — `ts` 用了秒 |
 | 什麼都沒記錄，卻一律回傳 `200` | `PB-R-10` — 已註冊的 URL 上仍帶着 `dryrun` |
 
-## 上線之後：哪些改動需要重新檢查 {#after-go-live-changes-that-require-a-re-check}
+### 上線之後：哪些改動需要重新檢查 {#after-go-live-changes-that-require-a-re-check}
 
 | 改動 | 影響 | 重新驗證 |
 | --- | --- | --- |
@@ -116,13 +169,13 @@ dry run 會計入你的限流額度，所以請用腳本執行這些探測，而
 只需兩分鐘，而且是發現靜默 `ignored` 唯一的低成本辦法。
 :::
 
-## 代理商 {#agencies}
+### 代理商 {#agencies}
 
 - **營運方**持有 `k` 金鑰與後台設定。代理商如果沒有該平台的存取權限，就無法代營運方設定 postback。
 - 如果由代理商投放廣告系列，請把已接好的端點清單發給他們 — 優化目標由他們選擇，他們需要知道可以設成什麼。
 - 識別碼不匹配（`PB-R-11`）無法從廣告系列一側修復，必須在產生這些 ID 的地方修復。
 
-## 下一步 {#next-steps}
+### 下一步 {#next-steps}
 
 - [合作夥伴 Postback API](/hk/tracking/postback/partner-postback) — 完整參數列表與回應語義
 - [整合驗證](/hk/tracking/postback/validation) — 完整規則列表

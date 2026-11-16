@@ -47,7 +47,7 @@ Most of what you already know maps one-to-one. The names change; the model does 
   work the moment you send it — RevoSurge enables the iGaming preset for your Product first.
   See [7. The event catalog](/en/tracking/s2s/overview#_7-the-event-catalog).
 - **Partner Postback has no equivalent.** If your conversions live in an affiliate platform's
-  back-office rather than your own backend, you can integrate without writing any code. See
+  back-office rather than your own backend, you can configure postbacks when the required source fields already exist. See
   [2.2](#_2-2-which-system-holds-your-conversion-data).
 
 :::
@@ -171,7 +171,7 @@ not about what you would prefer.
 | Where deposits and registrations are recorded | Method | What it needs from you |
 | --- | --- | --- |
 | **Your own backend** — your platform confirms the payment | **S2S** | A developer, ~2–5 days |
-| **An affiliate platform's back-office** — Income Access, Affilka, MyAffiliates, or your own affiliate system | **Partner Postback** | Someone with access to that platform's postback settings. No engineering. |
+| **An affiliate platform's back-office** — Income Access, Affilka, MyAffiliates, or your own affiliate system | **Partner Postback** | Someone with access to that platform's postback settings; source development if required fields are missing. |
 | **Your MMP** — in-app events already flowing to AppsFlyer | **AppsFlyer postbacks** | Configuration in AppsFlyer, plus permissions on the RevoSurge tile |
 
 ::: warning Pick one source of truth per event
@@ -248,8 +248,9 @@ server holds with certainty; the browser may never have seen it.
 
 ### 3.3 Partner Postback — your platform calls us
 
-A URL your back office or affiliate platform calls when a conversion happens. You paste it
-in; they fire it. **No engineering.**
+Your back office or affiliate platform sends a server-side GET when an event happens. v2 uses one canonical event endpoint; v1 retains five path-selected event endpoints. Configuration can be sufficient when your platform already exposes all required fields; missing stable user IDs, business timestamps or amounts may require source integration work.
+
+Use [version selection](/en/tracking/postback/partner-postback#choose-version), then confirm the product catalog, Connection and target environment. A single v2 receiver URL may still require multiple event templates in your platform.
 
 - **Implemented by:** you, or your affiliate platform admin
 - **Credential:** postback key, sent as the `k` query parameter
@@ -275,7 +276,7 @@ event names** to map your events to, and your **`pid`**. You cannot start withou
 | | Web Tracker | S2S | Partner Postback | AppsFlyer |
 | --- | --- | --- | --- | --- |
 | **Runs where** | Visitor's browser | Your backend | Partner's system | AppsFlyer's servers |
-| **Who implements** | Web developer | Backend developer | You, no engineering | UA manager |
+| **Who implements** | Web developer | Backend developer | Platform admin; source developer if needed | UA manager |
 | **Sees ad attribution** | Yes, natively | Yes, via `click_id` | Yes, via `click_id` | Yes, via forwarded clicks |
 | **Blocked by ad blockers** | Possible | No | No | No |
 | **Authoritative for money** | No | **Yes** | Yes | Yes |
@@ -320,9 +321,7 @@ path is Web Tracker + Partner Postback to launch, then S2S once engineering has 
 :::
 
 ::: details I have no engineering resource. What can I do?
-**Partner Postback.** It is two URLs pasted into your back office or affiliate platform, live
-the same day. It reaches first deposits, which is enough to optimise on. You still need a
-developer for the Web Tracker snippet itself, but that is a single script tag.
+**Partner Postback** can be configured in your back office when it already supplies the chosen version's required fields. v2 needs stable user identity, actual millisecond event time and the enabled product contract; click ID plus event ID alone is insufficient. Template count and launch time depend on your platform and verification. The Web Tracker snippet still needs a developer.
 :::
 
 ::: details Which method should I trust for revenue?
@@ -340,9 +339,7 @@ Do **not** use a session ID, a cookie ID, or an anonymous visitor ID.
 :::
 
 ::: details What happens if two methods report the same deposit?
-We store both and count one. The source closest to the money wins: your back office knows a
-deposit settled, a browser only knows a button was clicked. In practice that means
-**S2S > Partner Postback > Web Tracker** for `deposit`, and amounts are taken from S2S only.
+Existing conversion reporting uses source precedence: **S2S > Partner Postback > Web Tracker** for `deposit`, with S2S monetary precedence. Confirm that your actual consumer/reporting pipeline handles the selected protocol and deduplication. v2 HTTP/Kafka publication does not prove cross-source or cross-v1/v2 deduplication; agree one authoritative source and reconcile overlap.
 :::
 
 ::: details Do I create the Product twice, once per portal?

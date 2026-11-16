@@ -30,7 +30,7 @@ description: 決定你的轉化能否被計入、能否歸到正確的廣告系�
 | Web 追蹤器 | `user_id` | 你，在登入或註冊時 |
 | S2S | `identity.client_user_id` | 你，在每個事件上 |
 | AppsFlyer | Customer User ID | 你，在 SDK 中 |
-| Partner Postback | `user_id` | 你的聯盟平台 |
+| Partner Postback | v1：`user_id`；v2：`identity.client_user_id` 或 `identity.anonymous_id`，並符合目錄要求 | 你的聯盟平台 |
 
 同一個字串。同樣的大小寫。不能一處加前綴而其他處不加。在我們看來，`player_88213` 和 `88213` 是兩個不同的人。
 
@@ -136,19 +136,21 @@ Web 追蹤器會替你擷取點擊。**S2S 不會** —— 你的後台只知道
 
 | 方式 | 去重鍵 | 同一事件重發時 |
 | --- | --- | --- |
-| Partner Postback | `event_id`，其次 `txid`，再次查詢字串的雜湊 | 合併到原事件 |
+| Partner Postback | v1：`event_id` → `txid` → 排序 raw 雜湊；v2：`event_id` → `context.transaction_id` → 排序 raw JSON 雜湊；帶 Connection 作用域 | 為下游去重保留鍵；發布本身不證明已合併 |
 | S2S —— 資金類事件 | `context.transaction_id` | 合併到原事件 |
 | S2S —— 其他事件 | 無 | **產生第二個事件** |
 | Web 追蹤器 | 無 | 產生第二個事件 |
 
 ### 實際意味著甚麼 {#what-this-means-in-practice}
 
-- **使用 Partner Postback 時**，請發送全域唯一且穩定的 `event_id`，並在每次重試時原樣重複。查詢字串雜湊只是最後的回退手段，不是安全網 —— 參數順序一變，同一個轉化就會被計兩次。
+- **使用 Partner Postback 時**，傳送全域唯一且穩定的來源 `event_id`，重試重用。參數次序不改變排序 raw 的後備雜湊，業務值變更可能改變；v1/v2 雜湊 framing 不同，雙發須在下游對帳。參閱[分版本 API 參考](/hk/tracking/postback/partner-postback#v2-deduplication)。
 - **使用 S2S 時**，`deposit`、`withdraw` 和 `bet` 可以安全重試，因為 `context.transaction_id` 能識別它們。其他事件**不具備冪等性** —— 只在請求確實失敗時才重試，絕不要預防性地重試。
 
 ### 兩種方式上報同一個轉化時 {#when-two-methods-report-the-same-conversion}
 
 按優先順序處理：**S2S → Partner Postback → Web 追蹤器**，金額只取自 S2S。
+
+這些報表規則依賴下游鏈路。v2 發布只建立傳輸結果；消費者相容、跨來源／協定去重及最終金額須分別驗證。
 
 但優先順序是安全網，不是設計。用兩種方式上報同一事件，意味著同樣的東西要建兩遍，並且永遠要對帳兩個來源。請為每個事件選定一個系統作為唯一可信來源 —— 參閱[選擇你的方案](/hk/tracking/overview#_2-2-which-system-holds-your-conversion-data)。
 
@@ -156,7 +158,7 @@ Web 追蹤器會替你擷取點擊。**S2S 不會** —— 你的後台只知道
 
 **S2S 中沒有首存事件，也沒有首存標記。** 每筆充值都以 `deposit` 發送，首存由此推導為**我們為該用戶收到的最早一筆 `deposit`**。
 
-Partner Postback 是例外：它有獨立的 `/first-deposit` 和 `/repeat-deposit` 端點，你向哪個路徑發送就決定了分類。
+**Partner Postback v1** 有獨立的 `/first-deposit` 和 `/repeat-deposit` 路徑，兩者都記錄 `deposit`，路徑保留來源的首充／復充聲明。**v2** 按有效目錄使用 canonical `event=deposit`，不透過路徑判定首充；衍生 FTD 在下游報表鏈路驗證。
 
 `deposit_initiated` 永遠不是首存。它記錄的是一次進入收銀台的嘗試，而不是一筆已結算的付款。
 

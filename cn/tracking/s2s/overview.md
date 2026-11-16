@@ -87,9 +87,7 @@ S2S 中没有首充事件，也没有首充标志。你把每一笔充值都作�
 
 因此你无需自己对充值进行分类——但如果你已有存量玩家，请参阅下方的警告。
 
-`/first-deposit` 与 `/repeat-deposit` 的区分属于
-[Partner Postback](/cn/tracking/postback/partner-postback)，那是另一套 API。如果你两者都在用，
-请告知你的客户经理，以免两者被统计为各自独立的首充。
+`/first-deposit` 与 `/repeat-deposit` 的区分仅属于 [Partner Postback v1](/cn/tracking/postback/partner-postback#v1-compatibility)。[Postback v2](/cn/tracking/postback/partner-postback#v2-api) 使用有效目录中的 canonical `deposit` 事件。来源或协议重叠时，与客户经理约定切换和对账方案；HTTP／Kafka 确认不能单独证明下游 FTD 或去重。
 :::
 
 ::: warning 如果你已有存量玩家，第一周的 FTD 会虚高
