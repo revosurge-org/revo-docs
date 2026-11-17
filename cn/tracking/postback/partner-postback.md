@@ -62,6 +62,12 @@ v2 不会用 click ID 回填缺失的用户身份。联盟平台自己的 click 
 - 未知路径、业务值中的未展开宏、重复 query 名（包括同值重复、`k` 和模式参数）及父子路径冲突均拒收。例如同时发送 `context.reward` 和 `context.reward.value`。
 - 值只做一次 UTF-8 form URL 编码：`+` 表示空格，字面加号用 `%2B`，`&` 用 `%26`，`%` 用 `%25`。错误百分号转义或 UTF-8 会被拒绝；`%252B` 只解码一次，得到字面量 `%2B`。
 
+### 注册设备字段 {#v2-registration-device}
+
+`register`、`referral_register` 可通过 canonical 点分 query 参数发送 `context.device_brand`、`context.device_model`、`context.platform` 和 `context.os`。四个字段均为 **String / 建议**；在其余负载有效时，可提供任意子集，也可全部省略。`platform` 仅接受 `web`、`android`、`ios`；其他三个字段没有封闭枚举。
+
+使用实际完成本次注册的设备；推荐注册使用**新用户**的设备。保留原始机型标识，并省略无法获取的值，完整规则参见[注册设备采集](/cn/tracking/s2s/v3/events-standard#registration-device)。v2 会从 typed envelope 省略空白值，但不会自动清理品牌、机型和操作系统字段中的 `-`，应由上报端清理不可用值。
+
 ### 金额与币种 {#v2-values}
 
 在目录规定的 canonical 字段中发送原币金额和币种，v2 不自动换算成 USD。对于 `trade` 契约，`context.amount` / `context.currency` 表示交易，`context.fee_amount` / `context.fee_currency` 独立表示手续费。精确小数和合法负手续费会保留；缺失金额不会补成零。
@@ -110,6 +116,10 @@ curl --get "$MMP_URL/v2/pb/$CONNECTION_ID/events" \
   --data-urlencode "timestamp=$TS_MS" \
   --data-urlencode 'identity.client_user_id=测试 + & 用户' \
   --data-urlencode 'context.ip_address=192.0.2.139' \
+  --data-urlencode 'context.device_brand=Apple' \
+  --data-urlencode 'context.device_model=iPhone15,3' \
+  --data-urlencode 'context.platform=ios' \
+  --data-urlencode 'context.os=iOS' \
   --data-urlencode 'context.privacy.marketing_consent=false'
 
 # 隔离测试：原币、高精度金额和独立的负手续费。
@@ -160,6 +170,10 @@ curl --get "$MMP_URL/v2/pb/$CONNECTION_ID/events" \
     },
     "context": {
       "ip_address": "192.0.2.139",
+      "device_brand": "Apple",
+      "device_model": "iPhone15,3",
+      "platform": "ios",
+      "os": "iOS",
       "privacy": {
         "marketing_consent": false
       }

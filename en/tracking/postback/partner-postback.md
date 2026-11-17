@@ -62,6 +62,12 @@ The parser enforces these rules:
 - Unknown paths, unexpanded macros anywhere in business values, duplicate query names (even equal values, including `k` and mode flags), and parent/child path conflicts are rejected. A conflicting example is `context.reward` together with `context.reward.value`.
 - Encode values once using UTF-8 form URL encoding: `+` means a space; use `%2B` for a literal plus, `%26` for `&`, and `%25` for `%`. Invalid percent escapes or UTF-8 are rejected. `%252B` decodes once to the literal `%2B`.
 
+### Registration device fields {#v2-registration-device}
+
+For `register` and `referral_register`, pass `context.device_brand`, `context.device_model`, `context.platform` and `context.os` as canonical dotted query parameters. All four are **String / Suggested**; any subset, including none, is accepted when the rest of the event is valid. `platform` accepts only `web`, `android` or `ios`. The other three fields have no closed enum.
+
+Use the device that completed this registration; for a referral, use the **new user's** device. Preserve the original model identifier and omit unavailable values. See [registration device collection](/en/tracking/s2s/v3/events-standard#registration-device) for the full rules. v2 omits blank values from the typed envelope, but `-` is not automatically removed from the brand, model or OS fields. Clean unavailable values at the source.
+
 ### Amounts and currencies {#v2-values}
 
 Send original amounts and currencies in the catalog's canonical fields. v2 does not automatically convert them to USD. For a `trade` contract, `context.amount` / `context.currency` describe the trade; `context.fee_amount` / `context.fee_currency` describe its fee independently. Preserve exact decimals and valid negative fees. Missing amounts are not invented as zero.
@@ -110,6 +116,10 @@ curl --get "$MMP_URL/v2/pb/$CONNECTION_ID/events" \
   --data-urlencode "timestamp=$TS_MS" \
   --data-urlencode 'identity.client_user_id=测试 + & 用户' \
   --data-urlencode 'context.ip_address=192.0.2.139' \
+  --data-urlencode 'context.device_brand=Apple' \
+  --data-urlencode 'context.device_model=iPhone15,3' \
+  --data-urlencode 'context.platform=ios' \
+  --data-urlencode 'context.os=iOS' \
   --data-urlencode 'context.privacy.marketing_consent=false'
 
 # Isolated test: original currency, precise amount and an independent negative fee.
@@ -160,6 +170,10 @@ Illustrative valid dryrun verdict for the first sample (request ID, catalog vers
     },
     "context": {
       "ip_address": "192.0.2.139",
+      "device_brand": "Apple",
+      "device_model": "iPhone15,3",
+      "platform": "ios",
+      "os": "iOS",
       "privacy": {
         "marketing_consent": false
       }

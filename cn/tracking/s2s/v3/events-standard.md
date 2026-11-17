@@ -44,6 +44,10 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.attribution.utm_campaign` | String | 建议 | UTM 活动。 |
 | `context.attribution.utm_content` | String | 建议 | UTM 内容。 |
 | `context.attribution.utm_term` | String | 建议 | UTM 关键词。 |
+| `context.device_brand` | String | 建议 | 完成本次注册所用设备的品牌，例如 Apple、Samsung。 |
+| `context.device_model` | String | 建议 | 注册设备上报的原始型号标识；保留原值，例如 `iPhone15,3`、`SM-S918B/DS`。 |
+| `context.platform` | String | 建议 | 完成本次注册的环境：`web` · `android` · `ios` 之一。 |
+| `context.os` | String | 建议 | 注册设备的操作系统，例如 Android、iOS、Windows、Linux、Mac OS X；这些示例不是封闭枚举。 |
 
 ### `referral_register`
 
@@ -52,6 +56,21 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | 字段 | 类型 | 要求 | 说明 |
 |-------|------|-------------|-------------|
 | `context.referral_client_user_id` | String | 建议 | 推荐人的 `client_user_id`（推荐本次注册的用户）。 |
+| `context.device_brand` | String | 建议 | **新注册用户**完成注册所用设备的品牌，例如 Apple、Samsung。 |
+| `context.device_model` | String | 建议 | **新注册用户**的注册设备上报的原始型号标识；保留原值，例如 `iPhone15,3`、`SM-S918B/DS`。 |
+| `context.platform` | String | 建议 | **新注册用户**完成注册的环境：`web` · `android` · `ios` 之一。 |
+| `context.os` | String | 建议 | **新注册用户**的注册设备操作系统，例如 Android、iOS、Windows、Linux、Mac OS X；这些示例不是封闭枚举。 |
+
+### 注册设备采集规则 {#registration-device}
+
+以上四个设备字段同时适用于 S2S v3 和 [Partner Postback v2](/cn/tracking/postback/partner-postback#v2-registration-device) 中的 `register`、`referral_register`。全部为 **String / 建议**：上报能够获取的字段。部分或全部缺失不会导致原本有效的注册事件被拒收；已提供的值仍须满足字段类型要求，`platform` 还须使用上方允许的小写值。
+
+- 采集实际完成**本次注册**的设备。对于 `referral_register`，`identity.client_user_id` 标识新注册用户，`context.referral_client_user_id` 标识推荐人；设备字段属于**新注册用户**，不是推荐人。
+- 不得用另一次登录的设备信息替代；即使延迟发送，也应保留注册时采集的值。
+- 保留上报的原始型号标识，不得仅凭屏幕分辨率推断具体机型。
+- 无法获取的字段应省略，不发送空字符串或 `-`。设备归属和不可用值省略由上报端保证；后端不会确认实际采集设备，也不会统一清理占位字符串。
+
+验收时，对两个事件分别 dry-run 完整四字段、部分缺失和全部缺失的请求，并核对回显 envelope 中的原始机型标识。错误 JSON 类型或非法 `platform` 在 S2S 返回 `400 VALIDATION_ERROR`；Partner Postback v2 的目录类型／枚举错误返回 `422 VALIDATION_ERROR`。合成请求成功只能证明字段可被接收，不能证明真实注册流程采集了正确设备。
 
 ### `login`
 

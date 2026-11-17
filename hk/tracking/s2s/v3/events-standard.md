@@ -44,6 +44,10 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | `context.attribution.utm_campaign` | String | 建議 | UTM 活動。 |
 | `context.attribution.utm_content` | String | 建議 | UTM 內容。 |
 | `context.attribution.utm_term` | String | 建議 | UTM 關鍵詞。 |
+| `context.device_brand` | String | 建議 | 完成本次註冊所用裝置的品牌，例如 Apple、Samsung。 |
+| `context.device_model` | String | 建議 | 註冊裝置上報的原始型號識別碼；保留原值，例如 `iPhone15,3`、`SM-S918B/DS`。 |
+| `context.platform` | String | 建議 | 完成本次註冊的環境：`web` · `android` · `ios` 其中之一。 |
+| `context.os` | String | 建議 | 註冊裝置的作業系統，例如 Android、iOS、Windows、Linux、Mac OS X；這些範例並非封閉列舉。 |
 
 ### `referral_register`
 
@@ -52,6 +56,21 @@ import { s2sV3Events } from '../../../../.vitepress/theme/data/s2s-v3-events'
 | 欄位 | 類型 | 要求 | 說明 |
 |-------|------|-------------|-------------|
 | `context.referral_client_user_id` | String | 建議 | 推薦人的 `client_user_id`（推薦本次註冊的用戶）。 |
+| `context.device_brand` | String | 建議 | **新註冊用戶**完成註冊所用裝置的品牌，例如 Apple、Samsung。 |
+| `context.device_model` | String | 建議 | **新註冊用戶**的註冊裝置上報的原始型號識別碼；保留原值，例如 `iPhone15,3`、`SM-S918B/DS`。 |
+| `context.platform` | String | 建議 | **新註冊用戶**完成註冊的環境：`web` · `android` · `ios` 其中之一。 |
+| `context.os` | String | 建議 | **新註冊用戶**的註冊裝置作業系統，例如 Android、iOS、Windows、Linux、Mac OS X；這些範例並非封閉列舉。 |
+
+### 註冊裝置採集規則 {#registration-device}
+
+以上四個裝置欄位同時適用於 S2S v3 及 [Partner Postback v2](/hk/tracking/postback/partner-postback#v2-registration-device) 中的 `register`、`referral_register`。全部為 **String / 建議**：傳送能夠取得的欄位。部分或全部缺失不會導致原本有效的註冊事件被拒收；已提供的值仍須符合欄位類型要求，`platform` 亦須使用上方允許的小寫值。
+
+- 採集實際完成**本次註冊**的裝置。對於 `referral_register`，`identity.client_user_id` 識別新註冊用戶，`context.referral_client_user_id` 識別推薦人；裝置欄位屬於**新註冊用戶**，並非推薦人。
+- 不得以另一次登入的裝置資訊取代；即使延遲傳送，亦應保留註冊時採集的值。
+- 保留上報的原始型號識別碼，不得僅憑螢幕解析度推斷具體機型。
+- 無法取得的欄位應略去，不傳送空字串或 `-`。裝置歸屬及不可用值省略由傳送端保證；後端不會確認實際採集裝置，亦不會統一清理佔位字串。
+
+驗收時，對兩個事件分別 dry-run 完整四欄位、部分缺失及全部缺失的請求，並核對回顯 envelope 中的原始型號識別碼。錯誤 JSON 類型或非法 `platform` 在 S2S 回傳 `400 VALIDATION_ERROR`；Partner Postback v2 的目錄類型／列舉錯誤回傳 `422 VALIDATION_ERROR`。合成請求成功只能證明欄位可被接收，不能證明真實註冊流程採集了正確裝置。
 
 ### `login`
 

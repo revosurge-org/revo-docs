@@ -62,6 +62,12 @@ v2 不會用 click ID 回填缺失的使用者身分。聯盟平台自己的 cli
 - 未知路徑、業務值中的未展開宏、重複 query 名稱（包括同值重複、`k` 及模式參數）及父子路徑衝突均拒收。例如同時傳送 `context.reward` 和 `context.reward.value`。
 - 值只做一次 UTF-8 form URL 編碼：`+` 代表空格，字面加號用 `%2B`，`&` 用 `%26`，`%` 用 `%25`。錯誤百分號跳脫或 UTF-8 會被拒絕；`%252B` 只解碼一次，得到字面值 `%2B`。
 
+### 註冊裝置欄位 {#v2-registration-device}
+
+`register`、`referral_register` 可透過 canonical 點分 query 參數傳送 `context.device_brand`、`context.device_model`、`context.platform` 及 `context.os`。四個欄位均為 **String / 建議**；其餘負載有效時，可提供任意子集，亦可全部略去。`platform` 僅接受 `web`、`android`、`ios`；其他三個欄位並無封閉列舉。
+
+使用實際完成本次註冊的裝置；推薦註冊使用**新用戶**的裝置。保留原始型號識別碼，並略去無法取得的值，完整規則參見[註冊裝置採集](/hk/tracking/s2s/v3/events-standard#registration-device)。v2 會從 typed envelope 略去空白值，但不會自動清理品牌、型號及作業系統欄位中的 `-`，應由傳送端清理不可用值。
+
 ### 金額與幣別 {#v2-values}
 
 在目錄規定的 canonical 欄位中傳送原幣金額及幣別，v2 不自動換算成 USD。對於 `trade` 契約，`context.amount` / `context.currency` 表示交易，`context.fee_amount` / `context.fee_currency` 獨立表示手續費。精確小數及合法負手續費會保留；缺失金額不會補成零。
@@ -110,6 +116,10 @@ curl --get "$MMP_URL/v2/pb/$CONNECTION_ID/events" \
   --data-urlencode "timestamp=$TS_MS" \
   --data-urlencode 'identity.client_user_id=测试 + & 用户' \
   --data-urlencode 'context.ip_address=192.0.2.139' \
+  --data-urlencode 'context.device_brand=Apple' \
+  --data-urlencode 'context.device_model=iPhone15,3' \
+  --data-urlencode 'context.platform=ios' \
+  --data-urlencode 'context.os=iOS' \
   --data-urlencode 'context.privacy.marketing_consent=false'
 
 # 隔離測試：原幣、高精度金額及獨立的負手續費。
@@ -160,6 +170,10 @@ curl --get "$MMP_URL/v2/pb/$CONNECTION_ID/events" \
     },
     "context": {
       "ip_address": "192.0.2.139",
+      "device_brand": "Apple",
+      "device_model": "iPhone15,3",
+      "platform": "ios",
+      "os": "iOS",
       "privacy": {
         "marketing_consent": false
       }

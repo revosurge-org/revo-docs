@@ -42,7 +42,7 @@ Each field carries a requirement level:
 | Level | Meaning |
 |-------|---------|
 | **Required** | Must be present and correctly typed, or the event is rejected. |
-| **Suggested** | Strongly recommended for data quality / attribution; not enforced. |
+| **Suggested** | Strongly recommended for data quality / attribution. May be omitted; supplied values must still satisfy type and allowed-values rules. |
 | **Optional** | Nice to have. |
 
 ## What gets validated
