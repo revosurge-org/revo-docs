@@ -99,6 +99,19 @@ const D_CURRENCY2 = tri('ISO 4217 or crypto symbol.', 'ISO 4217 或加密货币�
 const D_TXN = tri('Unique transaction ID (PK).', '唯一交易 ID（主键）。', '唯一交易 ID（主鍵）。')
 const D_CRYPTO = tri('true for crypto.', '加密货币为 true。', '加密貨幣為 true。')
 
+// general.core: the device of the user completing this registration,
+// including the newly registered user in referral_register (not the referrer).
+const registrationDeviceFields = (): FieldDef[] => [
+  f('device_brand', 'context', 'String', 'suggested', 'Apple',
+    tri('Brand of the device used by the new user to complete registration, e.g. Apple or Samsung.', '新用户完成本次注册所用设备的品牌，例如 Apple、Samsung。', '新用戶完成本次註冊所用裝置的品牌，例如 Apple、Samsung。')),
+  f('device_model', 'context', 'String', 'suggested', 'iPhone15,3',
+    tri('Reported model identifier of the registration device; preserve the original value. Do not infer a model from screen resolution alone.', '注册设备上报的原始型号标识；保留原值，不得仅凭屏幕分辨率推断机型。', '註冊裝置上報的原始型號識別碼；保留原值，不得僅憑螢幕解析度推斷機型。')),
+  f('platform', 'context', 'String', 'suggested', 'ios',
+    tri('Environment in which the new user completed registration.', '新用户完成本次注册的环境。', '新用戶完成本次註冊的環境。'), { enumValues: ['web', 'android', 'ios'] }),
+  f('os', 'context', 'String', 'suggested', 'iOS',
+    tri('Operating system of the registration device, e.g. Android, iOS, Windows, Linux or Mac OS X; not a closed enum.', '注册设备的操作系统，例如 Android、iOS、Windows、Linux、Mac OS X；不是封闭枚举。', '註冊裝置的作業系統，例如 Android、iOS、Windows、Linux、Mac OS X；並非封閉列舉。')),
+]
+
 export const s2sV3Events: EventDef[] = [
   // ============================ STANDARD (general.core) ============================
   def('register', 'standard', 'user_lifecycle', [
@@ -125,10 +138,12 @@ export const s2sV3Events: EventDef[] = [
       tri('UTM content.', 'UTM 内容。', 'UTM 內容。')),
     f('attribution.utm_term', 'context', 'String', 'suggested', 'slots',
       tri('UTM term.', 'UTM 关键词。', 'UTM 關鍵詞。')),
+    ...registrationDeviceFields(),
   ]),
   def('referral_register', 'standard', 'user_lifecycle', [
     f('referral_client_user_id', 'context', 'String', 'suggested', 'user_referrer_042',
       tri("The referrer's client_user_id (the user who referred this registration).", '推荐人的 client_user_id（推荐本次注册的用户）。', '推薦人的 client_user_id（推薦本次註冊的用戶）。')),
+    ...registrationDeviceFields(),
   ]),
   def('login', 'standard', 'user_lifecycle', [
     f('user_agent', 'context', 'String', 'suggested', 'Mozilla/5.0 (...)', D_UA),

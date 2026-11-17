@@ -44,6 +44,10 @@ A new user account is created.
 | `context.attribution.utm_campaign` | String | Suggested | UTM campaign. |
 | `context.attribution.utm_content` | String | Suggested | UTM content. |
 | `context.attribution.utm_term` | String | Suggested | UTM term. |
+| `context.device_brand` | String | Suggested | Brand of the device used to complete registration, e.g. Apple or Samsung. |
+| `context.device_model` | String | Suggested | Reported model identifier of the registration device; preserve the original value, e.g. `iPhone15,3` or `SM-S918B/DS`. |
+| `context.platform` | String | Suggested | Registration environment: one of `web` · `android` · `ios`. |
+| `context.os` | String | Suggested | Operating system of the registration device, e.g. Android, iOS, Windows, Linux or Mac OS X. These examples are not a closed enum. |
 
 ### `referral_register`
 
@@ -52,6 +56,21 @@ A registration attributed to a referral — carries the referrer's user id.
 | Field | Type | Requirement | Description |
 |-------|------|-------------|-------------|
 | `context.referral_client_user_id` | String | Suggested | The referrer's `client_user_id` (the user who referred this registration). |
+| `context.device_brand` | String | Suggested | Brand of the **new user's** registration device, e.g. Apple or Samsung. |
+| `context.device_model` | String | Suggested | Reported model identifier of the **new user's** registration device; preserve the original value, e.g. `iPhone15,3` or `SM-S918B/DS`. |
+| `context.platform` | String | Suggested | Environment in which the **new user** completed registration: one of `web` · `android` · `ios`. |
+| `context.os` | String | Suggested | Operating system of the **new user's** registration device, e.g. Android, iOS, Windows, Linux or Mac OS X. These examples are not a closed enum. |
+
+### Registration device collection {#registration-device}
+
+These four device fields apply to both `register` and `referral_register` through S2S v3 and [Partner Postback v2](/en/tracking/postback/partner-postback#v2-registration-device). All four are **String / Suggested**: send the fields you can obtain. Omitting some or all of them does not reject an otherwise valid registration event. Supplied values must still satisfy their type and, for `platform`, the exact lowercase allowed values above.
+
+- Capture the device actually used to complete **this registration**. For `referral_register`, `identity.client_user_id` identifies the newly registered user; `context.referral_client_user_id` identifies the referrer. The device fields describe the **new user**, not the referrer.
+- Do not substitute a device from a different login. Capture the registration-time values even if delivery is delayed.
+- Preserve the reported model identifier. Do not infer a specific model from screen resolution alone.
+- Omit unavailable fields; do not send empty strings or `-`. The sender must enforce device ownership and this omission rule. The backend does not establish the actual source device or consistently remove placeholder strings.
+
+To validate, dry-run each event with all four fields, with a subset, and with none. Check that original model identifiers survive in the echoed envelope. Wrong JSON types or an invalid `platform` return S2S `400 VALIDATION_ERROR`; Partner Postback v2 uses `422 VALIDATION_ERROR` for catalog type/enum violations. A successful synthetic request verifies acceptance, not that the real registration flow collects the correct device.
 
 ### `login`
 
