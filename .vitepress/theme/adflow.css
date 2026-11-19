@@ -1,0 +1,173 @@
+.vp-doc .adflow-task-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  margin: 23px 0 28px;
+}
+
+.vp-doc .adflow-task {
+  display: grid;
+  gap: 2px;
+  padding: 15px 16px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 9px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+}
+
+.vp-doc .adflow-task strong::after {
+  content: ' ↗' / '';
+  font-weight: 400;
+}
+
+.vp-doc .adflow-task span {
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+}
+
+.vp-doc .adflow-task:hover,
+.vp-doc .adflow-task:focus-visible {
+  border-color: var(--vp-c-brand-1);
+  text-decoration: none;
+}
+
+.vp-doc .adflow-table {
+  width: 100%;
+  overflow: auto;
+  margin: 14px 0 18px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 9px;
+}
+
+.vp-doc .adflow-table table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+  font-size: 14px;
+}
+
+.vp-doc .adflow-table :is(tr, th, td) {
+  border: 0;
+  background: var(--vp-c-bg);
+}
+
+.vp-doc .adflow-table :is(th, td) {
+  min-width: 84px;
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--vp-c-divider);
+  vertical-align: top;
+}
+
+.vp-doc .adflow-table th {
+  background: var(--vp-c-bg-alt);
+  font-weight: 650;
+}
+
+.vp-doc .adflow-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.vp-doc .adflow-banner-sizes {
+  margin: 16px 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+}
+
+.vp-doc .adflow-banner-sizes .banner-size-group {
+  display: grid;
+  grid-template-columns: 7.3rem minmax(0, 1fr);
+  align-items: start;
+  gap: 10px 16px;
+  padding: 12px 14px;
+}
+
+.vp-doc .adflow-banner-sizes .banner-size-group + .banner-size-group {
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc .adflow-banner-sizes .banner-size-label {
+  margin-top: 3px;
+  font-size: 14px;
+}
+
+.vp-doc .adflow-banner-sizes .banner-size-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vp-doc .adflow-banner-sizes .banner-size-values li {
+  margin: 0;
+  padding: 3px 8px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 5px;
+  background: var(--vp-c-bg-soft);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls {
+  display: grid;
+  grid-template-columns: minmax(0, 280px) 80px minmax(0, 140px);
+  align-items: end;
+  gap: 16px;
+  max-width: 536px;
+}
+
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls .input-group:first-child {
+  grid-column: span 2;
+}
+
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls .input-group {
+  min-width: 0;
+}
+
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls input {
+  box-sizing: border-box;
+  width: 100% !important;
+  min-width: 0;
+  height: 42px;
+  text-overflow: ellipsis;
+}
+
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls button {
+  width: max-content;
+  max-width: 100%;
+  min-height: 42px;
+  padding-inline: 16px;
+}
+
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .card {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .vp-doc .adflow-task-grid,
+  .vp-doc .adflow-banner-sizes .banner-size-group,
+  .vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) :is(.controls, .grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls .input-group:first-child {
+    grid-column: auto;
+  }
+
+  .vp-doc .adflow-task {
+    padding: 11px;
+  }
+
+  .vp-doc .adflow-table :is(th, td) {
+    padding: 8px 10px;
+  }
+}
