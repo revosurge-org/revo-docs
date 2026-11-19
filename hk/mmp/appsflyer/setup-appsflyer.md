@@ -24,19 +24,19 @@ description: 上線前完成 AppsFlyer 和 AdWave 設定，上線後用真實流
 
 ![在 Marketplace 查找 RevoSurge](/img/handbook/wizard-v4/ss01-marketplace.png)
 
-![啓用 Activate partner](/img/handbook/wizard-v4/ss04-activation.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/ss04-activation.png" alt="啓用 Activate partner" width="384" height="81">
 
 ### 核對安裝回傳 {#_3-check-default-install-postbacks}
 
 在 **Default postbacks** 核對 **Install** 和 **for users from**。範例的 **This partner only** 為只讀，實際應用和 PID 支持的發送範圍由客戶經理確認。
 
-![默認安裝回傳及發送範圍](/img/handbook/wizard-v4/ss05-install-postback.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/ss05-install-postback.png" alt="默認安裝回傳及發送範圍" width="448" height="92">
 
 ### 啓用並映射應用內事件 {#_4-enable-in-app-event-postbacks}
 
 啓用 **In-app event postbacks**。窗口選擇 **Lifetime**，不可用時至少選擇六個月。點擊 **Add event**，按下列規則填寫每個事件。
 
-![應用內事件回傳窗口](/img/handbook/wizard-v4/ss07-lifetime.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/ss07-lifetime.png" alt="應用內事件回傳窗口" width="448" height="108">
 
 ![新增事件按鈕](/img/handbook/wizard-v4/ss08-add-event.png)
 
@@ -51,7 +51,7 @@ description: 上線前完成 AppsFlyer 和 AdWave 設定，上線後用真實流
 
 選擇 **Save Integration** 保存映射。再打開 **Permissions**，按應用負責人已批准的範圍授權。權限與回傳發送設定分別管理。
 
-![權限標籤及開關](/img/handbook/wizard-v4/ss13-permission-tab.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/ss13-permission-tab.png" alt="權限標籤及開關" width="496" height="101">
 
 ![合作夥伴權限選項](/img/handbook/wizard-v4/partner-permission-options.png)
 

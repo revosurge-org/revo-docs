@@ -26,12 +26,12 @@ description: 連接產品和 API 密鑰，實現註冊、充值及正式轉化�
 
 打開 **Product → Choose your setup → Our own back office**，檢查 Web Tracker 和 S2S，然後選擇 **Use this setup**。
 
-![建議的 Web Tracker 和 S2S 接入方案](/img/handbook/wizard-v4/choose-setup-s2s.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/choose-setup-s2s.png" alt="建議的 Web Tracker 和 S2S 接入方案" width="416" height="268">
 
 1. 打開 **Account menu → API Keys & Postbacks → API Keys**。
 2. 選擇 **Create API Key**。在 **Generate new API key** 選擇產品、輸入名稱並生成密鑰。
 
-![選擇目標產品並生成 API 密鑰](/img/handbook/wizard-v4/api-key-create.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/api-key-create.png" alt="選擇目標產品並生成 API 密鑰" width="384" height="280">
 
 ## 3. 構造事件請求 {#_3-build-the-event-request}
 

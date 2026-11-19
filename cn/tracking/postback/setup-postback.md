@@ -11,13 +11,13 @@ description: 连接联盟平台、配置事件回调并验证真实转化路径�
 
 打开 **Product → Choose your setup → An affiliate platform → Use this setup**。
 
-![联盟平台接入建议](/img/handbook/wizard-v4/affiliate-setup.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/affiliate-setup.png" alt="联盟平台接入建议" width="416" height="268">
 
 ## 2. 创建或选择连接 {#_2-create-or-select-a-connection}
 
 打开 **Account menu → API Keys & Postbacks → Postback Connections → Create Connection**。填写名称、平台和授权产品。v2 要求 Connection 恰好绑定一个产品。
 
-![创建 Connection 的表单](/img/handbook/wizard-v4/postback-form.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/postback-form.png" alt="创建 Connection 的表单" width="480" height="218">
 
 获取 Connection ID 和密钥，并与 RevoSurge 确认目标 origin 和接收端是否就绪。v2 还须核对接收路径及产品有效目录。密钥仅保存在服务端，分享验收材料时须遮盖。
 

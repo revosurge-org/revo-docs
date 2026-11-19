@@ -26,7 +26,7 @@ The current Billing page directs you to your **Account Manager** to add funds. S
 
 After settlement, open the **account menu** at the bottom left and select **Billing**. Billing applies across the account; Product switching is unavailable on this page.
 
-![Open Billing from the account menu](/img/handbook/wizard-v4/account-menu.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/account-menu.png" alt="Billing and Remaining Balance in the account menu" width="208" height="395">
 
 ### Check your funds
 
@@ -38,13 +38,13 @@ After settlement, open the **account menu** at the bottom left and select **Bill
 
 Use **Current Balance** when checking how much is available to spend; Total Funds includes the frozen allocation.
 
-![Current Billing balances; sensitive values blurred](/img/handbook/wizard-v4/billing.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/billing.png" alt="Current Billing balances; sensitive values blurred" width="400" height="160">
 
 ### Review Billing Information
 
 Check **Billing Email** and **Billing Address**. Use the **Edit** icon beside either field if it needs correcting.
 
-![Billing Information; email and address values blurred](/img/handbook/wizard-v4/billing-information.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/billing-information.png" alt="Billing Information; email and address values blurred" width="400" height="150">
 
 ### Find the deposit in All Billing Activities
 

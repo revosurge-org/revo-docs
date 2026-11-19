@@ -50,7 +50,7 @@ description: 创建你的 RevoSurge 账户，并在上线前通过客户经理�
 
 想查看完整明细，点击左下角的**账户图标**，再点击 **Billing**。菜单里也会显示 **Remaining Balance**（剩余余额）。
 
-![账户菜单：Account Setting、Billing（含 Remaining Balance）、Manage Products、Manage Members、Language、Logout](/img/handbook/account-menu.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/account-menu.png" alt="账户菜单中的 Billing 与 Remaining Balance" width="208" height="395">
 
 ![Account Setting — Billing：Current Balance、Campaign Budget (Frozen)、Total Funds 和 Transaction History](/img/handbook/billing.png)
 

@@ -13,13 +13,13 @@ Choose [v2 or v1](/en/tracking/postback/overview#choose-version) for your platfo
 
 Open **Product → Choose your setup → An affiliate platform → Use this setup**.
 
-![Affiliate source recommendation](/img/handbook/wizard-v4/affiliate-setup.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/affiliate-setup.png" alt="Affiliate source recommendation" width="416" height="268">
 
 ## 2. Create or select a Connection
 
 Open **Account menu → API Keys & Postbacks → Postback Connections → Create Connection**. Enter the name, platform and authorized Product. **v2 requires exactly one linked Product.**
 
-![Create Connection form](/img/handbook/wizard-v4/postback-form.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/postback-form.png" alt="Create Connection form" width="480" height="218">
 
 Obtain the Connection ID/key and confirm the target origin and receiver readiness with RevoSurge. For v2, confirm the route and effective Product catalog too. Keep the key server-side and redact it in shared evidence.
 

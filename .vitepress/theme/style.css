@@ -210,6 +210,14 @@ html[lang="zh-HK"] .VPNavBarTranslations .button .text::before {
   content: 'HK';
 }
 
+.vp-doc img.doc-screenshot {
+  margin-inline: auto;
+}
+
+.vp-doc img.doc-screenshot + img.doc-screenshot {
+  margin-block-start: 16px;
+}
+
 /**
  * Doc tables: tinted header for richer, more scannable reference tables
  * -------------------------------------------------------------------------- */

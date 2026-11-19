@@ -47,9 +47,9 @@ AppsFlyer is available for app Products, not Web Products.
 
 S2S v3 and Postback v2 share [Events & fields](/en/tracking/events/choose-events). Choose the transport by your source system, then use the same Product-specific event definitions. Receipt of a catalog event does not itself establish bidding-strategy or reporting support.
 
-![Choose the system that records your conversions](/img/handbook/wizard-v4/source-system-options.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/source-system-options.png" alt="Choose the system that records your conversions" width="416" height="237">
 
-![Recommended sources for your own back office](/img/handbook/wizard-v4/choose-setup-s2s.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/choose-setup-s2s.png" alt="Recommended sources for your own back office" width="416" height="268">
 
 <a id="_6-getting-started"></a>
 
@@ -58,9 +58,9 @@ S2S v3 and Postback v2 share [Events & fields](/en/tracking/events/choose-events
 Open **Verify Your Source**, then follow the setup guide for each selected source. AppsFlyer has pre-launch configuration checks and post-launch verification because of its IP allowlist restrictions; its full path cannot be verified with a manual pre-launch test.
 If the **Installation Guide** prompt appears, open the relevant source guides and acknowledge that you have read the setup and test procedure before using **Continue**. Reading a guide does not verify the integration.
 
-![Installation Guide and source guide links](/img/handbook/wizard-v4/installation-guide.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/installation-guide.png" alt="Installation Guide and source guide links" width="496" height="154">
 
-![Acknowledge the selected source guides before continuing](/img/handbook/wizard-v4/installation-guide-acknowledgement.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/installation-guide-acknowledgement.png" alt="Acknowledge the selected source guides before continuing" width="496" height="115">
 
 The **Live** and **Test** tabs separate traffic evidence. Source status, historical receipts and Product activation can differ. In particular, **Historical events received (traffic type unknown)** does not establish that those historical events were accepted Live traffic.
 
@@ -81,8 +81,8 @@ Use **Campaign conversion events** to check which actions AdWave has received an
 
 Choose an event with accepted **Live** verification that your campaign bidding strategy supports. Test receipts and dry runs do not verify a campaign conversion.
 
-![Campaign Conversion Events, verified conversions and pending setup](/img/handbook/wizard-v4/campaign-conversion-events.png)
-![Verification Details by Source for the five app conversion events](/img/handbook/wizard-v4/campaign-conversion-details.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/campaign-conversion-events.png" alt="Campaign Conversion Events, verified conversions and pending setup" width="520" height="250">
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/campaign-conversion-details.png" alt="Verification Details by Source for the five app conversion events" width="560" height="396">
 
 ### Read the verification status
 

@@ -268,7 +268,7 @@ S2S 事件一併發送。參閱
 點擊 **Why are S2S events not flowing?** 開啟 **S2S Help Center**。它會針對你過去 24 小時的流量
 執行六項檢查。
 
-![S2S Help Center diagnostic panel](/img/tracking/08-s2s-help-center.png)
+<img class="doc-screenshot" src="/img/tracking/08-s2s-help-center.png" alt="S2S Help Center diagnostic panel" width="560" height="431">
 
 | 檢查項 | 檢查內容 | 未通過時 |
 | --- | --- | --- |
