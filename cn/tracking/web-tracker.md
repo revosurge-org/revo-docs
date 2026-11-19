@@ -14,7 +14,7 @@ description: 面向网页漏斗的第一方 JavaScript SDK —— 为 AdWave 与
 
 ## 何时使用
 - 纯网页漏斗（落地页 + 网站）—— 没有 App，也没有后台 API
-- 或与 [S2S](/cn/tracking/s2s/overview) / [Partner Postback](/cn/tracking/postback/partner-postback) 搭配使用，以捕获**点击侧**信号
+- 或与 [S2S](/cn/tracking/s2s/overview) / [Partner Postback](/cn/tracking/postback/overview) 搭配使用，以捕获**点击侧**信号
 
 ## 如何归因 {#how-it-attributes}
 - 从落地页 URL 提取 **click_id** 和 **UTM** 参数
@@ -24,7 +24,7 @@ description: 面向网页漏斗的第一方 JavaScript SDK —— 为 AdWave 与
 
 > **在注册时保存点击 ID —— 不要依赖 cookie。** cookie 只存在于用户点击广告时所用的浏览器中。用户注册时，
 > 用 [`getClickid()`](/cn/tracking/web-tracker/reference#getclickid) 读取点击 ID，保存到你数据库中该用户的记录上，
-> 再由你的后端通过 [S2S](/cn/tracking/s2s/overview) 或 [Partner Postback](/cn/tracking/postback/partner-postback)
+> 再由你的后端通过 [S2S](/cn/tracking/s2s/overview) 或 [Partner Postback](/cn/tracking/postback/overview)
 > 回传。这是必填项，而非可选 —— 参见[转化如何关联回广告](/cn/tracking/core-concepts#_2-how-a-conversion-joins-back-to-an-ad)。
 
 ## 你将设置的内容

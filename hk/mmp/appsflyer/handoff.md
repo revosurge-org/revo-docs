@@ -31,28 +31,7 @@ description: 收尾 AppsFlyer 整合的檢查清單 — 要交給 RevoSurge 客�
 
 ## 上線測試
 
-設定檢查只能證明設定正確。只有真實流量能證明它可用。
-
-1. 點擊一條線上的 RevoSurge 廣告 — 或由客戶經理為你建的測試廣告系列。
-2. 進入承載 web tracker 的到達頁。
-3. 從應用商店安裝 App。
-4. 打開 App。
-5. 觸發一個已對應的漏斗事件 — 通常註冊最快。
-
-應當發生的事：
-
-| 步驟 | 預期結果 | 在哪裡查看 |
-|---|---|---|
-| 點擊 | 點擊已記錄 | RevoSurge 看板 |
-| 點擊 | 點擊已註冊到你的應用上 | AppsFlyer，在 RevoSurge 媒體渠道下 |
-| 安裝 | 歸因給 RevoSurge — **而不是**自然量 | AppsFlyer |
-| 安裝 | 已收到安裝 postback | RevoSurge 看板 |
-| 漏斗事件 | 已收到應用內事件 postback，且是正確的 RevoSurge 合作夥伴事件名 | RevoSurge 看板 |
-| 收入類事件（若有） | 帶有金額，而不只是事件本身 | RevoSurge 看板 |
-
-AppsFlyer 是隨事件發生即時發送 postback 的，因此設定正確的安裝 postback 會在幾分鐘內到達。如果過了一小時仍然什麼都沒有，請按故障處理而不是按延遲處理，從下方的定位表開始。
-
-**整合自證的時限：** 交付後 **2 天**內至少一條安裝 postback，**7 天**內第一條應用內事件 postback。兩者都沒產生的整合不算上線，無論設定看起來多正確。
+上線前完成[設定檢查](/hk/mmp/appsflyer/setup-appsflyer#_3-check-before-launch)。AppsFlyer 的 IP 白名單限制上線前手動端到端測試。廣告系列上線並產生符合條件的真實安裝和映射事件後，按[正式驗證流程](/hk/mmp/appsflyer/setup-appsflyer#_4-verify-after-campaign-launch)核對點擊、歸因、安裝回傳、目標事件及金額。缺少合格流量時記錄為待驗證，並與客戶經理約定驗收時間。
 
 ## 測試失敗怎麼辦
 

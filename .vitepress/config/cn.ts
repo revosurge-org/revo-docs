@@ -16,21 +16,21 @@ export const cn: DefaultTheme.Config = {
       items: [
         { text: '从这里开始：上线你的第一个广告系列', link: '/cn/handbook/' },
         { text: '1. 账户与钱包', link: '/cn/handbook/account-and-wallet' },
-        // Step 2 is the Tracking section, nested here unchanged. Its pages keep their /tracking and /mmp URLs.
         {
           text: '2. 接入追踪',
           link: '/cn/tracking/overview',
           collapsed: true,
           items: [
-            { text: '概述 · 我该用哪个？', link: '/cn/tracking/overview' },
+            { text: '概述', link: '/cn/tracking/overview' },
             { text: '核心概念', link: '/cn/tracking/core-concepts' },
             {
               text: '1. Web 追踪器',
               link: '/cn/tracking/web-tracker',
               collapsed: true,
               items: [
-                { text: '安装', link: '/cn/tracking/web-tracker/install' },
-                { text: 'Web 追踪器 SDK 参考', link: '/cn/tracking/web-tracker/reference' }
+                { text: '概述', link: '/cn/tracking/web-tracker' },
+                { text: '安装与测试', link: '/cn/tracking/web-tracker/install' },
+                { text: 'SDK 参考', link: '/cn/tracking/web-tracker/reference' }
               ]
             },
             {
@@ -39,12 +39,8 @@ export const cn: DefaultTheme.Config = {
               collapsed: true,
               items: [
                 { text: '概述', link: '/cn/mmp/appsflyer/overview' },
-                { text: '配置 postback', link: '/cn/mmp/appsflyer/postbacks' },
-                { text: '点击转发', link: '/cn/mmp/appsflyer/click-forwarding' },
-                { text: '宏参数', link: '/cn/mmp/appsflyer/macros' },
-                { text: '合作伙伴权限', link: '/cn/mmp/appsflyer/permissions' },
-                { text: '集成校验', link: '/cn/mmp/appsflyer/validation' },
-                { text: '交付与上线', link: '/cn/mmp/appsflyer/handoff' }
+                { text: '设置与验证', link: '/cn/mmp/appsflyer/setup-appsflyer' },
+                { text: '参数与报表', link: '/cn/mmp/appsflyer/parameters-reporting' }
               ]
             },
             {
@@ -53,31 +49,34 @@ export const cn: DefaultTheme.Config = {
               collapsed: true,
               items: [
                 { text: '概述', link: '/cn/tracking/s2s/overview' },
-                {
-                  text: '服务器事件 API (v3)',
-                  link: '/cn/tracking/s2s/v3/server-events-api',
-                  items: [
-                    { text: 'API 参考', link: '/cn/tracking/s2s/v3/server-events-api' },
-                    { text: '信封与基础属性', link: '/cn/tracking/s2s/v3/mandatory-properties' },
-                    { text: '目录与校验', link: '/cn/tracking/s2s/v3/catalog-governance' },
-                    { text: '标准事件', link: '/cn/tracking/s2s/v3/events-standard' },
-                    { text: 'iGaming 事件', link: '/cn/tracking/s2s/v3/events-igaming' },
-                    { text: 'Crypto 事件', link: '/cn/tracking/s2s/v3/events-crypto' }
-                  ]
-                },
-                { text: '集成校验', link: '/cn/tracking/s2s/validation' },
-                { text: '交付与上线', link: '/cn/tracking/s2s/handoff' }
+                { text: '设置与测试', link: '/cn/tracking/s2s/setup-s2s' },
+                { text: 'API 参考（v3）', link: '/cn/tracking/s2s/v3/server-events-api' },
+                { text: '集成校验', link: '/cn/tracking/s2s/validation' }
               ]
             },
             {
               text: '4. Partner Postback',
-              link: '/cn/tracking/postback/partner-postback',
+              link: '/cn/tracking/postback/overview',
               collapsed: true,
               items: [
-                { text: 'v2 canonical API', link: '/cn/tracking/postback/partner-postback#v2-api' },
-                { text: 'v1 兼容参考', link: '/cn/tracking/postback/partner-postback#v1-compatibility' },
-                { text: '集成校验', link: '/cn/tracking/postback/validation' },
-                { text: '迁移、交付与上线', link: '/cn/tracking/postback/handoff' }
+                { text: '概述', link: '/cn/tracking/postback/overview' },
+                { text: '设置与测试', link: '/cn/tracking/postback/setup-postback' },
+                { text: 'API 参考（v2）', link: '/cn/tracking/postback/v2-api' },
+                { text: 'API 参考（v1）', link: '/cn/tracking/postback/v1-api' },
+                { text: '集成校验', link: '/cn/tracking/postback/validation' }
+              ]
+            },
+            {
+              text: '事件与字段',
+              link: '/cn/tracking/events/choose-events',
+              collapsed: true,
+              items: [
+                { text: '选择事件', link: '/cn/tracking/events/choose-events' },
+                { text: '通用字段与身份', link: '/cn/tracking/events/common-fields' },
+                { text: '标准事件', link: '/cn/tracking/events/events-standard' },
+                { text: 'iGaming 事件', link: '/cn/tracking/events/events-igaming' },
+                { text: 'Crypto 事件', link: '/cn/tracking/events/events-crypto' },
+                { text: '事件可用性与校验', link: '/cn/tracking/events/catalog-validation' }
               ]
             }
           ]

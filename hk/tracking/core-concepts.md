@@ -143,7 +143,7 @@ Web 追蹤器會替你擷取點擊。**S2S 不會** —— 你的後台只知道
 
 ### 實際意味著甚麼 {#what-this-means-in-practice}
 
-- **使用 Partner Postback 時**，傳送全域唯一且穩定的來源 `event_id`，重試重用。參數次序不改變排序 raw 的後備雜湊，業務值變更可能改變；v1/v2 雜湊 framing 不同，雙發須在下游對帳。參閱[分版本 API 參考](/hk/tracking/postback/partner-postback#v2-deduplication)。
+- **使用 Partner Postback 時**，傳送全域唯一且穩定的來源 `event_id`，重試重用。參數次序不改變排序 raw 的後備雜湊，業務值變更可能改變；v1/v2 雜湊 framing 不同，雙發須在下游對帳。參閱[分版本 API 參考](/hk/tracking/postback/v2-api#v2-deduplication)。
 - **使用 S2S 時**，`deposit`、`withdraw` 和 `bet` 可以安全重試，因為 `context.transaction_id` 能識別它們。其他事件**不具備冪等性** —— 只在請求確實失敗時才重試，絕不要預防性地重試。
 
 ### 兩種方式上報同一個轉化時 {#when-two-methods-report-the-same-conversion}
@@ -191,5 +191,5 @@ Web 追蹤器會替你擷取點擊。**S2S 不會** —— 你的後台只知道
 - [追蹤概述](/hk/tracking/overview) —— 四種方式，以及你需要哪種組合
 - [S2S 整合驗證](/hk/tracking/s2s/validation) · [Partner Postback 整合驗證](/hk/tracking/postback/validation) ——
   上線前檢查的規則
-- [標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) ——
+- [標準事件](/hk/tracking/events/events-standard) · [iGaming 事件](/hk/tracking/events/events-igaming) ——
   事件目錄

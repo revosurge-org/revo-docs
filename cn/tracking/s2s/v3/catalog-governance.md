@@ -1,72 +1,12 @@
 ---
-title: 事件目录与校验（v3）
-sidebar_label: 目录与校验
-description: 型别化事件目录如何运作——已登记事件、字段型别化、标准与行业预设，以及校验行为。
+title: 此页面已迁移
+layout: page
+search: false
+redirectTo: /cn/tracking/events/catalog-validation
 ---
 
-# 事件目录与校验
+<script setup>
+import DocRedirect from '../../../../.vitepress/theme/components/DocRedirect.vue'
+</script>
 
-**受众：** 工程师、技术集成方
-
-v3 由一个**型别化事件目录**治理：事件及其字段均预先登记，每个传入事件在存储前都会根据目录进行校验。
-
-## 为什么要型别化？
-
-类型化目录确保事件名称与字段类型一致：
-
-1. **已登记事件**——只接受目录中的事件；未知名称会被拒绝。
-2. **型别化字段**——每个字段有固定类型（`String` / `Number` / `Boolean`），并在相关时附带允许值列表。
-3. **接入时校验**——每个事件都会根据目录进行检查；只有符合规范的事件才会被存储。
-
-这使下游的分析、归因和 AI 功能能够基于干净、可信赖的数据持续运行。
-
-## 标准与行业预设
-
-事件被组织为**预设（preset）**。你的产品的有效目录是标准预设加上它所订阅的任何行业预设。
-
-| 预设 | 范围 | 可用性 | 类别 |
-|--------|-------|--------------|------------|
-| **标准**（`general.core`） | 通用 | 对每个产品**自动启用** | 用户生命周期 · 验证与授权 · 应用生命周期 |
-| **iGaming**（`igaming`） | 行业 | **按订阅**——由 RevoSurge 团队为你的产品启用 | 用户生命周期 · 验证与授权 · 资金 · 游戏 · 奖金生命周期 |
-| **Crypto**（`crypto`） | 行业 | **按订阅**——由 RevoSurge 团队为你的产品启用 | 用户生命周期 · 验证与授权 · 资金 · 交易 · 奖励 |
-| 旧版（`legacy`） | 通用 | 兼容性（宽松） | `page_view`、`purchase`、`download_click` |
-
-- **标准**事件（[浏览](/cn/tracking/s2s/v3/events-standard)）开箱即用，适用于所有广告主。
-- **iGaming** 事件（[浏览](/cn/tracking/s2s/v3/events-igaming)）要求你的产品订阅 iGaming 预设。如果你在没有订阅的情况下发送 iGaming 事件，它会被拒绝为 `EVENT_DISABLED`——请联系你的 RevoSurge 代表以启用。
-- **Crypto** 事件（[Crypto 事件](/cn/tracking/s2s/v3/events-crypto)）要求产品已订阅 `crypto` 预设。未订阅时会返回 `422 EVENT_DISABLED`；请联系 RevoSurge 代表启用。
-
-## 字段要求级别
-
-每个字段都带有一个要求级别：
-
-| 级别 | 含义 |
-|-------|---------|
-| **必填** | 必须存在且类型正确，否则事件被拒绝。 |
-| **建议** | 为了数据质量／归因强烈推荐。可以省略；已提供的值仍须满足类型和允许值要求。 |
-| **可选** | 有则更好。 |
-
-## 校验哪些内容
-
-校验分两个阶段运行：
-
-1. **结构性**——信封格式良好：`event` 和 `timestamp` 存在、`timestamp` 是有效的 UTC 毫秒、`identity` 含有一个稳定 ID，且任何 PII 符合 SHA-256 格式。
-2. **目录**——事件已登记且对你的产品已启用、每个必填字段都存在且类型正确，且枚举字段使用允许的值。
-
-| 失败 | 响应 |
-|---------|----------|
-| 错误的信封 / 类型 / PII 格式 | `400 VALIDATION_ERROR` |
-| 未知事件名称 | `422 UNKNOWN_EVENT_TYPE` |
-| 事件未对你的产品启用 | `422 EVENT_DISABLED` |
-
-所有字段违规都会被收集起来并在 `violations[]` 中一起返回（不会快速失败），因此你可以一次性修复所有问题。关于响应形态，参见 [API 参考](/cn/tracking/s2s/v3/server-events-api)。
-
-> [!TIP]
-> 在集成期间使用 [dry run](/cn/tracking/s2s/v3/server-events-api#dry-run)（`?dryrun=1`），可准确看到哪些字段未通过校验，而不存储任何内容。
-
-## 目录更新
-
-目录由 RevoSurge 团队集中管理。当事件或字段发生变化时，更新会自动传播到接入（通常在一分钟内）——你这边无需重新部署。如果目录短暂不可用，接入会优雅降级，而不是丢弃你的流量。
-
-## 自定义事件
-
-除了内置预设之外，当你有标准目录未涵盖的用例时，RevoSurge 团队可以登记限定到你的产品范围的**自定义事件**。请提供事件名称、其字段及类型与我们联系。
+<DocRedirect to="/cn/tracking/events/catalog-validation" />

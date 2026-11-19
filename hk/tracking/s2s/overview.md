@@ -5,6 +5,8 @@ description: S2S 分兩檔 — Basic 涵蓋註冊與首存，Full 涵蓋完整�
 
 # 伺服器到伺服器 (S2S) 概述
 
+按 [Wizard v4 設定與測試](/hk/tracking/s2s/setup-s2s)操作。最低接入要求是 `register` 與 `deposit`。產品可用的行業事件參見[共享事件目錄](/hk/tracking/events/catalog-validation)。
+
 **對象：** 選擇檔位的廣告主與 UA 經理（第 1–4 節）、負責實作的開發者（第 5–8 節）
 
 伺服器到伺服器 (S2S) 追蹤直接從**你的後端**向 RevoSurge 發送事件 —
@@ -87,7 +89,7 @@ S2S 中沒有首存事件，也沒有首存標記。你把每一筆充值都作�
 
 因此你無需自行為充值分類 — 但如果你已有現有玩家，請參閱下方的警告。
 
-`/first-deposit` 與 `/repeat-deposit` 的區分僅屬於 [Partner Postback v1](/hk/tracking/postback/partner-postback#v1-compatibility)。[Postback v2](/hk/tracking/postback/partner-postback#v2-api) 使用有效目錄中的 canonical `deposit` 事件。來源或協定重疊時，與客戶經理約定切換及對帳方案；HTTP／Kafka 確認不能單獨證明下游 FTD 或去重。
+`/first-deposit` 與 `/repeat-deposit` 的區分僅屬於 [Partner Postback v1](/hk/tracking/postback/v1-api#v1-compatibility)。[Postback v2](/hk/tracking/postback/v2-api#v2-api) 使用有效目錄中的 canonical `deposit` 事件。來源或協定重疊時，與客戶經理約定切換及對帳方案；HTTP／Kafka 確認不能單獨證明下游 FTD 或去重。
 :::
 
 ::: warning 如果你已有現有玩家，第一週的 FTD 會虛高
@@ -128,7 +130,7 @@ FTD 是**我們看到的**最早一筆充值，而不是實際存在的最早一
 | 優化目標 | 檔位 |
 | --- | --- |
 | 僅註冊 | 都不需要 — Web 追蹤器即可涵蓋 |
-| 首存 | **Basic**（如果你沒有研發資源，也可用 [Partner Postback](/hk/tracking/postback/partner-postback)） |
+| 首存 | **Basic**（如果你沒有研發資源，也可用 [Partner Postback](/hk/tracking/postback/overview)） |
 | 充值金額 | **Basic** — `deposit` 要求攜帶金額，因此已包含在內 |
 | 玩家價值 — GGR、LTV | **Full** |
 
@@ -279,19 +281,7 @@ S2S 事件一併發送。參閱
 
 ## 7. 事件目錄 {#_7-the-event-catalog}
 
-下方的標準和 iGaming 目錄涵蓋 24 個事件。每個事件在後台中顯示為 *Receiving*、*Errors* 或
-*Not yet seen*。
-
-::: warning 必須為你的產品啟用 iGaming 預設集
-**Standard**（9 個事件）對每個產品自動啟用。**iGaming**（15 個事件）由 RevoSurge 應要求
-按產品啟用。
-
-`deposit` 是 iGaming 事件。在該預設集啟用之前，你發送的每一筆充值都會被拒絕並回傳
-`422 EVENT_DISABLED`，無論你的整合多麼正確 — 而且這不是
-你能在程式碼裡修正的問題。
-
-**開始開發之前，請先讓你的客戶經理確認 iGaming 已啟用。**
-:::
+標準事件對所有產品啟用。iGaming 和 Crypto 根據產品的市場類別啟用。開發前請核對產品的有效事件目錄。
 
 **⭑ 標記的是四個 [Basic](#_2-two-tiers-basic-and-full) 事件。** 其餘均屬於 Full。
 
@@ -303,21 +293,15 @@ S2S 事件一併發送。參閱
 | 驗證與授權 | `email_verified`, `phone_verified`, `marketing_consent_updated` |
 | 應用生命週期 | `app_install`, `app_open`, `app_uninstall`, `push_permission_updated` |
 
-### iGaming 預設集（15 個事件） {#igaming-preset-15-events}
+### iGaming 預設集 {#igaming-preset-15-events}
 
 | 分組 | 事件 |
 | --- | --- |
 | 用戶生命週期 | `session_ended`, `vip_tier_changed` |
 | 驗證與授權 | `kyc_completed`, `kyc_rejected`, `account_blocked`, `account_unblocked` |
-| 資金 | ⭑ `deposit_initiated` · **⭑ `deposit`** · `deposit_failed`, `withdraw` |
+| 資金 | ⭑ `deposit_initiated` · **⭑ `deposit`** · `deposit_failed`, `withdraw`, `withdraw_rejected` |
 | 遊戲 | `bet` |
-| 獎金生命週期 | `bonus_offered`, `bonus_claimed`, `bonus_completed`, `bonus_cashed_out` |
-
-::: warning 後台事件網格顯示的數量比目錄接受的少一個
-設定精靈目前列出 14 個 iGaming 事件，並顯示 `n/23`。`deposit_initiated`
-已被 API 接受且有完整規格 — 只是尚未繪製在該網格中。照常發送即可，
-它會被儲存。其欄位參閱 [iGaming 事件](/hk/tracking/s2s/v3/events-igaming)。
-:::
+| 獎金生命週期 | `bonus_claimed` |
 
 **關於 `deposit_initiated`** — 玩家已發起但尚未結算的充值。它能告訴
 你玩家在收銀台的哪一步流失。`context.transaction_id` 為**必填**，且必須
@@ -332,10 +316,10 @@ Bonus Engine 更精準，但起步階段沒有任何功能依賴它們。
 
 ### Crypto 預設
 
-加密貨幣交易所和錢包可訂閱 `crypto` 預設：`vip_tier_changed`、`kyc_completed`、`kyc_rejected`、`deposit`、`withdraw`、`trade`、`trade_daily_summary` 和 `reward_claimed`。即使事件名稱與 iGaming 相同，仍需啓用 Crypto 訂閱。欄位和互動範例請參見 [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)。
+Crypto 市場類別啟用 `crypto` 預設集：`vip_tier_changed`、`kyc_completed`、`kyc_rejected`、`deposit`、`withdraw`、`trade`、`trade_daily_summary` 和 `reward_claimed`。與 iGaming 同名的事件可能有不同欄位。欄位和互動範例請參見 [Crypto 事件](/hk/tracking/events/events-crypto)。
 
 每個事件的欄位層級定義：
-[標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) · [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)
+[標準事件](/hk/tracking/events/events-standard) · [iGaming 事件](/hk/tracking/events/events-igaming) · [Crypto 事件](/hk/tracking/events/events-crypto)
 
 ## 8. API 版本 {#_8-api-versions}
 
@@ -350,12 +334,12 @@ S2S 卡片中的 **Event Stream** 欄和各事件的 *last seen* 時間戳記讀
 ## 後續步驟 {#next-steps}
 
 - [伺服器事件 API (v3)](/hk/tracking/s2s/v3/server-events-api) — 端點、結構、範例
-- [信封與基礎屬性](/hk/tracking/s2s/v3/mandatory-properties) — 每個事件都帶有的欄位
-- [目錄與驗證](/hk/tracking/s2s/v3/catalog-governance) — 事件如何被驗證
-- [標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) · [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)
+- [信封與基礎屬性](/hk/tracking/events/common-fields) — 每個事件都帶有的欄位
+- [目錄與驗證](/hk/tracking/events/catalog-validation) — 事件如何被驗證
+- [標準事件](/hk/tracking/events/events-standard) · [iGaming 事件](/hk/tracking/events/events-igaming) · [Crypto 事件](/hk/tracking/events/events-crypto)
 
 ## 相關內容 {#related}
 
 - [追蹤概述](/hk/tracking/overview) — 四種追蹤方式比較
 - [安裝 Web 追蹤器](/hk/tracking/web-tracker/install) — 瀏覽器端的另一半
-- [合作夥伴 Postback API](/hk/tracking/postback/partner-postback) — 來自聯盟與 MMP 的轉化
+- [合作夥伴 Postback API](/hk/tracking/postback/overview) — 來自聯盟與 MMP 的轉化

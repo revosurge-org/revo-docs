@@ -44,6 +44,14 @@ export default defineConfig({
   // Internal specs and plans under docs/ are working documents, not published pages.
   srcExclude: ['docs/**'],
   transformPageData(pageData, { siteConfig }) {
+    if (pageData.frontmatter.redirectTo) {
+      pageData.frontmatter.head = [
+        ['meta', { name: 'robots', content: 'noindex' }],
+        ['link', { rel: 'canonical', href: `${SITE_URL}${pageData.frontmatter.redirectTo}` }]
+      ]
+      return
+    }
+
     const path = pageData.relativePath.replace(/\.md$/, '').replace(/\/index$/, '')
     const isRootIndex = !path
 
@@ -97,7 +105,11 @@ export default defineConfig({
     plugins: [
       llmstxtPlugin({
         hostname: 'https://docs.revosurge.com',
-        ignore: ['**/cn/**', '**/hk/**', '**/docs/**', '**/growth/**'],
+        ignore: [
+          '**/cn/**', '**/hk/**', '**/docs/**', '**/growth/**',
+          '**/s2s/v3/{mandatory-properties,catalog-governance,events-standard,events-igaming,events-crypto}.md',
+          '**/postback/partner-postback.md'
+        ],
         llmsFile: { indexTOC: 'only-llms' },
         llmsFullFile: true,
         mdFiles: false,

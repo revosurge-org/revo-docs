@@ -6,6 +6,8 @@ description: RevoSurge 与 AppsFlyer 的集成方式——激活合作伙伴并�
 
 # AppsFlyer 集成概述
 
+> Wizard v4 的操作流程请参见[设置并验证 AppsFlyer](/cn/mmp/appsflyer/setup-appsflyer)和[参数与报表](/cn/mmp/appsflyer/parameters-reporting)。AppsFlyer 的 IP 白名单限制上线前手动端到端测试，真实归因和回传在广告系列上线后验证。
+
 **受众：** UA 经理、广告主、代理商、追踪／BI 工程师
 
 用 AppsFlyer 衡量 RevoSurge 广告分两半：**从 AppsFlyer 发出的 postback**，让我们收到你的安装与应用内事件；以及**转发进 AppsFlyer 的点击**，让 AppsFlyer 知道哪些点击是我们的。两半缺一不可。
@@ -56,10 +58,10 @@ RevoSurge 同时是 **非 SRN** 合作伙伴（不是自归因渠道／self-repo
 | 点击归因回溯期 | **7 天** | 与你其他渠道保持一致 |
 | 浏览归因回溯期 | **24 小时** | 与你其他渠道保持一致 |
 | Install view-through attribution | **ON** | 属于标准配置——见下方说明 |
-| 默认 postback（安装、再营销） | **所有媒体渠道，包含自然量** | 模型需要归因、未归因与自然量事件共同训练 |
+| 默认安装回传 | 开启并确认发送范围 | 向客户经理确认应用和 PID 支持的范围 |
 | 应用内事件 postback | **ON** | 安装后信号是优化目标 |
 | 应用内 postback 窗口 | **Lifetime（终身）**，下限 6 个月 | 窗口过短会截断我们可学习的事件 |
-| 应用内发送范围 | **所有媒体渠道，包含自然量** | 同默认 postback |
+| 应用内发送范围 | 使用与客户经理约定的范围 | 按所用应用与 PID 核对 |
 | 收入 | 在 purchase／deposit／revenue 类事件上选择 **Values & revenue** | ROAS 必需 |
 
 > [!NOTE]
@@ -97,7 +99,7 @@ RevoSurge 同时是 **非 SRN** 合作伙伴（不是自归因渠道／self-repo
 ## 本章节不覆盖的内容
 
 - **从你自己的服务器发送事件。** 那是[服务器事件 API (v3)](/cn/tracking/s2s/v3/server-events-api)，与你使用哪个 MMP 无关。
-- **联盟后台 postback。** 由[合作方 Postback API](/cn/tracking/postback/partner-postback) 覆盖。
+- **联盟后台 postback。** 由[合作方 Postback API](/cn/tracking/postback/overview) 覆盖。
 - **再营销的 deep link。** 本章节各页能让再营销广告被正确衡量，但不涉及进入 App 的 deep link 路由。上线此类广告前请先联系你的客户经理。
 
 ## 下一步

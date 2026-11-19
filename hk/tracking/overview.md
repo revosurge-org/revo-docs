@@ -5,6 +5,8 @@ description: 向 RevoSurge 發送轉化的四種方式——Web 追蹤器、S2S�
 
 # 追蹤概述
 
+Wizard v4 接入指南　[Web 追蹤器](/hk/tracking/web-tracker/install) · [AppsFlyer](/hk/mmp/appsflyer/setup-appsflyer) · [S2S](/hk/tracking/s2s/setup-s2s) · [Partner Postback](/hk/tracking/postback/overview) · [事件與欄位](/hk/tracking/events/choose-events)。分別核對來源狀態、事件接收、正式轉化驗證和歸因。
+
 **對象：** 廣告主、媒體採購、UA 經理、開發者、聯盟及合作夥伴經理
 
 RevoSurge 依據你發送給我們的轉化來優化你的廣告系列。本頁說明如何完成這項設定：建立產品，確定你要優化的目標，再接入能承載這些數據的方式。
@@ -214,11 +216,11 @@ S2S 和 Partner Postback 做的是同一件事。如果兩者上報了同一筆�
 
 後台或聯盟平台在事件發生時傳送伺服器端 GET。v2 使用統一 canonical 事件入口，v1 保留五條由路徑決定事件的入口。平台已能提供所有必填欄位時可以透過設定接入；缺少穩定使用者 ID、業務發生時間或金額時，可能需要來源系統開發。
 
-先[選擇版本](/hk/tracking/postback/partner-postback#choose-version)，再確認產品目錄、Connection 及目標環境。一個 v2 接收 URL 在第三方平台仍可能需要多條事件模板。
+先[選擇版本](/hk/tracking/postback/overview#choose-version)，再確認產品目錄、Connection 及目標環境。一個 v2 接收 URL 在第三方平台仍可能需要多條事件模板。
 
 - **由誰實施：** 你本人，或你的聯盟平台管理員
 - **憑證：** postback 金鑰，透過 `k` 查詢參數發送
-- **指南：** [合作夥伴 Postback API](/hk/tracking/postback/partner-postback)
+- **指南：** [合作夥伴 Postback API](/hk/tracking/postback/overview)
 
 ### 3.4 AppsFlyer——App 安裝與應用內事件 {#_3-4-appsflyer-—-app-installs-and-in-app-events}
 
@@ -320,7 +322,7 @@ S2S 和 Partner Postback 做的是同一件事。如果兩者上報了同一筆�
 4. **確認 Tracker Status 顯示為 Active**——
    [步驟 5](/hk/tracking/web-tracker/install#step-5-verify-in-the-portal)
 5. **接入你的轉化方式**——[S2S](/hk/tracking/s2s/overview) 或
-   [Partner Postback](/hk/tracking/postback/partner-postback)
+   [Partner Postback](/hk/tracking/postback/overview)
 6. 如果你推廣 App，**接入 AppsFlyer**——[AppsFlyer 概述](/hk/mmp/appsflyer/overview)
 7. **上線你的第一個廣告系列**——[建立廣告系列](/hk/handbook/create-campaign)
 

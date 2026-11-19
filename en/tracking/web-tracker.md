@@ -1,48 +1,25 @@
 ---
-title: Web Tracker
-description: First-party JavaScript SDK for web funnels — captures sessions, click IDs, and conversion events for AdWave and DataPulse.
+title: "Web Tracker overview"
+description: "Use the AdWave Web Tracker to measure visits and browser conversions and capture the RevoSurge click ID."
 ---
 
-# Web Tracker
+# Web Tracker overview
 
-The **Web Tracker** is RevoSurge's first-party JavaScript SDK. Add it to your landing page and
-advertiser site to capture sessions and fire conversion events (register, deposit, FTD) as users
-move through your web funnel. Once your key events read **Live**, they become optimization targets
-for AdWave campaigns and power DataPulse reporting.
+Web Tracker is a JavaScript tool installed on your website. It records browser activity, such as page views and registrations, and captures the ad-click context used to connect those actions to campaigns.
 
-> **Not sure this is your method?** If you run a mobile App or have your own back-office, compare
-> all four options first — see [**Tracking Overview**](/en/tracking/overview).
+## How it works
 
-## When to use it
-- Web-only funnels (landing page + site) — no App, no back-office API
-- Or alongside [S2S](/en/tracking/s2s/overview) / [Partner Postback](/en/tracking/postback/partner-postback) to capture the **click-side** signal
+The tracker runs on your landing page. It captures browser activity and the ad-click context. Your developer connects methods such as register and login to completed actions.
 
-## How it attributes
-- Extracts **click_id** and **UTM** parameters from the landing URL
-- Persists `click_id` in a first-party cookie with a 30-day expiry, matching the
-  [attribution window](/en/tracking/core-concepts#_3-the-attribution-window) — a user who lands,
-  bounces, and returns days later still attributes
-- On iOS / Safari, cookies set by script are limited by ITP, so the cookie may expire sooner than
-  30 days
-- For AdWave-delivered traffic these parameters are captured automatically; for non-AdWave traffic,
-  make sure they're present in your destination URLs
+Browser events can be blocked or interrupted. Use S2S or Partner Postback for authoritative backend conversions when required by your campaign goal.
 
-> **Store the click ID at registration — don't rely on the cookie.** The cookie only lives in the
-> browser the user clicked in. When the user registers, read the click ID with
-> [`getClickid()`](/en/tracking/web-tracker/reference#getclickid), save it on their record in your
-> database, and send it back from your backend via [S2S](/en/tracking/s2s/overview) or
-> [Partner Postback](/en/tracking/postback/partner-postback). This is required, not optional — see
-> [How a conversion joins back to an ad](/en/tracking/core-concepts#_2-how-a-conversion-joins-back-to-an-ad).
+## Follow the guide
 
-## What you set up
-1. A **Product** in DataPulse — the container for tracking + campaigns (see [Tracking overview → Create your Product](/en/tracking/overview#_1-create-your-product))
-2. The tracker script + your key events — see **[Install](/en/tracking/web-tracker/install)**
-3. Verify events read **Live**, then point campaigns at them
+- [Install the Web Tracker](/en/tracking/web-tracker/install) — copy your Tracker ID, load and initialize the script, connect actions, then run the end-to-end test and troubleshoot any failures.
+- [Web Tracker SDK reference](/en/tracking/web-tracker/reference) — use the exact methods, parameters and event fields when implementing your handlers.
 
-> The Web Tracker handles the client side. For backend-confirmed / financial events (payments
-> settled, deposits finalized), use [S2S Server Events](/en/tracking/s2s/overview) — many advertisers
-> use both: Web Tracker for attribution context, S2S as the source of truth for conversions.
+## Before you start
 
-## Next
-- **[Install the Web Tracker](/en/tracking/web-tracker/install)** — add the script, send events, go Live
-- **[Web Tracker SDK Reference](/en/tracking/web-tracker/reference)** — every method and field
+Have the Product, registered domains/landing pages, access to the site or tag manager, stable player IDs and required conversion list ready. Use the same account ID as your other sources.
+
+**Next:** [Install the Web Tracker](/en/tracking/web-tracker/install).

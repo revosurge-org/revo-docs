@@ -16,21 +16,21 @@ export const en: DefaultTheme.Config = {
       items: [
         { text: 'Start here: launch your first campaign', link: '/en/handbook/' },
         { text: '1. Account and wallet', link: '/en/handbook/account-and-wallet' },
-        // Step 2 is the Tracking section, nested here unchanged. Its pages keep their /tracking and /mmp URLs.
         {
           text: '2. Connect tracking',
           link: '/en/tracking/overview',
           collapsed: true,
           items: [
-            { text: 'Overview · Which one to use?', link: '/en/tracking/overview' },
+            { text: 'Overview', link: '/en/tracking/overview' },
             { text: 'Core concepts', link: '/en/tracking/core-concepts' },
             {
               text: '1. Web Tracker',
               link: '/en/tracking/web-tracker',
               collapsed: true,
               items: [
-                { text: 'Install', link: '/en/tracking/web-tracker/install' },
-                { text: 'Web Tracker SDK Reference', link: '/en/tracking/web-tracker/reference' }
+                { text: 'Overview', link: '/en/tracking/web-tracker' },
+                { text: 'Install & test', link: '/en/tracking/web-tracker/install' },
+                { text: 'SDK reference', link: '/en/tracking/web-tracker/reference' }
               ]
             },
             {
@@ -39,12 +39,8 @@ export const en: DefaultTheme.Config = {
               collapsed: true,
               items: [
                 { text: 'Overview', link: '/en/mmp/appsflyer/overview' },
-                { text: 'Set up postbacks', link: '/en/mmp/appsflyer/postbacks' },
-                { text: 'Click forwarding', link: '/en/mmp/appsflyer/click-forwarding' },
-                { text: 'Macros', link: '/en/mmp/appsflyer/macros' },
-                { text: 'Partner permissions', link: '/en/mmp/appsflyer/permissions' },
-                { text: 'Integration validation', link: '/en/mmp/appsflyer/validation' },
-                { text: 'Handoff & go-live', link: '/en/mmp/appsflyer/handoff' }
+                { text: 'Set up & verify', link: '/en/mmp/appsflyer/setup-appsflyer' },
+                { text: 'Parameters & reporting', link: '/en/mmp/appsflyer/parameters-reporting' }
               ]
             },
             {
@@ -53,31 +49,34 @@ export const en: DefaultTheme.Config = {
               collapsed: true,
               items: [
                 { text: 'Overview', link: '/en/tracking/s2s/overview' },
-                {
-                  text: 'Server Events API (v3)',
-                  link: '/en/tracking/s2s/v3/server-events-api',
-                  items: [
-                    { text: 'API Reference', link: '/en/tracking/s2s/v3/server-events-api' },
-                    { text: 'Envelope & base properties', link: '/en/tracking/s2s/v3/mandatory-properties' },
-                    { text: 'Catalog & validation', link: '/en/tracking/s2s/v3/catalog-governance' },
-                    { text: 'Standard events', link: '/en/tracking/s2s/v3/events-standard' },
-                    { text: 'iGaming events', link: '/en/tracking/s2s/v3/events-igaming' },
-                    { text: 'Crypto events', link: '/en/tracking/s2s/v3/events-crypto' }
-                  ]
-                },
-                { text: 'Integration validation', link: '/en/tracking/s2s/validation' },
-                { text: 'Handoff & go-live', link: '/en/tracking/s2s/handoff' }
+                { text: 'Set up & test', link: '/en/tracking/s2s/setup-s2s' },
+                { text: 'API reference (v3)', link: '/en/tracking/s2s/v3/server-events-api' },
+                { text: 'Integration validation', link: '/en/tracking/s2s/validation' }
               ]
             },
             {
               text: '4. Partner Postback',
-              link: '/en/tracking/postback/partner-postback',
+              link: '/en/tracking/postback/overview',
               collapsed: true,
               items: [
-                { text: 'v2 canonical API', link: '/en/tracking/postback/partner-postback#v2-api' },
-                { text: 'v1 compatibility reference', link: '/en/tracking/postback/partner-postback#v1-compatibility' },
-                { text: 'Integration validation', link: '/en/tracking/postback/validation' },
-                { text: 'Migration, handoff & go-live', link: '/en/tracking/postback/handoff' }
+                { text: 'Overview', link: '/en/tracking/postback/overview' },
+                { text: 'Set up & test', link: '/en/tracking/postback/setup-postback' },
+                { text: 'API reference (v2)', link: '/en/tracking/postback/v2-api' },
+                { text: 'API reference (v1)', link: '/en/tracking/postback/v1-api' },
+                { text: 'Integration validation', link: '/en/tracking/postback/validation' }
+              ]
+            },
+            {
+              text: 'Events & fields',
+              link: '/en/tracking/events/choose-events',
+              collapsed: true,
+              items: [
+                { text: 'Choose your events', link: '/en/tracking/events/choose-events' },
+                { text: 'Common fields & identity', link: '/en/tracking/events/common-fields' },
+                { text: 'Standard events', link: '/en/tracking/events/events-standard' },
+                { text: 'iGaming events', link: '/en/tracking/events/events-igaming' },
+                { text: 'Crypto events', link: '/en/tracking/events/events-crypto' },
+                { text: 'Event availability & validation', link: '/en/tracking/events/catalog-validation' }
               ]
             }
           ]

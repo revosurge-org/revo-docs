@@ -16,7 +16,7 @@ Rules come in two tiers:
 - **Recommended** — the integration works, but optimization or support is degraded. **Launch is not blocked.**
 
 > [!NOTE]
-> Every setting listed in [Required settings at a glance](/en/mmp/appsflyer/overview#required-settings-at-a-glance) is required by RevoSurge. This page adds a second axis: which failures stop the integration from functioning, and which quietly cost you performance. A rule in the recommended tier is still a setting you are expected to fix — it just does not hold up a launch.
+> Use the [Wizard v4 setup guide](/en/mmp/appsflyer/setup-appsflyer) to confirm settings for your app and PID. Use this page to diagnose configuration and postback issues.
 
 Each rule has a **stable ID**. RevoSurge dashboard errors reference these IDs and link to the matching resolution below, and the IDs are identical in every language of this page.
 
@@ -41,8 +41,8 @@ Each rule has a **stable ID**. RevoSurge dashboard errors reference these IDs an
 | ID | Rule | What it costs |
 |---|---|---|
 | [AF-O-01](#af-o-01) | In-app event postback window is Lifetime (floor: 6 months) | Later-funnel events fall outside the window and never train the model |
-| [AF-O-02](#af-o-02) | Default postbacks send all media sources, including organic | Optimization runs against RevoSurge's own output, with no baseline to compare against |
-| [AF-O-03](#af-o-03) | In-app postbacks send all media sources, including organic | Same, for post-install events |
+| [AF-O-02](#af-o-02) | Default postbacks use the agreed sending scope | Install data can be missing from reporting or cover a different population |
+| [AF-O-03](#af-o-03) | In-app postbacks use the agreed sending scope | Mapped events can be missing or cover a different population |
 | [AF-O-04](#af-o-04) | View-through attribution is on, with a 24-hour view-through lookback | Nothing today — configuration hygiene; see the resolution |
 | [AF-O-05](#af-o-05) | RevoSurge holds the three aggregate read permissions | Every discrepancy becomes an exchange of screenshots |
 | [AF-O-06](#af-o-06) | RevoSurge holds the two configure permissions | Every fix routes through your team as written instructions |
@@ -123,15 +123,13 @@ Product-level, set once per product. Unset — or set to a different MMP — and
 
 **Fix:** RevoSurge tile → set the **in-app event postback window** to **Lifetime**. If your account cannot select it, the floor is **6 months**.
 
-### AF-O-02 — Default postbacks are restricted to this partner {#af-o-02}
+### AF-O-02 — Default postbacks use the wrong scope {#af-o-02}
 
-**Fix:** RevoSurge tile → **Default postbacks** → set the sending option on **Install** and **Re-engagement** to **all media sources, including organic** (AppsFlyer wording: events attributed to any partner *or* organic).
+**Fix:** In the RevoSurge tile, open **Default postbacks** and confirm the supported scope for the app and PID with your Account Manager. The Wizard v4 example shows **This partner only** as read-only.
 
-Restricting postbacks to RevoSurge-attributed events leaves our models optimizing against their own output, with no unattributed or organic baseline to separate the volume we caused from the volume that would have happened anyway.
+### AF-O-03 — In-app postbacks use the wrong scope {#af-o-03}
 
-### AF-O-03 — In-app postbacks are restricted to this partner {#af-o-03}
-
-**Fix:** Same screen, in-app event section — set the **sending option** to **all media sources, including organic**.
+**Fix:** In **In-app event postbacks**, check the **for users from** selection on each mapped event. **This partner only** sends RevoSurge-attributed events. Use the scope agreed with your Account Manager and compare the same event population in reports.
 
 ### AF-O-04 — View-through attribution is off {#af-o-04}
 

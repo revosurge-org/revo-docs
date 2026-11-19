@@ -5,7 +5,7 @@ description: 分版本的 v2／v1 Postback 校验规则、负例探测、重试�
 
 # 合作方 Postback 集成校验
 
-按平台实际调用的 API 版本校验。[v2 canonical 事件](/cn/tracking/postback/partner-postback#v2-api)使用 `PB2-*`；下方已有 `PB-R-*` / `PB-O-*` 保留 v1 范围及历史主题。必需规则阻断上线，建议规则记录数据质量和对账缺口。
+按平台实际调用的 API 版本校验。[v2 canonical 事件](/cn/tracking/postback/v2-api#v2-api)使用 `PB2-*`；下方已有 `PB-R-*` / `PB-O-*` 保留 v1 范围及历史主题。必需规则阻断上线，建议规则记录数据质量和对账缺口。
 
 ## v2 集成校验 {#v2-validation}
 
@@ -43,7 +43,7 @@ description: 分版本的 v2／v1 Postback 校验规则、负例探测、重试�
 
 保留脱敏请求、实际响应、来源 ID、`requestId` 和实际 `catalogVersion`。技术负责人还需分别确认 dryrun／拒收无业务发布，并读回匹配的 test/live 消息。仅有审计记录不够。发布失败／超时行为应在受控故障测试中验证，不在共享生产环境制造故障。
 
-v2 以[响应与重试矩阵](/cn/tracking/postback/partner-postback#v2-responses)为准。目录首次加载前不可用返回 `503`；后续刷新失败保留上次有效快照。目录契约冲突也返回 `503`，由 RevoSurge 排查，不能视为校验成功。
+v2 以[响应与重试矩阵](/cn/tracking/postback/v2-api#v2-responses)为准。目录首次加载前不可用返回 `503`；后续刷新失败保留上次有效快照。目录契约冲突也返回 `503`，由 RevoSurge 排查，不能视为校验成功。
 
 ## v1 集成校验 {#v1-validation}
 

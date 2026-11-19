@@ -1,81 +1,63 @@
 ---
-title: Set up your account and wallet
-description: Create your RevoSurge account and fund your wallet through your Account Manager before you launch.
+title: "Set up your account and wallet"
+description: "Create your AdWave account, fund your wallet and review balances and deposits in Billing."
 ---
 
 # Set up your account and wallet
 
-**For:** New self-serve advertisers and the person who manages budgets.
+**For:** Media buyers, marketing managers and finance managers.
 
-Before you can launch, you need an account and a funded **wallet**, the balance your campaigns spend from.
-
-<nav class="article-toc" aria-label="In this article">
-<p class="article-toc-title">In this article</p>
-
-- [1. Create your account](#_1-create-your-account)
-- [2. Fund your wallet](#_2-fund-your-wallet)
-- [3. Keep your balance topped up](#_3-keep-your-balance-topped-up)
-
-</nav>
+Create your account, fund its wallet and keep enough available balance for your campaigns.
 
 ## 1. Create your account
 
-Go to [adwave.revosurge.com](https://adwave.revosurge.com) and click **Sign up**. Sign-up has four steps:
+Go to [adwave.revosurge.com](https://adwave.revosurge.com) and select **Sign up**. Complete **Email → Code → Password → Detail**:
 
-![AdWave sign-up: Email, Code, Password, Detail](/img/handbook/signup-steps.jpg)
+1. Enter your work email, review and accept **RevoSurge T&C & Privacy Policy**, then select **Next**.
+2. Enter the one-time code sent to your email.
+3. Create your password.
+4. Complete your account details.
 
-1. **Email:** enter your work email, tick **Read and agreed RevoSurge T&C & Privacy Policy**, and click **Next**.
-2. **Code:** enter the one-time code (OTP) sent to your email.
-3. **Password:** create your password.
-4. **Detail:** fill in your details. <!-- TODO: list the Detail fields (capture after a test sign-up) -->
-
-When you finish, you land on the AdWave home page, with the onboarding checklist at the top.
-
-::: info One email, one account
-Each account has **one login email**. You cannot add team members yet, even though the account menu shows **Manage Members**, so decide who owns the login before you sign up. Use a shared work address (for example `marketing@yourbrand.com`) rather than a personal one if several people will run campaigns.
-:::
-
-**Done when:** you can log in and see the onboarding checklist.
+**Done when:** you can sign in and see the AdWave home page.
 
 ## 2. Fund your wallet
 
-Deposits are handled by your **Account Manager**. There is no self-serve payment in the platform yet.
+The current Billing page directs you to your **Account Manager** to add funds. Send them your account email and the amount you want to deposit, then follow their payment instructions.
 
-1. Work out your test budget: **daily budget × test days**. The [launch worksheet](./#_2-4-ad-format-bid-and-budget) shows how to choose a daily budget.
-2. Contact your Account Manager with your account email and the amount you want to deposit.
-3. Follow the payment instructions they send you.
-4. Once the payment settles, check your balance. It shows at the top right of the **Campaign** page:
+After settlement, open the **account menu** at the bottom left and select **Billing**. Billing applies across the account; Product switching is unavailable on this page.
 
-![Balance and Frozen Budget at the top right of the Campaign page](/img/handbook/wallet-balance.png)
+![Open Billing from the account menu](/img/handbook/wizard-v4/account-menu.png)
 
-For the full picture, click your **account icon** at the bottom left, then **Billing**. The menu also shows your **Remaining Balance**.
+### Check your funds
 
-![Account menu: Account Setting, Billing with Remaining Balance, Manage Products, Manage Members, Language, Logout](/img/handbook/account-menu.png)
+| Field                        | Meaning                                                                                                   |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Current Balance**          | Available funds your campaigns can spend                                                                  |
+| **Campaign Budget (Frozen)** | Funds allocated to running or scheduled campaigns, held until the campaign ends or its budget is released |
+| **Total Funds**              | Current Balance plus Campaign Budget (Frozen)                                                             |
 
-![Account Setting — Billing: Current Balance, Campaign Budget (Frozen), Total Funds and Transaction History](/img/handbook/billing.png)
+Use **Current Balance** when checking how much is available to spend; Total Funds includes the frozen allocation.
 
-| Field | Meaning |
-| --- | --- |
-| **Current Balance** | The funds available to spend |
-| **Campaign Budget (Frozen)** | Funds held for your scheduled and live campaigns. They are released when a campaign ends or its budget is released |
-| **Total Funds** | Current Balance + Campaign Budget (Frozen) |
+![Current Billing balances; sensitive values blurred](/img/handbook/wizard-v4/billing.png)
 
-<!-- TODO (Product): the 2026-09-28 screenshots disagree. The Campaign page shows $1,280.00 balance / $400 frozen, but Billing shows Frozen "--" and Total Funds $1,280.00. Confirm the Total Funds formula and when frozen funds appear on Billing. -->
-| **Transaction History** | Every deposit (**Deposit**, e.g. *Manual Credit* from your Account Manager) and every charge (**Deduct**, *AdWave campaign spend*). Use the download icon to export it |
+### Review Billing Information
 
-AdWave shows an alert when your balance drops below 5,000. <!-- TODO (Product): the alert says 'Click on "+" to top up', but deposits go through the Account Manager only. Confirm what "+" does, and the currency of the 5,000 threshold. -->
+Check **Billing Email** and **Billing Address**. Use the **Edit** icon beside either field if it needs correcting.
 
-::: warning Deposits are non-refundable
-Deposit what you plan to spend in your first test period. Your wallet is shared between AdWave and DataPulse. <!-- TODO: confirm refund policy is still current -->
-:::
+![Billing Information; email and address values blurred](/img/handbook/wizard-v4/billing-information.png)
 
-**Done when:** your balance shows the deposit.
+### Find the deposit in All Billing Activities
+
+Use **All Categories**, **All Status**, the date range or **Search by activity ID** to locate a record. Review its **Activity ID**, **Time (UTC)**, **Category**, **Description**, **Amount**, **Payment Method** and **Status**. The current activity list includes deposits and campaign spend; check both the category and status when reconciling funds.
+
+Use **Export transactions** at the top right of the activities panel when you need an export.
+
+![All Billing Activities filters and export control](/img/handbook/wizard-v4/billing-transactions.png)
+
+**Done when:** the settled deposit appears in your available balance and the matching billing activity shows the expected amount and status. If it does not, send your Account Manager the payment reference and relevant activity ID.
 
 ## 3. Keep your balance topped up
 
-Campaigns stop delivering when the balance runs out. If a campaign stops mid-test, it has to learn again when it restarts.
+Check **Current Balance** whenever you review your campaigns. Estimate the remaining spend against your planned daily budget and arrange the next deposit with your Account Manager before the available balance runs out.
 
-- ✅ Check your balance when you check your campaigns
-- ✅ Ask your Account Manager to top up when you have about **3 days** of spend left <!-- TODO (Ops): confirm settlement time and recommended buffer -->
-
-**Next:** [Connect tracking](/en/tracking/overview)
+**Next:** [Connect tracking](/en/tracking/overview).

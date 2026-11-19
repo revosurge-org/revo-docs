@@ -5,7 +5,7 @@ description: 分版本的 v2／v1 Postback 驗證規則、反例探測、重試�
 
 # 合作夥伴 Postback 整合驗證
 
-按平台實際呼叫的 API 版本驗證。[v2 canonical 事件](/hk/tracking/postback/partner-postback#v2-api)使用 `PB2-*`；下方現有 `PB-R-*` / `PB-O-*` 保留 v1 範圍及歷史主題。必要規則阻擋上線，建議規則記錄資料品質及對帳缺口。
+按平台實際呼叫的 API 版本驗證。[v2 canonical 事件](/hk/tracking/postback/v2-api#v2-api)使用 `PB2-*`；下方現有 `PB-R-*` / `PB-O-*` 保留 v1 範圍及歷史主題。必要規則阻擋上線，建議規則記錄資料品質及對帳缺口。
 
 ## v2 整合驗證 {#v2-validation}
 
@@ -43,7 +43,7 @@ description: 分版本的 v2／v1 Postback 驗證規則、反例探測、重試�
 
 保留遮罩請求、實際回應、來源 ID、`requestId` 及實際 `catalogVersion`。技術負責人還需分別確認 dryrun／拒收無業務發布，並讀回匹配的 test/live 訊息。僅有稽核記錄不夠。發布失敗／逾時行為應在受控故障測試中驗證，不在共用生產環境製造故障。
 
-v2 以[回應與重試矩陣](/hk/tracking/postback/partner-postback#v2-responses)為準。目錄首次載入前不可用回傳 `503`；後續更新失敗保留上次有效快照。目錄契約衝突也回傳 `503`，由 RevoSurge 排查，不能視為驗證成功。
+v2 以[回應與重試矩陣](/hk/tracking/postback/v2-api#v2-responses)為準。目錄首次載入前不可用回傳 `503`；後續更新失敗保留上次有效快照。目錄契約衝突也回傳 `503`，由 RevoSurge 排查，不能視為驗證成功。
 
 ## v1 整合驗證 {#v1-validation}
 

@@ -5,6 +5,8 @@ description: 分步操作——找到你的追蹤器 ID、安裝 Web 追蹤器�
 
 # 安裝 Web 追蹤器
 
+應用推廣請同時檢視 [AppsFlyer 設定與驗證](/hk/mmp/appsflyer/setup-appsflyer)。在 **Verify Your Source** 核對實際事件接收，並在 **Campaign conversion events** 單獨核對正式轉化。
+
 **對象：** 廣告主與 UA 經理（步驟 1、5–6），開發者與追蹤工程師（步驟 2–4）
 
 Web 追蹤器是一個輕量級 JavaScript SDK，將事件從你的網站即時傳輸到
@@ -245,7 +247,7 @@ SDK 提供的方法不止這些，但後台的 **Event Stream** 針對每個已�
 
 當關鍵事件已在流入、且 Tracker Status 顯示為 **Active** 時：
 
-- ✅ 接入 [S2S](/hk/tracking/s2s/overview) 或 [Partner Postback](/hk/tracking/postback/partner-postback)，讓充值在伺服器端計算
+- ✅ 接入 [S2S](/hk/tracking/s2s/overview) 或 [Partner Postback](/hk/tracking/postback/overview)，讓充值在伺服器端計算
 - ✅ 如果你推廣流動 App，接入 [AppsFlyer](/hk/mmp/appsflyer/overview)
 - ✅ 上線你的第一個 [AdWave 廣告系列](/hk/handbook/create-campaign)
 

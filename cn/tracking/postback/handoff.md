@@ -26,7 +26,7 @@ description: Partner Postback 版本选择、字段映射、dryrun/test/live 验
 | 隔离 test | 移除 dryrun，使用 `testmode=1` 和独立合成来源 ID | `200 accepted`、`stored=true`、`confirmed`；读回匹配的隔离消息，逐字段核对 |
 | 受控 live | 目标就绪确认后，移除两个模式参数，触发约定的来源事件 | 同样的确认结果和匹配的 live 消息；若上线范围包含下游可查询及归因，另行核验 |
 
-使用 [API 示例](/cn/tracking/postback/partner-postback#v2-examples)和[负例探测](/cn/tracking/postback/validation#v2-probes)。覆盖 `register`、约定的原币 `deposit` 或 `trade`、`false`、真实零值，以及目录允许的独立手续费。核对含 `+`、`&`、`%` 和 Unicode 的解码值。检查平台实际出站请求，不能只看 relay 提前返回的 `200`。
+使用 [API 示例](/cn/tracking/postback/v2-api#v2-examples)和[负例探测](/cn/tracking/postback/validation#v2-probes)。覆盖 `register`、约定的原币 `deposit` 或 `trade`、`false`、真实零值，以及目录允许的独立手续费。核对含 `+`、`&`、`%` 和 Unicode 的解码值。检查平台实际出站请求，不能只看 relay 提前返回的 `200`。
 
 每条通过的测试保留：来源 case/run 及合成／真实业务标记、脱敏展开 URL、响应、来源事件／交易 ID、`requestId`、`catalogVersion`、实际目的流和消息读回引用。技术负责人记录 Kafka topic/partition/offset 及业务／审计关联字段，使用支持精确十进制的工具核对金额。共享证据中不包含 `k`。
 
@@ -53,7 +53,7 @@ description: Partner Postback 版本选择、字段映射、dryrun/test/live 验
 
 交付所选版本／环境、产品／Connection ID、平台／版本及事件／模板数量、字段核对表与剩余缺口、脱敏模板、各阶段验证记录、重试／模式设置、切换／回退边界，以及下游和真实客户验收责任人。合成 fixture 的技术验收不代表真实客户业务验收完成。
 
-密钥轮换、产品关联／目录变化、平台升级或模板修改后重跑探测。新增事件即使复用接收路径，也须启用契约并验证来源模板。故障排查遵循 [v2 响应矩阵](/cn/tracking/postback/partner-postback#v2-responses)。
+密钥轮换、产品关联／目录变化、平台升级或模板修改后重跑探测。新增事件即使复用接收路径，也须启用契约并验证来源模板。故障排查遵循 [v2 响应矩阵](/cn/tracking/postback/v2-api#v2-responses)。
 
 ## v1 交付与上线 {#v1-handoff}
 
@@ -177,6 +177,6 @@ dry run 会计入你的限流额度，因此请用脚本执行这些探测，而
 
 ### 下一步 {#next-steps}
 
-- [合作方 Postback API](/cn/tracking/postback/partner-postback)——完整参数列表与响应语义
+- [合作方 Postback API](/cn/tracking/postback/overview)——完整参数列表与响应语义
 - [集成校验](/cn/tracking/postback/validation)——完整规则列表
 - [追踪概述](/cn/tracking/overview)——合作方 Postback 如何与其他三种方式配合

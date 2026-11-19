@@ -143,7 +143,7 @@ Web 追踪器会替你捕获点击。**S2S 不会** —— 你的后台只知道
 
 ### 实际意味着什么 {#what-this-means-in-practice}
 
-- **使用 Partner Postback 时**，发送全局唯一且稳定的来源 `event_id`，重试复用。参数顺序不改变排序 raw 的兜底哈希，业务值变化可能改变；v1/v2 哈希 framing 不同，双发须在下游对账。参见[分版本 API 参考](/cn/tracking/postback/partner-postback#v2-deduplication)。
+- **使用 Partner Postback 时**，发送全局唯一且稳定的来源 `event_id`，重试复用。参数顺序不改变排序 raw 的兜底哈希，业务值变化可能改变；v1/v2 哈希 framing 不同，双发须在下游对账。参见[分版本 API 参考](/cn/tracking/postback/v2-api#v2-deduplication)。
 - **使用 S2S 时**，`deposit`、`withdraw` 和 `bet` 可以安全重试，因为 `context.transaction_id` 能识别它们。其他事件**不具备幂等性** —— 只在请求确实失败时才重试，绝不要预防性地重试。
 
 ### 两种方式上报同一个转化时 {#when-two-methods-report-the-same-conversion}
@@ -191,5 +191,5 @@ Web 追踪器会替你捕获点击。**S2S 不会** —— 你的后台只知道
 - [追踪概述](/cn/tracking/overview) —— 四种方式，以及你需要哪种组合
 - [S2S 集成校验](/cn/tracking/s2s/validation) · [Partner Postback 集成校验](/cn/tracking/postback/validation) ——
   上线前检查的规则
-- [标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) ——
+- [标准事件](/cn/tracking/events/events-standard) · [iGaming 事件](/cn/tracking/events/events-igaming) ——
   事件目录

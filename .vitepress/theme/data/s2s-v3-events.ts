@@ -59,7 +59,12 @@ const f = (
 
 // Base properties inherited by every event. `cuid`/`ip` requirement can be
 // downgraded per event (e.g. app lifecycle, bet).
-const base = (name: string, cuid: Req = 'required', ip: Req = 'required'): FieldDef[] => [
+const base = (
+  name: string,
+  cuid: Req = 'required',
+  ip: Req = 'required',
+  ipDescription = tri('End-user IP (IPv4 or IPv6).', '终端用户 IP（IPv4 或 IPv6）。', '終端用戶 IP（IPv4 或 IPv6）。')
+): FieldDef[] => [
   f('event', 'envelope', 'String', 'required', name,
     tri(`Fixed \`${name}\`. Must be a registered event name.`, `固定为 \`${name}\`，必须是已登记的事件名。`, `固定為 \`${name}\`，必須是已登記的事件名。`)),
   f('timestamp', 'envelope', 'Number', 'required', TS_SAMPLE,
@@ -70,8 +75,7 @@ const base = (name: string, cuid: Req = 'required', ip: Req = 'required'): Field
     tri('Ad click ID for attribution.', '用于归因的广告点击 ID。', '用於歸因的廣告點擊 ID。')),
   f('anonymous_id', 'identity', 'String', 'optional', 'anon_7f3a',
     tri('Pre-registration anonymous ID; used for app-lifecycle stitching before client_user_id exists.', '注册前的匿名 ID；在 client_user_id 出现前用于 App 生命周期身份缝合。', '註冊前的匿名 ID；在 client_user_id 出現前用於 App 生命週期身份縫合。')),
-  f('ip_address', 'context', 'String', ip, '203.0.113.1',
-    tri('End-user IP (IPv4 or IPv6).', '终端用户 IP（IPv4 或 IPv6）。', '終端用戶 IP（IPv4 或 IPv6）。')),
+  f('ip_address', 'context', 'String', ip, '203.0.113.1', ipDescription),
 ]
 
 const CAT: Record<string, I18n> = {
@@ -274,6 +278,14 @@ export const s2sV3Events: EventDef[] = [
     f('currency', 'context', 'String', 'required', 'USD', D_CURRENCY2),
     f('is_crypto', 'context', 'Boolean', 'suggested', false, D_CRYPTO),
   ]),
+  def('withdraw_rejected', 'igaming', 'financial', [
+    f('currency', 'context', 'String', 'required', 'USD', tri('ISO 4217 fiat currency.', 'ISO 4217 法币。', 'ISO 4217 法幣。')),
+    f('transaction_id', 'context', 'String', 'required', 'withdrawal_2345', tri('Original rejected withdrawal request ID. Reuse it on retries.', '被拒绝的原始提款申请 ID，重试时保持不变。', '遭拒絕的原始提款申請 ID，重試時保持不變。')),
+    f('amount', 'context', 'Number', 'required', 50, tri('Amount requested.', '申请提款金额。', '申請提款金額。'), { monetary: true }),
+    f('withdrawal_method', 'context', 'String', 'required', 'bank_transfer', tri('Requested payment method.', '申请的提款方式。', '申請的提款方式。'), { enumValues: ['card', 'bank_transfer', 'ewallet', 'crypto', 'voucher', 'other'] }),
+    f('rejection_reason', 'context', 'String', 'required', 'wagering_not_met', tri('Final rejection reason. Use manual_review only after rejection.', '最终拒绝原因。仅在已拒绝后使用 manual_review。', '最終拒絕原因。僅在已拒絕後使用 manual_review。'), { enumValues: ['bonus_terms_violation', 'wagering_not_met', 'multi_account', 'suspected_fraud', 'kyc_required', 'payment_risk', 'aml_flag', 'manual_review', 'other'] }),
+    f('rejection_source', 'context', 'String', 'optional', 'operations', tri('System or team that reported the rejection.', '报告拒绝的系统或团队。', '回報拒絕的系統或團隊。'), { enumValues: ['risk_engine', 'operations', 'payment_provider', 'other'] }),
+  ], base('withdraw_rejected', 'required', 'required', tri('End-user IP from the original withdrawal request.', '原始提款申请的终端用户 IP。', '原始提款申請的終端用戶 IP。'))),
   def('bet', 'igaming', 'gaming', [
     f('transaction_id', 'context', 'String', 'required', 'bet_554433', tri('Unique bet / ticket ID (PK).', '唯一投注/票据 ID（主键）。', '唯一投注/票據 ID（主鍵）。')),
     f('game_type', 'context', 'String', 'required', 'slot', tri('Canonical game type.', '规范化游戏类型。', '規範化遊戲類型。'), { enumValues: ['slot', 'live_casino', 'sportsbook', 'fishing', 'table_games', 'poker', 'lottery', 'esports', 'crash'] }),
@@ -290,38 +302,17 @@ export const s2sV3Events: EventDef[] = [
     f('is_free', 'context', 'Boolean', 'suggested', false, tri('Free-bet token (excluded from LTV).', '免费投注券（不计入 LTV）。', '免費投注券（不計入 LTV）。')),
     f('is_crypto', 'context', 'Boolean', 'suggested', false, D_CRYPTO),
   ], base('bet', 'required', 'suggested')),
-  def('bonus_offered', 'igaming', 'bonus_lifecycle', [
-    f('bonus_id', 'context', 'String', 'required', 'bns_9', tri('Unique bonus instance ID (PK; consistent across lifecycle).', '唯一奖金实例 ID（主键；贯穿生命周期保持一致）。', '唯一獎金實例 ID（主鍵；貫穿生命週期保持一致）。')),
-    f('bonus_type', 'context', 'String', 'required', 'welcome', tri('Bonus type.', '奖金类型。', '獎金類型。'), { enumValues: ['welcome', 'reload', 'cashback', 'freespin', 'promo_code', 'tournament', 'voucher', 'promcash', 'other'] }),
-    f('bonus_value_max', 'context', 'Number', 'required', 50.0, tri('Max grantable amount.', '最大可授予金额。', '最大可授予金額。')),
-    f('currency', 'context', 'String', 'required', 'USD', tri('Currency.', '货币。', '貨幣。')),
-    f('wagering_multiplier', 'context', 'Number', 'required', 30, tri('Wagering multiplier (30 = 30x; 0 = none).', '流水倍数（30 = 30 倍；0 = 无）。', '流水倍數（30 = 30 倍；0 = 無）。')),
-    f('valid_until', 'context', 'Number', 'required', 1718880000000, tri('UTC ms, offer expiry.', 'UTC 毫秒，优惠到期时间。', 'UTC 毫秒，優惠到期時間。')),
-    f('delivery_channel', 'context', 'String', 'required', 'auto_grant', tri('How the offer was delivered.', '优惠下发渠道。', '優惠下發渠道。'), { enumValues: ['auto_grant', 'email', 'in_app', 'push', 'promo_code', 'sms'] }),
-    f('is_crypto', 'context', 'Boolean', 'suggested', false, D_CRYPTO),
-  ]),
   def('bonus_claimed', 'igaming', 'bonus_lifecycle', [
-    f('bonus_id', 'context', 'String', 'required', 'bns_9', tri('Matches bonus_offered (FK).', '与 bonus_offered 匹配（外键）。', '與 bonus_offered 匹配（外鍵）。')),
-    f('bonus_value_granted', 'context', 'Number', 'required', 50.0, tri('Actual amount granted (≤ bonus_value_max).', '实际授予金额（≤ bonus_value_max）。', '實際授予金額（≤ bonus_value_max）。')),
-    f('currency', 'context', 'String', 'required', 'USD', tri('Must match offered.', '必须与 offered 一致。', '必須與 offered 一致。')),
-    f('wagering_requirement', 'context', 'Number', 'required', 1500.0, tri('= bonus_value_granted × wagering_multiplier.', '= bonus_value_granted × wagering_multiplier。', '= bonus_value_granted × wagering_multiplier。')),
-    f('is_crypto', 'context', 'Boolean', 'suggested', false, D_CRYPTO),
-  ]),
-  def('bonus_completed', 'igaming', 'bonus_lifecycle', [
-    f('bonus_id', 'context', 'String', 'required', 'bns_9', tri('FK.', '外键。', '外鍵。')),
-    f('total_wagered', 'context', 'Number', 'required', 1500.0, tri('Final wagered at completion.', '完成时的最终流水。', '完成時的最終流水。')),
-    f('wagering_requirement', 'context', 'Number', 'required', 1500.0, tri('Same as claimed.', '与 claimed 相同。', '與 claimed 相同。')),
-    f('currency', 'context', 'String', 'required', 'USD', tri('Must match claimed.', '必须与 claimed 一致。', '必須與 claimed 一致。')),
-    f('time_to_complete_minutes', 'context', 'Number', 'required', 240, tri('Minutes from bonus_claimed.', '从 bonus_claimed 起的分钟数。', '從 bonus_claimed 起的分鐘數。')),
-    f('is_crypto', 'context', 'Boolean', 'suggested', false, D_CRYPTO),
-  ]),
-  def('bonus_cashed_out', 'igaming', 'bonus_lifecycle', [
-    f('bonus_id', 'context', 'String', 'required', 'bns_9', tri('FK.', '外键。', '外鍵。')),
-    f('cashout_amount', 'context', 'Number', 'required', 50.0, tri('Amount moved to real-money wallet.', '转入真实余额钱包的金额。', '轉入真實餘額錢包的金額。')),
-    f('original_bonus_value', 'context', 'Number', 'required', 50.0, tri('bonus_value_granted from claim.', '来自 claim 的 bonus_value_granted。', '來自 claim 的 bonus_value_granted。')),
-    f('currency', 'context', 'String', 'required', 'USD', tri('Must match claimed.', '必须与 claimed 一致。', '必須與 claimed 一致。')),
-    f('time_to_cashout_minutes', 'context', 'Number', 'required', 300, tri('Minutes from bonus_claimed.', '从 bonus_claimed 起的分钟数。', '從 bonus_claimed 起的分鐘數。')),
-    f('is_crypto', 'context', 'Boolean', 'suggested', false, D_CRYPTO),
+    f('currency', 'context', 'String', 'required', 'USD', tri('ISO 4217 fiat currency.', 'ISO 4217 法币。', 'ISO 4217 法幣。')),
+    f('bonus_id', 'context', 'String', 'required', 'bns_9', tri('ID of the individual credited bonus.', '实际入账的单笔奖金 ID。', '實際入帳的單筆獎金 ID。')),
+    f('bonus_type', 'context', 'String', 'required', 'deposit_match', tri('Type of bonus credited.', '实际入账的奖金类型。', '實際入帳的獎金類型。'), { enumValues: ['welcome', 'deposit_match', 'no_deposit', 'free_spins', 'cashback', 'reload', 'referral', 'vip', 'other'] }),
+    f('bonus_value_granted', 'context', 'Number', 'required', 50, tri('Value actually credited.', '实际入账金额。', '實際入帳金額。'), { monetary: true }),
+    f('wagering_requirement', 'context', 'Number', 'optional', 1500, tri('Eligible-wagering target calculated under the bonus terms. Required if applicable.', '按奖金条款计算的有效流水目标，适用时必填。', '按獎金條款計算的有效流水目標，適用時必填。')),
+    f('wagering_multiplier', 'context', 'Number', 'optional', 30, tri('Multiplier in the bonus terms.', '奖金条款中的流水倍数。', '獎金條款中的流水倍數。')),
+    f('bonus_expiry_time', 'context', 'String', 'optional', '2026-12-31T23:59:59Z', tri('Expiry in UTC ISO 8601, required if applicable.', 'UTC ISO 8601 到期时间，适用时必填。', 'UTC ISO 8601 到期時間，適用時必填。')),
+    f('claim_channel', 'context', 'String', 'optional', 'auto_grant', tri('Channel through which the bonus was credited.', '奖金入账渠道。', '獎金入帳管道。'), { enumValues: ['in_app', 'email', 'push', 'sms', 'promo_code', 'affiliate', 'auto_grant'] }),
+    f('deposit_transaction_id', 'context', 'String', 'optional', 'deposit_1234', tri('Successful deposit ID, required when that deposit triggers the bonus.', '触发奖金的成功充值 ID，适用时必填。', '觸發獎金的成功充值 ID，適用時必填。')),
+    f('deposit_amount', 'context', 'Number', 'optional', 100, tri('Amount of the successful deposit that triggered this bonus.', '触发本次奖金的成功充值金额。', '觸發本次獎金的成功充值金額。'), { monetary: true }),
   ]),
   // Crypto event names may overlap iGaming; preserve their preset-specific fields.
   ...cryptoEvents.map(event => ({ ...event, fields: [...base(event.name), ...event.fields] })),

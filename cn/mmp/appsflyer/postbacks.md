@@ -81,29 +81,25 @@ iOS 应用请把 **Advanced Privacy**——以及账户中若显示 **Aggregated
 > [!NOTE]
 > RevoSurge 目前**只转发点击**，因此这个开关不会改变你当前 RevoSurge 流量的归因方式——RevoSurge 的归因是基于点击的。把它放进必需配置，是为了之后不必再回来动这个 tile。如果你在核对集成时发现 RevoSurge 没有任何浏览归因安装，这是预期结果，不是配置错误。
 
-## 6. 默认 postback——所有媒体渠道，包含自然量
+<a id="_6-默认-postback所有媒体渠道包含自然量"></a>
+<a id="_6-預設-postback-—-所有媒體渠道包含自然量"></a>
 
-在 **Default postbacks** 区域开启 **Install** 与 **Re-engagement**，并把两者的发送范围都设为**所有媒体渠道，包含自然量**（AppsFlyer 的措辞是"归因给任意合作伙伴*或*自然量的事件"）。
+## 6. 默认安装回传
 
-| Postback | 是否开启 | 发送范围 |
-|---|---|---|
-| Install | 是 | 所有媒体渠道，包含自然量 |
-| Re-engagement | 是 | 所有媒体渠道，包含自然量 |
-
-这是要求，不是偏好。我们的模型需要一张完整的图——归因给 RevoSurge 的、归因给其他合作伙伴的、以及自然量——才能把"我们带来的量"与"本来也会发生的量"区分开。把 postback 限制在"仅归因给本合作伙伴"，等于让我们拿自己的输出当优化依据。
+在 **Default postbacks** 核对 **Install** 是否开启，并向客户经理确认应用和 PID 支持的发送范围。Wizard v4 示例的 **This partner only** 为只读。再营销回传按广告系列需求另行确认。参见[设置并验证 AppsFlyer](/cn/mmp/appsflyer/setup-appsflyer)。
 
 ## 7. 应用内事件 postback
 
 1. 把**应用内事件 postback** 打到 **ON**。
 2. 把**应用内事件 postback 窗口**设为 **Lifetime（终身）**。如果你的账户无法选 Lifetime，下限是 **6 个月**——再短就会截断我们用于学习的安装后行为。
-3. 把**发送范围**设为**所有媒体渠道，包含自然量**，与默认 postback 一致。
+3. 使用与客户经理约定的发送范围。**This partner only** 只转发归因给 RevoSurge 的事件。
 4. 按你准备好的清单映射事件。逐个选择 AppsFlyer 事件，映射到它对应的 RevoSurge 合作方事件名。或者，如果你希望把整条事件流都转发过来，也可以使用 **Send all events**。
 
 | 设置项 | 必需值 |
 |---|---|
 | 应用内事件 postback | ON |
 | Postback 窗口 | Lifetime（下限 6 个月） |
-| 发送范围 | 所有媒体渠道，包含自然量 |
+| 发送范围 | 以应用和 PID 支持的约定范围为准 |
 | 事件映射 | 清单中的每个漏斗事件，或 Send all events |
 
 > [!WARNING]
