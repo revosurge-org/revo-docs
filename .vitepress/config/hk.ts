@@ -16,21 +16,21 @@ export const hk: DefaultTheme.Config = {
       items: [
         { text: '由這裡開始：上線你的第一個廣告系列', link: '/hk/handbook/' },
         { text: '1. 帳戶與錢包', link: '/hk/handbook/account-and-wallet' },
-        // Step 2 is the Tracking section, nested here unchanged. Its pages keep their /tracking and /mmp URLs.
         {
           text: '2. 接入追蹤',
           link: '/hk/tracking/overview',
           collapsed: true,
           items: [
-            { text: '概述 · 我該用哪個？', link: '/hk/tracking/overview' },
+            { text: '概述', link: '/hk/tracking/overview' },
             { text: '核心概念', link: '/hk/tracking/core-concepts' },
             {
               text: '1. Web 追蹤器',
               link: '/hk/tracking/web-tracker',
               collapsed: true,
               items: [
-                { text: '安裝', link: '/hk/tracking/web-tracker/install' },
-                { text: 'Web 追蹤器 SDK 參考', link: '/hk/tracking/web-tracker/reference' }
+                { text: '概述', link: '/hk/tracking/web-tracker' },
+                { text: '安裝與測試', link: '/hk/tracking/web-tracker/install' },
+                { text: 'SDK 參考', link: '/hk/tracking/web-tracker/reference' }
               ]
             },
             {
@@ -39,12 +39,8 @@ export const hk: DefaultTheme.Config = {
               collapsed: true,
               items: [
                 { text: '概述', link: '/hk/mmp/appsflyer/overview' },
-                { text: '設定 postback', link: '/hk/mmp/appsflyer/postbacks' },
-                { text: '點擊轉發', link: '/hk/mmp/appsflyer/click-forwarding' },
-                { text: '宏參數', link: '/hk/mmp/appsflyer/macros' },
-                { text: '合作夥伴權限', link: '/hk/mmp/appsflyer/permissions' },
-                { text: '整合驗證', link: '/hk/mmp/appsflyer/validation' },
-                { text: '交付與上線', link: '/hk/mmp/appsflyer/handoff' }
+                { text: '設定與驗證', link: '/hk/mmp/appsflyer/setup-appsflyer' },
+                { text: '參數與報表', link: '/hk/mmp/appsflyer/parameters-reporting' }
               ]
             },
             {
@@ -53,31 +49,34 @@ export const hk: DefaultTheme.Config = {
               collapsed: true,
               items: [
                 { text: '概述', link: '/hk/tracking/s2s/overview' },
-                {
-                  text: '伺服器事件 API (v3)',
-                  link: '/hk/tracking/s2s/v3/server-events-api',
-                  items: [
-                    { text: 'API 參考', link: '/hk/tracking/s2s/v3/server-events-api' },
-                    { text: '信封與基礎屬性', link: '/hk/tracking/s2s/v3/mandatory-properties' },
-                    { text: '目錄與驗證', link: '/hk/tracking/s2s/v3/catalog-governance' },
-                    { text: '標準事件', link: '/hk/tracking/s2s/v3/events-standard' },
-                    { text: 'iGaming 事件', link: '/hk/tracking/s2s/v3/events-igaming' },
-                    { text: 'Crypto 事件', link: '/hk/tracking/s2s/v3/events-crypto' }
-                  ]
-                },
-                { text: '整合驗證', link: '/hk/tracking/s2s/validation' },
-                { text: '交付與上線', link: '/hk/tracking/s2s/handoff' }
+                { text: '設定與測試', link: '/hk/tracking/s2s/setup-s2s' },
+                { text: 'API 參考（v3）', link: '/hk/tracking/s2s/v3/server-events-api' },
+                { text: '整合驗證', link: '/hk/tracking/s2s/validation' }
               ]
             },
             {
               text: '4. Partner Postback',
-              link: '/hk/tracking/postback/partner-postback',
+              link: '/hk/tracking/postback/overview',
               collapsed: true,
               items: [
-                { text: 'v2 canonical API', link: '/hk/tracking/postback/partner-postback#v2-api' },
-                { text: 'v1 相容參考', link: '/hk/tracking/postback/partner-postback#v1-compatibility' },
-                { text: '整合驗證', link: '/hk/tracking/postback/validation' },
-                { text: '遷移、交付與上線', link: '/hk/tracking/postback/handoff' }
+                { text: '概述', link: '/hk/tracking/postback/overview' },
+                { text: '設定與測試', link: '/hk/tracking/postback/setup-postback' },
+                { text: 'API 參考（v2）', link: '/hk/tracking/postback/v2-api' },
+                { text: 'API 參考（v1）', link: '/hk/tracking/postback/v1-api' },
+                { text: '整合驗證', link: '/hk/tracking/postback/validation' }
+              ]
+            },
+            {
+              text: '事件與欄位',
+              link: '/hk/tracking/events/choose-events',
+              collapsed: true,
+              items: [
+                { text: '選擇事件', link: '/hk/tracking/events/choose-events' },
+                { text: '通用欄位與身份', link: '/hk/tracking/events/common-fields' },
+                { text: '標準事件', link: '/hk/tracking/events/events-standard' },
+                { text: 'iGaming 事件', link: '/hk/tracking/events/events-igaming' },
+                { text: 'Crypto 事件', link: '/hk/tracking/events/events-crypto' },
+                { text: '事件可用性與驗證', link: '/hk/tracking/events/catalog-validation' }
               ]
             }
           ]

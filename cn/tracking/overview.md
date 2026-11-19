@@ -5,6 +5,8 @@ description: 向 RevoSurge 发送转化的四种方式——Web 追踪器、S2S�
 
 # 追踪概述
 
+Wizard v4 接入指南　[Web 追踪器](/cn/tracking/web-tracker/install) · [AppsFlyer](/cn/mmp/appsflyer/setup-appsflyer) · [S2S](/cn/tracking/s2s/setup-s2s) · [Partner Postback](/cn/tracking/postback/overview) · [事件与字段](/cn/tracking/events/choose-events)。分别核对来源状态、事件接收、正式转化验证和归因。
+
 **受众：** 广告主、媒介采买、UA 经理、开发者、联盟及合作伙伴经理
 
 RevoSurge 依据你发送给我们的转化来优化你的广告系列。本页说明如何完成这项配置：创建产品，确定你要优化的目标，再接入能承载这些数据的方式。
@@ -214,11 +216,11 @@ S2S 和 Partner Postback 做的是同一件事。如果两者上报了同一笔�
 
 后台或联盟平台在事件发生时发送服务端 GET。v2 使用统一 canonical 事件入口，v1 保留五条由路径决定事件的入口。平台已能提供所有必填字段时可以通过配置接入；缺少稳定用户 ID、业务发生时间或金额时，可能需要来源系统开发。
 
-先[选择版本](/cn/tracking/postback/partner-postback#choose-version)，再确认产品目录、Connection 和目标环境。一个 v2 接收 URL 在第三方平台仍可能需要多条事件模板。
+先[选择版本](/cn/tracking/postback/overview#choose-version)，再确认产品目录、Connection 和目标环境。一个 v2 接收 URL 在第三方平台仍可能需要多条事件模板。
 
 - **由谁实施：** 你本人，或你的联盟平台管理员
 - **凭证：** postback 密钥，通过 `k` 查询参数发送
-- **指南：** [合作方 Postback API](/cn/tracking/postback/partner-postback)
+- **指南：** [合作方 Postback API](/cn/tracking/postback/overview)
 
 ### 3.4 AppsFlyer——App 安装与应用内事件 {#_3-4-appsflyer-—-app-installs-and-in-app-events}
 
@@ -320,7 +322,7 @@ S2S 和 Partner Postback 做的是同一件事。如果两者上报了同一笔�
 4. **确认 Tracker Status 显示为 Active**——
    [步骤 5](/cn/tracking/web-tracker/install#step-5-verify-in-the-portal)
 5. **接入你的转化方式**——[S2S](/cn/tracking/s2s/overview) 或
-   [Partner Postback](/cn/tracking/postback/partner-postback)
+   [Partner Postback](/cn/tracking/postback/overview)
 6. 如果你推广 App，**接入 AppsFlyer**——[AppsFlyer 概述](/cn/mmp/appsflyer/overview)
 7. **上线你的第一个广告系列**——[创建广告系列](/cn/handbook/create-campaign)
 

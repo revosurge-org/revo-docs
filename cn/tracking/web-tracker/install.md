@@ -5,6 +5,8 @@ description: 分步操作——找到你的追踪器 ID、安装 Web 追踪器�
 
 # 安装 Web 追踪器
 
+应用推广请同时查看 [AppsFlyer 设置与验证](/cn/mmp/appsflyer/setup-appsflyer)。在 **Verify Your Source** 核对实际事件接收，并在 **Campaign conversion events** 单独核对正式转化。
+
 **受众：** 广告主与 UA 经理（步骤 1、5–6），开发者与追踪工程师（步骤 2–4）
 
 Web 追踪器是一个轻量级 JavaScript SDK，将事件从你的网站实时传输到
@@ -245,7 +247,7 @@ SDK 提供的方法不止这些，但后台的 **Event Stream** 针对每个已�
 
 当关键事件已在流入、且 Tracker Status 显示为 **Active** 时：
 
-- ✅ 接入 [S2S](/cn/tracking/s2s/overview) 或 [Partner Postback](/cn/tracking/postback/partner-postback)，让充值在服务器端计数
+- ✅ 接入 [S2S](/cn/tracking/s2s/overview) 或 [Partner Postback](/cn/tracking/postback/overview)，让充值在服务器端计数
 - ✅ 如果你推广移动 App，接入 [AppsFlyer](/cn/mmp/appsflyer/overview)
 - ✅ 上线你的第一个 [AdWave 广告系列](/cn/handbook/create-campaign)
 

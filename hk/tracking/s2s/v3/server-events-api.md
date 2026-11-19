@@ -10,9 +10,9 @@ description: S2S 事件 v3 參考 — 信封、端點、認證、批次匯入、
 
 伺服器事件 API 讓合作夥伴可以安全地將用戶事件直接從其伺服器傳送到 DataPulse 平台。**v3** 引入了**型別化事件目錄** — 事件及欄位會預先登記，並在匯入時驗證 — 以及一個結構化的請求**信封**。
 
-- 初次使用？請從[請求信封與基礎屬性](/hk/tracking/s2s/v3/mandatory-properties)開始。
-- 瀏覽事件：[標準事件](/hk/tracking/s2s/v3/events-standard) · [iGaming 事件](/hk/tracking/s2s/v3/events-igaming) · [Crypto 事件](/hk/tracking/s2s/v3/events-crypto)。
-- 驗證如何運作：[事件目錄與驗證](/hk/tracking/s2s/v3/catalog-governance)。
+- 初次使用？請從[請求信封與基礎屬性](/hk/tracking/events/common-fields)開始。
+- 瀏覽事件：[標準事件](/hk/tracking/events/events-standard) · [iGaming 事件](/hk/tracking/events/events-igaming) · [Crypto 事件](/hk/tracking/events/events-crypto)。
+- 驗證如何運作：[事件目錄與驗證](/hk/tracking/events/catalog-validation)。
 
 ## 基礎 URL
 
@@ -30,6 +30,8 @@ description: S2S 事件 v3 參考 — 信封、端點、認證、批次匯入、
 | `Content-Type` | 是 | `application/json` |
 
 > 請參閱 [API 金鑰](/hk/api/api-key)了解如何取得金鑰。
+
+<a id="the-request-envelope"></a>
 
 ## 請求信封
 
@@ -54,7 +56,7 @@ v3 事件是一個包含四個部分的 JSON 物件 — `event`、`timestamp`、
 }
 ```
 
-完整的欄位規則請見[請求信封與基礎屬性](/hk/tracking/s2s/v3/mandatory-properties)。簡而言之：
+完整的欄位規則請見[請求信封與基礎屬性](/hk/tracking/events/common-fields)。簡而言之：
 
 - `event`（String，必填）— 一個**已登記**的事件名稱。未知名稱會被拒絕。
 - `timestamp`（Number，必填）— **UTC 紀元毫秒**（13 位數）。
@@ -181,7 +183,7 @@ requests.post(
 | `422` | `EVENT_DISABLED` | 事件存在但已為你的產品停用 |
 | `429` | — | 超過限流（`{ "error": "Too Many Requests" }`） |
 
-請參閱[事件目錄與驗證](/hk/tracking/s2s/v3/catalog-governance)了解目錄如何驅動這些檢查。
+請參閱[事件目錄與驗證](/hk/tracking/events/catalog-validation)了解目錄如何驅動這些檢查。
 
 ## Dry run
 
@@ -301,7 +303,7 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 1. **`identity` 裏的鍵拼錯，會在解析時直接被丟棄。** `identity.clickId` 根本到不了事件裏 — 與別處不認識的鍵不同，它連自訂屬性都留不下，之後沒有任何地方能看出你曾經傳過它。dry run 是唯一看得見它的地方。
 2. **本該嵌在 `identity` 裏、卻被平鋪到頂層的欄位同樣會被報出來。** 在頂層寫 `clientUserId`，你會得到 `{ "sent": "clientUserId", "expected": "client_user_id" }`。要改的既是拼法*也是*位置 — 這個欄位應當嵌在 `identity` 物件內。
 
-**`context` 不做這項檢查。** 它是由事件目錄定義的開放 map，出現我方不認識的鍵是正常的，而不是可疑的。`context` 裏缺少的必填欄位改由目錄驗證以 [`violations[]`](#錯誤) 的形式報告 — 這也正是為甚麼 `context` 裏*可選*欄位拼錯不會出現在這裏。請參閱[事件目錄與驗證](/hk/tracking/s2s/v3/catalog-governance)。
+**`context` 不做這項檢查。** 它是由事件目錄定義的開放 map，出現我方不認識的鍵是正常的，而不是可疑的。`context` 裏缺少的必填欄位改由目錄驗證以 [`violations[]`](#錯誤) 的形式報告 — 這也正是為甚麼 `context` 裏*可選*欄位拼錯不會出現在這裏。請參閱[事件目錄與驗證](/hk/tracking/events/catalog-validation)。
 
 #### 我們不拒絕未知欄位
 

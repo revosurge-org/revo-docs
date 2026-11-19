@@ -5,6 +5,8 @@ description: S2S 分两档——Basic 覆盖注册与首充，Full 覆盖完整�
 
 # 服务器到服务器 (S2S) 概述
 
+按 [Wizard v4 设置与测试](/cn/tracking/s2s/setup-s2s)操作。最低接入要求是 `register` 与 `deposit`。产品可用的行业事件参见[共享事件目录](/cn/tracking/events/catalog-validation)。
+
 **受众：** 选择档位的广告主与 UA 经理（第 1–4 节）、负责实施的开发者（第 5–8 节）
 
 服务器到服务器 (S2S) 追踪直接从**你的后端**向 RevoSurge 发送事件——
@@ -87,7 +89,7 @@ S2S 中没有首充事件，也没有首充标志。你把每一笔充值都作�
 
 因此你无需自己对充值进行分类——但如果你已有存量玩家，请参阅下方的警告。
 
-`/first-deposit` 与 `/repeat-deposit` 的区分仅属于 [Partner Postback v1](/cn/tracking/postback/partner-postback#v1-compatibility)。[Postback v2](/cn/tracking/postback/partner-postback#v2-api) 使用有效目录中的 canonical `deposit` 事件。来源或协议重叠时，与客户经理约定切换和对账方案；HTTP／Kafka 确认不能单独证明下游 FTD 或去重。
+`/first-deposit` 与 `/repeat-deposit` 的区分仅属于 [Partner Postback v1](/cn/tracking/postback/v1-api#v1-compatibility)。[Postback v2](/cn/tracking/postback/v2-api#v2-api) 使用有效目录中的 canonical `deposit` 事件。来源或协议重叠时，与客户经理约定切换和对账方案；HTTP／Kafka 确认不能单独证明下游 FTD 或去重。
 :::
 
 ::: warning 如果你已有存量玩家，第一周的 FTD 会虚高
@@ -128,7 +130,7 @@ FTD 是**我们看到的**最早一笔充值，而不是实际存在的最早一
 | 优化目标 | 档位 |
 | --- | --- |
 | 仅注册 | 都不需要——Web 追踪器即可覆盖 |
-| 首充 | **Basic**（如果你没有研发资源，也可用 [Partner Postback](/cn/tracking/postback/partner-postback)） |
+| 首充 | **Basic**（如果你没有研发资源，也可用 [Partner Postback](/cn/tracking/postback/overview)） |
 | 充值金额 | **Basic**——`deposit` 要求携带金额，因此已包含在内 |
 | 玩家价值——GGR、LTV | **Full** |
 
@@ -279,19 +281,7 @@ S2S 事件一起发送。参见
 
 ## 7. 事件目录 {#_7-the-event-catalog}
 
-下方的标准和 iGaming 目录涵盖 24 个事件。每个事件在后台中显示为 *Receiving*、*Errors* 或
-*Not yet seen*。
-
-::: warning 必须为你的产品启用 iGaming 预设
-**标准**预设（9 个事件）对每个产品自动启用。**iGaming** 预设（15 个事件）由 RevoSurge 应要求
-按产品启用。
-
-`deposit` 是 iGaming 事件。在该预设启用之前，你发送的每一笔充值都会被拒绝并返回
-`422 EVENT_DISABLED`，无论你的集成多么正确——而且这不是
-你能在代码里修复的问题。
-
-**开始开发之前，请先让你的客户经理确认 iGaming 已启用。**
-:::
+标准事件对所有产品启用。iGaming 和 Crypto 根据产品的市场类别启用。开发前请核对产品的有效事件目录。
 
 **⭑ 标记的是四个 [Basic](#_2-two-tiers-basic-and-full) 事件。** 其余均属于 Full。
 
@@ -303,21 +293,15 @@ S2S 事件一起发送。参见
 | 验证与授权 | `email_verified`, `phone_verified`, `marketing_consent_updated` |
 | 应用生命周期 | `app_install`, `app_open`, `app_uninstall`, `push_permission_updated` |
 
-### iGaming 预设（15 个事件） {#igaming-preset-15-events}
+### iGaming 预设 {#igaming-preset-15-events}
 
 | 分组 | 事件 |
 | --- | --- |
 | 用户生命周期 | `session_ended`, `vip_tier_changed` |
 | 验证与授权 | `kyc_completed`, `kyc_rejected`, `account_blocked`, `account_unblocked` |
-| 资金 | ⭑ `deposit_initiated` · **⭑ `deposit`** · `deposit_failed`, `withdraw` |
+| 资金 | ⭑ `deposit_initiated` · **⭑ `deposit`** · `deposit_failed`, `withdraw`, `withdraw_rejected` |
 | 游戏 | `bet` |
-| 奖金生命周期 | `bonus_offered`, `bonus_claimed`, `bonus_completed`, `bonus_cashed_out` |
-
-::: warning 后台事件网格显示的数量比目录接受的少一个
-设置向导目前列出 14 个 iGaming 事件，并显示 `n/23`。`deposit_initiated`
-已被 API 接受且有完整规范——只是尚未绘制在该网格中。照常发送即可，
-它会被存储。其字段参见 [iGaming 事件](/cn/tracking/s2s/v3/events-igaming)。
-:::
+| 奖金生命周期 | `bonus_claimed` |
 
 **关于 `deposit_initiated`**——玩家已发起但尚未结算的充值。它能告诉
 你玩家在收银台的哪一步流失。`context.transaction_id` 为**必填**，且必须
@@ -332,10 +316,10 @@ Bonus Engine 更精准，但起步阶段没有任何功能依赖它们。
 
 ### Crypto 预设
 
-加密货币交易所和钱包可订阅 `crypto` 预设：`vip_tier_changed`、`kyc_completed`、`kyc_rejected`、`deposit`、`withdraw`、`trade`、`trade_daily_summary` 和 `reward_claimed`。即使事件名称与 iGaming 相同，仍需启用 Crypto 订阅。字段和交互示例请参见 [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)。
+Crypto 市场类别启用 `crypto` 预设：`vip_tier_changed`、`kyc_completed`、`kyc_rejected`、`deposit`、`withdraw`、`trade`、`trade_daily_summary` 和 `reward_claimed`。与 iGaming 同名的事件可能有不同字段。字段和交互示例请参见 [Crypto 事件](/cn/tracking/events/events-crypto)。
 
 每个事件的字段级定义：
-[标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)
+[标准事件](/cn/tracking/events/events-standard) · [iGaming 事件](/cn/tracking/events/events-igaming) · [Crypto 事件](/cn/tracking/events/events-crypto)
 
 ## 8. API 版本 {#_8-api-versions}
 
@@ -350,12 +334,12 @@ S2S 卡片中的 **Event Stream** 栏和各事件的 *last seen* 时间戳读取
 ## 后续步骤 {#next-steps}
 
 - [服务器事件 API (v3)](/cn/tracking/s2s/v3/server-events-api)——端点、结构、示例
-- [信封与基础属性](/cn/tracking/s2s/v3/mandatory-properties)——每个事件都带有的字段
-- [目录与校验](/cn/tracking/s2s/v3/catalog-governance)——事件如何被校验
-- [标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)
+- [信封与基础属性](/cn/tracking/events/common-fields)——每个事件都带有的字段
+- [目录与校验](/cn/tracking/events/catalog-validation)——事件如何被校验
+- [标准事件](/cn/tracking/events/events-standard) · [iGaming 事件](/cn/tracking/events/events-igaming) · [Crypto 事件](/cn/tracking/events/events-crypto)
 
 ## 相关内容 {#related}
 
 - [追踪概述](/cn/tracking/overview)——四种追踪方式对比
 - [安装 Web 追踪器](/cn/tracking/web-tracker/install)——浏览器端的另一半
-- [合作方 Postback API](/cn/tracking/postback/partner-postback)——来自联盟与 MMP 的转化
+- [合作方 Postback API](/cn/tracking/postback/overview)——来自联盟与 MMP 的转化

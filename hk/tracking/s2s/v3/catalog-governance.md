@@ -1,72 +1,12 @@
 ---
-title: 事件目錄與驗證 (v3)
-sidebar_label: 目錄與驗證
-description: 型別化事件目錄如何運作 — 已登記事件、欄位型別、Standard 與行業預設集，以及驗證行為。
+title: 此頁面已遷移
+layout: page
+search: false
+redirectTo: /hk/tracking/events/catalog-validation
 ---
 
-# 事件目錄與驗證
+<script setup>
+import DocRedirect from '../../../../.vitepress/theme/components/DocRedirect.vue'
+</script>
 
-**對象：** 工程師、技術整合人員
-
-v3 由一個**型別化事件目錄**管治：事件及其欄位會預先登記，且每個傳入的事件在儲存前都會對照目錄進行驗證。
-
-## 為何要型別化？
-
-型別化目錄確保事件名稱與欄位型別一致：
-
-1. **已登記事件** — 只接受目錄事件；未知名稱會被拒絕。
-2. **型別化欄位** — 每個欄位都有固定的類型（`String` / `Number` / `Boolean`），並在相關時有一份允許值清單。
-3. **匯入時驗證** — 每個事件都會對照目錄進行檢查；只有符合的事件才會被儲存。
-
-這讓下游的分析、歸因及 AI 功能持續在乾淨、可信賴的資料上運作。
-
-## Standard 與行業預設集
-
-事件被組織成**預設集（preset）**。你產品的有效目錄是 Standard 預設集，加上其所訂閱的任何行業預設集。
-
-| 預設集 | 範圍 | 可用性 | 類別 |
-|--------|-------|--------------|------------|
-| **Standard** (`general.core`) | 通用 | **自動啟用**於每個產品 | 用戶生命週期 · 驗證與授權 · 應用生命週期 |
-| **iGaming** (`igaming`) | 行業 | **按訂閱** — 由 RevoSurge 團隊為你的產品啟用 | 用戶生命週期 · 驗證與授權 · 資金 · 遊戲 · 獎金生命週期 |
-| **Crypto**（`crypto`） | 行業 | **按訂閱**——由 RevoSurge 團隊為你的產品啓用 | 用戶生命週期 · 驗證與授權 · 資金 · 交易 · 獎勵 |
-| Legacy (`legacy`) | 通用 | 相容性（寬鬆） | `page_view`、`purchase`、`download_click` |
-
-- **標準**事件（[瀏覽](/hk/tracking/s2s/v3/events-standard)）開箱即用，適用於所有廣告主。
-- **iGaming** 事件（[瀏覽](/hk/tracking/s2s/v3/events-igaming)）要求你的產品已訂閱 iGaming 預設集。如果你在未訂閱的情況下傳送 iGaming 事件，它會被拒絕為 `EVENT_DISABLED` — 請聯絡你的 RevoSurge 代表以啟用。
-- **Crypto** 事件（[Crypto 事件](/hk/tracking/s2s/v3/events-crypto)）要求產品已訂閱 `crypto` 預設。未訂閱時會返回 `422 EVENT_DISABLED`；請聯繫 RevoSurge 代表啓用。
-
-## 欄位要求等級
-
-每個欄位都帶有一個要求等級：
-
-| 等級 | 含義 |
-|-------|---------|
-| **必填** | 必須存在且類型正確，否則事件會被拒絕。 |
-| **建議** | 強烈建議以提升資料品質／歸因。可以略去；已提供的值仍須符合類型及允許值要求。 |
-| **可選** | 有最好。 |
-
-## 哪些內容會被驗證
-
-驗證分兩個階段執行：
-
-1. **結構性** — 信封格式正確：`event` 與 `timestamp` 存在、`timestamp` 為有效的 UTC 毫秒、`identity` 有一個穩定 ID，且任何 PII 都符合 SHA-256 格式。
-2. **目錄** — 事件已登記且為你的產品啟用、每個必填欄位都存在且類型正確，且 enum 欄位使用允許的值。
-
-| 失敗 | 回應 |
-|---------|----------|
-| 信封／類型／PII 格式錯誤 | `400 VALIDATION_ERROR` |
-| 未知事件名稱 | `422 UNKNOWN_EVENT_TYPE` |
-| 事件未為你的產品啟用 | `422 EVENT_DISABLED` |
-
-所有欄位違規都會被收集並一起在 `violations[]` 中回傳（不會 fail-fast），因此你可以一次過修正所有問題。回應結構請參閱 [API 參考](/hk/tracking/s2s/v3/server-events-api)。
-
-> [!TIP]
-> 在整合期間使用 [dry run](/hk/tracking/s2s/v3/server-events-api#dry-run)（`?dryrun=1`），以準確查看哪些欄位驗證失敗，而不會儲存任何內容。
-
-## 目錄更新
-
-目錄由 RevoSurge 團隊集中管理。當事件或欄位變更時，更新會自動傳播到匯入（通常在一分鐘內）— 你方無需重新部署。如果目錄短暫不可用，匯入會優雅地降級，而不會丟棄你的流量。
-
-## 自訂事件
-
-除了內建的預設集外，當你有標準目錄未涵蓋的使用案例時，RevoSurge 團隊可以登記範圍限定於你產品的**自訂事件**。請提供事件名稱、其欄位及其類型與我們聯絡。
+<DocRedirect to="/hk/tracking/events/catalog-validation" />

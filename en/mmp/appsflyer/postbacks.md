@@ -6,6 +6,8 @@ description: Activate the RevoSurge partner tile in AppsFlyer and configure defa
 
 # Set up AppsFlyer postbacks
 
+Follow the [Wizard v4 setup guide](/en/mmp/appsflyer/setup-appsflyer) for the current launch flow. Confirm the permitted install and in-app event sending scope for your app and PID with your Account Manager.
+
 **Audience:** UA managers, advertisers, agencies with the [Configure integration permission](/en/mmp/appsflyer/permissions)
 
 This page is done entirely in the **AppsFlyer console**. It activates RevoSurge as a partner and starts the flow of install and post-install events to us. Nothing here requires you to open RevoSurge.
@@ -81,29 +83,22 @@ Set **Install view-through attribution** to **ON**.
 > [!NOTE]
 > RevoSurge forwards **clicks only** today, so this toggle does not change how your current RevoSurge traffic is attributed — RevoSurge attribution is click-based. It is part of the required configuration so that the tile does not need revisiting later. If you are auditing the integration and see no view-through installs from RevoSurge, that is expected, not a misconfiguration.
 
-## 6. Default postbacks — all media sources, including organic
+## 6. Default postbacks {#_6-default-postbacks-—-all-media-sources-including-organic}
 
-In the **Default postbacks** section, enable **Install** and **Re-engagement**, and for each one set the sending option to **all media sources, including organic** (in AppsFlyer's wording, events attributed to any partner *or* organic).
-
-| Postback | Enabled | Sending option |
-|---|---|---|
-| Install | Yes | All media sources, including organic |
-| Re-engagement | Yes | All media sources, including organic |
-
-This is a requirement, not a preference. Our models need a complete picture — RevoSurge-attributed, other-partner-attributed, and organic — to tell the volume we caused apart from the volume that would have happened anyway. Restricting postbacks to "attributed to this partner" leaves us optimizing against our own output.
+In **Default postbacks**, confirm that **Install** is enabled. Confirm the supported sending scope for the app and PID with your Account Manager. The Wizard v4 example shows **This partner only** as a read-only setting, which forwards installs attributed to RevoSurge. Confirm any **Re-engagement** requirements for your campaign separately.
 
 ## 7. In-app event postbacks
 
 1. Turn **in-app event postbacks** to **ON**.
 2. Set the **in-app event postback window** to **Lifetime**. If your account cannot select Lifetime, the floor is **6 months** — anything shorter truncates the post-install behaviour we learn from.
-3. Set the **sending option** to **all media sources, including organic**, same as the default postbacks.
+3. Use the sending scope agreed for your app and PID. In the Wizard v4 example, **This partner only** forwards RevoSurge-attributed events.
 4. Map the events from your prepared list. Select each AppsFlyer event and map it to the RevoSurge partner event name it corresponds to. Alternatively use **Send all events** if you want the whole stream forwarded.
 
 | Setting | Required value |
 |---|---|
 | In-app event postbacks | ON |
 | Postback window | Lifetime (floor: 6 months) |
-| Sending option | All media sources, including organic |
+| Sending option | Scope agreed for the app and PID |
 | Event mapping | Every funnel event from your list, or Send all events |
 
 > [!WARNING]

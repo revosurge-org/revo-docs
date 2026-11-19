@@ -43,8 +43,10 @@ for (const locale of ['en', 'cn', 'hk']) {
     page.on('pageerror', error => errors.push(error.message))
     const payload = async () => JSON.parse(await page.locator('.epx__code code').innerText())
     try {
-      await page.goto(`${origin}/${locale}/tracking/s2s/v3/events-crypto`)
+      await page.goto(`${origin}/${locale}/tracking/s2s/v3/events-crypto?from=legacy#deposit`)
+      await page.waitForURL(`${origin}/${locale}/tracking/events/events-crypto?from=legacy#deposit`)
       await page.locator('.epx__pill').first().waitFor()
+      assert.equal(await page.locator('#deposit').count(), 1)
       assert.deepEqual(await page.locator('.epx__pill').allTextContents(), names)
       for (const name of names) {
         await page.locator('.epx__pill').getByText(name, { exact: true }).click()
@@ -75,6 +77,21 @@ for (const locale of ['en', 'cn', 'hk']) {
       const gamingDeposit = await payload()
       assert.equal(typeof gamingDeposit.context.is_crypto, 'boolean')
       assert.ok(!('deposit_type' in gamingDeposit.context))
+
+      const gamingEvents = await page.locator('.epx__pill').allTextContents()
+      assert.ok(gamingEvents.includes('withdraw_rejected'))
+      for (const retired of ['bonus_offered', 'bonus_completed', 'bonus_cashed_out']) {
+        assert.ok(!gamingEvents.includes(retired))
+      }
+      await page.locator('.epx__toggle input').check()
+      await page.locator('.epx__pill').getByText('withdraw_rejected', { exact: true }).click()
+      assert.deepEqual(Object.keys((await payload()).context).sort(), [
+        'amount', 'currency', 'ip_address', 'rejection_reason', 'transaction_id', 'withdrawal_method'
+      ])
+      await page.locator('.epx__pill').getByText('bonus_claimed', { exact: true }).click()
+      assert.deepEqual(Object.keys((await payload()).context).sort(), [
+        'bonus_id', 'bonus_type', 'bonus_value_granted', 'currency', 'ip_address'
+      ])
       assert.deepEqual(errors, [])
     } finally { await context.close() }
   })

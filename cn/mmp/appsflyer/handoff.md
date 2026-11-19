@@ -31,28 +31,7 @@ description: 收尾 AppsFlyer 集成的检查清单——要交给 RevoSurge 客
 
 ## 上线测试
 
-配置检查只能证明配置正确。只有真实流量能证明它可用。
-
-1. 点击一条线上的 RevoSurge 广告——或由客户经理为你建的测试广告系列。
-2. 进入承载 web tracker 的落地页。
-3. 从应用商店安装 App。
-4. 打开 App。
-5. 触发一个已映射的漏斗事件——通常注册最快。
-
-应当发生的事：
-
-| 步骤 | 预期结果 | 在哪里查看 |
-|---|---|---|
-| 点击 | 点击已记录 | RevoSurge 看板 |
-| 点击 | 点击已注册到你的应用上 | AppsFlyer，在 RevoSurge 媒体渠道下 |
-| 安装 | 归因给 RevoSurge——**而不是**自然量 | AppsFlyer |
-| 安装 | 已收到安装 postback | RevoSurge 看板 |
-| 漏斗事件 | 已收到应用内事件 postback，且是正确的 RevoSurge 合作方事件名 | RevoSurge 看板 |
-| 收入类事件（若有） | 带有金额，而不只是事件本身 | RevoSurge 看板 |
-
-AppsFlyer 是随事件发生实时发送 postback 的，因此配置正确的安装 postback 会在几分钟内到达。如果过了一小时仍然什么都没有，请按故障处理而不是按延迟处理，从下方的定位表开始。
-
-**集成自证的时限：** 交付后 **2 天**内至少一条安装 postback，**7 天**内第一条应用内事件 postback。两者都没产生的集成不算上线，无论配置看起来多正确。
+上线前完成[配置检查](/cn/mmp/appsflyer/setup-appsflyer#_3-check-before-launch)。AppsFlyer 的 IP 白名单限制上线前手动端到端测试。广告系列上线并产生符合条件的真实安装和映射事件后，按[正式验证流程](/cn/mmp/appsflyer/setup-appsflyer#_4-verify-after-campaign-launch)核对点击、归因、安装回传、目标事件及金额。缺少合格流量时记录为待验证，并与客户经理约定验收时间。
 
 ## 测试失败怎么办
 

@@ -31,6 +31,8 @@ Send the event mapping as text, not a screenshot — we compare it character by 
 
 ## The go-live test
 
+AppsFlyer’s IP allowlist restricts manual pre-launch full-path testing for this integration. Complete the [pre-launch configuration checks](/en/mmp/appsflyer/setup-appsflyer#_3-check-before-launch), then run the checks below using eligible installs and mapped events from your live campaign.
+
 Configuration checks prove the setup is correct. Only real traffic proves it works.
 
 1. Click a live RevoSurge ad — or a test campaign your account manager sets up.

@@ -1,0 +1,16 @@
+source_path,target_path,status,preserve_query
+/en/tracking/s2s/v3/mandatory-properties,/en/tracking/events/common-fields,301,true
+/en/tracking/s2s/v3/catalog-governance,/en/tracking/events/catalog-validation,301,true
+/en/tracking/s2s/v3/events-standard,/en/tracking/events/events-standard,301,true
+/en/tracking/s2s/v3/events-igaming,/en/tracking/events/events-igaming,301,true
+/en/tracking/s2s/v3/events-crypto,/en/tracking/events/events-crypto,301,true
+/cn/tracking/s2s/v3/mandatory-properties,/cn/tracking/events/common-fields,301,true
+/cn/tracking/s2s/v3/catalog-governance,/cn/tracking/events/catalog-validation,301,true
+/cn/tracking/s2s/v3/events-standard,/cn/tracking/events/events-standard,301,true
+/cn/tracking/s2s/v3/events-igaming,/cn/tracking/events/events-igaming,301,true
+/cn/tracking/s2s/v3/events-crypto,/cn/tracking/events/events-crypto,301,true
+/hk/tracking/s2s/v3/mandatory-properties,/hk/tracking/events/common-fields,301,true
+/hk/tracking/s2s/v3/catalog-governance,/hk/tracking/events/catalog-validation,301,true
+/hk/tracking/s2s/v3/events-standard,/hk/tracking/events/events-standard,301,true
+/hk/tracking/s2s/v3/events-igaming,/hk/tracking/events/events-igaming,301,true
+/hk/tracking/s2s/v3/events-crypto,/hk/tracking/events/events-crypto,301,true

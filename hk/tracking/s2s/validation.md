@@ -58,7 +58,7 @@ Manage Product → 你的產品 → **S2S** 卡片。金鑰只以遮罩形式顯
 
 ### `S2S-R-02` — 端點不正確 {#s2s-r-02-incorrect-endpoint}
 
-**修復：** 向 `/v3/s2s/event` 或 `/v3/s2s/batch` 傳送請求，使用[請求信封](/hk/tracking/s2s/v3/mandatory-properties)和 Unix 毫秒時間戳記。請參閱[伺服器事件 API](/hk/tracking/s2s/v3/server-events-api)。
+**修復：** 向 `/v3/s2s/event` 或 `/v3/s2s/batch` 傳送請求，使用[請求信封](/hk/tracking/events/common-fields)和 Unix 毫秒時間戳記。請參閱[伺服器事件 API](/hk/tracking/s2s/v3/server-events-api)。
 
 ### `S2S-R-03` — API Key 缺失或已外洩 {#s2s-r-03-—-missing-or-exposed-api-key}
 
@@ -69,8 +69,8 @@ Manage Product → 你的產品 → **S2S** 卡片。金鑰只以遮罩形式顯
 
 ### `S2S-R-04` — 未知的事件名稱 {#s2s-r-04-—-unknown-event-name}
 
-**修復：** 對照[標準事件](/hk/tracking/s2s/v3/events-standard)和
-[iGaming 事件](/hk/tracking/s2s/v3/events-igaming)核對名稱。名稱為小寫加底線，必須精確匹配。`first_deposit` 不是目錄中的事件 — 首存以 `deposit` 傳送。
+**修復：** 對照[標準事件](/hk/tracking/events/events-standard)和
+[iGaming 事件](/hk/tracking/events/events-igaming)核對名稱。名稱為小寫加底線，必須精確匹配。`first_deposit` 不是目錄中的事件 — 首存以 `deposit` 傳送。
 
 ::: info 首存是推導出來的，不是傳送的
 每一筆充值都以 `deposit` 傳送。RevoSurge 把該用戶收到的最早一筆 `deposit` 推導為 FTD — 沒有需要設定的首存事件或標記。
@@ -134,14 +134,11 @@ Manage Product → 你的產品 → **S2S** 卡片。金鑰只以遮罩形式顯
 
 ### `S2S-R-14` — 你的產品未啟用 iGaming 事件 {#s2s-r-14-—-igaming-events-disabled-for-your-product}
 
-**修復：** 這無法在程式碼裡修復。iGaming 預設集由 RevoSurge 按產品啟用 — 請聯絡你的客戶經理開啟，然後重新測試。
-
-標準事件（`general.core`）對每個產品自動啟用。iGaming 事件則不是，而 `deposit` 就是 iGaming 事件。一個在其他方面完美無瑕的整合，在訂閱生效之前，每筆充值都會回傳
-`422 EVENT_DISABLED`。在排查其他任何問題之前，**先**檢查這一項。
+**修復：** 檢查產品的市場類別及有效事件目錄。`deposit` 等行業事件使用該產品適用的定義。若設定正確但事件仍無法使用，請把產品和錯誤資訊交給客戶經理。
 
 ### `S2S-R-15` — 缺少各事件的必填欄位 {#s2s-r-15-—-missing-per-event-required-fields}
 
-**修復：** 在[標準事件](/hk/tracking/s2s/v3/events-standard)和 [iGaming 事件](/hk/tracking/s2s/v3/events-igaming)中查看你傳送的每個事件的必填欄位清單。最容易踩坑的幾個：
+**修復：** 在[標準事件](/hk/tracking/events/events-standard)和 [iGaming 事件](/hk/tracking/events/events-igaming)中查看你傳送的每個事件的必填欄位清單。最容易踩坑的幾個：
 
 | 事件 | 必填的 context 欄位 |
 | --- | --- |

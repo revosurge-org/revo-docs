@@ -34,7 +34,7 @@ optimising on it.
 | Which tier you have implemented — **Basic** or **Full** | Decides which optimisation goals your campaigns can use. Setting a campaign to a goal you do not feed is the most common cause of a bad first week. | None |
 | The exact list of event names you send | We check them against the catalog before launch rather than after. Send as **text**, not a screenshot — the names have to be compared character by character. | None |
 | Your Product name and domain | Confirms events are landing on the right Product. | None |
-| Confirmation that the iGaming preset is enabled for your Product | `deposit` is an iGaming event. Without the subscription every deposit returns `422 EVENT_DISABLED`, whatever your code does. | None |
+| Product market category and enabled events | Confirm the effective catalog includes `deposit` and your other required events. | None |
 | Whether this Product has an **existing player base**, and your backfill or cut-off plan | FTD is derived as the earliest deposit we have seen. Without a plan, week-one FTD is inflated by existing players and bidding chases it. | Skip only for a genuinely new brand |
 | A sample `eventId` from a real `202` response, with the time you sent it — **fill this in after the go-live test** | Lets us trace one known-good event end to end instead of searching blind. | Batch returns `requestId` and `count` rather than an `eventId` — send those instead |
 | Which events are **not** implemented yet, and when they are coming | Stops us proposing goals you cannot support, and tells us when to revisit. | None |
@@ -89,7 +89,7 @@ resolves faster than a description of the symptom.
 | Change | Impact | Re-validate |
 | --- | --- | --- |
 | Rotating the API key | Every request fails the moment the old key is disabled | `S2S-R-01`, `S2S-R-03` |
-| Adding events to move Basic → Full | New names may not match the catalog, may be subscription-gated, and each has its own required fields | `S2S-R-04`, `S2S-R-11`, `S2S-R-14`, `S2S-R-15` |
+| Adding events to move Basic → Full | New names may not match the catalog, may be unavailable for your Product, and each has its own required fields | `S2S-R-04`, `S2S-R-11`, `S2S-R-14`, `S2S-R-15` |
 | Changing how account IDs are generated | Silently splits every user profile | `S2S-R-08` |
 | Adding a new domain or Product | Events may land on the wrong Product, and a new Product has no deposit history | `S2S-R-01`, `S2S-R-10`, `S2S-R-17` |
 | Changing payment provider or cashier flow | The deposit event may move, duplicate or stop, and `context.transaction_id` pairing can break | `S2S-R-10`, `S2S-R-15`, `S2S-O-02` |

@@ -1,11 +1,12 @@
 ---
-title: Web Tracker SDK Reference
-description: Web Tracker SDK — trackRegister, trackDeposit, trackEnterGame, event methods.
+title: "Web Tracker SDK Reference"
+description: "Web Tracker SDK method signatures, arguments and examples for browser events and click IDs."
 ---
 
 # Web Tracker SDK Reference
 
-Use these reference after the SDK is loaded and initialized. Start with registration, then track downstream actions in the order they occur for clearer attribution.
+
+Use this reference after the SDK is loaded and initialized. Start with registration, then track downstream actions in the order they occur for clearer attribution.
 
 ## Event reporting APIs
 
@@ -103,12 +104,12 @@ tracker.trackDownloadClickRegister('user_123', {
 });
 ```
 
-| Parameter | Type | Required | Description |
-| --- | --- | --- | --- |
-| user_id | string | No | Unique user ID. |
-| store_type | string | No | Channel of the download, e.g., App Store or Play Store. |
-| identifier | string | No | Hashed email or phone number. |
-| target | string | No | Where the tap sends the user, e.g. `af` (an AppsFlyer click link) or `fallback` (your own store/offer link), so download clicks can be reconciled against your MMP's click count. Omitted from the event when not set. Requires SDK 1.4.5+. |
+| Parameter  | Type   | Required | Description                                                                                                                                                                                                                                 |
+| ---------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| user_id    | string | No       | Unique user ID.                                                                                                                                                                                                                             |
+| store_type | string | No       | Channel of the download, e.g., App Store or Play Store.                                                                                                                                                                                     |
+| identifier | string | No       | Hashed email or phone number.                                                                                                                                                                                                               |
+| target     | string | No       | Where the tap sends the user, e.g. `af` (an AppsFlyer click link) or `fallback` (your own store/offer link), so download clicks can be reconciled against your MMP's click count. Omitted from the event when not set. Requires SDK 1.4.5+. |
 
 ### trackCustomEvent
 
@@ -131,7 +132,7 @@ tracker.trackCustomEvent('custom_event_type', {
 
 Returns the stored `clickid` from UTM data. If the URL contains `?clickid=...`, the SDK extracts and saves it automatically.
 
-The click ID is kept in a first-party cookie for 30 days, matching the [attribution window](/en/tracking/core-concepts#_3-the-attribution-window). On iOS / Safari, ITP may clear it sooner. Call this at registration and store the value on the user's record — see [Store the click ID at registration](/en/tracking/web-tracker#how-it-attributes).
+The SDK reference documents a 30-day first-party cookie lifetime. Cookie storage duration is distinct from the campaign attribution window; check [Core concepts](/en/tracking/core-concepts#_3-the-attribution-window) for the attribution contract. On iOS / Safari, ITP may clear it sooner. Call this at registration and store the value on the user's record — see [Store the click ID at registration](/en/tracking/web-tracker/install#_4-connect-completed-actions).
 
 ```js
 const clickid = tracker.getClickid();

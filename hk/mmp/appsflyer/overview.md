@@ -6,6 +6,8 @@ description: RevoSurge 與 AppsFlyer 的整合方式 — 啟用合作夥伴並�
 
 # AppsFlyer 整合概述
 
+> Wizard v4 的操作流程請參見[設定並驗證 AppsFlyer](/hk/mmp/appsflyer/setup-appsflyer)和[參數與報表](/hk/mmp/appsflyer/parameters-reporting)。AppsFlyer 的 IP 白名單限制上線前手動端到端測試，真實歸因和回傳在廣告系列上線後驗證。
+
 **對象：** UA 經理、廣告主、代理商、追蹤／BI 工程師
 
 用 AppsFlyer 衡量 RevoSurge 廣告分兩半：**從 AppsFlyer 發出的 postback**，讓我們收到你的安裝與應用內事件；以及**轉發進 AppsFlyer 的點擊**，讓 AppsFlyer 知道哪些點擊是我們的。兩半缺一不可。
@@ -56,10 +58,10 @@ RevoSurge 同時是 **非 SRN** 合作夥伴（並非自歸因渠道／self-repo
 | 點擊歸因回溯期 | **7 天** | 與你其他渠道保持一致 |
 | 瀏覽歸因回溯期 | **24 小時** | 與你其他渠道保持一致 |
 | Install view-through attribution | **ON** | 屬於標準設定 — 見下方說明 |
-| 預設 postback（安裝、再行銷） | **所有媒體渠道，包含自然量** | 模型需要歸因、未歸因與自然量事件一起訓練 |
+| 默認安裝回傳 | 開啓並確認發送範圍 | 向客戶經理確認應用和 PID 支持的範圍 |
 | 應用內事件 postback | **ON** | 安裝後訊號是最佳化目標 |
 | 應用內 postback 窗口 | **Lifetime（終身）**，下限 6 個月 | 窗口過短會截斷我們可學習的事件 |
-| 應用內發送範圍 | **所有媒體渠道，包含自然量** | 同預設 postback |
+| 應用內發送範圍 | 使用與客戶經理約定的範圍 | 按所用應用與 PID 核對 |
 | 收入 | 在 purchase／deposit／revenue 類事件上選擇 **Values & revenue** | ROAS 必需 |
 
 > [!NOTE]
@@ -97,7 +99,7 @@ RevoSurge 同時是 **非 SRN** 合作夥伴（並非自歸因渠道／self-repo
 ## 本章節不涵蓋的內容
 
 - **從你自己的伺服器發送事件。** 那是[伺服器事件 API (v3)](/hk/tracking/s2s/v3/server-events-api)，與你使用哪個 MMP 無關。
-- **聯盟後台 postback。** 由[合作夥伴 Postback API](/hk/tracking/postback/partner-postback) 涵蓋。
+- **聯盟後台 postback。** 由[合作夥伴 Postback API](/hk/tracking/postback/overview) 涵蓋。
 - **再行銷的 deep link。** 本章節各頁能讓再行銷廣告被正確衡量，但不涉及進入 App 的 deep link 路由。上線此類廣告前請先聯繫你的客戶經理。
 
 ## 下一步

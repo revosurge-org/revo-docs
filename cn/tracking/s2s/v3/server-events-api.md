@@ -10,9 +10,9 @@ description: S2S Events v3 参考——信封、端点、认证、批量接入�
 
 服务器事件 API 让合作伙伴能够直接从其服务器安全地向 DataPulse 平台发送用户事件。**v3** 引入了**型别化事件目录**——事件与字段均预先登记并在接入时校验——以及结构化的请求**信封**。
 
-- 第一次接触？从[请求信封与基础属性](/cn/tracking/s2s/v3/mandatory-properties)开始。
-- 浏览事件：[标准事件](/cn/tracking/s2s/v3/events-standard) · [iGaming 事件](/cn/tracking/s2s/v3/events-igaming) · [Crypto 事件](/cn/tracking/s2s/v3/events-crypto)。
-- 校验如何运作：[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
+- 第一次接触？从[请求信封与基础属性](/cn/tracking/events/common-fields)开始。
+- 浏览事件：[标准事件](/cn/tracking/events/events-standard) · [iGaming 事件](/cn/tracking/events/events-igaming) · [Crypto 事件](/cn/tracking/events/events-crypto)。
+- 校验如何运作：[事件目录与校验](/cn/tracking/events/catalog-validation)。
 
 ## 基础 URL
 
@@ -30,6 +30,8 @@ description: S2S Events v3 参考——信封、端点、认证、批量接入�
 | `Content-Type` | 是 | `application/json` |
 
 > 关于如何获取密钥，请参见 [API 密钥](/cn/api/api-key)。
+
+<a id="the-request-envelope"></a>
 
 ## 请求信封
 
@@ -54,7 +56,7 @@ description: S2S Events v3 参考——信封、端点、认证、批量接入�
 }
 ```
 
-完整的字段规则参见[请求信封与基础属性](/cn/tracking/s2s/v3/mandatory-properties)。简而言之：
+完整的字段规则参见[请求信封与基础属性](/cn/tracking/events/common-fields)。简而言之：
 
 - `event`（String，必填）——一个**已登记**的事件名称。未知名称会被拒绝。
 - `timestamp`（Number，必填）——**UTC 纪元毫秒**（13 位数字）。
@@ -181,7 +183,7 @@ requests.post(
 | `422` | `EVENT_DISABLED` | 事件存在但对你的产品已禁用 |
 | `429` | — | 超出限流（`{ "error": "Too Many Requests" }`） |
 
-关于目录如何驱动这些检查，参见[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
+关于目录如何驱动这些检查，参见[事件目录与校验](/cn/tracking/events/catalog-validation)。
 
 ## Dry run
 
@@ -301,7 +303,7 @@ curl -X POST "https://datapulse-api.revosurge.com/v3/s2s/event?dryrun=1" \
 1. **`identity` 里的键拼错，会在解析时直接被丢弃。** `identity.clickId` 根本到不了事件里——与别处不认识的键不同，它连自定义属性都留不下，后续没有任何地方能看出你曾经发过它。dry run 是唯一能看见它的地方。
 2. **本该嵌在 `identity` 里、却被平铺到顶层的字段同样会被报出来。** 在顶层写 `clientUserId`，你会得到 `{ "sent": "clientUserId", "expected": "client_user_id" }`。要改的既是拼法*也是*位置——这个字段应当嵌在 `identity` 对象内。
 
-**`context` 不做这项检查。** 它是由事件目录定义的开放 map，出现我方不认识的键是正常的，而不是可疑的。`context` 里缺少的必填字段改由目录校验以 [`violations[]`](#错误) 的形式报告——这也正是为什么 `context` 里*可选*字段拼错不会出现在这里。参见[事件目录与校验](/cn/tracking/s2s/v3/catalog-governance)。
+**`context` 不做这项检查。** 它是由事件目录定义的开放 map，出现我方不认识的键是正常的，而不是可疑的。`context` 里缺少的必填字段改由目录校验以 [`violations[]`](#错误) 的形式报告——这也正是为什么 `context` 里*可选*字段拼错不会出现在这里。参见[事件目录与校验](/cn/tracking/events/catalog-validation)。
 
 #### 我们不拒绝未知字段
 

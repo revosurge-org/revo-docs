@@ -26,7 +26,7 @@ Choose the API version first. [v2 validation](/en/tracking/postback/validation#v
 | Isolated test | Remove dryrun; use `testmode=1` and distinct synthetic source IDs | `200 accepted`, `stored=true`, `confirmed`; matching isolated message read back and compared field by field |
 | Controlled live | After target readiness is confirmed, remove both mode flags; run the agreed source event | Same confirmed result and matching live message; separately verify downstream availability and attribution if included in the launch scope |
 
-Use the [API examples](/en/tracking/postback/partner-postback#v2-examples) and [negative probes](/en/tracking/postback/validation#v2-probes). Cover `register`, the agreed original-currency `deposit` or `trade`, `false`, a genuine zero value and independent fees where the catalog permits. Compare decoded values containing `+`, `&`, `%` and Unicode. Verify your platform's actual outbound request, not just a relay's earlier `200`.
+Use the [API examples](/en/tracking/postback/v2-api#v2-examples) and [negative probes](/en/tracking/postback/validation#v2-probes). Cover `register`, the agreed original-currency `deposit` or `trade`, `false`, a genuine zero value and independent fees where the catalog permits. Compare decoded values containing `+`, `&`, `%` and Unicode. Verify your platform's actual outbound request, not just a relay's earlier `200`.
 
 For each accepted test keep: source case/run and whether it is synthetic or real business data; redacted expanded URL; response; source event/transaction IDs; `requestId` and `catalogVersion`; actual destination and message readback reference. The technical owner records Kafka topic/partition/offset and correlated business/audit fields. Confirm decimal values using decimal-aware tooling. Never include `k` in shared evidence.
 
@@ -53,7 +53,7 @@ Agree a source-ID/time cutover boundary and preserve original IDs on retries. Cr
 
 Deliver the chosen version/environment and product/Connection IDs; platform/version and event/template count; field worksheet and remaining gaps; redacted templates; verification records for each stage; retry/mode settings; cutover/rollback boundary; and owners for downstream and real customer acceptance. Technical acceptance with synthetic fixtures does not complete real customer business acceptance.
 
-Re-run probes after key rotation, product binding/catalog changes, platform upgrades or template edits. A new event requires an enabled contract and a verified source template, even when the receiver path is unchanged. Use the [v2 response matrix](/en/tracking/postback/partner-postback#v2-responses) when diagnosing failures.
+Re-run probes after key rotation, product binding/catalog changes, platform upgrades or template edits. A new event requires an enabled contract and a verified source template, even when the receiver path is unchanged. Use the [v2 response matrix](/en/tracking/postback/v2-api#v2-responses) when diagnosing failures.
 
 ## v1 handoff and go-live {#v1-handoff}
 
@@ -197,6 +197,6 @@ They take two minutes and they are the only cheap way to catch a silent `ignored
 
 ### Next steps
 
-- [Partner Postback reference](/en/tracking/postback/partner-postback) — full parameter list and response semantics
+- [Partner Postback reference](/en/tracking/postback/overview) — full parameter list and response semantics
 - [Validation](/en/tracking/postback/validation) — the full rule list
 - [Tracking overview](/en/tracking/overview) — how Partner Postback fits with the other three methods
