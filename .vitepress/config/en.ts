@@ -96,29 +96,57 @@ export const en: DefaultTheme.Config = {
     },
     {
       text: 'AdFlow',
-      link: '/en/adflow/integration-guide',
+      link: '/en/adflow/',
       collapsed: false,
       items: [
+        { text: 'Start here: Launch your first ad placement', link: '/en/adflow/' },
         {
-          text: 'Integration Guide',
-          link: '/en/adflow/integration-guide',
+          text: '1. Create an account, site, and ad placement', link: '/en/adflow/create-placement',
           collapsed: true,
           items: [
-            { text: 'adflow.js Quick Integration', link: '/en/adflow/adflow-sdk' },
-            { text: 'adflow-tma.js (Telegram Mini App)', link: '/en/adflow/adflow-tma-sdk' },
-            { text: 'S2S Configuration', link: '/en/adflow/s2s-integration' },
-            { text: 'Prebid Mobile SDK (In-App)', link: '/en/adflow/prebid-mobile-sdk' },
-            { text: 'Prebid.js + GAM', link: '/en/adflow/gam-prebid' },
-            { text: 'GAM + adflow.js', link: '/en/adflow/gam-adflow-sdk' }
+            { text: 'Ad formats and sizes', link: '/en/adflow/ad-formats' }
           ]
         },
-        { text: 'Banner Debugger', link: '/en/adflow/banner-debugger' },
-        { text: 'Pop Debugger', link: '/en/adflow/pop-debugger' },
-        { text: 'Push Debugger', link: '/en/adflow/push-debugger' },
-        { text: 'In-page Push Debugger', link: '/en/adflow/inpage-push-debugger' },
-        { text: 'Native Debugger', link: '/en/adflow/native-debugger' },
-        { text: 'S2S Debugger', link: '/en/adflow/s2s-debugger' },
-        { text: 'Installation Check Troubleshooting', link: '/en/adflow/install-check-qa' },
+        {
+          text: '2. Choose an integration method', link: '/en/adflow/choose-integration',
+          collapsed: true,
+          items: [
+            { text: 'Install the AdFlow JS Tag directly', link: '/en/adflow/adflow-sdk' },
+            { text: 'Your own GAM + Prebid.js', link: '/en/adflow/gam-prebid' },
+            { text: 'Your own GAM + AdFlow JS Tag (without Prebid.js)', link: '/en/adflow/gam-adflow-sdk' },
+            { text: 'Connect AdFlow S2S through Prebid.js', link: '/en/adflow/s2s-integration' }
+          ]
+        },
+        { text: '3. Verify and launch', link: '/en/adflow/verify-and-launch' },
+        {
+          text: '4. Review reports and earnings', link: '/en/adflow/reporting',
+          collapsed: true,
+          items: [
+            { text: 'View placement data and reports', link: '/en/adflow/reports' },
+            { text: 'View bills, update payment details, and reconcile monthly earnings', link: '/en/adflow/billing' }
+          ]
+        },
+        {
+          text: 'Troubleshooting', link: '/en/adflow/troubleshooting',
+          collapsed: true,
+          items: [
+            { text: 'Installation check failed', link: '/en/adflow/install-check-qa' },
+            { text: 'Requests are sent but no ad appears', link: '/en/adflow/no-ad-display' },
+            { text: 'Report data is missing or mismatched', link: '/en/adflow/report-data-issues' }
+          ]
+        },
+        {
+          text: 'Debugging tools', link: '/en/adflow/debuggers',
+          collapsed: true,
+          items: [
+            { text: 'Banner Debugger', link: '/en/adflow/banner-debugger' },
+            { text: 'Pop Debugger', link: '/en/adflow/pop-debugger' },
+            { text: 'Push Debugger', link: '/en/adflow/push-debugger' },
+            { text: 'In-page Push Debugger', link: '/en/adflow/inpage-push-debugger' },
+            { text: 'Native Debugger', link: '/en/adflow/native-debugger' },
+            { text: 'S2S Debugger', link: '/en/adflow/s2s-debugger' }
+          ]
+        }
       ]
     },
     {

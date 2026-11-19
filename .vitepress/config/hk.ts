@@ -96,29 +96,57 @@ export const hk: DefaultTheme.Config = {
     },
     {
       text: 'AdFlow',
-      link: '/hk/adflow/integration-guide',
+      link: '/hk/adflow/',
       collapsed: false,
       items: [
+        { text: '從這裡開始：上線你的第一個廣告版位', link: '/hk/adflow/' },
         {
-          text: '接入指南',
-          link: '/hk/adflow/integration-guide',
+          text: '1. 建立帳號、網站和廣告版位', link: '/hk/adflow/create-placement',
           collapsed: true,
           items: [
-            { text: 'adflow.js 一鍵接入', link: '/hk/adflow/adflow-sdk' },
-            { text: 'adflow-tma.js（Telegram 小程式）', link: '/hk/adflow/adflow-tma-sdk' },
-            { text: 'S2S 配置接入', link: '/hk/adflow/s2s-integration' },
-            { text: 'Prebid Mobile SDK（App 內接入）', link: '/hk/adflow/prebid-mobile-sdk' },
-            { text: 'Prebid.js + GAM', link: '/hk/adflow/gam-prebid' },
-            { text: 'GAM + adflow.js', link: '/hk/adflow/gam-adflow-sdk' }
+            { text: '廣告格式與尺寸', link: '/hk/adflow/ad-formats' }
           ]
         },
-        { text: 'Banner 調試器', link: '/hk/adflow/banner-debugger' },
-        { text: 'Pop 調試器', link: '/hk/adflow/pop-debugger' },
-        { text: 'Push 調試器', link: '/hk/adflow/push-debugger' },
-        { text: 'In-page Push 調試器', link: '/hk/adflow/inpage-push-debugger' },
-        { text: 'Native 調試器', link: '/hk/adflow/native-debugger' },
-        { text: 'S2S 調試器', link: '/hk/adflow/s2s-debugger' },
-        { text: '安裝代碼失敗 QA', link: '/hk/adflow/install-check-qa' },
+        {
+          text: '2. 選擇接入方式', link: '/hk/adflow/choose-integration',
+          collapsed: true,
+          items: [
+            { text: '網站直接安裝 AdFlow JS Tag', link: '/hk/adflow/adflow-sdk' },
+            { text: '自有 GAM + Prebid.js', link: '/hk/adflow/gam-prebid' },
+            { text: '自有 GAM + AdFlow JS Tag（無 Prebid.js）', link: '/hk/adflow/gam-adflow-sdk' },
+            { text: '網站透過 Prebid.js 接入 AdFlow S2S', link: '/hk/adflow/s2s-integration' }
+          ]
+        },
+        { text: '3. 驗證接入與上線', link: '/hk/adflow/verify-and-launch' },
+        {
+          text: '4. 查看報表與收益', link: '/hk/adflow/reporting',
+          collapsed: true,
+          items: [
+            { text: '查看廣告版位資料與報表', link: '/hk/adflow/reports' },
+            { text: '查看帳單、更新收款資料與每月對帳', link: '/hk/adflow/billing' }
+          ]
+        },
+        {
+          text: '常見問題與排查', link: '/hk/adflow/troubleshooting',
+          collapsed: true,
+          items: [
+            { text: '安裝檢查失敗', link: '/hk/adflow/install-check-qa' },
+            { text: '有請求，但沒有廣告顯示', link: '/hk/adflow/no-ad-display' },
+            { text: '報表沒有資料或數字不一致', link: '/hk/adflow/report-data-issues' }
+          ]
+        },
+        {
+          text: '偵錯工具', link: '/hk/adflow/debuggers',
+          collapsed: true,
+          items: [
+            { text: 'Banner 偵錯工具', link: '/hk/adflow/banner-debugger' },
+            { text: 'Pop 偵錯工具', link: '/hk/adflow/pop-debugger' },
+            { text: 'Push 偵錯工具', link: '/hk/adflow/push-debugger' },
+            { text: 'In-page Push 偵錯工具', link: '/hk/adflow/inpage-push-debugger' },
+            { text: 'Native 偵錯工具', link: '/hk/adflow/native-debugger' },
+            { text: 'S2S 偵錯工具', link: '/hk/adflow/s2s-debugger' }
+          ]
+        }
       ]
     },
     {

@@ -10,7 +10,7 @@ Use this integration when your website already runs a Prebid.js auction. Google 
 ## Website setup
 
 1. Load GPT and a production Prebid.js build with the Prebid Server adapter. Include `nativeRendering` for Native and In-page Push.
-2. Configure `s2sConfig` as described in [S2S Configuration](./s2s-integration#s2s-gam). Use your AdFlow account and placement IDs. Match the Prebid `adUnit.code` to the GPT container ID and use the full GAM ad unit path.
+2. Configure `s2sConfig` as described in [S2S Configuration](./s2s-integration#s2s-config). Use your AdFlow account and placement IDs. Match the Prebid `adUnit.code` to the GPT container ID and use the full GAM ad unit path.
 3. Disable the initial GPT request before enabling services, register the ad unit, and call `pbjs.requestBids()`. Verify that the bid belongs to the current auction and uses the GAM currency. Call `pbjs.setTargetingForGPTAsync([slotId])` before requesting the slot with `googletag.pubads().refresh([gamSlot])`.
 
 ## GAM setup

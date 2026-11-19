@@ -96,29 +96,57 @@ export const cn: DefaultTheme.Config = {
     },
     {
       text: 'AdFlow',
-      link: '/cn/adflow/integration-guide',
+      link: '/cn/adflow/',
       collapsed: false,
       items: [
+        { text: '从这里开始：上线你的第一个广告位', link: '/cn/adflow/' },
         {
-          text: '接入指南',
-          link: '/cn/adflow/integration-guide',
+          text: '1. 创建账号、网站和广告位', link: '/cn/adflow/create-placement',
           collapsed: true,
           items: [
-            { text: 'adflow.js 一键接入', link: '/cn/adflow/adflow-sdk' },
-            { text: 'adflow-tma.js（Telegram 小程序）', link: '/cn/adflow/adflow-tma-sdk' },
-            { text: 'S2S 配置接入', link: '/cn/adflow/s2s-integration' },
-            { text: 'Prebid Mobile SDK（App 内接入）', link: '/cn/adflow/prebid-mobile-sdk' },
-            { text: 'Prebid.js + GAM', link: '/cn/adflow/gam-prebid' },
-            { text: 'GAM + adflow.js', link: '/cn/adflow/gam-adflow-sdk' }
+            { text: '广告格式与尺寸', link: '/cn/adflow/ad-formats' }
           ]
         },
-        { text: 'Banner 调试器', link: '/cn/adflow/banner-debugger' },
-        { text: 'Pop 调试器', link: '/cn/adflow/pop-debugger' },
-        { text: 'Push 调试器', link: '/cn/adflow/push-debugger' },
-        { text: 'In-page Push 调试器', link: '/cn/adflow/inpage-push-debugger' },
-        { text: 'Native 调试器', link: '/cn/adflow/native-debugger' },
-        { text: 'S2S 调试器', link: '/cn/adflow/s2s-debugger' },
-        { text: '安装代码失败 QA', link: '/cn/adflow/install-check-qa' },
+        {
+          text: '2. 选择接入方式', link: '/cn/adflow/choose-integration',
+          collapsed: true,
+          items: [
+            { text: '网站直接安装 AdFlow JS Tag', link: '/cn/adflow/adflow-sdk' },
+            { text: '自有 GAM + Prebid.js', link: '/cn/adflow/gam-prebid' },
+            { text: '自有 GAM + AdFlow JS Tag（无 Prebid.js）', link: '/cn/adflow/gam-adflow-sdk' },
+            { text: '网站通过 Prebid.js 接入 AdFlow S2S', link: '/cn/adflow/s2s-integration' }
+          ]
+        },
+        { text: '3. 验证接入与上线', link: '/cn/adflow/verify-and-launch' },
+        {
+          text: '4. 查看报表与收益', link: '/cn/adflow/reporting',
+          collapsed: true,
+          items: [
+            { text: '查看广告位数据与报表', link: '/cn/adflow/reports' },
+            { text: '查看账单、更新收款资料与月度对账', link: '/cn/adflow/billing' }
+          ]
+        },
+        {
+          text: '常见问题与排查', link: '/cn/adflow/troubleshooting',
+          collapsed: true,
+          items: [
+            { text: '安装检查失败', link: '/cn/adflow/install-check-qa' },
+            { text: '有请求，但没有广告展示', link: '/cn/adflow/no-ad-display' },
+            { text: '报表没数据或数据对不上', link: '/cn/adflow/report-data-issues' }
+          ]
+        },
+        {
+          text: '调试工具', link: '/cn/adflow/debuggers',
+          collapsed: true,
+          items: [
+            { text: 'Banner 调试器', link: '/cn/adflow/banner-debugger' },
+            { text: 'Pop 调试器', link: '/cn/adflow/pop-debugger' },
+            { text: 'Push 调试器', link: '/cn/adflow/push-debugger' },
+            { text: 'In-page Push 调试器', link: '/cn/adflow/inpage-push-debugger' },
+            { text: 'Native 调试器', link: '/cn/adflow/native-debugger' },
+            { text: 'S2S 调试器', link: '/cn/adflow/s2s-debugger' }
+          ]
+        }
       ]
     },
     {

@@ -4,35 +4,53 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6a829be8-3f93-471f-b6a3-64cdb759d89e" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/cn/adflow/adflow-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cn/adflow/adflow-tma-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cn/adflow/gam-adflow-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cn/adflow/gam-prebid.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cn/adflow/prebid-mobile-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cn/adflow/s2s-integration.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/en/adflow/adflow-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/en/adflow/adflow-tma-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/en/adflow/gam-adflow-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/en/adflow/gam-prebid.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/en/adflow/prebid-mobile-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/en/adflow/s2s-integration.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hk/adflow/adflow-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hk/adflow/adflow-tma-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hk/adflow/gam-adflow-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hk/adflow/gam-prebid.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hk/adflow/prebid-mobile-sdk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hk/adflow/s2s-integration.md" afterDir="false" />
+    <list default="true" id="6a829be8-3f93-471f-b6a3-64cdb759d89e" name="Changes" comment="docs(adflow): restructure integration guides and add GAM setup docs&#10;&#10;- Split the publisher integration guide into an overview and four standalone guides.&#10;- Add Prebid.js + GAM and GAM + adflow.js guides covering five ad formats.&#10;- Update the overview and collapsible sidebar across English, Simplified Chinese, and Traditional Chinese.&#10;- Use placeholders in examples and omit screenshots containing private account details.">
+      <change afterPath="$PROJECT_DIR$/cn/adflow/ad-formats.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/billing.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/choose-integration.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/create-placement.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/debuggers.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/no-ad-display.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/report-data-issues.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/reporting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/reports.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/troubleshooting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cn/adflow/verify-and-launch.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/ad-formats.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/billing.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/choose-integration.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/create-placement.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/debuggers.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/no-ad-display.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/report-data-issues.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/reporting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/reports.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/troubleshooting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/en/adflow/verify-and-launch.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/ad-formats.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/billing.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/choose-integration.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/create-placement.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/debuggers.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/no-ad-display.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/report-data-issues.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/reporting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/reports.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/troubleshooting.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hk/adflow/verify-and-launch.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.vitepress/config/cn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/config/cn.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.vitepress/config/en.ts" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/config/en.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.vitepress/config/hk.ts" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/config/hk.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/install-check-qa.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/integration-guide.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/install-check-qa.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/integration-guide.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/install-check-qa.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/integration-guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/gam-prebid.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/gam-prebid.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/s2s-integration.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/s2s-integration.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/gam-prebid.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/gam-prebid.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/s2s-integration.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/s2s-integration.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/gam-prebid.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/gam-prebid.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/s2s-integration.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/s2s-integration.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +58,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="421" />
+    <option name="cachedIndexableFilesCount" value="1648" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -63,23 +81,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0" />
-      <entry key="S60" value="1.0" />
-      <entry key="M2" value="1.0" />
-      <entry key="M5" value="1.0" />
-      <entry key="M10" value="1.0" />
-      <entry key="M15" value="1.0" />
-      <entry key="M30" value="1.0" />
-      <entry key="H1" value="1.0" />
-      <entry key="H2" value="1.0" />
-      <entry key="H4" value="1.0" />
-      <entry key="D1" value="1.0" />
-      <entry key="W1" value="1.0" />
+      <entry key="MS100" value="1.1789333439849112" />
+      <entry key="MS500" value="2.3964818217207284" />
+      <entry key="S2" value="4.415983831863289" />
+      <entry key="S5" value="5.656036987548368" />
+      <entry key="S10" value="6.256709299724029" />
+      <entry key="S30" value="6.733856889825817" />
+      <entry key="S60" value="6.8644488355427695" />
+      <entry key="M2" value="6.93161791420235" />
+      <entry key="M5" value="6.987594113113598" />
+      <entry key="M10" value="7.10914749466479" />
+      <entry key="M15" value="7.238039917091748" />
+      <entry key="M30" value="7.492627233357646" />
+      <entry key="H1" value="7.702842852225595" />
+      <entry key="H2" value="7.838577769142699" />
+      <entry key="H4" value="7.915791601172077" />
+      <entry key="D1" value="7.985453136220708" />
+      <entry key="W1" value="7.9979089753610815" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -101,23 +119,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.29936967615473214" />
-      <entry key="MS500" value="0.7856725166675802" />
-      <entry key="S2" value="0.9414784645412062" />
-      <entry key="S5" value="0.9761670768880298" />
-      <entry key="S10" value="0.9880116785180375" />
-      <entry key="S30" value="0.9959878167538043" />
-      <entry key="S60" value="0.99799189212829" />
-      <entry key="M2" value="0.9989954414952502" />
-      <entry key="M5" value="0.9995980554366437" />
-      <entry key="M10" value="0.9997990075193333" />
-      <entry key="M15" value="0.9998660005238237" />
-      <entry key="M30" value="0.999932998017279" />
-      <entry key="H1" value="0.9999664984474624" />
-      <entry key="H2" value="0.9999832490834346" />
-      <entry key="H4" value="0.9999916245066429" />
-      <entry key="D1" value="0.999998604079569" />
-      <entry key="W1" value="0.9999998005826762" />
+      <entry key="MS100" value="1.1438506221464702" />
+      <entry key="MS500" value="2.3577529770544157" />
+      <entry key="S2" value="4.397300980965366" />
+      <entry key="S5" value="5.646483870399503" />
+      <entry key="S10" value="6.251411009446473" />
+      <entry key="S30" value="6.731949678457546" />
+      <entry key="S60" value="6.863475697059088" />
+      <entry key="M2" value="6.931126277505426" />
+      <entry key="M5" value="6.987390165336462" />
+      <entry key="M10" value="7.109023642690436" />
+      <entry key="M15" value="7.237940645921312" />
+      <entry key="M30" value="7.492560824166594" />
+      <entry key="H1" value="7.702802676070037" />
+      <entry key="H2" value="7.838555425107328" />
+      <entry key="H4" value="7.915779786878459" />
+      <entry key="D1" value="7.9854510705445305" />
+      <entry key="W1" value="7.997908677795621" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -128,31 +146,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "node",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/victor/IdeaProjects/revo-docs",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/victor/IdeaProjects/revo-docs&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -185,5 +203,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="docs(adflow): restructure integration guides and add GAM setup docs&#10;&#10;- Split the publisher integration guide into an overview and four standalone guides.&#10;- Add Prebid.js + GAM and GAM + adflow.js guides covering five ad formats.&#10;- Update the overview and collapsible sidebar across English, Simplified Chinese, and Traditional Chinese.&#10;- Use placeholders in examples and omit screenshots containing private account details." />
+    <option name="LAST_COMMIT_MESSAGE" value="docs(adflow): restructure integration guides and add GAM setup docs&#10;&#10;- Split the publisher integration guide into an overview and four standalone guides.&#10;- Add Prebid.js + GAM and GAM + adflow.js guides covering five ad formats.&#10;- Update the overview and collapsible sidebar across English, Simplified Chinese, and Traditional Chinese.&#10;- Use placeholders in examples and omit screenshots containing private account details." />
   </component>
 </project>

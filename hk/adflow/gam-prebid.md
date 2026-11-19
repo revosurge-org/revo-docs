@@ -10,7 +10,7 @@ description: 將 RevoSurge S2S 出價傳給 GAM，並配置五種廣告格式的
 ## 網站接入
 
 1. 加載 GPT 和包含 Prebid Server adapter 的生產版 Prebid.js。使用 Native 或 In-page Push 時，構建還需包含 `nativeRendering`。
-2. 按 [S2S 配置接入](./s2s-integration#s2s-gam)設置 `s2sConfig`，填入自己的 AdFlow 賬號和廣告版位識別碼。將 Prebid `adUnit.code` 與 GPT 容器 ID 設為同一值，GPT 廣告單元使用 GAM 中的完整路徑。
+2. 按 [S2S 配置接入](./s2s-integration#s2s-config)設置 `s2sConfig`，填入自己的 AdFlow 賬號和廣告版位識別碼。將 Prebid `adUnit.code` 與 GPT 容器 ID 設為同一值，GPT 廣告單元使用 GAM 中的完整路徑。
 3. 在啓用 GPT 服務前禁用初始請求，註冊廣告版位，再調用 `pbjs.requestBids()`。確認出價屬於當前競價且幣種與 GAM 配置一致，然後調用 `pbjs.setTargetingForGPTAsync([slotId])`，最後用 `googletag.pubads().refresh([gamSlot])` 請求對應 GAM 廣告版位。
 
 ## GAM 配置
