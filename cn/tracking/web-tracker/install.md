@@ -69,7 +69,7 @@ RevoSurge。事件开始流入后，**Registration Funnel** 与 **Source Traffic
 **Product → Manage Product → 点击你的产品名称。** 会打开一个面板，追踪器 ID
 位于 **Web Tracker** 卡片中。
 
-![Product detail panel with the Web Tracker card and Tracker ID](/img/tracking/05-product-drawer-tracker-id.png)
+<img class="doc-screenshot" src="/img/tracking/05-product-drawer-tracker-id.png" alt="Product detail panel with the Web Tracker card and Tracker ID" width="520" height="442">
 
 该面板还会显示产品 ID、域名、设备类型、支持的充值币种，
 以及每个已登记的落地页及其漏斗类型（Funnel Type）。
@@ -233,7 +233,7 @@ SDK 提供的方法不止这些，但后台的 **Event Stream** 针对每个已�
 点击 **Why is there no Web Tracker data?** 打开 **Web Tracker Help Center**。它会
 针对你的线上流量运行五项检查，并告诉你哪一项未通过。
 
-![Web Tracker Help Center diagnostic panel](/img/tracking/07-web-tracker-help-center.png)
+<img class="doc-screenshot" src="/img/tracking/07-web-tracker-help-center.png" alt="Web Tracker Help Center diagnostic panel" width="560" height="378">
 
 | 检查项 | 验证内容 | 未通过时 |
 | --- | --- | --- |

@@ -79,7 +79,7 @@ The basic browser events to consider are `page_view`, `register`, `login`, `depo
 7. Confirm the campaign's bidding strategy supports the conversion you want to use. Receipt acceptance alone does not establish attribution.
 
 
-![Web Tracker source status and received-event controls; sensitive values blurred](/img/handbook/wizard-v4/source-verification.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/source-verification.png" alt="Web Tracker source status and received-event controls; sensitive values blurred" width="480" height="256">
 
 ![Event-stream search, source and traffic-mode filters](/img/handbook/wizard-v4/event-stream.png)
 

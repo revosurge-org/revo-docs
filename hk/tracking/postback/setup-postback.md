@@ -11,13 +11,13 @@ description: 連接聯盟平台、設定事件回調並驗證真實轉化路徑�
 
 打開 **Product → Choose your setup → An affiliate platform → Use this setup**。
 
-![聯盟平台接入建議](/img/handbook/wizard-v4/affiliate-setup.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/affiliate-setup.png" alt="聯盟平台接入建議" width="416" height="268">
 
 ## 2. 建立或選擇連接 {#_2-create-or-select-a-connection}
 
 打開 **Account menu → API Keys & Postbacks → Postback Connections → Create Connection**。填寫名稱、平台和授權產品。v2 要求 Connection 恰好綁定一個產品。
 
-![建立 Connection 的表單](/img/handbook/wizard-v4/postback-form.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/postback-form.png" alt="建立 Connection 的表單" width="480" height="218">
 
 獲取 Connection ID 和密鑰，並與 RevoSurge 確認目標 origin 和接收端是否就緒。v2 還須核對接收路徑及產品有效目錄。密鑰僅保存在服務端，分享驗收材料時須遮蓋。
 

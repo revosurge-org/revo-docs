@@ -26,12 +26,12 @@ Send every successful deposit as `deposit`; RevoSurge derives the first deposit 
 
 Open **Product → Choose your setup → Our own back office**. Review Web Tracker and S2S, then apply **Use this setup** when ready.
 
-![Recommended Web Tracker and S2S setup](/img/handbook/wizard-v4/choose-setup-s2s.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/choose-setup-s2s.png" alt="Recommended Web Tracker and S2S setup" width="416" height="268">
 
 1. Open **Account menu → API Keys & Postbacks → API Keys**.
 2. Select **Create API Key**. In **Generate new API key**, select the Product, enter the key name and select **Generate key**.
 
-![Generate an API key for the intended Product; advertiser values blurred](/img/handbook/wizard-v4/api-key-create.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/api-key-create.png" alt="Generate an API key for the intended Product; advertiser values blurred" width="384" height="280">
 
 ## 3. Build the event request
 

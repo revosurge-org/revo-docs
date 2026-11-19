@@ -34,12 +34,12 @@ In AppsFlyer, open the intended app and go to **Settings → App Settings**. Con
 
 Turn **Activate partner** ON to enable attribution and send postbacks.
 
-![Activate partner switched ON](/img/handbook/wizard-v4/ss04-activation.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/ss04-activation.png" alt="Activate partner switched ON" width="384" height="81">
 ### 3) Check default install postbacks
 
 Under **Default postbacks**, review **Install** and its **for users from** value.
 
-![Default install postback and sending control](/img/handbook/wizard-v4/ss05-install-postback.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/ss05-install-postback.png" alt="Default install postback and sending control" width="448" height="92">
 
 The example shows a read-only **This partner only** setting. Confirm the supported sending scope for your app and PID with your Account Manager.
 
@@ -47,7 +47,7 @@ The example shows a read-only **This partner only** setting. Confirm the support
 
 Turn **In-app event postbacks** ON to reveal the window and mapping table. Select the event postback window to Lifetime. If it is unavailable, use at least **6 months**.
 
-![Lifetime selected for in-app event postbacks](/img/handbook/wizard-v4/ss07-lifetime.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/ss07-lifetime.png" alt="Lifetime selected for in-app event postbacks" width="448" height="108">
 ### 5) Add a mapping row
 
 Click **Add event** below the event table.
@@ -70,7 +70,7 @@ A row appears with four fields:
 
 After saving Integration, open **Permissions** and apply the access agreed with your app owner. Permissions are separate from postback delivery.
 
-![Permissions tab and master permission switch](/img/handbook/wizard-v4/ss13-permission-tab.png)
+<img class="doc-screenshot" src="/img/handbook/wizard-v4/ss13-permission-tab.png" alt="Permissions tab and master permission switch" width="496" height="101">
 
 ![Partner permission options](/img/handbook/wizard-v4/partner-permission-options.png)
 
