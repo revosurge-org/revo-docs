@@ -4,6 +4,8 @@ pageClass: adflow-doc-page
 
 # Ad formats and sizes
 
+> Planned for this release. Use these instructions once the corresponding features are live.
+
 Direct website integration supports Banner, Native, In-page Push, Pop, and Push. For Banner, use the sizes offered when creating the placement and match the page container and any GAM or Prebid.js size mappings.
 
 <div class="adflow-table" role="region" aria-label="Ad formats" tabindex="0">
@@ -42,3 +44,5 @@ Sizes are shown as width × height in pixels. Use the sizes offered when creatin
 </ul>
 </div>
 </div>
+
+After creating the placement, open its details and verify the width and height. If the integration uses a GAM ad unit or Prebid.js placement, use the relevant guide to check the size mapping.

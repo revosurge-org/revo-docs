@@ -24,14 +24,14 @@ Test adflow.js support for the **Banner** ad type.
       <label>Placement ID</label>
       <input type="text" id="af-placementId1" value="test-banner-1" />
     </div>
-    <button id="af-runBtn">Run Test</button>
+    <button type="button" id="af-runBtn">Run Test</button>
   </div>
 </div>
 </ClientOnly>
 
 ## Code Preview
 
-Follow these two steps using the current settings. Copy each code block separately.
+These two code blocks show how to integrate the test placement.
 
 <ClientOnly>
 <div class="adflowjs-dbg">
@@ -92,11 +92,14 @@ Follow these two steps using the current settings. Copy each code block separate
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick, ref } from 'vue'
+import { onMounted, onBeforeUnmount, nextTick, ref } from 'vue'
 import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
 
 const scriptPreview = ref('')
 const placementPreview = ref('')
+
+let restoreConsole
+onBeforeUnmount(() => restoreConsole?.())
 
 onMounted(async () => {
   await nextTick()
@@ -193,22 +196,29 @@ onMounted(async () => {
   var origLog = console.log;
   var origWarn = console.warn;
 
-  console.log = function() {
+  function captureLog() {
     origLog.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) {
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) {
       log(msg, 'info');
       trackStatus(msg);
     }
-  };
+  }
 
-  console.warn = function() {
+  function captureWarn() {
     origWarn.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) {
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) {
       log(msg, 'warn');
       trackStatus(msg);
     }
+  }
+
+  console.log = captureLog;
+  console.warn = captureWarn;
+  restoreConsole = function() {
+    if (console.log === captureLog) console.log = origLog;
+    if (console.warn === captureWarn) console.warn = origWarn;
   };
 
   function updateRuntimeConfig() {
@@ -244,6 +254,10 @@ onMounted(async () => {
     var attempts = 0;
     var maxAttempts = 40;
     var timer = setInterval(function() {
+      if (!logBox.isConnected) {
+        clearInterval(timer);
+        return;
+      }
       attempts++;
       updateRuntimeConfig();
       var iframe = document.querySelector('#af-ad-container-1 iframe[data-adflow-ad]');

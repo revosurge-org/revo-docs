@@ -24,18 +24,18 @@ Test adflow.js support for the **In-page Push (centered popup)** ad type: the au
       <label>Placement ID</label>
       <input type="text" id="ipush-placementId" value="test-push-1" />
     </div>
-    <button id="ipush-runBtn">Run Test</button>
+    <button type="button" id="ipush-runBtn">Run Test</button>
   </div>
 </div>
 </ClientOnly>
 
 ::: tip No permission needed
-In-page Push does not use browser notifications, so no HTTPS or notification permission is required. On a win, the popup card renders centered on this page with a close button in the corner.
+In-page Push does not use browser notifications, so browser notification permission is not required. On a win, the popup card renders centered on this page with a close button in the corner.
 :::
 
 ## Code Preview
 
-Follow these two steps using the current settings. Copy each code block separately.
+These two code blocks show how to integrate the test placement.
 
 <ClientOnly>
 <div class="ipush-dbg">
@@ -104,11 +104,14 @@ Follow these two steps using the current settings. Copy each code block separate
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick, ref } from 'vue'
+import { onMounted, onBeforeUnmount, nextTick, ref } from 'vue'
 import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
 
 const scriptPreview = ref('')
 const placementPreview = ref('')
+
+let restoreConsole
+onBeforeUnmount(() => restoreConsole?.())
 
 onMounted(async () => {
   await nextTick()
@@ -212,16 +215,23 @@ onMounted(async () => {
   var origLog = console.log;
   var origWarn = console.warn;
 
-  console.log = function() {
+  function captureLog() {
     origLog.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) { log(msg, 'info'); trackStatus(msg); }
-  };
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) { log(msg, 'info'); trackStatus(msg); }
+  }
 
-  console.warn = function() {
+  function captureWarn() {
     origWarn.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) { log(msg, 'warn'); trackStatus(msg); }
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) { log(msg, 'warn'); trackStatus(msg); }
+  }
+
+  console.log = captureLog;
+  console.warn = captureWarn;
+  restoreConsole = function() {
+    if (console.log === captureLog) console.log = origLog;
+    if (console.warn === captureWarn) console.warn = origWarn;
   };
 
   function resetState() {
@@ -380,6 +390,10 @@ onMounted(async () => {
     var maxAttempts = 40; // ~20s
 
     var timer = setInterval(function() {
+      if (!logBox.isConnected) {
+        clearInterval(timer);
+        return;
+      }
       attempts++;
       updateRuntimeConfig();
 

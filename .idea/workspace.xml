@@ -9,21 +9,47 @@
       <change beforePath="$PROJECT_DIR$/.vitepress/theme/adflow.css" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/theme/adflow.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.vitepress/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/theme/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cn/adflow/ad-formats.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/ad-formats.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/billing.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/billing.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/reporting.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/reporting.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/reports.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/reports.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/verify-and-launch.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/verify-and-launch.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/banner-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/banner-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/create-placement.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/create-placement.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/inpage-push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/inpage-push-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/install-check-qa.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/integration-guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/native-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/native-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/no-ad-display.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/no-ad-display.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/pop-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/pop-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/push-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/report-data-issues.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/report-data-issues.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/s2s-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/s2s-debugger.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/en/adflow/ad-formats.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/ad-formats.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/billing.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/billing.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/banner-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/banner-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/create-placement.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/create-placement.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/en/adflow/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/reporting.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/reporting.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/reports.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/reports.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/inpage-push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/inpage-push-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/install-check-qa.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/integration-guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/native-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/native-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/no-ad-display.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/no-ad-display.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/pop-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/pop-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/push-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/report-data-issues.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/report-data-issues.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/s2s-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/s2s-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/troubleshooting.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/troubleshooting.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/verify-and-launch.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/verify-and-launch.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hk/adflow/ad-formats.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/ad-formats.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/billing.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/billing.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/banner-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/banner-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/create-placement.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/create-placement.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hk/adflow/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/reporting.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/reporting.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/reports.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/reports.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/inpage-push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/inpage-push-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/install-check-qa.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/integration-guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/native-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/native-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/no-ad-display.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/no-ad-display.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/pop-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/pop-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/push-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/report-data-issues.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/report-data-issues.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/s2s-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/s2s-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/troubleshooting.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/troubleshooting.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/verify-and-launch.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/verify-and-launch.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

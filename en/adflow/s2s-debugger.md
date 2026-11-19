@@ -24,14 +24,14 @@ Test the Prebid.js S2S configuration approach: bid requests forwarded via Prebid
       <label>Placement ID</label>
       <input type="text" id="s2s-placementId1" value="test-placement-1" />
     </div>
-    <button id="s2s-runBtn">Run Test</button>
+    <button type="button" id="s2s-runBtn">Run Test</button>
   </div>
 </div>
 </ClientOnly>
 
 ## Code Preview
 
-Auto-generated Prebid.js S2S integration code based on your configuration above:
+This example shows how to integrate the test placement with Prebid.js S2S.
 
 <ClientOnly>
 <div class="s2s-dbg">
@@ -197,15 +197,7 @@ onMounted(async () => {
     log('Placement ID: ' + pid1 + ' (300x250)');
 
     // Dynamically inject Prebid.js if not already present
-    if (!document.getElementById('s2s-prebid-script')) {
-      var prebidScript = document.createElement('script');
-      prebidScript.id = 's2s-prebid-script';
-      prebidScript.async = true;
-      prebidScript.src = 'https://cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js';
-      document.body.appendChild(prebidScript);
-    }
-
-    waitForPrebid(function() {
+    waitForPrebid(btn, function() {
       setStatus('s2s-status-prebid', 'success', 'Loaded v' + (window.pbjs.version || '?'));
       log('Prebid.js loaded, version: ' + (window.pbjs.version || 'unknown'), 'success');
 
@@ -296,30 +288,47 @@ onMounted(async () => {
     });
   }
 
-  function waitForPrebid(callback) {
-    if (typeof window.pbjs !== 'undefined') {
+  function waitForPrebid(btn, callback) {
+    function isReady() {
+      return typeof window.pbjs?.requestBids === 'function';
+    }
+
+    if (isReady()) {
       callback();
       return;
     }
+
     setStatus('s2s-status-prebid', 'pending', 'Loading...');
     log('Waiting for Prebid.js to load...');
+    document.getElementById('s2s-prebid-script')?.remove();
+    var script = document.createElement('script');
+    script.id = 's2s-prebid-script';
+    script.async = true;
+    script.src = 'https://cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js';
+
+    function finish(status, message) {
+      clearInterval(timer);
+      script.onerror = null;
+      if (!btn.isConnected || status) script.remove();
+      if (!btn.isConnected) return;
+      if (status) {
+        setStatus('s2s-status-prebid', 'error', status);
+        log(message, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Rerun Test';
+        return;
+      }
+      callback();
+    }
+
     var attempts = 0;
     var timer = setInterval(function() {
       attempts++;
-      if (typeof window.pbjs !== 'undefined') {
-        clearInterval(timer);
-        callback();
-      } else if (attempts >= 30) {
-        clearInterval(timer);
-        setStatus('s2s-status-prebid', 'error', 'Load timeout');
-        log('Prebid.js load timeout (15s)', 'error');
-        var runBtn = document.getElementById('s2s-runBtn');
-        if (runBtn) {
-          runBtn.disabled = false;
-          runBtn.textContent = 'Rerun Test';
-        }
-      }
+      if (!btn.isConnected || isReady()) finish();
+      else if (attempts >= 30) finish('Load timeout', 'Prebid.js load timeout (15s)');
     }, 500);
+    script.onerror = function() { finish('Load failed', 'Prebid.js failed to load'); };
+    document.body.appendChild(script);
   }
 
   // Attach event listeners

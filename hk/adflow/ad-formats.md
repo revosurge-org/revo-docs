@@ -4,6 +4,8 @@ pageClass: adflow-doc-page
 
 # 廣告格式與尺寸
 
+> 本期擬發布內容，隨對應功能上線後使用。
+
 網站直裝支援 Banner、Native、In-page Push、Pop 和 Push。建立 Banner 版位時，請依介面選項選擇尺寸，並確認頁面容器及 GAM 或 Prebid.js 的尺寸對應一致。
 
 <div class="adflow-table" role="region" aria-label="廣告格式" tabindex="0">
@@ -42,3 +44,5 @@ pageClass: adflow-doc-page
 </ul>
 </div>
 </div>
+
+建立後開啟版位詳細資料，核對寬度與高度。若接入需設定 GAM 廣告單元或 Prebid.js 版位，請依對應指南檢查尺寸對應。

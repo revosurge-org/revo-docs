@@ -1,9 +1,13 @@
 // https://vitepress.dev/guide/custom-theme
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+// @ts-ignore
 import 'katex/dist/katex.min.css'
+// @ts-ignore
 import './style.css'
+// @ts-ignore
 import './adflow.css'
+// @ts-ignore
 import './RevoSurge_AdFlow_Docs_AdFlowOnly.css'
 import HttpMethod from './components/HttpMethod.vue'
 import EventPayloadExplorer from './components/EventPayloadExplorer.vue'

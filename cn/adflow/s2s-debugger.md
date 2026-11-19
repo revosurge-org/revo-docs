@@ -24,14 +24,14 @@ description: 测试 Prebid S2S 配置。生成并验证 S2S 竞价请求。
       <label>Placement ID</label>
       <input type="text" id="s2s-placementId1" value="test-placement-1" />
     </div>
-    <button id="s2s-runBtn">运行测试</button>
+    <button type="button" id="s2s-runBtn">运行测试</button>
   </div>
 </div>
 </ClientOnly>
 
 ## 代码预览
 
-根据上方配置参数自动生成的 Prebid.js S2S 接入代码：
+以下为 Prebid.js S2S 测试广告位的接入示例。
 
 <ClientOnly>
 <div class="s2s-dbg">
@@ -196,15 +196,7 @@ onMounted(async () => {
     log('Account ID: ' + accountId);
     log('Placement ID: ' + pid1 + ' (300x250)');
 
-    if (!document.getElementById('s2s-prebid-script')) {
-      var prebidScript = document.createElement('script');
-      prebidScript.id = 's2s-prebid-script';
-      prebidScript.async = true;
-      prebidScript.src = 'https://cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js';
-      document.body.appendChild(prebidScript);
-    }
-
-    waitForPrebid(function() {
+    waitForPrebid(btn, function() {
       setStatus('s2s-status-prebid', 'success', '已加载 v' + (window.pbjs.version || '?'));
       log('Prebid.js 已加载，版本: ' + (window.pbjs.version || 'unknown'), 'success');
 
@@ -295,30 +287,47 @@ onMounted(async () => {
     });
   }
 
-  function waitForPrebid(callback) {
-    if (typeof window.pbjs !== 'undefined') {
+  function waitForPrebid(btn, callback) {
+    function isReady() {
+      return typeof window.pbjs?.requestBids === 'function';
+    }
+
+    if (isReady()) {
       callback();
       return;
     }
+
     setStatus('s2s-status-prebid', 'pending', '加载中...');
     log('等待 Prebid.js 加载...');
+    document.getElementById('s2s-prebid-script')?.remove();
+    var script = document.createElement('script');
+    script.id = 's2s-prebid-script';
+    script.async = true;
+    script.src = 'https://cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js';
+
+    function finish(status, message) {
+      clearInterval(timer);
+      script.onerror = null;
+      if (!btn.isConnected || status) script.remove();
+      if (!btn.isConnected) return;
+      if (status) {
+        setStatus('s2s-status-prebid', 'error', status);
+        log(message, 'error');
+        btn.disabled = false;
+        btn.textContent = '重新测试';
+        return;
+      }
+      callback();
+    }
+
     var attempts = 0;
     var timer = setInterval(function() {
       attempts++;
-      if (typeof window.pbjs !== 'undefined') {
-        clearInterval(timer);
-        callback();
-      } else if (attempts >= 30) {
-        clearInterval(timer);
-        setStatus('s2s-status-prebid', 'error', '加载超时');
-        log('Prebid.js 加载超时 (15s)', 'error');
-        var runBtn = document.getElementById('s2s-runBtn');
-        if (runBtn) {
-          runBtn.disabled = false;
-          runBtn.textContent = '重新测试';
-        }
-      }
+      if (!btn.isConnected || isReady()) finish();
+      else if (attempts >= 30) finish('加载超时', 'Prebid.js 加载超时 (15s)');
     }, 500);
+    script.onerror = function() { finish('加载失败', 'Prebid.js 加载失败'); };
+    document.body.appendChild(script);
   }
 
   var runBtn = document.getElementById('s2s-runBtn');

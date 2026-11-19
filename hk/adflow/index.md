@@ -28,4 +28,4 @@ pageClass: adflow-doc-page
 
 ## 遇到問題
 
-先在[常見問題與排查](./troubleshooting)選擇你看到的現象。
+先在[常見問題與排查](./troubleshooting)選擇你看到的現象。若需交由客戶經理處理，請準備網站、版位 ID、接入方式、發生時間與時區，以及有助重現問題的截圖。

@@ -24,18 +24,18 @@ description: 在浏览器中测试 adflow.js Native（原生信息流）广告�
       <label>Placement ID</label>
       <input type="text" id="nat-placementId" value="test-native-1" />
     </div>
-    <button id="nat-runBtn">运行测试</button>
+    <button type="button" id="nat-runBtn">运行测试</button>
   </div>
 </div>
 </ClientOnly>
 
 ::: tip 无需授权
-Native 广告不使用浏览器通知，无需 HTTPS 或通知权限。中标后卡片直接内嵌渲染在下方广告位中 —— 图片在上、标题正文在下，无关闭按钮。
+Native 广告不使用浏览器通知，无需浏览器通知权限。中标后卡片直接内嵌渲染在下方广告位中 —— 图片在上、标题正文在下，无关闭按钮。
 :::
 
 ## 代码预览
 
-按以下两步接入，代码随上方配置更新。两段代码请分别复制。
+以下两段代码展示测试广告位的接入方式。
 
 <ClientOnly>
 <div class="nat-dbg">
@@ -103,11 +103,14 @@ Native 广告不使用浏览器通知，无需 HTTPS 或通知权限。中标后
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick, ref } from 'vue'
+import { onMounted, onBeforeUnmount, nextTick, ref } from 'vue'
 import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
 
 const scriptPreview = ref('')
 const placementPreview = ref('')
+
+let restoreConsole
+onBeforeUnmount(() => restoreConsole?.())
 
 onMounted(async () => {
   await nextTick()
@@ -211,16 +214,23 @@ onMounted(async () => {
   var origLog = console.log;
   var origWarn = console.warn;
 
-  console.log = function() {
+  function captureLog() {
     origLog.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) { log(msg, 'info'); trackStatus(msg); }
-  };
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) { log(msg, 'info'); trackStatus(msg); }
+  }
 
-  console.warn = function() {
+  function captureWarn() {
     origWarn.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) { log(msg, 'warn'); trackStatus(msg); }
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) { log(msg, 'warn'); trackStatus(msg); }
+  }
+
+  console.log = captureLog;
+  console.warn = captureWarn;
+  restoreConsole = function() {
+    if (console.log === captureLog) console.log = origLog;
+    if (console.warn === captureWarn) console.warn = origWarn;
   };
 
   function resetState() {
@@ -381,6 +391,10 @@ onMounted(async () => {
     var maxAttempts = 40; // ~20s
 
     var timer = setInterval(function() {
+      if (!logBox.isConnected) {
+        clearInterval(timer);
+        return;
+      }
       attempts++;
       updateRuntimeConfig();
 

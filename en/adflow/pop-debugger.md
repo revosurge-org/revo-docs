@@ -24,7 +24,7 @@ Test adflow.js support for the **Pop (popunder)** ad type: the winning ad opens 
       <label>Placement ID</label>
       <input type="text" id="pop-placementId" value="test-pop-1" />
     </div>
-    <button id="pop-runBtn">Run Test</button>
+    <button type="button" id="pop-runBtn">Run Test</button>
   </div>
   <div id="pop-cta" class="pop-cta">
     Ad is ready — click anywhere on the page to open the pop in the background
@@ -34,7 +34,7 @@ Test adflow.js support for the **Pop (popunder)** ad type: the winning ad opens 
 
 ## Code Preview
 
-Follow these two steps using the current settings. Copy each code block separately.
+These two code blocks show how to integrate the test placement.
 
 <ClientOnly>
 <div class="pop-dbg">
@@ -101,11 +101,14 @@ Follow these two steps using the current settings. Copy each code block separate
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick, ref } from 'vue'
+import { onMounted, onBeforeUnmount, nextTick, ref } from 'vue'
 import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
 
 const scriptPreview = ref('')
 const placementPreview = ref('')
+
+let restoreConsole
+onBeforeUnmount(() => restoreConsole?.())
 
 onMounted(async () => {
   await nextTick()
@@ -219,16 +222,23 @@ onMounted(async () => {
   var origLog = console.log;
   var origWarn = console.warn;
 
-  console.log = function() {
+  function captureLog() {
     origLog.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) { log(msg, 'info'); trackStatus(msg); }
-  };
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) { log(msg, 'info'); trackStatus(msg); }
+  }
 
-  console.warn = function() {
+  function captureWarn() {
     origWarn.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) { log(msg, 'warn'); trackStatus(msg); }
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) { log(msg, 'warn'); trackStatus(msg); }
+  }
+
+  console.log = captureLog;
+  console.warn = captureWarn;
+  restoreConsole = function() {
+    if (console.log === captureLog) console.log = origLog;
+    if (console.warn === captureWarn) console.warn = origWarn;
   };
 
   function resetState() {
@@ -382,6 +392,10 @@ onMounted(async () => {
     var maxAttempts = 40; // ~20s
 
     var timer = setInterval(function() {
+      if (!logBox.isConnected) {
+        clearInterval(timer);
+        return;
+      }
       attempts++;
       updateRuntimeConfig();
 

@@ -24,14 +24,14 @@ description: 在瀏覽器測試 adflow.js。配置 URL、帳戶 ID、廣告位�
       <label>Placement ID</label>
       <input type="text" id="af-placementId1" value="test-banner-1" />
     </div>
-    <button id="af-runBtn">運行測試</button>
+    <button type="button" id="af-runBtn">運行測試</button>
   </div>
 </div>
 </ClientOnly>
 
 ## 代碼預覽
 
-按以下兩步接入，代碼會隨上方設定更新。兩段代碼請分別複製。
+以下兩段程式碼展示測試版位的接入方式。
 
 <ClientOnly>
 <div class="adflowjs-dbg">
@@ -92,11 +92,14 @@ description: 在瀏覽器測試 adflow.js。配置 URL、帳戶 ID、廣告位�
 </ClientOnly>
 
 <script setup>
-import { onMounted, nextTick, ref } from 'vue'
+import { onMounted, onBeforeUnmount, nextTick, ref } from 'vue'
 import AdFlowCodePreview from '../../.vitepress/theme/components/AdFlowCodePreview.vue'
 
 const scriptPreview = ref('')
 const placementPreview = ref('')
+
+let restoreConsole
+onBeforeUnmount(() => restoreConsole?.())
 
 onMounted(async () => {
   await nextTick()
@@ -193,22 +196,29 @@ onMounted(async () => {
   var origLog = console.log;
   var origWarn = console.warn;
 
-  console.log = function() {
+  function captureLog() {
     origLog.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) {
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) {
       log(msg, 'info');
       trackStatus(msg);
     }
-  };
+  }
 
-  console.warn = function() {
+  function captureWarn() {
     origWarn.apply(console, arguments);
     var msg = Array.prototype.slice.call(arguments).join(' ');
-    if (msg.indexOf('[AdFlow]') !== -1) {
+    if (logBox.isConnected && msg.indexOf('[AdFlow]') !== -1) {
       log(msg, 'warn');
       trackStatus(msg);
     }
+  }
+
+  console.log = captureLog;
+  console.warn = captureWarn;
+  restoreConsole = function() {
+    if (console.log === captureLog) console.log = origLog;
+    if (console.warn === captureWarn) console.warn = origWarn;
   };
 
   function updateRuntimeConfig() {
@@ -244,6 +254,10 @@ onMounted(async () => {
     var attempts = 0;
     var maxAttempts = 40;
     var timer = setInterval(function() {
+      if (!logBox.isConnected) {
+        clearInterval(timer);
+        return;
+      }
       attempts++;
       updateRuntimeConfig();
       var iframe = document.querySelector('#af-ad-container-1 iframe[data-adflow-ad]');

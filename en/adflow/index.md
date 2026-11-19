@@ -28,4 +28,4 @@ This handbook is for publishers monetizing a website. To launch your first place
 
 ## Need help?
 
-Find the issue you’re seeing in [Troubleshooting](./troubleshooting).
+Find the issue you’re seeing in [Troubleshooting](./troubleshooting). If you need to involve your account manager, have the site, placement ID, integration method, time and time zone, and screenshots that help reproduce the issue ready.

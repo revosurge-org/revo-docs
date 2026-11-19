@@ -69,11 +69,21 @@
   text-overflow: ellipsis;
 }
 
-.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls button {
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls > button {
+  justify-self: start;
   width: max-content;
-  max-width: 100%;
   min-height: 42px;
-  padding-inline: 16px;
+  padding: 0 16px;
+  color: white;
+  background: #3c56c9;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font: 600 14px/1.7 system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .controls > button:disabled {
+  cursor: not-allowed;
+  opacity: .82;
 }
 
 .vp-doc :is(.adflowjs-dbg, .pop-dbg, .push-dbg, .ipush-dbg, .nat-dbg, .s2s-dbg) .grid {
