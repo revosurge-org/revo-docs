@@ -1,9 +1,30 @@
 # 查看报表与收益
 
-广告位上线后，可以按日期、网站和广告位查看流量与表现，也可以按账单月份核对收益和应收金额。
+接入上线后，可以按下面的任务找到所需数据。
 
-## 报表与账单入口
-
-- [查看广告位数据与报表](./reports) · 查看近期请求量、效果趋势和维度明细。
-- [查看账单、更新收款资料与月度对账](./billing) · 核对每日应收、月度合计和收款资料。
-- [报表没数据或数据对不上](./report-data-issues) · 检查报表筛选、统计时段和指标口径。
+<div aria-label="表格" class="adflow-table" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>我想做什么</th>
+<th>去哪里</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>看一个广告位近三天收到多少请求</td>
+<td><a href="./reports.html#%E6%9F%A5%E7%9C%8B%E5%B9%BF%E5%91%8A%E4%BD%8D%E8%BF%91-3-%E5%A4%A9%E8%AF%B7%E6%B1%82%E9%87%8F">查看广告位数据与报表</a></td>
+</tr>
+<tr>
+<td>比较请求量、出价量和出价率随时间的变化</td>
+<td><a href="./reports.html#%E6%9F%A5%E7%9C%8B%E8%B6%8B%E5%8A%BF%E4%B8%8E%E7%BB%B4%E5%BA%A6">查看广告位数据与报表</a></td>
+</tr>
+<tr>
+<td>看当前月份的收益和每日应收，或更新收款资料</td>
+<td><a href="./billing">查看账单、更新收款资料与月度对账</a></td>
+</tr>
+<tr>
+<td>排查报表空白或两边数字有差异</td>
+<td><a href="./report-data-issues">报表没数据或数据对不上</a></td>
+</tr>
+</tbody>
+</table></div>
