@@ -21,7 +21,7 @@ Clicking **Save** or **Publish** in your website editor does not guarantee that 
 
 Compare your page with the two installation steps in AdFlow. The shared script must load and the target placement code must be present on that same page. Do not install only one fragment, or put it in the wrong page template. Install the shared script only once in the same site template.
 
-Copy production code from the correct website and placement in AdFlow, rather than using example code. See the [Integration Guide](./integration-guide#adflow-usage) for the two-step setup.
+Copy production code from the correct website and placement in AdFlow, rather than using example code. See the [Integration Guide](./adflow-sdk#adflow-usage) for the two-step setup.
 
 ### Do the account and placement IDs match?
 
@@ -42,7 +42,7 @@ Ask your website developer to open the browser's developer tools and inspect **N
 
 Have your developer fix any site or network configuration errors. When diagnosing extensions, temporarily isolate their effect in your own test browser; do not ask all visitors to disable security settings.
 
-The [Integration Guide's debugging tools](./integration-guide#adflow-diagnostic) can help your developer investigate. For bidding and rendering issues after requests arrive, use the relevant [format debugger](./integration-guide#adflow-sdk) or [S2S Debugger](./s2s-debugger).
+The [Integration Guide's debugging tools](./adflow-sdk#adflow-diagnostic) can help your developer investigate. For bidding and rendering issues after requests arrive, use the relevant [format debugger](./adflow-sdk#adflow-sdk) or [S2S Debugger](./s2s-debugger).
 
 ## 5. Retry later and confirm what you are checking {#retry}
 

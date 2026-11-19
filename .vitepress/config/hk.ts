@@ -99,7 +99,19 @@ export const hk: DefaultTheme.Config = {
       link: '/hk/adflow/integration-guide',
       collapsed: false,
       items: [
-        { text: '接入指南', link: '/hk/adflow/integration-guide' },
+        {
+          text: '接入指南',
+          link: '/hk/adflow/integration-guide',
+          collapsed: true,
+          items: [
+            { text: 'adflow.js 一鍵接入', link: '/hk/adflow/adflow-sdk' },
+            { text: 'adflow-tma.js（Telegram 小程式）', link: '/hk/adflow/adflow-tma-sdk' },
+            { text: 'S2S 配置接入', link: '/hk/adflow/s2s-integration' },
+            { text: 'Prebid Mobile SDK（App 內接入）', link: '/hk/adflow/prebid-mobile-sdk' },
+            { text: 'Prebid.js + GAM', link: '/hk/adflow/gam-prebid' },
+            { text: 'GAM + adflow.js', link: '/hk/adflow/gam-adflow-sdk' }
+          ]
+        },
         { text: 'Banner 調試器', link: '/hk/adflow/banner-debugger' },
         { text: 'Pop 調試器', link: '/hk/adflow/pop-debugger' },
         { text: 'Push 調試器', link: '/hk/adflow/push-debugger' },

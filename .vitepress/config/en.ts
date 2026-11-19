@@ -99,7 +99,19 @@ export const en: DefaultTheme.Config = {
       link: '/en/adflow/integration-guide',
       collapsed: false,
       items: [
-        { text: 'Integration Guide', link: '/en/adflow/integration-guide' },
+        {
+          text: 'Integration Guide',
+          link: '/en/adflow/integration-guide',
+          collapsed: true,
+          items: [
+            { text: 'adflow.js Quick Integration', link: '/en/adflow/adflow-sdk' },
+            { text: 'adflow-tma.js (Telegram Mini App)', link: '/en/adflow/adflow-tma-sdk' },
+            { text: 'S2S Configuration', link: '/en/adflow/s2s-integration' },
+            { text: 'Prebid Mobile SDK (In-App)', link: '/en/adflow/prebid-mobile-sdk' },
+            { text: 'Prebid.js + GAM', link: '/en/adflow/gam-prebid' },
+            { text: 'GAM + adflow.js', link: '/en/adflow/gam-adflow-sdk' }
+          ]
+        },
         { text: 'Banner Debugger', link: '/en/adflow/banner-debugger' },
         { text: 'Pop Debugger', link: '/en/adflow/pop-debugger' },
         { text: 'Push Debugger', link: '/en/adflow/push-debugger' },

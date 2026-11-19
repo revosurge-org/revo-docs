@@ -21,7 +21,7 @@ description: 排查 AdFlow 安装检查未收到请求的问题，核对页面�
 
 请对照 AdFlow 的两步安装代码。共用脚本应正确加载，目标广告位代码也须在同一页面；不要只安装其中一段，也不要放错页面模板。同一站点模板的共用脚本只安装一次。
 
-确认代码取自 AdFlow 中对应网站和广告位的正式代码，而非示例。两步安装方式见[接入指南](./integration-guide#adflow-usage)。
+确认代码取自 AdFlow 中对应网站和广告位的正式代码，而非示例。两步安装方式见[接入指南](./adflow-sdk#adflow-usage)。
 
 ### 账号与广告位 ID 是否匹配？
 
@@ -42,7 +42,7 @@ description: 排查 AdFlow 安装检查未收到请求的问题，核对页面�
 
 请开发者修复站点或网络配置问题。诊断时可在自己的测试浏览器临时排除扩展拦截影响，不应要求所有访客关闭安全设置。
 
-可参考[接入指南中的诊断工具](./integration-guide#adflow-diagnostic)。收到请求后仍有竞价或展示问题时，请使用对应的[广告格式调试器](./integration-guide#adflow-sdk)或 [S2S 调试器](./s2s-debugger)。
+可参考[接入指南中的诊断工具](./adflow-sdk#adflow-diagnostic)。收到请求后仍有竞价或展示问题时，请使用对应的[广告格式调试器](./adflow-sdk#adflow-sdk)或 [S2S 调试器](./s2s-debugger)。
 
 ## 5. 稍后重试，确认检查对象 {#retry}
 

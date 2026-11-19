@@ -21,7 +21,7 @@ description: 排查 AdFlow 安裝檢查未收到請求的問題，核對頁面�
 
 請對照 AdFlow 的兩步安裝代碼。共用腳本應正確載入，目標廣告位代碼亦須在同一頁面；不要只安裝其中一段，亦不要放錯頁面範本。同一網站範本的共用腳本只安裝一次。
 
-確認代碼取自 AdFlow 中對應網站和廣告位的正式代碼，而非範例。兩步安裝方式見[接入指南](./integration-guide#adflow-usage)。
+確認代碼取自 AdFlow 中對應網站和廣告位的正式代碼，而非範例。兩步安裝方式見[接入指南](./adflow-sdk#adflow-usage)。
 
 ### 帳號與廣告位 ID 是否匹配？
 
@@ -42,7 +42,7 @@ description: 排查 AdFlow 安裝檢查未收到請求的問題，核對頁面�
 
 請開發者修復網站或網絡設定問題。診斷時可在自己的測試瀏覽器暫時排除擴充功能的攔截影響，不應要求所有訪客關閉安全設定。
 
-可參考[接入指南中的診斷工具](./integration-guide#adflow-diagnostic)。收到請求後仍有競價或展示問題時，請使用對應的[廣告格式調試器](./integration-guide#adflow-sdk)或 [S2S 調試器](./s2s-debugger)。
+可參考[接入指南中的診斷工具](./adflow-sdk#adflow-diagnostic)。收到請求後仍有競價或展示問題時，請使用對應的[廣告格式調試器](./adflow-sdk#adflow-sdk)或 [S2S 調試器](./s2s-debugger)。
 
 ## 5. 稍後重試，確認檢查對象 {#retry}
 
