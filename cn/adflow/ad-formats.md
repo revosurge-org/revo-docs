@@ -1,3 +1,7 @@
+---
+pageClass: adflow-doc-page
+---
+
 # 广告格式与尺寸
 
 选择实际接入环境和广告位置能承载的格式。各接入方式如何配置、支持哪些格式，以<a href="./choose-integration">对应的接入指南</a>为准。

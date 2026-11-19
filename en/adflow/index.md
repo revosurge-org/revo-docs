@@ -1,3 +1,7 @@
+---
+pageClass: adflow-doc-page
+---
+
 # Start here: Launch your first ad placement
 
 This handbook is for publishers monetizing a website. To launch your first placement, set it up, integrate it, and verify requests, rendered ads, and reporting data.
