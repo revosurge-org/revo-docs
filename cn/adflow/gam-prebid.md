@@ -140,3 +140,13 @@ pbjs.addAdUnits([{
 依次检查 Prebid 出价、GPT 请求中的定向键、GAM 返回的订单项和素材以及实际展示。单独验证 Push 的系统通知权限、Pop 的用户点击，以及 Native 和 In-page Push 的模板渲染。
 
 有关 GAM 订单项和素材设置，参见 [Prebid 的 GAM 配置指南](https://docs.prebid.org/adops/step-by-step.html)和 [PUC 素材指南](https://docs.prebid.org/adops/gam-creative-banner-sbs.html)。
+
+### 无报价或超时
+
+- 在浏览器 Network 中找到本次 S2S 请求，核对广告位、尺寸和响应。用 `pbjs.getNoBids()` 查看明确无报价的请求，并按广告位和本次竞价核对。请求未发出或失败时，先检查适配器配置和网络。
+- 当 `requestBids()` 返回 `timedOut: true` 时，查看 `pbjs.getEvents()` 中对应竞价的 `bidTimeout`，并对照 Network 耗时和 Prebid.js、S2S 的超时配置。其他出价方仍可能及时返回有效出价。
+- 没有本次可用出价时，确保对应 GPT 广告位不会带上上一轮的 Prebid 定向键，再按站点策略请求 GAM，让正常订单项参与投放。用 [Google Publisher Console](https://developers.google.com/publisher-tag/guides/publisher-console) 检查实际返回的订单项和素材。
+
+### 核对 GAM 和 AdFlow 报表
+
+对齐日期、时区及筛选条件，把 GAM 广告单元和本路径的订单项映射到对应的 AdFlow 广告位。两边都确认报表已覆盖测试时段，再比较同一范围内的展示量。GAM 订单项展示与 AdFlow 记录的广告展示可能在不同环节计数。若有差异，记录时间、广告位、订单项、指标和两边的报表截图，按[报表没数据或数据对不上](./report-data-issues)排查。

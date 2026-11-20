@@ -238,7 +238,7 @@ Push 广告默认会弹出浏览器通知。如只想接收竞价而不弹通知
 在 `<script>` 标签上添加 `data-debug` 属性可以在浏览器控制台查看 `[AdFlow]` 前缀的详细日志。也可以通过 `window.__adflow` 对象在控制台查看运行时配置和广告位信息。
 :::
 
-安装检查未收到匹配请求？请按[安装代码失败 QA](./install-check-qa) 中的步骤排查。
+安装检查未收到匹配请求？请按[安装检查失败 QA](./install-check-qa) 中的步骤排查。
 
 ## 诊断脚本 {#adflow-diagnostic}
 

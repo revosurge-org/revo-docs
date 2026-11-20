@@ -140,3 +140,13 @@ pbjs.addAdUnits([{
 Check the Prebid bid, GPT targeting, the line item and creative returned by GAM, and actual rendering in that order. Verify browser notification permission for Push, the user-click flow for Pop, and the templates for Native and In-page Push.
 
 See the [Prebid GAM setup guide](https://docs.prebid.org/adops/step-by-step.html) and [PUC creative guide](https://docs.prebid.org/adops/gam-creative-banner-sbs.html) for line item and creative configuration.
+
+### Check no bids and timeouts
+
+- Find the current S2S request in the browser Network panel. Check the placement, size, and response. Use `pbjs.getNoBids()` to identify explicit no-bid responses for the placement and auction. If the request is missing or failed, check the adapter configuration and network.
+- If `requestBids()` reports `timedOut: true`, find the auction’s `bidTimeout` events in `pbjs.getEvents()`. Compare network duration with the Prebid.js and S2S timeouts. Other bidders can still return usable bids before the deadline.
+- If there is no usable bid from this auction, ensure the GPT slot carries no Prebid targeting from an earlier auction. Request GAM according to your site’s fallback policy and use the [Google Publisher Console](https://developers.google.com/publisher-tag/guides/publisher-console) to inspect the line item and creative returned.
+
+### Reconcile GAM and AdFlow reports
+
+Align dates, time zones, and filters. Map the GAM ad unit and line item to the AdFlow placement and confirm both reports cover the test window before comparing impressions. GAM line-item impressions and AdFlow ad impressions can be counted at different stages. Capture any discrepancy with the test window, placement, line item, metric, and screenshots from both reports. See [reporting discrepancies](./report-data-issues).

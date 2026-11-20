@@ -1,3 +1,11 @@
-# Publisher Integration Guide
+---
+layout: page
+search: false
+redirectTo: /en/adflow/choose-integration
+---
 
-Go to [Choose an integration method](./choose-integration) and open the guide that matches your website setup.
+<script setup>
+import AdFlowIntegrationRedirect from '../../.vitepress/theme/components/AdFlowIntegrationRedirect.vue'
+</script>
+
+<AdFlowIntegrationRedirect locale="en" />

@@ -120,3 +120,48 @@ for (const locale of ['en', 'cn', 'hk']) {
     })
   }
 }
+
+test('legacy AdFlow links open the moved section in the same locale', async () => {
+  const page = await browser.newPage()
+  try {
+    for (const locale of ['cn', 'en', 'hk']) {
+      for (const [anchor, destination] of [
+        ['adflow-example', 'adflow-sdk'],
+        ['adflow-script-attrs', 'adflow-sdk'],
+        ['adflow-tma-script-attrs', 'adflow-tma-sdk'],
+        ['adflow-tma-example', 'adflow-tma-sdk'],
+        ['full-example', 's2s-integration']
+      ]) {
+        const base = `${origin}/${locale}/adflow/`
+        await page.goto(`${base}integration-guide?source=legacy#${anchor}`)
+        await page.waitForURL(`${base}${destination}?source=legacy#${anchor}`)
+        await page.locator(`#${anchor}`).waitFor()
+        await page.waitForFunction(id => {
+          const heading = document.getElementById(id)
+          if (!heading) return false
+          const top = heading.getBoundingClientRect().top
+          return top >= 0 && top < window.innerHeight
+        }, anchor)
+      }
+    }
+  } finally {
+    await page.close()
+  }
+})
+
+test('Simplified Chinese installation search leads with the current QA', async () => {
+  const page = await browser.newPage()
+  try {
+    const base = `${origin}/cn/adflow/`
+    await page.goto(`${base}installation-check-self-repairing`)
+    await page.waitForURL(`${base}install-check-qa`)
+    await page.locator('.VPNavBarSearchButton').click()
+    await page.locator('#localsearch-input').fill('安装检查')
+    const results = page.locator('#localsearch-list a')
+    await results.first().waitFor()
+    assert.match(await results.first().getAttribute('href'), /\/adflow\/install-check-qa(?:#|$)/)
+    assert.equal(await page.locator('#localsearch-list a[href*="installation-check-self-repairing"]').count(), 0)
+  } finally {
+    await page.close()
+  }
+})

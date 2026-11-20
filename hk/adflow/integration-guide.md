@@ -1,3 +1,11 @@
-# Publisher 接入文件
+---
+layout: page
+search: false
+redirectTo: /hk/adflow/choose-integration
+---
 
-請到[選擇接入方式](./choose-integration)，依照你的網站設定開啟對應的指南。
+<script setup>
+import AdFlowIntegrationRedirect from '../../.vitepress/theme/components/AdFlowIntegrationRedirect.vue'
+</script>
+
+<AdFlowIntegrationRedirect locale="hk" />

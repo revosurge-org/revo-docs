@@ -6,50 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="6a829be8-3f93-471f-b6a3-64cdb759d89e" name="Changes" comment="docs(adflow): restructure integration guides and add GAM setup docs&#10;&#10;- Split the publisher integration guide into an overview and four standalone guides.&#10;- Add Prebid.js + GAM and GAM + adflow.js guides covering five ad formats.&#10;- Update the overview and collapsible sidebar across English, Simplified Chinese, and Traditional Chinese.&#10;- Use placeholders in examples and omit screenshots containing private account details.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vitepress/theme/adflow.css" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/theme/adflow.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vitepress/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/theme/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/ad-formats.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/ad-formats.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/banner-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/banner-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/create-placement.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/create-placement.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/inpage-push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/inpage-push-debugger.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vitepress/config.mts" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/config.mts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vitepress/theme/components/DocRedirect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/.vitepress/theme/components/DocRedirect.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/adflow-sdk.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/adflow-sdk.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/gam-adflow-sdk.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/gam-adflow-sdk.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/gam-prebid.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/gam-prebid.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cn/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/install-check-qa.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/installation-check-self-repairing.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/installation-check-self-repairing.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cn/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/integration-guide.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/native-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/native-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/no-ad-display.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/no-ad-display.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/pop-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/pop-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/push-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/report-data-issues.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/report-data-issues.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cn/adflow/s2s-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/s2s-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/ad-formats.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/ad-formats.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/banner-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/banner-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/create-placement.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/create-placement.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/inpage-push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/inpage-push-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/install-check-qa.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cn/adflow/s2s-integration.md" beforeDir="false" afterPath="$PROJECT_DIR$/cn/adflow/s2s-integration.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/gam-adflow-sdk.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/gam-adflow-sdk.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/gam-prebid.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/gam-prebid.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/installation-check-self-repairing.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/installation-check-self-repairing.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/en/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/integration-guide.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/native-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/native-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/no-ad-display.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/no-ad-display.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/pop-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/pop-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/push-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/report-data-issues.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/report-data-issues.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/s2s-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/s2s-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/troubleshooting.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/troubleshooting.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/en/adflow/verify-and-launch.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/verify-and-launch.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/ad-formats.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/ad-formats.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/banner-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/banner-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/create-placement.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/create-placement.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/inpage-push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/inpage-push-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/install-check-qa.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/install-check-qa.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/en/adflow/s2s-integration.md" beforeDir="false" afterPath="$PROJECT_DIR$/en/adflow/s2s-integration.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/gam-adflow-sdk.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/gam-adflow-sdk.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/gam-prebid.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/gam-prebid.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/installation-check-self-repairing.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/installation-check-self-repairing.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hk/adflow/integration-guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/integration-guide.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/native-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/native-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/no-ad-display.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/no-ad-display.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/pop-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/pop-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/push-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/push-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/report-data-issues.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/report-data-issues.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/s2s-debugger.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/s2s-debugger.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/troubleshooting.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/troubleshooting.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hk/adflow/verify-and-launch.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/verify-and-launch.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hk/adflow/s2s-integration.md" beforeDir="false" afterPath="$PROJECT_DIR$/hk/adflow/s2s-integration.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/adflow-code-preview.test.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/tests/adflow-code-preview.test.mjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +33,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="1648" />
+    <option name="cachedIndexableFilesCount" value="1794" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -80,23 +56,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.1789333439849112" />
-      <entry key="MS500" value="2.3964818217207284" />
-      <entry key="S2" value="4.415983831863289" />
-      <entry key="S5" value="5.656036987548368" />
-      <entry key="S10" value="6.256709299724029" />
-      <entry key="S30" value="6.733856889825817" />
-      <entry key="S60" value="6.8644488355427695" />
-      <entry key="M2" value="6.93161791420235" />
-      <entry key="M5" value="6.987594113113598" />
-      <entry key="M10" value="7.10914749466479" />
-      <entry key="M15" value="7.238039917091748" />
-      <entry key="M30" value="7.492627233357646" />
-      <entry key="H1" value="7.702842852225595" />
-      <entry key="H2" value="7.838577769142699" />
-      <entry key="H4" value="7.915791601172077" />
-      <entry key="D1" value="7.985453136220708" />
-      <entry key="W1" value="7.9979089753610815" />
+      <entry key="MS100" value="1.0023467908071644" />
+      <entry key="MS500" value="1.9879496947003643" />
+      <entry key="S2" value="6.156232160465358" />
+      <entry key="S5" value="10.64798986813389" />
+      <entry key="S10" value="13.587366486724942" />
+      <entry key="S30" value="16.317843196458426" />
+      <entry key="S60" value="17.1287517966617" />
+      <entry key="M2" value="17.55654220587724" />
+      <entry key="M5" value="17.835596778701042" />
+      <entry key="M10" value="18.03216017068874" />
+      <entry key="M15" value="18.186117526230834" />
+      <entry key="M30" value="18.466098315611603" />
+      <entry key="H1" value="18.689347675648555" />
+      <entry key="H2" value="18.831756095940992" />
+      <entry key="H4" value="18.912359739425106" />
+      <entry key="D1" value="18.984878001673497" />
+      <entry key="W1" value="18.99782673267565" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -118,23 +94,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.1438506221464702" />
-      <entry key="MS500" value="2.3577529770544157" />
-      <entry key="S2" value="4.397300980965366" />
-      <entry key="S5" value="5.646483870399503" />
-      <entry key="S10" value="6.251411009446473" />
-      <entry key="S30" value="6.731949678457546" />
-      <entry key="S60" value="6.863475697059088" />
-      <entry key="M2" value="6.931126277505426" />
-      <entry key="M5" value="6.987390165336462" />
-      <entry key="M10" value="7.109023642690436" />
-      <entry key="M15" value="7.237940645921312" />
-      <entry key="M30" value="7.492560824166594" />
-      <entry key="H1" value="7.702802676070037" />
-      <entry key="H2" value="7.838555425107328" />
-      <entry key="H4" value="7.915779786878459" />
-      <entry key="D1" value="7.9854510705445305" />
-      <entry key="W1" value="7.997908677795621" />
+      <entry key="MS100" value="0.9816963278779635" />
+      <entry key="MS500" value="1.9729575788913127" />
+      <entry key="S2" value="6.139071570579666" />
+      <entry key="S5" value="10.634983363827386" />
+      <entry key="S10" value="13.578764154102814" />
+      <entry key="S30" value="16.314309434631543" />
+      <entry key="S60" value="17.126884658649224" />
+      <entry key="M2" value="17.555582054244628" />
+      <entry key="M5" value="17.83520015739246" />
+      <entry key="M10" value="18.031939194906556" />
+      <entry key="M15" value="18.18595333933113" />
+      <entry key="M30" value="18.465999347458617" />
+      <entry key="H1" value="18.6892911842325" />
+      <entry key="H2" value="18.83172558280497" />
+      <entry key="H4" value="18.912343837281444" />
+      <entry key="D1" value="18.98487525418722" />
+      <entry key="W1" value="18.997826337695845" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{

@@ -49,6 +49,10 @@ pbjs.que.push(function () {
 });
 ```
 
+## Complete example {#full-example}
+
+Use the server-side bidding configuration and Banner ad unit above in [Prebid’s complete S2S page example](https://docs.prebid.org/dev-docs/examples/s2s-only.html), replacing the example account, placement, and endpoint. The example renders a Banner directly through Prebid.js. If GAM selects the ad, follow the next section.
+
 ## Use your own GAM account {#s2s-gam}
 
 If GAM decides which ad serves, follow [Your own GAM + Prebid.js](./gam-prebid) to configure GPT, price buckets, and creatives. Confirm that the Prebid.js request carries the correct AdFlow placement details, then apply the auction's targeting keys to the corresponding GAM slot.

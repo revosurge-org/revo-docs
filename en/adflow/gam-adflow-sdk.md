@@ -72,3 +72,16 @@ window.top.postMessage({
 ## Verify the integration
 
 Verify that GAM returned the correct line item and creative and that `adflow.js` requested an ad. Check in-page rendering, Push notifications, and Pop click behavior separately.
+
+### Check SafeFrame
+
+Banner, Native, and In-page Push run inside the GAM creative iframe. If SafeFrame is enabled on the creative or forced by GPT, test script loading, requests, and rendering inside that container on the live page. The 1×1 Push and Pop creative only sends confirmation to the top-level page. With SafeFrame enabled, verify that the top page still recognizes and validates the sending window. Notification permission and click handling run in the top page. Check the rendered iframe type in the [Google Publisher Console](https://developers.google.com/publisher-tag/guides/publisher-console). If the required behavior is incompatible with enforced isolation, use a format or integration verified to work with that slot.
+
+### Distinguish GAM and AdFlow no-fill
+
+- If `slotRenderEnded.isEmpty === true` for the slot, GAM returned no ad. Check inventory targeting, size, schedule, and creative association. If you need fallback, configure an eligible GAM fallback line item or have the page show house content or collapse the empty container according to your site policy.
+- If GAM returns the expected third-party creative and the ad stays blank, check script execution, requests, responses, browser blocks, and rendering in Network and Console. After GAM selects the creative, an AdFlow no-fill does not trigger another GAM line-item selection automatically. Skip Push or Pop initialization if no valid confirmation arrives.
+
+### Reconcile GAM and AdFlow reports
+
+Align dates, time zones, and filters. Match the GAM ad unit, line item, and creative to the AdFlow placement, then confirm both reports cover the test window. GAM may record a third-party creative impression before AdFlow records an ad impression, for example when AdFlow has no fill or the Push or Pop trigger is unmet. Record differences and both report generation times. See [reporting discrepancies](./report-data-issues).

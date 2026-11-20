@@ -108,7 +108,8 @@ export default defineConfig({
         ignore: [
           '**/cn/**', '**/hk/**', '**/docs/**', '**/growth/**',
           '**/s2s/v3/{mandatory-properties,catalog-governance,events-standard,events-igaming,events-crypto}.md',
-          '**/postback/partner-postback.md'
+          '**/postback/partner-postback.md',
+          '**/adflow/{installation-check-self-repairing,integration-guide}.md'
         ],
         llmsFile: { indexTOC: 'only-llms' },
         llmsFullFile: true,

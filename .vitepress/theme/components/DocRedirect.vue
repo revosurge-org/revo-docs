@@ -6,6 +6,7 @@ const props = defineProps<{
   to: string
   apiReferences?: { v1: string; v2: string }
   legacyOverviewAnchor?: string
+  anchors?: Record<string, string>
 }>()
 
 const { lang } = useData()
@@ -21,6 +22,11 @@ onMounted(() => {
   const overviewHashes = ['#choose-version', '#revosurge-partner-postback-api']
   if (props.legacyOverviewAnchor) overviewHashes.push(`#${encodeURIComponent(props.legacyOverviewAnchor)}`)
   let destination = props.to
+  const id = hash.slice(1)
+  if (props.anchors && Object.hasOwn(props.anchors, id)) {
+    window.location.replace(`${props.anchors[id]}${search}${hash}`)
+    return
+  }
   if (props.apiReferences && hash && !overviewHashes.includes(hash)) {
     destination = hash.startsWith('#v2-') ? props.apiReferences.v2 : props.apiReferences.v1
   }

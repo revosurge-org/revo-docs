@@ -72,3 +72,16 @@ window.top.postMessage({
 ## 驗證接入
 
 先確認 GAM 返回正確的訂單項和素材，再確認 `adflow.js` 發起廣告請求，並分別檢查頁內展示、Push 系統通知和 Pop 的點擊觸發結果。
+
+### 檢查 SafeFrame
+
+Banner、Native 和 In-page Push 在 GAM 素材 iframe 內執行。若素材啟用 SafeFrame，或 GPT 強制使用 SafeFrame，請在實際投放頁面確認指令碼能在容器內載入、送出請求及顯示廣告。Push 和 Pop 的 1×1 素材只負責向頂層傳送確認訊息。啟用 SafeFrame 時，確認頂層仍能辨識並驗證傳送視窗，且通知授權與點擊仍在頂層處理。可在 [Google Publisher Console](https://developers.google.com/publisher-tag/guides/publisher-console) 查閱實際 iframe 類型。若強制隔離與所需行為不相容，請為該廣告位選擇已驗證相容的格式或接入方式。
+
+### 區分 GAM 與 AdFlow 未填充
+
+- 若目標廣告位的 `slotRenderEnded.isEmpty === true`，表示 GAM 未回傳廣告。檢查廣告空間指定、尺寸、排程及素材關聯。需要備援時，可在 GAM 設定符合資格的備援委刊項，或由網頁依網站策略顯示自有內容或收合空容器。
+- 若 GAM 已回傳指定第三方素材，廣告仍未顯示，請在 Network 和 Console 檢查指令碼、請求、回應、瀏覽器封鎖及算繪。GAM 選中素材後，AdFlow 未填充時不會自動觸發 GAM 重新選取委刊項。若沒有收到有效確認，請略過 Push 或 Pop 的頂層初始化。
+
+### 核對 GAM 與 AdFlow 報表
+
+對齊日期、時區和篩選條件，按 GAM 廣告單元、委刊項和素材對應 AdFlow 廣告位。確認兩邊的報表皆涵蓋測試時段。GAM 可能已記錄第三方素材曝光，而 AdFlow 尚未記錄實際曝光，例如 AdFlow 未填充，或 Push、Pop 的觸發條件未滿足。記錄差異和兩邊報表產生時間，依[報表沒資料或資料對不上](./report-data-issues)排查。

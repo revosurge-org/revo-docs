@@ -49,6 +49,10 @@ pbjs.que.push(function () {
 });
 ```
 
+## 完整範例 {#full-example}
+
+將上方的伺服器端競價設定及 Banner 廣告單元加入 [Prebid 的 S2S 完整頁面範例](https://docs.prebid.org/dev-docs/examples/s2s-only.html)，替換範例中的帳號、廣告位及端點。此範例由 Prebid.js 直接顯示 Banner。若由 GAM 選擇要顯示的廣告，請依下一節設定。
+
 ## 使用自有 GAM {#s2s-gam}
 
 如果使用 GAM 決定顯示哪個廣告，請依照[自有 GAM + Prebid.js](./gam-prebid)設定 GPT、價格區間和廣告素材。先確認 Prebid.js 請求帶有正確的 AdFlow 版位資訊，再將本次競價的指定鍵寫入對應的 GAM 廣告版位。

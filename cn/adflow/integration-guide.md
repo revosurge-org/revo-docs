@@ -1,3 +1,11 @@
-# Publisher 接入文档
+---
+layout: page
+search: false
+redirectTo: /cn/adflow/choose-integration
+---
 
-<p>请到<a href="./choose-integration">选择接入方式</a>，按你的网站配置打开对应指南。</p>
+<script setup>
+import AdFlowIntegrationRedirect from '../../.vitepress/theme/components/AdFlowIntegrationRedirect.vue'
+</script>
+
+<AdFlowIntegrationRedirect locale="cn" />
